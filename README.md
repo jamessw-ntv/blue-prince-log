@@ -104,13 +104,11 @@ has little lasting value — it won't recur.
 
 **Not worth recording permanently** (it's random/ephemeral):
 
-- The specific items that happened to spawn in a room on one run. Use the viewer's
-  **run-marks** as a per-run scratchpad and hit **⟳ New run** to wipe them next day.
+- The specific items that happened to spawn in a room on one run.
 
-> The `rooms`/`items` catalog comes **pre-populated** with spoiler-free,
-> directory-level entries (no puzzle answers or endgame reveals). `discovered` is
-> `false` for rooms you haven't logged yet; fields left blank (`rarity`, `doors`)
-> are simply unconfirmed — fill them in as you go.
+> The catalog **starts empty on purpose** — to stay spoiler-free, rooms/items/puzzles
+> are added only as *you* discover them (in your own words), not pre-filled from a
+> wiki. Don't paste in room effects you haven't seen yet.
 
 ## Logging workflow
 
@@ -349,8 +347,7 @@ because the viewer is served from the same GitHub Pages site.
 
 ## Seed data
 
-`data.json` ships with a small set of example rooms (one per color, plus the
-upgradeable Spare Room), the core resources, two example sightings, and one example
-run/puzzle/note so the viewer has something to render. Entries tagged `"example"`
-(and `example-*` ids) are placeholders — delete or overwrite them as real logging
-begins.
+`data.json` ships **empty** — `rooms`, `items`, `puzzles`, and `notes` are all `[]`
+to keep the log spoiler-free. The only seeded content is `tips[]` (help for using
+the tool, shown under the **💡 Tips** toggle) and `images/example.svg` (the
+placeholder the image tip references). Everything else fills in as you play.
