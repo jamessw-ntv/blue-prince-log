@@ -104,7 +104,11 @@
   tbody tr:hover{background:#1b2438}
   td.nm{font-weight:600;white-space:nowrap}
   td.num{text-align:center}
-  td.eff{color:var(--muted);max-width:340px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+  td.eff{color:var(--muted);max-width:380px;white-space:normal;word-break:break-word}
+  td.stats{color:var(--muted);font-size:12.5px;min-width:130px;white-space:normal}
+  td.pic{width:74px}
+  .thumb{width:62px;height:46px;object-fit:cover;border-radius:6px;border:1px solid var(--line);display:block}
+  .rtags{margin-top:5px}
   td.runs{white-space:nowrap}
   .chip{display:inline-block;min-width:20px;text-align:center;padding:1px 6px;margin:1px;
     border-radius:6px;background:var(--panel2);border:1px solid var(--line);font-size:12px}
@@ -236,22 +240,26 @@ function colorDot(c){ return COLORS.includes(c) ? `<span class="dot swatch-${c}"
 function badges(arr,cls="tag"){ return (arr||[]).map(t=>`<span class="b ${cls}">${esc(t)}</span>`).join(""); }
 function costStr(c){ if(!c) return ""; const p=[]; if(c.gems)p.push(c.gems+" gem"+(c.gems>1?"s":"")); if(c.coins)p.push(c.coins+" coin"+(c.coins>1?"s":"")); if(c.keys)p.push(c.keys+" key"+(c.keys>1?"s":"")); return p.join(", "); }
 
+function thumb(src){ return src?`<a href="${esc(src)}" target="_blank" rel="noopener"><img class="thumb" src="${esc(src)}" alt="" loading="lazy"></a>`:""; }
+function tagsInline(arr){ return (arr&&arr.length)?`<div class="rtags badges">${badges(arr)}</div>`:""; }
+
 function roomsTable(rows){
-  const head=`<thead><tr><th></th><th>Room</th><th>Color</th><th>Rarity</th><th>Doors</th><th>Cost</th><th>Dig</th><th>Effect</th><th>Runs</th><th>Mark</th></tr></thead>`;
+  const head=`<thead><tr><th>Pic</th><th>Room</th><th>Details</th><th>Effect</th><th>Notes</th><th>Runs</th><th>Mark</th></tr></thead>`;
   const body="<tbody>"+rows.map(r=>{
     const info=runInfo("room",r.id);
-    const cost=costStr(r.cost);
     const vnames=(r.variants||[]).map(v=>v.name).join(", ");
     const vbadge=(r.variants||[]).length?` <span class="b" title="Variants: ${esc(vnames)}">▸${r.variants.length}</span>`:"";
+    const stats=[titleCase(r.color||""), r.rarity||""].filter(Boolean);
+    let line=stats.join(" · ");
+    if(r.doors!=null) line+=` · ${r.doors} door${r.doors===1?"":"s"}`;
+    const cost=costStr(r.cost); if(cost) line+=` · ${cost}`;
+    if(r.digSpot) line+=" · dig spot";
     return `<tr>`+
-      `<td>${colorDot(r.color)}</td>`+
-      `<td class="nm">${esc(r.name)}${vbadge}</td>`+
-      `<td>${esc(titleCase(r.color||""))}</td>`+
-      `<td>${esc(r.rarity||"")}</td>`+
-      `<td class="num">${r.doors!=null?esc(r.doors):""}</td>`+
-      `<td>${esc(cost)}</td>`+
-      `<td class="num">${r.digSpot?"●":""}</td>`+
-      `<td class="eff" title="${esc(r.effect||"")}">${esc(r.effect||"")}</td>`+
+      `<td class="pic">${thumb(r.image)}</td>`+
+      `<td class="nm">${colorDot(r.color)} ${esc(r.name)}${vbadge}${tagsInline(r.tags)}</td>`+
+      `<td class="stats">${esc(line)}</td>`+
+      `<td class="eff">${esc(r.effect||"")}</td>`+
+      `<td class="eff">${esc(r.notes||"")}</td>`+
       `<td class="runs">${runChips(info)}</td>`+
       `<td>${markBtn("room",r.id,info)}</td>`+
     `</tr>`;
@@ -260,14 +268,17 @@ function roomsTable(rows){
 }
 
 function itemsTable(rows){
-  const head=`<thead><tr><th>Item</th><th>Type</th><th>Effect</th><th>Where</th><th>Found</th><th>Runs</th><th>Mark</th></tr></thead>`;
+  const head=`<thead><tr><th>Pic</th><th>Item</th><th>Type</th><th>Effect</th><th>Where / notes</th><th>Found</th><th>Runs</th><th>Mark</th></tr></thead>`;
   const body="<tbody>"+rows.map(i=>{
     const info=runInfo("item",i.id);
+    const details=[i.location, i.notes].filter(Boolean).join(" — ");
+    const val=(i.value && i.value.coins!=null)?` (${esc(i.value.coins)} coins)`:"";
     return `<tr>`+
-      `<td class="nm">${esc(i.name)}</td>`+
+      `<td class="pic">${thumb(i.image)}</td>`+
+      `<td class="nm">${esc(i.name)}${tagsInline(i.tags)}</td>`+
       `<td>${esc(i.type||"")}</td>`+
-      `<td class="eff" title="${esc(i.effect||"")}">${esc(i.effect||"")}</td>`+
-      `<td class="eff" title="${esc(i.location||"")}">${esc(i.location||"")}</td>`+
+      `<td class="eff">${esc(i.effect||"")}</td>`+
+      `<td class="eff">${esc(details)}${val}</td>`+
       `<td class="num">${i.found===false?"":"✓"}</td>`+
       `<td class="runs">${runChips(info)}</td>`+
       `<td>${markBtn("item",i.id,info)}</td>`+
