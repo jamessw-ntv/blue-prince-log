@@ -1,0 +1,222 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Blue Prince — Room &amp; Item Log</title>
+<style>
+  :root{
+    --bg:#0f1422; --panel:#171d2e; --panel2:#1f2740; --line:#2b3550;
+    --text:#e8ecf6; --muted:#9aa6c4; --accent:#6ea8fe;
+    --blue:#3b82f6; --orange:#f97316; --green:#22c55e; --purple:#a855f7;
+    --yellow:#eab308; --red:#ef4444; --black:#0b0f1a;
+  }
+  *{box-sizing:border-box}
+  body{margin:0;background:var(--bg);color:var(--text);
+    font:15px/1.5 system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Arial,sans-serif}
+  a{color:var(--accent)}
+  header{padding:20px 22px 8px;border-bottom:1px solid var(--line);
+    background:linear-gradient(180deg,#141b2e,#0f1422)}
+  h1{margin:0 0 4px;font-size:22px;letter-spacing:.2px}
+  .sub{color:var(--muted);font-size:13px}
+  .sub b{color:var(--text)}
+  .wrap{max-width:1100px;margin:0 auto;padding:0 22px 60px}
+  nav{display:flex;flex-wrap:wrap;gap:6px;margin:14px 0}
+  nav button{background:var(--panel);color:var(--muted);border:1px solid var(--line);
+    padding:7px 13px;border-radius:999px;cursor:pointer;font-size:13px}
+  nav button:hover{color:var(--text)}
+  nav button.active{background:var(--accent);color:#08101f;border-color:var(--accent);font-weight:600}
+  nav button .ct{opacity:.7;font-size:11px;margin-left:5px}
+  #search{width:100%;padding:10px 12px;margin:0 0 16px;border-radius:10px;
+    border:1px solid var(--line);background:var(--panel);color:var(--text);font-size:14px}
+  .grid{display:grid;gap:12px;grid-template-columns:repeat(auto-fill,minmax(300px,1fr))}
+  .card{background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:14px}
+  .card.room{border-left:5px solid var(--line)}
+  .card h3{margin:0 0 6px;font-size:16px;display:flex;align-items:center;gap:8px;justify-content:space-between}
+  .card h3 .nm{display:flex;align-items:center;gap:8px;min-width:0}
+  .card h3 .nm span{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+  .eff{color:var(--text);margin:6px 0}
+  .meta{color:var(--muted);font-size:12.5px;margin:2px 0}
+  .badges{display:flex;flex-wrap:wrap;gap:6px;margin:8px 0 0}
+  .b{font-size:11px;padding:2px 8px;border-radius:999px;background:var(--panel2);
+    color:var(--muted);border:1px solid var(--line)}
+  .b.tag{background:#11203a;color:#9cc4ff;border-color:#1d3a63}
+  .dot{width:11px;height:11px;border-radius:50%;flex:0 0 auto;border:1px solid rgba(255,255,255,.25)}
+  .swatch-blue{background:var(--blue)} .swatch-orange{background:var(--orange)}
+  .swatch-green{background:var(--green)} .swatch-purple{background:var(--purple)}
+  .swatch-yellow{background:var(--yellow)} .swatch-red{background:var(--red)}
+  .swatch-black{background:var(--black)}
+  .bd-blue{border-left-color:var(--blue)} .bd-orange{border-left-color:var(--orange)}
+  .bd-green{border-left-color:var(--green)} .bd-purple{border-left-color:var(--purple)}
+  .bd-yellow{border-left-color:var(--yellow)} .bd-red{border-left-color:var(--red)}
+  .bd-black{border-left-color:var(--black)}
+  .variant{margin-top:8px;padding:8px 10px;border:1px dashed var(--line);border-radius:8px;background:var(--panel2)}
+  .variant .vn{font-weight:600;font-size:13px;display:flex;align-items:center;gap:6px}
+  .status{font-size:11px;padding:2px 8px;border-radius:999px;font-weight:600}
+  .status.open{background:#3a2a11;color:#ffcf8a;border:1px solid #5a4012}
+  .status.solved{background:#103226;color:#7ee2b8;border:1px solid #1d5742}
+  ul.clues{margin:6px 0 0;padding-left:18px;color:var(--muted)}
+  details{margin-top:8px} summary{cursor:pointer;color:var(--accent)}
+  details .sol{margin-top:6px;padding:8px 10px;background:var(--panel2);border-radius:8px}
+  .run{display:flex;gap:14px;align-items:baseline}
+  .run .id{font-size:20px;font-weight:700;color:var(--accent);min-width:54px}
+  .sgroup{margin-bottom:16px}
+  .sgroup h3{margin:0 0 8px;font-size:15px;color:var(--muted);border-bottom:1px solid var(--line);padding-bottom:6px}
+  .srow{padding:8px 0;border-bottom:1px solid var(--line)}
+  .srow:last-child{border-bottom:0}
+  .srow .rm{font-weight:600}
+  .items-in{color:var(--muted);font-size:13px;margin-top:2px}
+  .empty{color:var(--muted);padding:30px;text-align:center}
+  .err{color:#ffb4b4;background:#2a1414;border:1px solid #532;padding:14px;border-radius:10px;margin-top:16px}
+  footer{color:var(--muted);font-size:12px;border-top:1px solid var(--line);
+    margin-top:30px;padding:14px 0;text-align:center}
+  .hidden{display:none!important}
+</style>
+</head>
+<body>
+<header>
+  <div class="wrap" style="padding-bottom:0">
+    <h1 id="title">Blue Prince — Room &amp; Item Log</h1>
+    <div class="sub" id="subtitle">Loading…</div>
+  </div>
+</header>
+<div class="wrap">
+  <nav id="nav"></nav>
+  <input id="search" type="search" placeholder="Filter…" autocomplete="off" />
+  <div id="view"></div>
+  <div id="error"></div>
+  <footer id="footer"></footer>
+</div>
+
+<script>
+const RAW = "https://raw.githubusercontent.com/jamessw-ntv/blue-prince-log/main/data.json";
+const COLORS = ["blue","orange","green","purple","yellow","red","black"];
+const esc = s => String(s==null?"":s).replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+const titleCase = s => s ? s.charAt(0).toUpperCase()+s.slice(1) : s;
+
+let DATA=null, TAB="rooms", Q="";
+const TABS=[["rooms","Rooms"],["items","Items"],["runs","Runs"],["sightings","Sightings"],["puzzles","Puzzles"],["notes","Notes"]];
+
+async function load(){
+  // Same-origin first (works on GitHub Pages next to data.json); fall back to the raw URL.
+  for(const url of ["data.json", RAW]){
+    try{ const r=await fetch(url,{cache:"no-store"}); if(r.ok){ return [await r.json(), url]; } }catch(e){}
+  }
+  throw new Error("Could not load data.json (tried same-origin and "+RAW+").");
+}
+
+function colorDot(c){ return COLORS.includes(c) ? `<span class="dot swatch-${c}" title="${esc(c)}"></span>` : ""; }
+function badges(arr,cls="tag"){ return (arr||[]).map(t=>`<span class="b ${cls}">${esc(t)}</span>`).join(""); }
+function costStr(c){ if(!c) return ""; const p=[]; if(c.gems)p.push(c.gems+" gem"+(c.gems>1?"s":"")); if(c.coins)p.push(c.coins+" coin"+(c.coins>1?"s":"")); if(c.keys)p.push(c.keys+" key"+(c.keys>1?"s":"")); return p.join(", "); }
+
+function roomCard(r){
+  const cls = COLORS.includes(r.color)?`bd-${r.color}`:"";
+  const bits=[];
+  bits.push(`<div class="meta">${titleCase(r.color||"?")} · ${esc(r.rarity||"?")}${r.doors!=null?` · ${r.doors} door${r.doors===1?"":"s"}`:""}${r.digSpot?` · dig spot`:""}</div>`);
+  const cost=costStr(r.cost); if(cost) bits.push(`<div class="meta">Cost: ${esc(cost)}</div>`);
+  if(r.effect) bits.push(`<div class="eff">${esc(r.effect)}</div>`);
+  (r.variants||[]).forEach(v=>{
+    bits.push(`<div class="variant"><div class="vn">${colorDot(v.color)}${esc(v.name)}${v.source?` <span class="b">${esc(v.source)}</span>`:""}</div>${v.effect?`<div class="meta">${esc(v.effect)}</div>`:""}${v.notes?`<div class="meta">${esc(v.notes)}</div>`:""}</div>`);
+  });
+  const foot=[]; if(r.firstSeenRun!=null) foot.push(`run ${esc(r.firstSeenRun)}`); if(r.firstSeen) foot.push(esc(r.firstSeen));
+  if(foot.length) bits.push(`<div class="meta">First seen: ${foot.join(" · ")}</div>`);
+  if(r.notes) bits.push(`<div class="meta">${esc(r.notes)}</div>`);
+  return `<div class="card room ${cls}"><h3><span class="nm">${colorDot(r.color)}<span>${esc(r.name)}</span></span></h3>${bits.join("")}<div class="badges">${badges(r.tags)}</div></div>`;
+}
+
+function itemCard(i){
+  const bits=[];
+  bits.push(`<div class="meta">${esc(i.type||"Item")}${i.found===false?" · not yet found":""}</div>`);
+  if(i.effect) bits.push(`<div class="eff">${esc(i.effect)}</div>`);
+  if(i.location) bits.push(`<div class="meta">Where: ${esc(i.location)}</div>`);
+  if(i.value && i.value.coins!=null) bits.push(`<div class="meta">Price: ${esc(i.value.coins)} coins</div>`);
+  const foot=[]; if(i.firstSeenRun!=null) foot.push(`run ${esc(i.firstSeenRun)}`); if(i.firstSeen) foot.push(esc(i.firstSeen));
+  if(foot.length) bits.push(`<div class="meta">First seen: ${foot.join(" · ")}</div>`);
+  if(i.notes) bits.push(`<div class="meta">${esc(i.notes)}</div>`);
+  return `<div class="card"><h3><span class="nm"><span>${esc(i.name)}</span></span></h3>${bits.join("")}<div class="badges">${badges(i.tags)}</div></div>`;
+}
+
+function runCard(run){
+  const n=(DATA.sightings||[]).filter(s=>s.run===run.id).length;
+  const bits=[`<div class="meta">${esc(run.date||"")}${run.rank!=null?` · rank ${esc(run.rank)}`:""} · ${n} sighting${n===1?"":"s"}</div>`];
+  if(run.outcome) bits.push(`<div class="eff">${esc(run.outcome)}</div>`);
+  if(run.notes) bits.push(`<div class="meta">${esc(run.notes)}</div>`);
+  return `<div class="card"><div class="run"><div class="id">#${esc(run.id)}</div><div style="flex:1">${bits.join("")}</div></div></div>`;
+}
+
+function puzzleCard(p){
+  const bits=[`<div class="meta">${p.location?esc(p.location):"—"}</div>`];
+  if((p.clues||[]).length) bits.push(`<ul class="clues">${p.clues.map(c=>`<li>${esc(c)}</li>`).join("")}</ul>`);
+  if(p.solution) bits.push(`<details><summary>Show solution (spoiler)</summary><div class="sol">${esc(p.solution)}</div></details>`);
+  if(p.notes) bits.push(`<div class="meta">${esc(p.notes)}</div>`);
+  const st=(p.status||"open").toLowerCase();
+  return `<div class="card"><h3><span class="nm"><span>${esc(p.name)}</span></span><span class="status ${st}">${esc(st)}</span></h3>${bits.join("")}<div class="badges">${badges(p.tags)}</div></div>`;
+}
+
+function noteCard(n){
+  return `<div class="card"><div class="meta">${esc(n.date||"")}</div><div class="eff">${esc(n.text)}</div><div class="badges">${badges(n.tags)}</div></div>`;
+}
+
+function sightingsView(rows){
+  const roomName=id=>{const r=(DATA.rooms||[]).find(x=>x.id===id);return r?r.name:id;};
+  const itemName=id=>{const i=(DATA.items||[]).find(x=>x.id===id);return i?i.name:id;};
+  const byRun={};
+  rows.forEach(s=>{(byRun[s.run]=byRun[s.run]||[]).push(s);});
+  const runIds=Object.keys(byRun).map(Number).sort((a,b)=>b-a);
+  return runIds.map(rid=>{
+    const inner=byRun[rid].map(s=>{
+      const items=(s.items||[]).map(it=>`${esc(itemName(it.itemId))}${it.qty?` ×${esc(it.qty)}`:""}${it.notes?` (${esc(it.notes)})`:""}`).join(", ");
+      return `<div class="srow"><div class="rm">${esc(roomName(s.roomId))}${s.variantId?` <span class="b">${esc(s.variantId)}</span>`:""}</div>${items?`<div class="items-in">${items}</div>`:`<div class="items-in">—</div>`}${s.notes?`<div class="meta">${esc(s.notes)}</div>`:""}</div>`;
+    }).join("");
+    return `<div class="sgroup"><h3>Run #${rid}</h3>${inner}</div>`;
+  }).join("");
+}
+
+function matches(obj){
+  if(!Q) return true;
+  return JSON.stringify(obj).toLowerCase().includes(Q);
+}
+
+function render(){
+  const v=document.getElementById("view");
+  let rows, html;
+  if(TAB==="rooms"){ rows=(DATA.rooms||[]).filter(matches); html=rows.length?`<div class="grid">${rows.map(roomCard).join("")}</div>`:""; }
+  else if(TAB==="items"){ rows=(DATA.items||[]).filter(matches); html=rows.length?`<div class="grid">${rows.map(itemCard).join("")}</div>`:""; }
+  else if(TAB==="runs"){ rows=(DATA.runs||[]).filter(matches).sort((a,b)=>b.id-a.id); html=rows.length?`<div class="grid">${rows.map(runCard).join("")}</div>`:""; }
+  else if(TAB==="sightings"){ rows=(DATA.sightings||[]).filter(matches); html=rows.length?sightingsView(rows):""; }
+  else if(TAB==="puzzles"){ rows=(DATA.puzzles||[]).filter(matches); html=rows.length?`<div class="grid">${rows.map(puzzleCard).join("")}</div>`:""; }
+  else if(TAB==="notes"){ rows=(DATA.notes||[]).filter(matches); html=rows.length?`<div class="grid">${rows.map(noteCard).join("")}</div>`:""; }
+  v.innerHTML = html || `<div class="empty">Nothing here${Q?" matches your filter":" yet"}.</div>`;
+}
+
+function renderNav(){
+  const nav=document.getElementById("nav");
+  nav.innerHTML=TABS.map(([k,label])=>{
+    const ct=(DATA[k]||[]).length;
+    return `<button data-tab="${k}" class="${k===TAB?"active":""}">${label}<span class="ct">${ct}</span></button>`;
+  }).join("");
+  nav.querySelectorAll("button").forEach(b=>b.onclick=()=>{TAB=b.dataset.tab;renderNav();render();});
+}
+
+(async function(){
+  try{
+    const [data,src]=await load();
+    DATA=data;
+    const m=data.meta||{};
+    document.getElementById("title").textContent=m.title||"Blue Prince — Log";
+    document.getElementById("subtitle").innerHTML=
+      `Current run <b>#${esc(m.currentRun??"?")}</b> · updated <b>${esc(m.updated||"?")}</b>`+
+      (m.source?` · <a href="${esc(m.source)}">source</a>`:"");
+    document.getElementById("footer").innerHTML=
+      `Read-only viewer · data from <code>${esc(src)}</code>`+(m.source?` · <a href="${esc(m.source)}">repo</a>`:"");
+    renderNav(); render();
+  }catch(e){
+    document.getElementById("subtitle").textContent="";
+    document.getElementById("error").innerHTML=`<div class="err">${esc(e.message||e)}</div>`;
+  }
+})();
+
+document.getElementById("search").addEventListener("input",e=>{Q=e.target.value.trim().toLowerCase();render();});
+</script>
+</body>
+</html>

@@ -2,10 +2,16 @@
 
 Data store for my **Blue Prince** room & item log.
 
-This repository holds a single source of truth — [`data.json`](./data.json) — that
-records the rooms, items, puzzles, runs, and notes I discover while playing
-[Blue Prince](https://blueprince.wiki.gg/). It is **public on purpose** so that a
-read-only viewer can fetch it without authentication.
+This repository holds both the data and the viewer:
+
+- [`data.json`](./data.json) — the single source of truth for the rooms, items,
+  puzzles, runs, and notes I discover while playing
+  [Blue Prince](https://blueprince.wiki.gg/).
+- [`index.html`](./index.html) — a self-contained, read-only viewer that renders
+  `data.json`. No build step, no dependencies.
+
+The repo is **public on purpose** so the viewer can fetch the data without
+authentication. **Live viewer: https://jamessw-ntv.github.io/blue-prince-log/**
 
 > **Public repo / spoilers:** everything in `data.json` is world-readable, and by
 > choice this log **stores full puzzle solutions and spoilers**. Don't put anything
@@ -14,23 +20,53 @@ read-only viewer can fetch it without authentication.
 ## How it fits together
 
 ```
-┌─────────────────────────────┐         GitHub (no token)            ┌────────────────────────────┐
-│ jamessw-ntv/blue-prince-log │  ── reads data.json live, on load ─▶ │  Viewer (read-only HTML)   │
-│  (this repo, public)        │                                      │  jamessw-ntv/ntv-prod      │
-│  • data.json  ← edited here │                                      │  docs/blue-prince/         │
-│  • README.md  ← these rules │                                      │  GitHub Pages /blue-prince/│
-└─────────────────────────────┘                                      └────────────────────────────┘
+┌──────────────────────────────────────────────┐
+│ jamessw-ntv/blue-prince-log (this repo, public)│
+│                                                │
+│   index.html  ──fetch("data.json")──▶ data.json│   served together via GitHub Pages
+│   (read-only viewer)   same origin             │   at https://jamessw-ntv.github.io/blue-prince-log/
+└──────────────────────────────────────────────┘
 ```
 
-- **This repo** stores the data. All edits land on the `main` branch.
-- **The viewer** lives in `jamessw-ntv/ntv-prod` at `docs/blue-prince/` and is
-  served via GitHub Pages at `/blue-prince/`. On page load it reads `data.json`
-  from `main` of this repo — **no token, no build step**. Anything committed to
-  `main` here shows up in the viewer on the next refresh.
-- **Recommended read URL** (no rate limit, returns plain JSON):
-  `https://raw.githubusercontent.com/jamessw-ntv/blue-prince-log/main/data.json`.
-  The `api.github.com/.../contents/...` endpoint also works but is rate-limited to
-  ~60 requests/hour per IP for unauthenticated callers, so prefer the raw URL.
+The viewer and data now live in **the same repo**, so the viewer fetches
+`data.json` with a plain same-origin relative request — **no GitHub API, no token,
+no rate limit, no CORS.** Anything committed to `main` shows up on the next refresh.
+
+If you ever need to read the data from elsewhere, the raw URL works without a
+token: `https://raw.githubusercontent.com/jamessw-ntv/blue-prince-log/main/data.json`
+(the `api.github.com/.../contents/...` endpoint also works but is rate-limited to
+~60 requests/hour per IP). `index.html` falls back to this raw URL automatically if
+the same-origin fetch fails (e.g. opened from `file://`).
+
+## Deploying the viewer (GitHub Pages)
+
+One-time setup:
+
+1. Repo **Settings → Pages**.
+2. **Source:** *Deploy from a branch*; **Branch:** `main`, **Folder:** `/ (root)`;
+   **Save**.
+3. After a minute the viewer is live at
+   **https://jamessw-ntv.github.io/blue-prince-log/**.
+
+### Redirecting the old `ntv-prod` location
+
+The viewer used to live in `jamessw-ntv/ntv-prod` (served under
+`https://jamessw-ntv.github.io/NTV-PROD/`). To forward the old URL to the new one,
+drop a small redirect page where the old viewer was (e.g.
+`ntv-prod/docs/blue-prince/index.html`):
+
+```html
+<!doctype html>
+<meta charset="utf-8">
+<title>Moved</title>
+<meta http-equiv="refresh" content="0; url=https://jamessw-ntv.github.io/blue-prince-log/">
+<link rel="canonical" href="https://jamessw-ntv.github.io/blue-prince-log/">
+<p>This log moved to <a href="https://jamessw-ntv.github.io/blue-prince-log/">jamessw-ntv.github.io/blue-prince-log</a>.</p>
+```
+
+(If you'd rather keep the canonical address on `ntv-prod`, do the reverse: leave the
+viewer here and point a redirect *from* the new URL back to the old one. Either way
+only one place should host the real `index.html`.)
 
 ## Logging workflow
 

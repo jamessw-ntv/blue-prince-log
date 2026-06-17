@@ -6,8 +6,8 @@
     "updated": "2026-06-17",
     "currentRun": 1,
     "source": "https://github.com/jamessw-ntv/blue-prince-log",
-    "viewer": "https://jamessw-ntv.github.io/blue-prince/",
-    "note": "Seed/example data. Entries are edited via a Claude chat and committed to main; the viewer reads this file live via the GitHub raw URL. Replace the examples below with your own findings."
+    "viewer": "https://jamessw-ntv.github.io/blue-prince-log/",
+    "note": "Seed/example data. Entries are edited via a Claude chat and committed to main; the viewer (index.html in this repo) reads this file same-origin. Replace the examples below with your own findings."
   },
   "runs": [
     {
