@@ -1,0 +1,179 @@
+{
+  "meta": {
+    "game": "Blue Prince",
+    "title": "Blue Prince — Room & Item Log",
+    "schemaVersion": 1,
+    "updated": "2026-06-17",
+    "source": "https://github.com/jamessw-ntv/blue-prince-log",
+    "viewer": "https://jamessw-ntv.github.io/blue-prince/",
+    "note": "Seed/example data. Entries are edited via a Claude chat and committed to main; the viewer reads this file live via the GitHub API. Replace the examples below with your own findings."
+  },
+  "rooms": [
+    {
+      "id": "entrance-hall",
+      "name": "Entrance Hall",
+      "color": "blue",
+      "rarity": "Commonplace",
+      "doors": 3,
+      "cost": { "gems": 0, "coins": 0, "keys": 0 },
+      "digSpot": false,
+      "effect": "The fixed starting room. Every day begins here; if you have any Allowance, a coin packet appears here each morning.",
+      "tags": ["starting-room"],
+      "notes": "",
+      "discovered": true,
+      "firstSeen": "2026-06-17"
+    },
+    {
+      "id": "hallway",
+      "name": "Hallway",
+      "color": "orange",
+      "rarity": "Commonplace",
+      "doors": 2,
+      "cost": { "gems": 0, "coins": 0, "keys": 0 },
+      "digSpot": false,
+      "effect": "Connector room. Cheap to draft and helps link adjoining rooms; influences what you draw from it.",
+      "tags": ["connector"],
+      "notes": "",
+      "discovered": true,
+      "firstSeen": "2026-06-17"
+    },
+    {
+      "id": "bedroom",
+      "name": "Bedroom",
+      "color": "purple",
+      "rarity": "Standard",
+      "doors": 1,
+      "cost": { "gems": 0, "coins": 0, "keys": 0 },
+      "digSpot": false,
+      "effect": "Bedrooms belong to the Sinclair family and staff and tend to grant extra Steps.",
+      "tags": ["bedroom", "steps"],
+      "notes": "",
+      "discovered": true,
+      "firstSeen": "2026-06-17"
+    },
+    {
+      "id": "courtyard",
+      "name": "Courtyard",
+      "color": "green",
+      "rarity": "Standard",
+      "doors": 2,
+      "cost": { "gems": 0, "coins": 0, "keys": 0 },
+      "digSpot": true,
+      "effect": "Outdoor/garden room. Green rooms usually contain a Dig Spot that rewards Gems fairly often.",
+      "tags": ["outdoor", "dig-spot", "gems"],
+      "notes": "",
+      "discovered": true,
+      "firstSeen": "2026-06-17"
+    },
+    {
+      "id": "laboratory",
+      "name": "Laboratory",
+      "color": "blue",
+      "rarity": "Unusual",
+      "doors": 1,
+      "cost": { "gems": 1, "coins": 0, "keys": 0 },
+      "digSpot": false,
+      "effect": "Grants a special ability when placed. Like other ability/mechanic rooms, it costs at least one Gem to draft.",
+      "tags": ["ability", "gem-cost"],
+      "notes": "",
+      "discovered": true,
+      "firstSeen": "2026-06-17"
+    },
+    {
+      "id": "boiler-room",
+      "name": "Boiler Room",
+      "color": "red",
+      "rarity": "Unusual",
+      "doors": 1,
+      "cost": { "gems": 0, "coins": 0, "keys": 0 },
+      "digSpot": false,
+      "effect": "Red room tied to the house's utility mechanics. Red rooms are usually detrimental — often a dead end or carrying a negative effect.",
+      "tags": ["utility", "red"],
+      "notes": "",
+      "discovered": true,
+      "firstSeen": "2026-06-17"
+    }
+  ],
+  "items": [
+    {
+      "id": "key",
+      "name": "Key",
+      "type": "Resource",
+      "effect": "Used to unlock locked doors. The most common of the three main currencies.",
+      "location": "Found around the house, in chests, and bought from shops.",
+      "value": { "coins": null },
+      "tags": ["currency"],
+      "notes": "",
+      "found": true,
+      "firstSeen": "2026-06-17"
+    },
+    {
+      "id": "gem",
+      "name": "Gem",
+      "type": "Resource",
+      "effect": "Primary currency for drafting certain floorplans (ability/mechanic rooms). Comes in six cosmetic colors with no gameplay difference.",
+      "location": "Dig Spots in green rooms, chests, and shops. Rarest of the three main currencies.",
+      "value": { "coins": null },
+      "tags": ["currency", "drafting"],
+      "notes": "",
+      "found": true,
+      "firstSeen": "2026-06-17"
+    },
+    {
+      "id": "coin",
+      "name": "Coin (Gold)",
+      "type": "Resource",
+      "effect": "Used to purchase items and services from Shops. Found in piles of up to five, collected in a single action.",
+      "location": "Around the house; an Allowance packet also appears in the Entrance Hall each morning.",
+      "value": { "coins": null },
+      "tags": ["currency", "shops"],
+      "notes": "",
+      "found": true,
+      "firstSeen": "2026-06-17"
+    },
+    {
+      "id": "ivory-die",
+      "name": "Ivory Die",
+      "type": "Tool",
+      "effect": "Spent during drafting to redraw the offered floorplans.",
+      "location": "Found in the house and obtained from certain rooms.",
+      "value": { "coins": null },
+      "tags": ["drafting", "reroll"],
+      "notes": "",
+      "found": true,
+      "firstSeen": "2026-06-17"
+    },
+    {
+      "id": "example-tool",
+      "name": "Example Tool",
+      "type": "Tool",
+      "effect": "Example entry showing the item shape — replace with real tools/consumables/documents as you find them.",
+      "location": "",
+      "value": { "coins": null },
+      "tags": ["example"],
+      "notes": "Delete this once you start logging real items.",
+      "found": false,
+      "firstSeen": null
+    }
+  ],
+  "puzzles": [
+    {
+      "id": "example-puzzle",
+      "name": "Example Puzzle",
+      "location": "Room or area where the puzzle appears",
+      "status": "open",
+      "clues": ["First clue you noticed", "Second clue"],
+      "solution": "",
+      "tags": ["example"],
+      "notes": "Example entry showing the puzzle shape — use status 'open' or 'solved'. Put spoilers in 'solution'."
+    }
+  ],
+  "notes": [
+    {
+      "id": "note-2026-06-17",
+      "date": "2026-06-17",
+      "text": "Log created. Replace the example room/item/puzzle entries above with real findings.",
+      "tags": ["meta"]
+    }
+  ]
+}
