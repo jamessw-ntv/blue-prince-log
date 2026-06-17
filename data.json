@@ -2,12 +2,22 @@
   "meta": {
     "game": "Blue Prince",
     "title": "Blue Prince — Room & Item Log",
-    "schemaVersion": 1,
+    "schemaVersion": 2,
     "updated": "2026-06-17",
+    "currentRun": 1,
     "source": "https://github.com/jamessw-ntv/blue-prince-log",
     "viewer": "https://jamessw-ntv.github.io/blue-prince/",
-    "note": "Seed/example data. Entries are edited via a Claude chat and committed to main; the viewer reads this file live via the GitHub API. Replace the examples below with your own findings."
+    "note": "Seed/example data. Entries are edited via a Claude chat and committed to main; the viewer reads this file live via the GitHub raw URL. Replace the examples below with your own findings."
   },
+  "runs": [
+    {
+      "id": 1,
+      "date": "2026-06-17",
+      "rank": null,
+      "outcome": "",
+      "notes": "First logged run. 'rank' = furthest rank/row reached (the house has 9; the Antechamber is rank 9)."
+    }
+  ],
   "rooms": [
     {
       "id": "entrance-hall",
@@ -18,9 +28,11 @@
       "cost": { "gems": 0, "coins": 0, "keys": 0 },
       "digSpot": false,
       "effect": "The fixed starting room. Every day begins here; if you have any Allowance, a coin packet appears here each morning.",
+      "variants": [],
       "tags": ["starting-room"],
       "notes": "",
       "discovered": true,
+      "firstSeenRun": 1,
       "firstSeen": "2026-06-17"
     },
     {
@@ -32,9 +44,11 @@
       "cost": { "gems": 0, "coins": 0, "keys": 0 },
       "digSpot": false,
       "effect": "Connector room. Cheap to draft and helps link adjoining rooms; influences what you draw from it.",
+      "variants": [],
       "tags": ["connector"],
       "notes": "",
       "discovered": true,
+      "firstSeenRun": 1,
       "firstSeen": "2026-06-17"
     },
     {
@@ -46,9 +60,11 @@
       "cost": { "gems": 0, "coins": 0, "keys": 0 },
       "digSpot": false,
       "effect": "Bedrooms belong to the Sinclair family and staff and tend to grant extra Steps.",
+      "variants": [],
       "tags": ["bedroom", "steps"],
       "notes": "",
       "discovered": true,
+      "firstSeenRun": 1,
       "firstSeen": "2026-06-17"
     },
     {
@@ -60,9 +76,11 @@
       "cost": { "gems": 0, "coins": 0, "keys": 0 },
       "digSpot": true,
       "effect": "Outdoor/garden room. Green rooms usually contain a Dig Spot that rewards Gems fairly often.",
+      "variants": [],
       "tags": ["outdoor", "dig-spot", "gems"],
       "notes": "",
       "discovered": true,
+      "firstSeenRun": 1,
       "firstSeen": "2026-06-17"
     },
     {
@@ -74,9 +92,11 @@
       "cost": { "gems": 1, "coins": 0, "keys": 0 },
       "digSpot": false,
       "effect": "Grants a special ability when placed. Like other ability/mechanic rooms, it costs at least one Gem to draft.",
+      "variants": [],
       "tags": ["ability", "gem-cost"],
       "notes": "",
       "discovered": true,
+      "firstSeenRun": 1,
       "firstSeen": "2026-06-17"
     },
     {
@@ -88,9 +108,52 @@
       "cost": { "gems": 0, "coins": 0, "keys": 0 },
       "digSpot": false,
       "effect": "Red room tied to the house's utility mechanics. Red rooms are usually detrimental — often a dead end or carrying a negative effect.",
+      "variants": [],
       "tags": ["utility", "red"],
       "notes": "",
       "discovered": true,
+      "firstSeenRun": 1,
+      "firstSeen": "2026-06-17"
+    },
+    {
+      "id": "spare-room",
+      "name": "Spare Room",
+      "color": "blue",
+      "rarity": "Standard",
+      "doors": 1,
+      "cost": { "gems": 0, "coins": 0, "keys": 0 },
+      "digSpot": false,
+      "effect": "A blank room that can be permanently upgraded by Upgrade Disks. It can be upgraded twice — first into one of three room types, then with a type-specific effect (12 possible upgrades in total).",
+      "variants": [
+        {
+          "id": "spare-bedroom",
+          "name": "Spare Bedroom",
+          "color": "purple",
+          "effect": "Bedroom-type upgrade. Sub-upgrades mimic Servant's Quarters, Her Ladyship's Chamber, or the Master Bedroom; effects match the originals.",
+          "source": "Upgrade Disk",
+          "notes": "Each sub-upgrade has its own item list, based on (but not identical to) the room it mimics."
+        },
+        {
+          "id": "spare-hall",
+          "name": "Spare Hall",
+          "color": "orange",
+          "effect": "Hall-type upgrade. Sub-upgrades mimic the Foyer, the Secret Passage, or the Great Hall.",
+          "source": "Upgrade Disk",
+          "notes": ""
+        },
+        {
+          "id": "spare-greenroom",
+          "name": "Spare Greenroom",
+          "color": "green",
+          "effect": "Green-room-type upgrade. Sub-upgrades mimic the Veranda, the Terrace, or the Patio.",
+          "source": "Upgrade Disk",
+          "notes": ""
+        }
+      ],
+      "tags": ["upgradeable", "spare-room"],
+      "notes": "Example of a room with variants — upgraded floorplans keep this room's directory slot but can change color and effect.",
+      "discovered": true,
+      "firstSeenRun": 1,
       "firstSeen": "2026-06-17"
     }
   ],
@@ -105,6 +168,7 @@
       "tags": ["currency"],
       "notes": "",
       "found": true,
+      "firstSeenRun": 1,
       "firstSeen": "2026-06-17"
     },
     {
@@ -117,6 +181,7 @@
       "tags": ["currency", "drafting"],
       "notes": "",
       "found": true,
+      "firstSeenRun": 1,
       "firstSeen": "2026-06-17"
     },
     {
@@ -129,6 +194,7 @@
       "tags": ["currency", "shops"],
       "notes": "",
       "found": true,
+      "firstSeenRun": 1,
       "firstSeen": "2026-06-17"
     },
     {
@@ -141,19 +207,43 @@
       "tags": ["drafting", "reroll"],
       "notes": "",
       "found": true,
+      "firstSeenRun": 1,
       "firstSeen": "2026-06-17"
     },
     {
-      "id": "example-tool",
-      "name": "Example Tool",
+      "id": "upgrade-disk",
+      "name": "Upgrade Disk",
       "type": "Tool",
-      "effect": "Example entry showing the item shape — replace with real tools/consumables/documents as you find them.",
-      "location": "",
+      "effect": "Permanently adds an upgrade to a floorplan (e.g. turns a Spare Room into one of its variants). The upgrade sticks to that floorplan across runs.",
+      "location": "Data disks found around the estate.",
       "value": { "coins": null },
-      "tags": ["example"],
-      "notes": "Delete this once you start logging real items.",
+      "tags": ["upgrade", "permanent"],
+      "notes": "",
       "found": false,
+      "firstSeenRun": null,
       "firstSeen": null
+    }
+  ],
+  "sightings": [
+    {
+      "id": "run1-entrance-hall",
+      "run": 1,
+      "roomId": "entrance-hall",
+      "variantId": null,
+      "items": [
+        { "itemId": "coin", "qty": 5, "notes": "Allowance packet" }
+      ],
+      "notes": "Example sighting: in run 1, the Entrance Hall contained a coin packet."
+    },
+    {
+      "id": "run1-courtyard",
+      "run": 1,
+      "roomId": "courtyard",
+      "variantId": null,
+      "items": [
+        { "itemId": "gem", "qty": 1, "notes": "From the dig spot" }
+      ],
+      "notes": "Example sighting: in run 1, the Courtyard's dig spot yielded a gem."
     }
   ],
   "puzzles": [
@@ -161,18 +251,18 @@
       "id": "example-puzzle",
       "name": "Example Puzzle",
       "location": "Room or area where the puzzle appears",
-      "status": "open",
+      "status": "solved",
       "clues": ["First clue you noticed", "Second clue"],
-      "solution": "",
+      "solution": "The full answer goes here — this log stores complete solutions/spoilers.",
       "tags": ["example"],
-      "notes": "Example entry showing the puzzle shape — use status 'open' or 'solved'. Put spoilers in 'solution'."
+      "notes": "Example entry showing the puzzle shape. status is 'open' or 'solved'."
     }
   ],
   "notes": [
     {
       "id": "note-2026-06-17",
       "date": "2026-06-17",
-      "text": "Log created. Replace the example room/item/puzzle entries above with real findings.",
+      "text": "Log created (schema v2: runs + per-run sightings + room variants). Replace the example entries above with real findings.",
       "tags": ["meta"]
     }
   ]
