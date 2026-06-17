@@ -121,11 +121,13 @@ let DATA=null, TAB="rooms", Q="", TIPS_ON=false;
 const TABS=[["rooms","Rooms"],["items","Items"],["puzzles","Puzzles"],["notes","Notes"]];
 
 async function load(){
-  // Same-origin first (works on GitHub Pages next to data.json); fall back to the raw URL.
-  for(const url of ["data.json", RAW]){
-    try{ const r=await fetch(url,{cache:"no-store"}); if(r.ok){ return [await r.json(), url]; } }catch(e){}
+  // Raw URL first (updates within seconds of a push — no need to wait for the Pages
+  // rebuild), with a cache-buster. Fall back to the same-origin copy (e.g. file://).
+  const bust="?_="+Date.now();
+  for(const url of [RAW+bust, "data.json"+bust]){
+    try{ const r=await fetch(url,{cache:"no-store"}); if(r.ok){ return [await r.json(), url.split("?")[0]]; } }catch(e){}
   }
-  throw new Error("Could not load data.json (tried same-origin and "+RAW+").");
+  throw new Error("Could not load data.json (tried "+RAW+" and same-origin).");
 }
 
 function colorDot(c){ return COLORS.includes(c) ? `<span class="dot swatch-${c}" title="${esc(c)}"></span>` : ""; }

@@ -23,30 +23,28 @@ authentication. **Live viewer: https://jamessw-ntv.github.io/blue-prince-log/**
 ┌──────────────────────────────────────────────┐
 │ jamessw-ntv/blue-prince-log (this repo, public)│
 │                                                │
-│   index.html  ──fetch("data.json")──▶ data.json│   served together via GitHub Pages
-│   (read-only viewer)   same origin             │   at https://jamessw-ntv.github.io/blue-prince-log/
+│   index.html  ──fetch raw data.json (cache-bust)─▶ data.json│  viewer on GitHub Pages
+│   (read-only viewer)                              │  at https://jamessw-ntv.github.io/blue-prince-log/
 └──────────────────────────────────────────────┘
 ```
 
-The viewer and data now live in **the same repo**, so the viewer fetches
-`data.json` with a plain same-origin relative request — **no GitHub API, no token,
-no rate limit, no CORS.** Anything committed to `main` shows up on the next refresh.
+The viewer fetches `data.json` from the **raw GitHub URL with a cache-buster**
+(`https://raw.githubusercontent.com/jamessw-ntv/blue-prince-log/main/data.json?_=…`)
+— **no token, no rate limit.** This means a data change shows up in the viewer within
+**a few seconds of the push**, without waiting for the Pages rebuild. It falls back
+to the same-origin copy if the raw fetch fails (e.g. opened from `file://`).
 
-If you ever need to read the data from elsewhere, the raw URL works without a
-token: `https://raw.githubusercontent.com/jamessw-ntv/blue-prince-log/main/data.json`
-(the `api.github.com/.../contents/...` endpoint also works but is rate-limited to
-~60 requests/hour per IP). `index.html` falls back to this raw URL automatically if
-the same-origin fetch fails (e.g. opened from `file://`).
+Only changes to `index.html` itself need the Pages deploy (below); plain data edits
+do not.
 
 ## Deploying the viewer (GitHub Pages)
 
-One-time setup:
+One-time setup (already done):
 
-1. Repo **Settings → Pages**.
-2. **Source:** *Deploy from a branch*; **Branch:** `main`, **Folder:** `/ (root)`;
-   **Save**.
-3. After a minute the viewer is live at
-   **https://jamessw-ntv.github.io/blue-prince-log/**.
+1. Repo **Settings → Pages → Source: GitHub Actions**.
+2. The [`.github/workflows/pages.yml`](.github/workflows/pages.yml) workflow then
+   builds and publishes the site on every push to `main`.
+3. The viewer is live at **https://jamessw-ntv.github.io/blue-prince-log/**.
 
 ### Redirecting the old `ntv-prod` location
 
