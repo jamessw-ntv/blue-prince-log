@@ -1245,6 +1245,135 @@
       "found": false,
       "firstSeenRun": null,
       "firstSeen": null
+    },
+    {
+      "id": "shovel",
+      "name": "Shovel",
+      "image": "",
+      "type": "Tool",
+      "effect": "Digging tool. The Detector Shovel variant makes finding Gold and Keys more likely while still hinting at item proximity.",
+      "location": "Found in the house / shops.",
+      "value": {
+        "coins": null
+      },
+      "tags": [
+        "tool",
+        "dig"
+      ],
+      "notes": "",
+      "found": false,
+      "firstSeenRun": null,
+      "firstSeen": null
+    },
+    {
+      "id": "sledgehammer",
+      "name": "Sledgehammer",
+      "image": "",
+      "type": "Tool",
+      "effect": "Breaks the padlocks on locked drawers.",
+      "location": "Found in the house / shops.",
+      "value": {
+        "coins": null
+      },
+      "tags": [
+        "tool"
+      ],
+      "notes": "",
+      "found": false,
+      "firstSeenRun": null,
+      "firstSeen": null
+    },
+    {
+      "id": "lock-pick-kit",
+      "name": "Lock Pick Kit",
+      "image": "",
+      "type": "Tool",
+      "effect": "Reusable — gives a chance to open a locked door without spending a Key.",
+      "location": "Sold by the Locksmith.",
+      "value": {
+        "coins": null
+      },
+      "tags": [
+        "tool",
+        "keys"
+      ],
+      "notes": "",
+      "found": false,
+      "firstSeenRun": null,
+      "firstSeen": null
+    },
+    {
+      "id": "metal-detector",
+      "name": "Metal Detector",
+      "image": "",
+      "type": "Tool",
+      "effect": "Improves your chance of finding extra keys and coins, and gives sound hints about nearby items.",
+      "location": "Found in the house / shops.",
+      "value": {
+        "coins": null
+      },
+      "tags": [
+        "tool"
+      ],
+      "notes": "",
+      "found": false,
+      "firstSeenRun": null,
+      "firstSeen": null
+    },
+    {
+      "id": "compass",
+      "name": "Compass",
+      "image": "",
+      "type": "Tool",
+      "effect": "A navigation aid.",
+      "location": "Found in the house.",
+      "value": {
+        "coins": null
+      },
+      "tags": [
+        "tool"
+      ],
+      "notes": "",
+      "found": false,
+      "firstSeenRun": null,
+      "firstSeen": null
+    },
+    {
+      "id": "security-keycard",
+      "name": "Security Keycard",
+      "image": "",
+      "type": "Key",
+      "effect": "Opens security-related locked doors.",
+      "location": "Tied to the Security room.",
+      "value": {
+        "coins": null
+      },
+      "tags": [
+        "keys"
+      ],
+      "notes": "",
+      "found": false,
+      "firstSeenRun": null,
+      "firstSeen": null
+    },
+    {
+      "id": "food",
+      "name": "Food",
+      "image": "",
+      "type": "Consumable",
+      "effect": "Food items are converted straight into Steps when collected or bought (e.g. from the Kitchen).",
+      "location": "Found around the house; sold by the Kitchen.",
+      "value": {
+        "coins": null
+      },
+      "tags": [
+        "consumable",
+        "steps"
+      ],
+      "notes": "",
+      "found": false,
+      "firstSeenRun": null,
+      "firstSeen": null
     }
   ],
   "sightings": [

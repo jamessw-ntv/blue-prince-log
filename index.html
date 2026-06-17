@@ -21,6 +21,13 @@
   .sub{color:var(--muted);font-size:13px}
   .sub b{color:var(--text)}
   .wrap{max-width:1100px;margin:0 auto;padding:0 22px 60px}
+  .topbar{display:flex;justify-content:space-between;align-items:flex-start;gap:16px;flex-wrap:wrap}
+  .controls{display:flex;align-items:center;gap:10px;padding-top:2px}
+  .toggle{background:var(--panel);color:var(--muted);border:1px solid var(--line);
+    padding:8px 13px;border-radius:999px;cursor:pointer;font-size:13px}
+  .toggle:hover{color:var(--text)}
+  .toggle.active{background:#3a2f10;color:#ffd479;border-color:#5a4012}
+  a.toggle{text-decoration:none;display:inline-block}
   nav{display:flex;flex-wrap:wrap;gap:6px;margin:14px 0}
   nav button{background:var(--panel);color:var(--muted);border:1px solid var(--line);
     padding:7px 13px;border-radius:999px;cursor:pointer;font-size:13px}
@@ -29,9 +36,9 @@
   nav button .ct{opacity:.7;font-size:11px;margin-left:5px}
   #search{width:100%;padding:10px 12px;margin:0 0 16px;border-radius:10px;
     border:1px solid var(--line);background:var(--panel);color:var(--text);font-size:14px}
+  /* cards (puzzles, notes, tips) */
   .grid{display:grid;gap:12px;grid-template-columns:repeat(auto-fill,minmax(300px,1fr))}
   .card{background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:14px}
-  .card.room{border-left:5px solid var(--line)}
   .card h3{margin:0 0 6px;font-size:16px;display:flex;align-items:center;gap:8px;justify-content:space-between}
   .card h3 .nm{display:flex;align-items:center;gap:8px;min-width:0}
   .card h3 .nm span{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
@@ -41,50 +48,18 @@
   .b{font-size:11px;padding:2px 8px;border-radius:999px;background:var(--panel2);
     color:var(--muted);border:1px solid var(--line)}
   .b.tag{background:#11203a;color:#9cc4ff;border-color:#1d3a63}
-  .dot{width:11px;height:11px;border-radius:50%;flex:0 0 auto;border:1px solid rgba(255,255,255,.25)}
+  .dot{width:11px;height:11px;border-radius:50%;flex:0 0 auto;border:1px solid rgba(255,255,255,.25);display:inline-block}
   .swatch-blue{background:var(--blue)} .swatch-orange{background:var(--orange)}
   .swatch-green{background:var(--green)} .swatch-purple{background:var(--purple)}
   .swatch-yellow{background:var(--yellow)} .swatch-red{background:var(--red)}
   .swatch-black{background:var(--black)}
-  .bd-blue{border-left-color:var(--blue)} .bd-orange{border-left-color:var(--orange)}
-  .bd-green{border-left-color:var(--green)} .bd-purple{border-left-color:var(--purple)}
-  .bd-yellow{border-left-color:var(--yellow)} .bd-red{border-left-color:var(--red)}
-  .bd-black{border-left-color:var(--black)}
-  .variant{margin-top:8px;padding:8px 10px;border:1px dashed var(--line);border-radius:8px;background:var(--panel2)}
-  .variant .vn{font-weight:600;font-size:13px;display:flex;align-items:center;gap:6px}
   .status{font-size:11px;padding:2px 8px;border-radius:999px;font-weight:600}
   .status.open{background:#3a2a11;color:#ffcf8a;border:1px solid #5a4012}
   .status.solved{background:#103226;color:#7ee2b8;border:1px solid #1d5742}
   ul.clues{margin:6px 0 0;padding-left:18px;color:var(--muted)}
   details{margin-top:8px} summary{cursor:pointer;color:var(--accent)}
   details .sol{margin-top:6px;padding:8px 10px;background:var(--panel2);border-radius:8px}
-  .run{display:flex;gap:14px;align-items:baseline}
-  .run .id{font-size:20px;font-weight:700;color:var(--accent);min-width:54px}
-  .sgroup{margin-bottom:16px}
-  .sgroup h3{margin:0 0 8px;font-size:15px;color:var(--muted);border-bottom:1px solid var(--line);padding-bottom:6px}
-  .srow{padding:8px 0;border-bottom:1px solid var(--line)}
-  .srow:last-child{border-bottom:0}
-  .srow .rm{font-weight:600}
-  .items-in{color:var(--muted);font-size:13px;margin-top:2px}
-  .empty{color:var(--muted);padding:30px;text-align:center}
-  .err{color:#ffb4b4;background:#2a1414;border:1px solid #532;padding:14px;border-radius:10px;margin-top:16px}
-  footer{color:var(--muted);font-size:12px;border-top:1px solid var(--line);
-    margin-top:30px;padding:14px 0;text-align:center}
-  .hidden{display:none!important}
-  /* top bar: run control + tips toggle */
-  .topbar{display:flex;justify-content:space-between;align-items:flex-start;gap:16px;flex-wrap:wrap}
-  .controls{display:flex;align-items:center;gap:10px;padding-top:2px}
-  .runctl{display:flex;align-items:center;gap:8px;background:var(--panel);border:1px solid var(--line);border-radius:999px;padding:4px 10px}
-  .runctl .rl{color:var(--muted);font-size:11px;text-transform:uppercase;letter-spacing:.6px}
-  .runctl b{min-width:36px;text-align:center;font-size:16px}
-  .runctl button{width:26px;height:26px;border-radius:50%;border:1px solid var(--line);background:var(--panel2);color:var(--text);cursor:pointer;font-size:16px;line-height:1}
-  .runctl button:hover{border-color:var(--accent);color:var(--accent)}
-  .toggle{background:var(--panel);color:var(--muted);border:1px solid var(--line);padding:8px 13px;border-radius:999px;cursor:pointer;font-size:13px}
-  .toggle:hover{color:var(--text)}
-  .toggle.active{background:#3a2f10;color:#ffd479;border-color:#5a4012}
-  a.toggle{text-decoration:none;display:inline-block}
-  .runhint{font-size:12px;color:var(--muted);margin:8px 0 0}
-  .runhint a{cursor:pointer;text-decoration:underline}
+  /* tips */
   #tips{margin:0 0 18px}
   .tips-head{display:flex;justify-content:space-between;align-items:center;font-size:12px;color:var(--muted);
     margin:0 0 10px;text-transform:uppercase;letter-spacing:.6px}
@@ -92,9 +67,7 @@
   .tips-head button:hover{color:var(--text)}
   .card.tip{border-left:5px solid var(--yellow)}
   .tip-img{display:block;max-width:100%;height:auto;border-radius:8px;margin:8px 0;border:1px solid var(--line)}
-  .card.current{outline:2px solid var(--accent)}
-  .sgroup.current h3{color:var(--accent);border-color:var(--accent)}
-  /* table view for catalogs */
+  /* tables (rooms, items) */
   .tablewrap{overflow-x:auto;border:1px solid var(--line);border-radius:12px}
   table{width:100%;border-collapse:collapse;font-size:13.5px}
   thead th{position:sticky;top:0;background:var(--panel2);color:var(--muted);font-weight:600;
@@ -103,25 +76,15 @@
   tbody tr:last-child td{border-bottom:0}
   tbody tr:hover{background:#1b2438}
   td.nm{font-weight:600;white-space:nowrap}
-  td.num{text-align:center}
-  td.eff{color:var(--muted);max-width:380px;white-space:normal;word-break:break-word}
-  td.stats{color:var(--muted);font-size:12.5px;min-width:130px;white-space:normal}
+  td.eff{color:var(--muted);max-width:460px;white-space:normal;word-break:break-word}
   td.pic{width:74px}
   .thumb{width:62px;height:46px;object-fit:cover;border-radius:6px;border:1px solid var(--line);display:block}
   .rtags{margin-top:5px}
-  td.runs{white-space:nowrap}
-  .chip{display:inline-block;min-width:20px;text-align:center;padding:1px 6px;margin:1px;
-    border-radius:6px;background:var(--panel2);border:1px solid var(--line);font-size:12px}
-  .chip.cur{border-color:var(--accent);color:var(--accent)}
-  .chip.local{border-style:dashed;color:#ffd479;border-color:#5a4012;background:#2a2310}
-  .markbtn{cursor:pointer;border:1px solid var(--line);background:var(--panel2);color:var(--text);
-    border-radius:6px;padding:3px 8px;font-size:12px;white-space:nowrap}
-  .markbtn:hover{border-color:var(--accent);color:var(--accent)}
-  .markbtn.on{border-color:#5a4012;color:#ffd479;background:#2a2310}
-  #marksbar{font-size:12px;color:var(--muted);margin:0 0 14px;padding:9px 12px;
-    background:var(--panel);border:1px solid #5a4012;border-radius:10px}
-  #marksbar a{cursor:pointer;text-decoration:underline}
-  .muted{color:var(--muted)}
+  .empty{color:var(--muted);padding:30px;text-align:center}
+  .err{color:#ffb4b4;background:#2a1414;border:1px solid #532;padding:14px;border-radius:10px;margin-top:16px}
+  footer{color:var(--muted);font-size:12px;border-top:1px solid var(--line);
+    margin-top:30px;padding:14px 0;text-align:center}
+  .hidden{display:none!important}
 </style>
 </head>
 <body>
@@ -134,23 +97,14 @@
       </div>
       <div class="controls">
         <a class="toggle" href="https://jamessw-ntv.github.io/NTV-PROD/factory-network.html">🏭 Satisfactory</a>
-        <div class="runctl" title="The run you're currently tracking (saved in this browser)">
-          <span class="rl">Run</span>
-          <button id="runDown" type="button" aria-label="Decrease run">−</button>
-          <b id="runNum">#?</b>
-          <button id="runUp" type="button" aria-label="Increase run">+</button>
-        </div>
-        <button id="newRunBtn" type="button" class="toggle" title="Advance to the next run and clear this browser's run-marks">⟳ New run</button>
         <button id="tipsBtn" type="button" class="toggle" aria-pressed="false">💡 Tips</button>
       </div>
     </div>
-    <div id="runHint" class="runhint hidden"></div>
   </div>
 </header>
 <div class="wrap">
   <nav id="nav"></nav>
   <input id="search" type="search" placeholder="Filter…" autocomplete="off" />
-  <div id="marksbar" class="hidden"></div>
   <div id="tips" class="hidden"></div>
   <div id="view"></div>
   <div id="error"></div>
@@ -162,79 +116,9 @@ const RAW = "https://raw.githubusercontent.com/jamessw-ntv/blue-prince-log/main/
 const COLORS = ["blue","orange","green","purple","yellow","red","black"];
 const esc = s => String(s==null?"":s).replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
 const nl2br = s => esc(s).replace(/\n/g,"<br>");
-const titleCase = s => s ? s.charAt(0).toUpperCase()+s.slice(1) : s;
 
 let DATA=null, TAB="rooms", Q="", TIPS_ON=false;
-const TABS=[["rooms","Rooms"],["items","Items"],["runs","Runs"],["sightings","Sightings"],["puzzles","Puzzles"],["notes","Notes"]];
-
-// Run tracking — local to this browser (the static page can't write back to the repo).
-let RUN_OVERRIDE=(()=>{const v=localStorage.getItem("bp_run_override");return v==null?null:Number(v);})();
-function currentRun(){ return RUN_OVERRIDE!=null ? RUN_OVERRIDE : (DATA&&DATA.meta&&DATA.meta.currentRun!=null ? DATA.meta.currentRun : 1); }
-function setRun(n){ RUN_OVERRIDE=Math.max(1,n); localStorage.setItem("bp_run_override",RUN_OVERRIDE); renderRun(); render(); }
-function resetRun(){ RUN_OVERRIDE=null; localStorage.removeItem("bp_run_override"); renderRun(); render(); }
-function newRun(){
-  const n=totalMarks();
-  if(n>0 && !confirm("Start a new run?\n\nThis clears the "+n+" run-mark"+(n===1?"":"s")+" saved in this browser. (Anything already recorded in the log file stays.)")) return;
-  MARKS={}; saveMarks();
-  setRun(currentRun()+1);
-  renderMarksBar();
-}
-function renderRun(){
-  document.getElementById("runNum").textContent="#"+currentRun();
-  const hint=document.getElementById("runHint");
-  const fileVal=DATA&&DATA.meta?DATA.meta.currentRun:null;
-  if(RUN_OVERRIDE!=null && RUN_OVERRIDE!==fileVal){
-    hint.classList.remove("hidden");
-    hint.innerHTML=`Tracking run #${currentRun()} in this browser (the log file says #${esc(fileVal)}). <a id="runReset">reset</a> · to save it, tell the logging chat “new run”.`;
-    const r=document.getElementById("runReset"); if(r) r.onclick=resetRun;
-  }else{ hint.classList.add("hidden"); hint.innerHTML=""; }
-}
-
-// Local "marks": browser-only record of which runs a room/item appeared in.
-// Keyed "room:<id>" / "item:<id>" -> [runNumbers]. The log file's sightings are the real record.
-let MARKS=(()=>{ try{ return JSON.parse(localStorage.getItem("bp_marks")||"{}"); }catch(e){ return {}; } })();
-function saveMarks(){ localStorage.setItem("bp_marks", JSON.stringify(MARKS)); }
-function runInfo(kind,id){
-  const file=new Set();
-  (DATA&&DATA.sightings?DATA.sightings:[]).forEach(s=>{
-    if(kind==="room" && s.roomId===id) file.add(s.run);
-    if(kind==="item" && (s.items||[]).some(it=>it.itemId===id)) file.add(s.run);
-  });
-  const local=new Set(MARKS[kind+":"+id]||[]);
-  const all=[...new Set([...file,...local])].sort((a,b)=>a-b);
-  return {file,local,all};
-}
-function toggleMark(kind,id,run){
-  const key=kind+":"+id;
-  const set=new Set(MARKS[key]||[]);
-  set.has(run)?set.delete(run):set.add(run);
-  if(set.size) MARKS[key]=[...set].sort((a,b)=>a-b); else delete MARKS[key];
-  saveMarks(); render(); renderMarksBar();
-}
-function totalMarks(){ return Object.values(MARKS).reduce((n,a)=>n+a.length,0); }
-function renderMarksBar(){
-  const el=document.getElementById("marksbar");
-  const n=totalMarks();
-  if(!n){ el.classList.add("hidden"); el.innerHTML=""; return; }
-  el.classList.remove("hidden");
-  el.innerHTML=`★ ${n} run-mark${n===1?"":"s"} saved in this browser only (not in the log file). `+
-    `<a id="clearMarks">clear</a> · to make them permanent, tell the logging chat (e.g. “in run ${currentRun()} the Entrance Hall had a key”).`;
-  const c=document.getElementById("clearMarks"); if(c) c.onclick=()=>{ MARKS={}; saveMarks(); render(); renderMarksBar(); };
-}
-function runChips(info){
-  if(!info.all.length) return `<span class="muted">—</span>`;
-  return info.all.map(r=>{
-    const isLocal=info.local.has(r)&&!info.file.has(r);
-    const cur=r===currentRun();
-    return `<span class="chip${isLocal?" local":""}${cur?" cur":""}" title="${isLocal?"Saved in this browser — not yet in the log file":"Logged in the file"}">${r}</span>`;
-  }).join("");
-}
-function markBtn(kind,id,info){
-  const cur=currentRun();
-  if(info.file.has(cur)) return `<span class="chip cur" title="Already logged in run ${cur}">✓ ${cur}</span>`;
-  const on=info.local.has(cur);
-  return `<button class="markbtn${on?" on":""}" data-kind="${kind}" data-id="${esc(id)}" title="${on?"Remove this browser-local mark":"Mark as seen in run "+cur}">${on?"✓ run "+cur:"+ run "+cur}</button>`;
-}
+const TABS=[["rooms","Rooms"],["items","Items"],["puzzles","Puzzles"],["notes","Notes"]];
 
 async function load(){
   // Same-origin first (works on GitHub Pages next to data.json); fall back to the raw URL.
@@ -245,69 +129,43 @@ async function load(){
 }
 
 function colorDot(c){ return COLORS.includes(c) ? `<span class="dot swatch-${c}" title="${esc(c)}"></span>` : ""; }
-function badges(arr,cls="tag"){ return (arr||[]).map(t=>`<span class="b ${cls}">${esc(t)}</span>`).join(""); }
-function costStr(c){ if(!c) return ""; const p=[]; if(c.gems)p.push(c.gems+" gem"+(c.gems>1?"s":"")); if(c.coins)p.push(c.coins+" coin"+(c.coins>1?"s":"")); if(c.keys)p.push(c.keys+" key"+(c.keys>1?"s":"")); return p.join(", "); }
-
-function thumb(src){ return src?`<a href="${esc(src)}" target="_blank" rel="noopener"><img class="thumb" src="${esc(src)}" alt="" loading="lazy"></a>`:""; }
+function badges(arr){ return (arr||[]).map(t=>`<span class="b tag">${esc(t)}</span>`).join(""); }
 function tagsInline(arr){ return (arr&&arr.length)?`<div class="rtags badges">${badges(arr)}</div>`:""; }
+function thumb(src){ return src?`<a href="${esc(src)}" target="_blank" rel="noopener"><img class="thumb" src="${esc(src)}" alt="" loading="lazy"></a>`:""; }
 
 function roomsTable(rows){
-  const head=`<thead><tr><th>Pic</th><th>Room</th><th>Details</th><th>Effect</th><th>Notes</th><th>Runs</th><th>Mark</th></tr></thead>`;
+  const head=`<thead><tr><th>Pic</th><th>Room</th><th>Effect</th><th>Notes</th></tr></thead>`;
   const body="<tbody>"+rows.map(r=>{
-    const info=runInfo("room",r.id);
     const vnames=(r.variants||[]).map(v=>v.name).join(", ");
     const vbadge=(r.variants||[]).length?` <span class="b" title="Variants: ${esc(vnames)}">▸${r.variants.length}</span>`:"";
-    const stats=[titleCase(r.color||""), r.rarity||""].filter(Boolean);
-    let line=stats.join(" · ");
-    if(r.doors!=null) line+=` · ${r.doors} door${r.doors===1?"":"s"}`;
-    const cost=costStr(r.cost); if(cost) line+=` · ${cost}`;
-    if(r.digSpot) line+=" · dig spot";
     return `<tr>`+
       `<td class="pic">${thumb(r.image)}</td>`+
       `<td class="nm">${colorDot(r.color)} ${esc(r.name)}${vbadge}${tagsInline(r.tags)}</td>`+
-      `<td class="stats">${esc(line)}</td>`+
       `<td class="eff">${esc(r.effect||"")}</td>`+
       `<td class="eff">${esc(r.notes||"")}</td>`+
-      `<td class="runs">${runChips(info)}</td>`+
-      `<td>${markBtn("room",r.id,info)}</td>`+
     `</tr>`;
   }).join("")+"</tbody>";
   return `<div class="tablewrap"><table>${head}${body}</table></div>`;
 }
 
 function itemsTable(rows){
-  const head=`<thead><tr><th>Pic</th><th>Item</th><th>Type</th><th>Effect</th><th>Where / notes</th><th>Found</th><th>Runs</th><th>Mark</th></tr></thead>`;
+  const head=`<thead><tr><th>Pic</th><th>Item</th><th>Effect</th><th>Notes</th></tr></thead>`;
   const body="<tbody>"+rows.map(i=>{
-    const info=runInfo("item",i.id);
     const details=[i.location, i.notes].filter(Boolean).join(" — ");
-    const val=(i.value && i.value.coins!=null)?` (${esc(i.value.coins)} coins)`:"";
     return `<tr>`+
       `<td class="pic">${thumb(i.image)}</td>`+
       `<td class="nm">${esc(i.name)}${tagsInline(i.tags)}</td>`+
-      `<td>${esc(i.type||"")}</td>`+
       `<td class="eff">${esc(i.effect||"")}</td>`+
-      `<td class="eff">${esc(details)}${val}</td>`+
-      `<td class="num">${i.found===false?"":"✓"}</td>`+
-      `<td class="runs">${runChips(info)}</td>`+
-      `<td>${markBtn("item",i.id,info)}</td>`+
+      `<td class="eff">${esc(details)}</td>`+
     `</tr>`;
   }).join("")+"</tbody>";
   return `<div class="tablewrap"><table>${head}${body}</table></div>`;
 }
 
-function runCard(run){
-  const n=(DATA.sightings||[]).filter(s=>s.run===run.id).length;
-  const bits=[`<div class="meta">${esc(run.date||"")}${run.rank!=null?` · rank ${esc(run.rank)}`:""} · ${n} sighting${n===1?"":"s"}</div>`];
-  if(run.outcome) bits.push(`<div class="eff">${esc(run.outcome)}</div>`);
-  if(run.notes) bits.push(`<div class="meta">${esc(run.notes)}</div>`);
-  const cur=run.id===currentRun()?" current":"";
-  return `<div class="card${cur}"><div class="run"><div class="id">#${esc(run.id)}</div><div style="flex:1">${bits.join("")}</div></div></div>`;
-}
-
 function puzzleCard(p){
   const bits=[`<div class="meta">${p.location?esc(p.location):"—"}</div>`];
   if((p.clues||[]).length) bits.push(`<ul class="clues">${p.clues.map(c=>`<li>${esc(c)}</li>`).join("")}</ul>`);
-  if(p.solution) bits.push(`<details><summary>Show solution (spoiler)</summary><div class="sol">${esc(p.solution)}</div></details>`);
+  if(p.solution) bits.push(`<details><summary>Show solution (spoiler)</summary><div class="sol">${nl2br(p.solution)}</div></details>`);
   if(p.notes) bits.push(`<div class="meta">${esc(p.notes)}</div>`);
   const st=(p.status||"open").toLowerCase();
   return `<div class="card"><h3><span class="nm"><span>${esc(p.name)}</span></span><span class="status ${st}">${esc(st)}</span></h3>${bits.join("")}<div class="badges">${badges(p.tags)}</div></div>`;
@@ -316,7 +174,7 @@ function puzzleCard(p){
 function noteCard(n){
   const scope=(n.scope||"permanent");
   const badge = scope==="run"
-    ? `<span class="status open" title="Run-specific — not kept long term">run${n.run!=null?" #"+esc(n.run):""}</span>`
+    ? `<span class="status open" title="Run-specific — not kept long term">run-specific</span>`
     : `<span class="status solved" title="Permanent — kept across runs">permanent</span>`;
   const img=n.image?`<img class="tip-img" src="${esc(n.image)}" alt="" loading="lazy">`:"";
   return `<div class="card"><h3 style="font-size:13px"><span class="nm"><span>${esc(n.date||"")}</span></span>${badge}</h3>${img}<div class="eff">${nl2br(n.text)}</div><div class="badges">${badges(n.tags)}</div></div>`;
@@ -337,33 +195,13 @@ function renderTips(){
   if(c) c.onclick=()=>{ TIPS_ON=false; const b=document.getElementById("tipsBtn"); b.classList.remove("active"); b.setAttribute("aria-pressed","false"); renderTips(); };
 }
 
-function sightingsView(rows){
-  const roomName=id=>{const r=(DATA.rooms||[]).find(x=>x.id===id);return r?r.name:id;};
-  const itemName=id=>{const i=(DATA.items||[]).find(x=>x.id===id);return i?i.name:id;};
-  const byRun={};
-  rows.forEach(s=>{(byRun[s.run]=byRun[s.run]||[]).push(s);});
-  const runIds=Object.keys(byRun).map(Number).sort((a,b)=>b-a);
-  return runIds.map(rid=>{
-    const inner=byRun[rid].map(s=>{
-      const items=(s.items||[]).map(it=>`${esc(itemName(it.itemId))}${it.qty?` ×${esc(it.qty)}`:""}${it.notes?` (${esc(it.notes)})`:""}`).join(", ");
-      return `<div class="srow"><div class="rm">${esc(roomName(s.roomId))}${s.variantId?` <span class="b">${esc(s.variantId)}</span>`:""}</div>${items?`<div class="items-in">${items}</div>`:`<div class="items-in">—</div>`}${s.notes?`<div class="meta">${esc(s.notes)}</div>`:""}</div>`;
-    }).join("");
-    return `<div class="sgroup${rid===currentRun()?" current":""}"><h3>Run #${rid}</h3>${inner}</div>`;
-  }).join("");
-}
-
-function matches(obj){
-  if(!Q) return true;
-  return JSON.stringify(obj).toLowerCase().includes(Q);
-}
+function matches(obj){ return !Q || JSON.stringify(obj).toLowerCase().includes(Q); }
 
 function render(){
   const v=document.getElementById("view");
   let rows, html;
   if(TAB==="rooms"){ rows=(DATA.rooms||[]).filter(matches); html=rows.length?roomsTable(rows):""; }
   else if(TAB==="items"){ rows=(DATA.items||[]).filter(matches); html=rows.length?itemsTable(rows):""; }
-  else if(TAB==="runs"){ rows=(DATA.runs||[]).filter(matches).sort((a,b)=>b.id-a.id); html=rows.length?`<div class="grid">${rows.map(runCard).join("")}</div>`:""; }
-  else if(TAB==="sightings"){ rows=(DATA.sightings||[]).filter(matches); html=rows.length?sightingsView(rows):""; }
   else if(TAB==="puzzles"){ rows=(DATA.puzzles||[]).filter(matches); html=rows.length?`<div class="grid">${rows.map(puzzleCard).join("")}</div>`:""; }
   else if(TAB==="notes"){ rows=(DATA.notes||[]).filter(matches); html=rows.length?`<div class="grid">${rows.map(noteCard).join("")}</div>`:""; }
   v.innerHTML = html || `<div class="empty">Nothing here${Q?" matches your filter":" yet"}.</div>`;
@@ -385,11 +223,10 @@ function renderNav(){
     const m=data.meta||{};
     document.getElementById("title").textContent=m.title||"Blue Prince — Log";
     document.getElementById("subtitle").innerHTML=
-      `updated <b>${esc(m.updated||"?")}</b>`+
-      (m.source?` · <a href="${esc(m.source)}">source</a>`:"");
+      `updated <b>${esc(m.updated||"?")}</b>`+(m.source?` · <a href="${esc(m.source)}">source</a>`:"");
     document.getElementById("footer").innerHTML=
       `Read-only viewer · data from <code>${esc(src)}</code>`+(m.source?` · <a href="${esc(m.source)}">repo</a>`:"");
-    renderNav(); render(); renderRun(); renderMarksBar();
+    renderNav(); render();
   }catch(e){
     document.getElementById("subtitle").textContent="";
     document.getElementById("error").innerHTML=`<div class="err">${esc(e.message||e)}</div>`;
@@ -397,16 +234,9 @@ function renderNav(){
 })();
 
 function wireControls(){
-  document.getElementById("runUp").onclick=()=>setRun(currentRun()+1);
-  document.getElementById("runDown").onclick=()=>setRun(currentRun()-1);
-  document.getElementById("newRunBtn").onclick=newRun;
   const tb=document.getElementById("tipsBtn");
   tb.onclick=()=>{ TIPS_ON=!TIPS_ON; tb.classList.toggle("active",TIPS_ON); tb.setAttribute("aria-pressed",String(TIPS_ON)); renderTips(); };
   document.getElementById("search").addEventListener("input",e=>{ Q=e.target.value.trim().toLowerCase(); render(); });
-  document.getElementById("view").addEventListener("click",e=>{
-    const b=e.target.closest(".markbtn");
-    if(b) toggleMark(b.dataset.kind, b.dataset.id, currentRun());
-  });
 }
 wireControls();
 </script>

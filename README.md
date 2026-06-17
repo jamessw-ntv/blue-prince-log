@@ -68,32 +68,25 @@ drop a small redirect page where the old viewer was (e.g.
 viewer here and point a redirect *from* the new URL back to the old one. Either way
 only one place should host the real `index.html`.)
 
-## Viewer controls
+## Viewer
 
-The header has three controls:
+Deliberately simple — a reference notepad, not a run tracker. Four tabs:
+**Rooms**, **Items**, **Puzzles**, **Notes**, plus a text filter.
 
-- **🏭 Satisfactory** — link back to the factory-network page
-  (`https://jamessw-ntv.github.io/NTV-PROD/factory-network.html`).
-- **Run `−` / `+`** — a quick run-number tracker. Because the viewer is a static,
-  tokenless page it **can't write back to `data.json`**, so this is saved **per
-  browser** (`localStorage`) and is purely for keeping your place while playing. It
-  highlights the matching run in the Runs/Sightings tabs and shows a hint with a
-  *reset* link when it differs from the file. To make a new run permanent, tell the
-  logging chat “new run” (it bumps `meta.currentRun` and adds to `runs[]`).
-- **💡 Tips** — toggles the `tips[]` panel (training tips / examples, with images).
+- **Rooms** and **Items** are tables showing just **name + effect + notes + image**
+  (with a small color dot on rooms and a `▸N` badge for variants). Long text wraps;
+  click a thumbnail to open the full image. Stat-block detail (rarity, cost, doors)
+  is kept in `data.json` but not shown — it doesn't matter for a notepad.
+- **Puzzles** are cards with a collapsible spoiler solution.
+- **Notes** are cards tagged **permanent** (green) or **run-specific** (amber), and
+  can show a photo/map.
+- Header controls: **🏭 Satisfactory** (link to the factory-network page) and
+  **💡 Tips** (toggles the `tips[]` panel of examples).
 
-**Rooms and Items are tables** (not tiles), each with a **Runs** column showing
-every run the thing has appeared in, and a **Mark** button:
-
-- Set the run number with `−` / `+`, then click **“+ run N”** on a row to mark that
-  room/item as seen in that run. The current-run chip is highlighted.
-- **⟳ New run** advances to the next run *and clears the browser's run-marks*, for a
-  clean slate each day. Anything already saved in `data.json` is untouched.
-- Those marks are **browser-local** (`localStorage`, key `bp_marks`) — shown as
-  dashed amber chips and summarised in a bar under the search box, with a *clear*
-  link. They are **not** written to `data.json`; to make them permanent, tell the
-  logging chat (e.g. *“in run 2 the Courtyard had 2 gems”*), which adds a real
-  `sighting`. Runs already in the file show as solid chips.
+There is intentionally **no run counter or per-run marking** — run-to-run contents
+are random and not worth tracking (see below). Anything you want to keep is a
+**permanent** note/puzzle/room entry; anything run-specific is just a `run`-scoped
+note you can clear.
 
 ## What's worth tracking (and what isn't)
 
@@ -143,29 +136,18 @@ content are permanent.
 The logging is done from a **separate normal Claude chat** (not from inside this
 repo's automation). The flow:
 
-1. **Start of a run:** bump `meta.currentRun` (e.g. say *"new run"* → it becomes
-   the next integer) and add a matching entry to `runs[]`.
-2. **As you explore, tell the assistant what you found**, e.g.
-   *"Log a room: Aquarium — green, Standard, 2 doors, has a dig spot"* or
-   *"In this run, the Courtyard had 2 gems and a key."*
-3. The assistant updates `data.json`: adds/updates the room or item in its catalog,
-   and records a **sighting** (which room appeared in which run, and what was in
-   it). This is what powers "click a thing to mark it's in this room this run" in
-   the viewer.
-4. The assistant commits to `main` and pushes.
-5. Refresh the viewer to see it.
+1. **Tell the assistant what you found**, in plain language — a room and what it
+   does, an item, a code, a puzzle clue/answer, or "here's a photo of this note".
+2. The assistant **decides permanence** (see the rule above), then updates
+   `data.json`: a `rooms[]`/`items[]` entry for catalog facts, a `puzzles[]` entry
+   for puzzle answers, or a `notes[]` entry (with `scope`) for everything else.
+3. The assistant commits to `main` and pushes.
+4. Refresh the viewer to see it.
 
-### How "which run / what's in the room" is modeled
-
-- `rooms[]` and `items[]` are **catalogs** — one entry per distinct room/item, with
-  a `firstSeenRun` recording the run you first encountered it.
-- `runs[]` is the list of runs (days). `meta.currentRun` points at the active one.
-- `sightings[]` is the **per-run, per-room record**. Each sighting is one room's
-  appearance in one run, plus the items found inside it that run. The viewer's
-  "click to denote this item is in this room this run" action **finds-or-creates**
-  the sighting for `(meta.currentRun, roomId)` and toggles the item in its `items`
-  list. Sighting ids use the deterministic form `run<N>-<roomId>` so there's never
-  a duplicate for the same room in the same run.
+> **Legacy fields:** `runs[]`, `sightings[]`, `meta.currentRun`, and `firstSeenRun`
+> still exist in the schema below from an earlier run-tracking design, but the viewer
+> no longer shows them. You can ignore them — per-run data isn't worth tracking
+> (see above). They're documented for completeness and can be revived if wanted.
 
 ### Room variants (upgrades)
 
