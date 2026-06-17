@@ -121,6 +121,25 @@ has little lasting value — it won't recur.
 
 ## Logging workflow
 
+This is a **digital notepad first** — drop in whatever you find (text or a photo)
+and let the assistant file it. The single most important job for the logging
+assistant:
+
+> **Classify every entry as permanent or run-specific, and say which.**
+> - **Permanent** (keep in `data.json`): story/lore, codes & combinations, puzzle
+>   answers that don't change, maps, **photos of in-game notes/letters**, and fixed
+>   room facts. Use `notes` with `scope: "permanent"` (and a `puzzles[]` entry for
+>   puzzle answers, a `rooms[]`/`items[]` entry for catalog facts).
+> - **Run-specific** (ephemeral): this run's resources, drafted layout, or what
+>   randomly spawned in a room. These usually **don't need committing at all** — use
+>   the viewer's run-marks scratchpad. If you do log one, use `scope: "run"` with the
+>   run number, and drop `scope:"run"` notes when the user says *"new run"*.
+> When in doubt, ask "will this still be true next run?" — yes ⇒ permanent.
+
+**Photos:** the user can send a picture (e.g. an in-game letter or a map). Commit it
+into `images/` and reference it from the entry's `image` field. Photos of fixed
+content are permanent.
+
 The logging is done from a **separate normal Claude chat** (not from inside this
 repo's automation). The flow:
 
@@ -316,12 +335,18 @@ Full solutions/spoilers are stored here on purpose.
 
 ### `notes[]`
 
-| Field  | Type     | Allowed / notes           |
-| ------ | -------- | ------------------------- |
-| `id`   | string   | Unique slug (e.g. dated). |
-| `date` | string   | ISO date.                 |
-| `text` | string   | The note.                 |
-| `tags` | string[] | Free-form labels.         |
+Free-form notepad — text, plus an optional photo. **Each note is classified as
+permanent or run-specific** (see the logging rule below).
+
+| Field   | Type           | Allowed / notes                                                              |
+| ------- | -------------- | --------------------------------------------------------------------------- |
+| `id`    | string         | Unique slug (e.g. dated).                                                    |
+| `date`  | string         | ISO date.                                                                   |
+| `scope` | string         | `permanent` (kept across runs) or `run` (run-specific, ephemeral).          |
+| `run`   | number \| null | Which run it belongs to, when `scope` is `run`; else `null`.                |
+| `text`  | string         | The note. Newlines (`\n`) render as line breaks.                           |
+| `image` | string         | *(optional)* Photo/map — repo-relative path or URL.                         |
+| `tags`  | string[]       | Free-form labels (e.g. `lore`, `code`, `map`, `photo`).                     |
 
 ### `tips[]`
 

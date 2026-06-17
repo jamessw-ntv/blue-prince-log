@@ -1298,9 +1298,49 @@
     {
       "id": "note-2026-06-17",
       "date": "2026-06-17",
+      "scope": "permanent",
+      "run": null,
       "text": "Log created (schema v3: runs + per-run sightings + room variants + tips). Replace the example entries above with real findings.",
+      "image": "",
       "tags": [
         "meta"
+      ]
+    },
+    {
+      "id": "lore-example",
+      "date": "2026-06-17",
+      "scope": "permanent",
+      "run": null,
+      "text": "Example PERMANENT note — lore/story, codes, and puzzle answers that stay true across runs. e.g. a safe combination or keypad code you discovered.",
+      "image": "",
+      "tags": [
+        "lore",
+        "code",
+        "permanent-example"
+      ]
+    },
+    {
+      "id": "photo-example",
+      "date": "2026-06-17",
+      "scope": "permanent",
+      "run": null,
+      "text": "Example: a photo of an in-game letter or a map. Permanent because it's shared across runs — send the picture to the logging chat and it commits it to images/ and links it here.",
+      "image": "images/example.svg",
+      "tags": [
+        "map",
+        "photo",
+        "permanent-example"
+      ]
+    },
+    {
+      "id": "run-note-example",
+      "date": "2026-06-17",
+      "scope": "run",
+      "run": 1,
+      "text": "Example RUN-SPECIFIC note — only relevant to one run (e.g. \"today the Office spread coins into the Library\"). Usually not worth keeping; cleared when you start a new run.",
+      "image": "",
+      "tags": [
+        "run-example"
       ]
     }
   ],

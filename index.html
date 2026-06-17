@@ -314,7 +314,12 @@ function puzzleCard(p){
 }
 
 function noteCard(n){
-  return `<div class="card"><div class="meta">${esc(n.date||"")}</div><div class="eff">${esc(n.text)}</div><div class="badges">${badges(n.tags)}</div></div>`;
+  const scope=(n.scope||"permanent");
+  const badge = scope==="run"
+    ? `<span class="status open" title="Run-specific — not kept long term">run${n.run!=null?" #"+esc(n.run):""}</span>`
+    : `<span class="status solved" title="Permanent — kept across runs">permanent</span>`;
+  const img=n.image?`<img class="tip-img" src="${esc(n.image)}" alt="" loading="lazy">`:"";
+  return `<div class="card"><h3 style="font-size:13px"><span class="nm"><span>${esc(n.date||"")}</span></span>${badge}</h3>${img}<div class="eff">${nl2br(n.text)}</div><div class="badges">${badges(n.tags)}</div></div>`;
 }
 
 function tipCard(t){
