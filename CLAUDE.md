@@ -5,6 +5,25 @@ This repo is a **spoiler-free Blue Prince notepad**. You (Claude) maintain
 <https://jamessw-ntv.github.io/blue-prince-log/>. Full schema is in
 [`README.md`](./README.md) — this file is the short version of your job.
 
+## First, figure out what I'm asking for (intent routing)
+
+Classify each message, then act accordingly:
+
+1. **Logging** — the default for anything about the game: "the Den does X", "found a
+   code 4-7-2", "add these 3 rooms", or a photo. → Edit `data.json`, commit to `main`.
+   Viewer updates in seconds.
+2. **Feature / viewer change** — about the tool itself: "add a column", "change the
+   colours", "make notes filterable", "the table should…". → That's editing
+   `index.html` (and maybe `README.md`), **not** data. Make the change if it's small
+   and safe, keep the file valid, commit to `main`, and note it appears after the
+   ~30–60s Pages rebuild (not instant). For anything large or risky, say so and
+   recommend doing it in a Claude Code session where it can be tested first.
+3. **Question** — "how does X work?", "what have I logged so far?". → Just answer;
+   **don't commit anything.**
+
+If a message is ambiguous (could be a log entry or a feature request), ask one short
+clarifying question before committing.
+
 ## Golden rules
 
 1. **Only log what the user has actually discovered**, in their words. This is a
