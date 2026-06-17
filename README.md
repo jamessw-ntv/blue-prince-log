@@ -87,11 +87,37 @@ every run the thing has appeared in, and a **Mark** button:
 
 - Set the run number with `−` / `+`, then click **“+ run N”** on a row to mark that
   room/item as seen in that run. The current-run chip is highlighted.
+- **⟳ New run** advances to the next run *and clears the browser's run-marks*, for a
+  clean slate each day. Anything already saved in `data.json` is untouched.
 - Those marks are **browser-local** (`localStorage`, key `bp_marks`) — shown as
   dashed amber chips and summarised in a bar under the search box, with a *clear*
   link. They are **not** written to `data.json`; to make them permanent, tell the
   logging chat (e.g. *“in run 2 the Courtyard had 2 gems”*), which adds a real
   `sighting`. Runs already in the file show as solid chips.
+
+## What's worth tracking (and what isn't)
+
+The house is re-drafted every day and **most room contents are randomised per draw**
+(each room has its own item pool, weighted by Luck), and some puzzles (e.g. the
+Billiard Room) change daily. So logging exactly what was in a room on a given run
+has little lasting value — it won't recur.
+
+**Worth recording permanently** (it's stable):
+
+- Room facts: `color`, `effect`, `doors`, `cost`, `digSpot`, variants.
+- **Guaranteed** contents — put them in the room's `effect`/`notes` (e.g. the Nook
+  always has a key; the Pantry has four coins).
+- Puzzle solutions that don't change.
+
+**Not worth recording permanently** (it's random/ephemeral):
+
+- The specific items that happened to spawn in a room on one run. Use the viewer's
+  **run-marks** as a per-run scratchpad and hit **⟳ New run** to wipe them next day.
+
+> The `rooms`/`items` catalog comes **pre-populated** with spoiler-free,
+> directory-level entries (no puzzle answers or endgame reveals). `discovered` is
+> `false` for rooms you haven't logged yet; fields left blank (`rarity`, `doors`)
+> are simply unconfirmed — fill them in as you go.
 
 ## Logging workflow
 
@@ -156,7 +182,7 @@ specific variant appearing in a run by setting `variantId` on that sighting.
 - **Commit messages**: short and descriptive, e.g. `Add Aquarium room`,
   `Run 3: log Courtyard gems`, `Mark Observatory puzzle solved`.
 
-## `data.json` schema (v2)
+## `data.json` schema (v3)
 
 Top-level object:
 
@@ -208,6 +234,7 @@ Top-level object:
 | `cost`         | object         | `{ "gems": n, "coins": n, "keys": n }` — resources to draft/enter (special rooms usually cost Gems). |
 | `digSpot`      | boolean        | `true` if the room has a Dig Spot (common in green rooms).                                        |
 | `effect`       | string         | What the room does / why it matters.                                                              |
+| `image`        | string         | *(optional)* Thumbnail shown in the table — repo-relative path or URL.                            |
 | `variants`     | object[]       | Upgraded versions — see **`rooms[].variants[]`** below. `[]` if none.                             |
 | `tags`         | string[]       | Free-form labels (e.g. `"connector"`, `"shop"`, `"ability"`).                                     |
 | `notes`        | string         | Personal notes.                                                                                   |
@@ -248,6 +275,7 @@ Top-level object:
 | `effect`       | string         | What it does.                                                       |
 | `location`     | string         | Where it's found / how it's obtained.                               |
 | `value`        | object         | `{ "coins": n }` — shop price if applicable, else `null`.          |
+| `image`        | string         | *(optional)* Thumbnail shown in the table — repo-relative path or URL. |
 | `tags`         | string[]       | Free-form labels.                                                  |
 | `notes`        | string         | Personal notes.                                                    |
 | `found`        | boolean        | Whether you've obtained it.                                        |

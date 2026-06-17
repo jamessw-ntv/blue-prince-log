@@ -140,6 +140,7 @@
           <b id="runNum">#?</b>
           <button id="runUp" type="button" aria-label="Increase run">+</button>
         </div>
+        <button id="newRunBtn" type="button" class="toggle" title="Advance to the next run and clear this browser's run-marks">⟳ New run</button>
         <button id="tipsBtn" type="button" class="toggle" aria-pressed="false">💡 Tips</button>
       </div>
     </div>
@@ -171,6 +172,13 @@ let RUN_OVERRIDE=(()=>{const v=localStorage.getItem("bp_run_override");return v=
 function currentRun(){ return RUN_OVERRIDE!=null ? RUN_OVERRIDE : (DATA&&DATA.meta&&DATA.meta.currentRun!=null ? DATA.meta.currentRun : 1); }
 function setRun(n){ RUN_OVERRIDE=Math.max(1,n); localStorage.setItem("bp_run_override",RUN_OVERRIDE); renderRun(); render(); }
 function resetRun(){ RUN_OVERRIDE=null; localStorage.removeItem("bp_run_override"); renderRun(); render(); }
+function newRun(){
+  const n=totalMarks();
+  if(n>0 && !confirm("Start a new run?\n\nThis clears the "+n+" run-mark"+(n===1?"":"s")+" saved in this browser. (Anything already recorded in the log file stays.)")) return;
+  MARKS={}; saveMarks();
+  setRun(currentRun()+1);
+  renderMarksBar();
+}
 function renderRun(){
   document.getElementById("runNum").textContent="#"+currentRun();
   const hint=document.getElementById("runHint");
@@ -386,6 +394,7 @@ function renderNav(){
 function wireControls(){
   document.getElementById("runUp").onclick=()=>setRun(currentRun()+1);
   document.getElementById("runDown").onclick=()=>setRun(currentRun()-1);
+  document.getElementById("newRunBtn").onclick=newRun;
   const tb=document.getElementById("tipsBtn");
   tb.onclick=()=>{ TIPS_ON=!TIPS_ON; tb.classList.toggle("active",TIPS_ON); tb.setAttribute("aria-pressed",String(TIPS_ON)); renderTips(); };
   document.getElementById("search").addEventListener("input",e=>{ Q=e.target.value.trim().toLowerCase(); render(); });
