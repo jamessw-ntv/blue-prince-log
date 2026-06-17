@@ -2,7 +2,7 @@
   "meta": {
     "game": "Blue Prince",
     "title": "Blue Prince — Room & Item Log",
-    "schemaVersion": 2,
+    "schemaVersion": 3,
     "updated": "2026-06-17",
     "currentRun": 1,
     "source": "https://github.com/jamessw-ntv/blue-prince-log",
@@ -262,8 +262,23 @@
     {
       "id": "note-2026-06-17",
       "date": "2026-06-17",
-      "text": "Log created (schema v2: runs + per-run sightings + room variants). Replace the example entries above with real findings.",
+      "text": "Log created (schema v3: runs + per-run sightings + room variants + tips). Replace the example entries above with real findings.",
       "tags": ["meta"]
+    }
+  ],
+  "tips": [
+    {
+      "id": "how-to-log",
+      "title": "What you can log (and how)",
+      "body": "Tell the logging chat in plain language and it updates data.json:\n• Room — name, color (blue/orange/green/purple/yellow/red/black), rarity, doors, gem/coin/key cost, dig spot, effect, variants.\n• Item — name, type (Resource/Key/Tool/Consumable/Document/Other), effect, where found, shop price.\n• Run — say “new run” to bump the counter; note the rank reached and the outcome.\n• Sighting — “in this run the Courtyard had 2 gems” records what a room held that run.\n• Puzzle — clues plus the full solution (stored here on purpose).\n• Note — any free-form observation.\n• Tip — entries like this one; they can include an image.",
+      "tags": ["guide"]
+    },
+    {
+      "id": "example-with-image",
+      "title": "Example: a tip with an image",
+      "body": "Tips can include a picture — host it in this repo (e.g. an images/ folder) and reference it, or use any public image URL. Handy for floorplans, puzzle screenshots, or maps.",
+      "image": "images/example.svg",
+      "tags": ["example", "image"]
     }
   ]
 }

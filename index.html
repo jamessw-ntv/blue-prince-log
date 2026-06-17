@@ -71,18 +71,57 @@
   footer{color:var(--muted);font-size:12px;border-top:1px solid var(--line);
     margin-top:30px;padding:14px 0;text-align:center}
   .hidden{display:none!important}
+  /* top bar: run control + tips toggle */
+  .topbar{display:flex;justify-content:space-between;align-items:flex-start;gap:16px;flex-wrap:wrap}
+  .controls{display:flex;align-items:center;gap:10px;padding-top:2px}
+  .runctl{display:flex;align-items:center;gap:8px;background:var(--panel);border:1px solid var(--line);border-radius:999px;padding:4px 10px}
+  .runctl .rl{color:var(--muted);font-size:11px;text-transform:uppercase;letter-spacing:.6px}
+  .runctl b{min-width:36px;text-align:center;font-size:16px}
+  .runctl button{width:26px;height:26px;border-radius:50%;border:1px solid var(--line);background:var(--panel2);color:var(--text);cursor:pointer;font-size:16px;line-height:1}
+  .runctl button:hover{border-color:var(--accent);color:var(--accent)}
+  .toggle{background:var(--panel);color:var(--muted);border:1px solid var(--line);padding:8px 13px;border-radius:999px;cursor:pointer;font-size:13px}
+  .toggle:hover{color:var(--text)}
+  .toggle.active{background:#3a2f10;color:#ffd479;border-color:#5a4012}
+  a.toggle{text-decoration:none;display:inline-block}
+  .runhint{font-size:12px;color:var(--muted);margin:8px 0 0}
+  .runhint a{cursor:pointer;text-decoration:underline}
+  #tips{margin:0 0 18px}
+  .tips-head{display:flex;justify-content:space-between;align-items:center;font-size:12px;color:var(--muted);
+    margin:0 0 10px;text-transform:uppercase;letter-spacing:.6px}
+  .tips-head button{background:none;border:0;color:var(--muted);font-size:22px;cursor:pointer;line-height:1}
+  .tips-head button:hover{color:var(--text)}
+  .card.tip{border-left:5px solid var(--yellow)}
+  .tip-img{display:block;max-width:100%;height:auto;border-radius:8px;margin:8px 0;border:1px solid var(--line)}
+  .card.current{outline:2px solid var(--accent)}
+  .sgroup.current h3{color:var(--accent);border-color:var(--accent)}
 </style>
 </head>
 <body>
 <header>
   <div class="wrap" style="padding-bottom:0">
-    <h1 id="title">Blue Prince — Room &amp; Item Log</h1>
-    <div class="sub" id="subtitle">Loading…</div>
+    <div class="topbar">
+      <div class="titlebox">
+        <h1 id="title">Blue Prince — Room &amp; Item Log</h1>
+        <div class="sub" id="subtitle">Loading…</div>
+      </div>
+      <div class="controls">
+        <a class="toggle" href="https://jamessw-ntv.github.io/NTV-PROD/factory-network.html">🏭 Satisfactory</a>
+        <div class="runctl" title="The run you're currently tracking (saved in this browser)">
+          <span class="rl">Run</span>
+          <button id="runDown" type="button" aria-label="Decrease run">−</button>
+          <b id="runNum">#?</b>
+          <button id="runUp" type="button" aria-label="Increase run">+</button>
+        </div>
+        <button id="tipsBtn" type="button" class="toggle" aria-pressed="false">💡 Tips</button>
+      </div>
+    </div>
+    <div id="runHint" class="runhint hidden"></div>
   </div>
 </header>
 <div class="wrap">
   <nav id="nav"></nav>
   <input id="search" type="search" placeholder="Filter…" autocomplete="off" />
+  <div id="tips" class="hidden"></div>
   <div id="view"></div>
   <div id="error"></div>
   <footer id="footer"></footer>
@@ -92,10 +131,27 @@
 const RAW = "https://raw.githubusercontent.com/jamessw-ntv/blue-prince-log/main/data.json";
 const COLORS = ["blue","orange","green","purple","yellow","red","black"];
 const esc = s => String(s==null?"":s).replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+const nl2br = s => esc(s).replace(/\n/g,"<br>");
 const titleCase = s => s ? s.charAt(0).toUpperCase()+s.slice(1) : s;
 
-let DATA=null, TAB="rooms", Q="";
+let DATA=null, TAB="rooms", Q="", TIPS_ON=false;
 const TABS=[["rooms","Rooms"],["items","Items"],["runs","Runs"],["sightings","Sightings"],["puzzles","Puzzles"],["notes","Notes"]];
+
+// Run tracking — local to this browser (the static page can't write back to the repo).
+let RUN_OVERRIDE=(()=>{const v=localStorage.getItem("bp_run_override");return v==null?null:Number(v);})();
+function currentRun(){ return RUN_OVERRIDE!=null ? RUN_OVERRIDE : (DATA&&DATA.meta&&DATA.meta.currentRun!=null ? DATA.meta.currentRun : 1); }
+function setRun(n){ RUN_OVERRIDE=Math.max(1,n); localStorage.setItem("bp_run_override",RUN_OVERRIDE); renderRun(); render(); }
+function resetRun(){ RUN_OVERRIDE=null; localStorage.removeItem("bp_run_override"); renderRun(); render(); }
+function renderRun(){
+  document.getElementById("runNum").textContent="#"+currentRun();
+  const hint=document.getElementById("runHint");
+  const fileVal=DATA&&DATA.meta?DATA.meta.currentRun:null;
+  if(RUN_OVERRIDE!=null && RUN_OVERRIDE!==fileVal){
+    hint.classList.remove("hidden");
+    hint.innerHTML=`Tracking run #${currentRun()} in this browser (the log file says #${esc(fileVal)}). <a id="runReset">reset</a> · to save it, tell the logging chat “new run”.`;
+    const r=document.getElementById("runReset"); if(r) r.onclick=resetRun;
+  }else{ hint.classList.add("hidden"); hint.innerHTML=""; }
+}
 
 async function load(){
   // Same-origin first (works on GitHub Pages next to data.json); fall back to the raw URL.
@@ -141,7 +197,8 @@ function runCard(run){
   const bits=[`<div class="meta">${esc(run.date||"")}${run.rank!=null?` · rank ${esc(run.rank)}`:""} · ${n} sighting${n===1?"":"s"}</div>`];
   if(run.outcome) bits.push(`<div class="eff">${esc(run.outcome)}</div>`);
   if(run.notes) bits.push(`<div class="meta">${esc(run.notes)}</div>`);
-  return `<div class="card"><div class="run"><div class="id">#${esc(run.id)}</div><div style="flex:1">${bits.join("")}</div></div></div>`;
+  const cur=run.id===currentRun()?" current":"";
+  return `<div class="card${cur}"><div class="run"><div class="id">#${esc(run.id)}</div><div style="flex:1">${bits.join("")}</div></div></div>`;
 }
 
 function puzzleCard(p){
@@ -157,6 +214,21 @@ function noteCard(n){
   return `<div class="card"><div class="meta">${esc(n.date||"")}</div><div class="eff">${esc(n.text)}</div><div class="badges">${badges(n.tags)}</div></div>`;
 }
 
+function tipCard(t){
+  const img=t.image?`<img class="tip-img" src="${esc(t.image)}" alt="${esc(t.title||"tip image")}" loading="lazy">`:"";
+  return `<div class="card tip">${t.title?`<h3><span class="nm"><span>${esc(t.title)}</span></span></h3>`:""}${img}${t.body?`<div class="eff">${nl2br(t.body)}</div>`:""}<div class="badges">${badges(t.tags)}</div></div>`;
+}
+function renderTips(){
+  const el=document.getElementById("tips");
+  if(!TIPS_ON){ el.classList.add("hidden"); el.innerHTML=""; return; }
+  el.classList.remove("hidden");
+  const tips=(DATA&&DATA.tips)?DATA.tips:[];
+  el.innerHTML=`<div class="tips-head"><span>Tips &amp; examples</span><button id="tipsClose" type="button" aria-label="Close">×</button></div>`+
+    (tips.length?`<div class="grid">${tips.map(tipCard).join("")}</div>`:`<div class="empty">No tips yet.</div>`);
+  const c=document.getElementById("tipsClose");
+  if(c) c.onclick=()=>{ TIPS_ON=false; const b=document.getElementById("tipsBtn"); b.classList.remove("active"); b.setAttribute("aria-pressed","false"); renderTips(); };
+}
+
 function sightingsView(rows){
   const roomName=id=>{const r=(DATA.rooms||[]).find(x=>x.id===id);return r?r.name:id;};
   const itemName=id=>{const i=(DATA.items||[]).find(x=>x.id===id);return i?i.name:id;};
@@ -168,7 +240,7 @@ function sightingsView(rows){
       const items=(s.items||[]).map(it=>`${esc(itemName(it.itemId))}${it.qty?` ×${esc(it.qty)}`:""}${it.notes?` (${esc(it.notes)})`:""}`).join(", ");
       return `<div class="srow"><div class="rm">${esc(roomName(s.roomId))}${s.variantId?` <span class="b">${esc(s.variantId)}</span>`:""}</div>${items?`<div class="items-in">${items}</div>`:`<div class="items-in">—</div>`}${s.notes?`<div class="meta">${esc(s.notes)}</div>`:""}</div>`;
     }).join("");
-    return `<div class="sgroup"><h3>Run #${rid}</h3>${inner}</div>`;
+    return `<div class="sgroup${rid===currentRun()?" current":""}"><h3>Run #${rid}</h3>${inner}</div>`;
   }).join("");
 }
 
@@ -205,18 +277,25 @@ function renderNav(){
     const m=data.meta||{};
     document.getElementById("title").textContent=m.title||"Blue Prince — Log";
     document.getElementById("subtitle").innerHTML=
-      `Current run <b>#${esc(m.currentRun??"?")}</b> · updated <b>${esc(m.updated||"?")}</b>`+
+      `updated <b>${esc(m.updated||"?")}</b>`+
       (m.source?` · <a href="${esc(m.source)}">source</a>`:"");
     document.getElementById("footer").innerHTML=
       `Read-only viewer · data from <code>${esc(src)}</code>`+(m.source?` · <a href="${esc(m.source)}">repo</a>`:"");
-    renderNav(); render();
+    renderNav(); render(); renderRun();
   }catch(e){
     document.getElementById("subtitle").textContent="";
     document.getElementById("error").innerHTML=`<div class="err">${esc(e.message||e)}</div>`;
   }
 })();
 
-document.getElementById("search").addEventListener("input",e=>{Q=e.target.value.trim().toLowerCase();render();});
+function wireControls(){
+  document.getElementById("runUp").onclick=()=>setRun(currentRun()+1);
+  document.getElementById("runDown").onclick=()=>setRun(currentRun()-1);
+  const tb=document.getElementById("tipsBtn");
+  tb.onclick=()=>{ TIPS_ON=!TIPS_ON; tb.classList.toggle("active",TIPS_ON); tb.setAttribute("aria-pressed",String(TIPS_ON)); renderTips(); };
+  document.getElementById("search").addEventListener("input",e=>{ Q=e.target.value.trim().toLowerCase(); render(); });
+}
+wireControls();
 </script>
 </body>
 </html>

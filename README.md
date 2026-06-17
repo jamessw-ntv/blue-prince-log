@@ -68,6 +68,20 @@ drop a small redirect page where the old viewer was (e.g.
 viewer here and point a redirect *from* the new URL back to the old one. Either way
 only one place should host the real `index.html`.)
 
+## Viewer controls
+
+The header has three controls:
+
+- **🏭 Satisfactory** — link back to the factory-network page
+  (`https://jamessw-ntv.github.io/NTV-PROD/factory-network.html`).
+- **Run `−` / `+`** — a quick run-number tracker. Because the viewer is a static,
+  tokenless page it **can't write back to `data.json`**, so this is saved **per
+  browser** (`localStorage`) and is purely for keeping your place while playing. It
+  highlights the matching run in the Runs/Sightings tabs and shows a hint with a
+  *reset* link when it differs from the file. To make a new run permanent, tell the
+  logging chat “new run” (it bumps `meta.currentRun` and adds to `runs[]`).
+- **💡 Tips** — toggles the `tips[]` panel (training tips / examples, with images).
+
 ## Logging workflow
 
 The logging is done from a **separate normal Claude chat** (not from inside this
@@ -111,7 +125,7 @@ specific variant appearing in a run by setting `variantId` on that sighting.
 - **Keep it valid JSON.** No comments, no trailing commas. Validate before
   committing (`python3 -c "import json; json.load(open('data.json'))"`).
 - **Keep the top-level shape.** The file is always an object with these keys:
-  `meta`, `runs`, `rooms`, `items`, `sightings`, `puzzles`, `notes`.
+  `meta`, `runs`, `rooms`, `items`, `sightings`, `puzzles`, `notes`, `tips`.
 - **One entry per thing; dedupe by `id`.** If a room/item already exists, update it
   in place instead of adding a duplicate. For per-run presence, add a `sighting`
   rather than duplicating the catalog entry.
@@ -143,7 +157,8 @@ Top-level object:
   "items":     [ ... ],   // catalog of items / resources / tools
   "sightings": [ ... ],   // per-run record: which room appeared, with what inside
   "puzzles":   [ ... ],   // puzzles / codes / secrets, open or solved (full solutions stored)
-  "notes":     [ ... ]    // free-form dated notes
+  "notes":     [ ... ],   // free-form dated notes
+  "tips":      [ ... ]    // training tips / examples shown under the viewer's Tips toggle (can include images)
 }
 ```
 
@@ -153,7 +168,7 @@ Top-level object:
 | --------------- | ------ | -------------------------------------------------------- |
 | `game`          | string | Always `"Blue Prince"`.                                  |
 | `title`         | string | Display title for the viewer.                            |
-| `schemaVersion` | number | Currently `2`. Bump only if the schema shape changes.    |
+| `schemaVersion` | number | Currently `3`. Bump only if the schema shape changes.    |
 | `updated`       | string | ISO date of the last edit — **update on every commit**.  |
 | `currentRun`    | number | The active run id; **increment when a new run starts**.  |
 | `source`        | string | This repo's URL.                                         |
@@ -268,6 +283,23 @@ Full solutions/spoilers are stored here on purpose.
 | `date` | string   | ISO date.                 |
 | `text` | string   | The note.                 |
 | `tags` | string[] | Free-form labels.         |
+
+### `tips[]`
+
+Training tips / examples shown when you turn on the viewer's **💡 Tips** toggle.
+Each tip can include an image.
+
+| Field   | Type     | Allowed / notes                                                              |
+| ------- | -------- | --------------------------------------------------------------------------- |
+| `id`    | string   | Unique kebab-case slug.                                                      |
+| `title` | string   | Heading for the tip.                                                         |
+| `body`  | string   | The tip text. Newlines (`\n`) render as line breaks.                        |
+| `image` | string   | *(optional)* Image URL or repo-relative path (e.g. `images/floorplan.png`). |
+| `tags`  | string[] | Free-form labels.                                                           |
+
+**Images:** commit them into this repo (e.g. an `images/` folder) and reference
+them with a relative path, or point `image` at any public URL. Relative paths work
+because the viewer is served from the same GitHub Pages site.
 
 ## Seed data
 
