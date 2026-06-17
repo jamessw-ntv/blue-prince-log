@@ -279,6 +279,18 @@
       "body": "Tips can include a picture — host it in this repo (e.g. an images/ folder) and reference it, or use any public image URL. Handy for floorplans, puzzle screenshots, or maps.",
       "image": "images/example.svg",
       "tags": ["example", "image"]
+    },
+    {
+      "id": "quick-examples",
+      "title": "Quick examples — what to say to the logging chat",
+      "body": "• “Log a room: Aquarium — green, Standard, 2 doors, has a dig spot.”\n• “Item: Compass — Tool, points toward the Antechamber.”\n• “New run.” (bumps the run counter)\n• “In run 2 the Courtyard had 2 gems and a key.” (records a sighting)\n• “Mark the Boiler Room solved — pull the lever twice.” (puzzle + solution)\n• “Tip: <text>” and optionally an image path.",
+      "tags": ["example", "guide"]
+    },
+    {
+      "id": "tracking-runs",
+      "title": "Tracking runs in the viewer",
+      "body": "Rooms and Items are tables. The Runs column shows every run a thing has appeared in. Set the run number at the top with − / +, then click “+ run N” on a row to mark that it showed up this run. Those marks are saved in your browser (dashed/amber chips) until the logging chat records a real sighting in data.json (solid chips). The chip matching the current run is highlighted.",
+      "tags": ["guide"]
     }
   ]
 }

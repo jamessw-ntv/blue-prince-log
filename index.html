@@ -94,6 +94,30 @@
   .tip-img{display:block;max-width:100%;height:auto;border-radius:8px;margin:8px 0;border:1px solid var(--line)}
   .card.current{outline:2px solid var(--accent)}
   .sgroup.current h3{color:var(--accent);border-color:var(--accent)}
+  /* table view for catalogs */
+  .tablewrap{overflow-x:auto;border:1px solid var(--line);border-radius:12px}
+  table{width:100%;border-collapse:collapse;font-size:13.5px}
+  thead th{position:sticky;top:0;background:var(--panel2);color:var(--muted);font-weight:600;
+    font-size:11px;text-transform:uppercase;letter-spacing:.4px;white-space:nowrap}
+  th,td{text-align:left;padding:8px 10px;border-bottom:1px solid var(--line);vertical-align:top}
+  tbody tr:last-child td{border-bottom:0}
+  tbody tr:hover{background:#1b2438}
+  td.nm{font-weight:600;white-space:nowrap}
+  td.num{text-align:center}
+  td.eff{color:var(--muted);max-width:340px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+  td.runs{white-space:nowrap}
+  .chip{display:inline-block;min-width:20px;text-align:center;padding:1px 6px;margin:1px;
+    border-radius:6px;background:var(--panel2);border:1px solid var(--line);font-size:12px}
+  .chip.cur{border-color:var(--accent);color:var(--accent)}
+  .chip.local{border-style:dashed;color:#ffd479;border-color:#5a4012;background:#2a2310}
+  .markbtn{cursor:pointer;border:1px solid var(--line);background:var(--panel2);color:var(--text);
+    border-radius:6px;padding:3px 8px;font-size:12px;white-space:nowrap}
+  .markbtn:hover{border-color:var(--accent);color:var(--accent)}
+  .markbtn.on{border-color:#5a4012;color:#ffd479;background:#2a2310}
+  #marksbar{font-size:12px;color:var(--muted);margin:0 0 14px;padding:9px 12px;
+    background:var(--panel);border:1px solid #5a4012;border-radius:10px}
+  #marksbar a{cursor:pointer;text-decoration:underline}
+  .muted{color:var(--muted)}
 </style>
 </head>
 <body>
@@ -121,6 +145,7 @@
 <div class="wrap">
   <nav id="nav"></nav>
   <input id="search" type="search" placeholder="Filter…" autocomplete="off" />
+  <div id="marksbar" class="hidden"></div>
   <div id="tips" class="hidden"></div>
   <div id="view"></div>
   <div id="error"></div>
@@ -153,6 +178,52 @@ function renderRun(){
   }else{ hint.classList.add("hidden"); hint.innerHTML=""; }
 }
 
+// Local "marks": browser-only record of which runs a room/item appeared in.
+// Keyed "room:<id>" / "item:<id>" -> [runNumbers]. The log file's sightings are the real record.
+let MARKS=(()=>{ try{ return JSON.parse(localStorage.getItem("bp_marks")||"{}"); }catch(e){ return {}; } })();
+function saveMarks(){ localStorage.setItem("bp_marks", JSON.stringify(MARKS)); }
+function runInfo(kind,id){
+  const file=new Set();
+  (DATA&&DATA.sightings?DATA.sightings:[]).forEach(s=>{
+    if(kind==="room" && s.roomId===id) file.add(s.run);
+    if(kind==="item" && (s.items||[]).some(it=>it.itemId===id)) file.add(s.run);
+  });
+  const local=new Set(MARKS[kind+":"+id]||[]);
+  const all=[...new Set([...file,...local])].sort((a,b)=>a-b);
+  return {file,local,all};
+}
+function toggleMark(kind,id,run){
+  const key=kind+":"+id;
+  const set=new Set(MARKS[key]||[]);
+  set.has(run)?set.delete(run):set.add(run);
+  if(set.size) MARKS[key]=[...set].sort((a,b)=>a-b); else delete MARKS[key];
+  saveMarks(); render(); renderMarksBar();
+}
+function totalMarks(){ return Object.values(MARKS).reduce((n,a)=>n+a.length,0); }
+function renderMarksBar(){
+  const el=document.getElementById("marksbar");
+  const n=totalMarks();
+  if(!n){ el.classList.add("hidden"); el.innerHTML=""; return; }
+  el.classList.remove("hidden");
+  el.innerHTML=`★ ${n} run-mark${n===1?"":"s"} saved in this browser only (not in the log file). `+
+    `<a id="clearMarks">clear</a> · to make them permanent, tell the logging chat (e.g. “in run ${currentRun()} the Entrance Hall had a key”).`;
+  const c=document.getElementById("clearMarks"); if(c) c.onclick=()=>{ MARKS={}; saveMarks(); render(); renderMarksBar(); };
+}
+function runChips(info){
+  if(!info.all.length) return `<span class="muted">—</span>`;
+  return info.all.map(r=>{
+    const isLocal=info.local.has(r)&&!info.file.has(r);
+    const cur=r===currentRun();
+    return `<span class="chip${isLocal?" local":""}${cur?" cur":""}" title="${isLocal?"Saved in this browser — not yet in the log file":"Logged in the file"}">${r}</span>`;
+  }).join("");
+}
+function markBtn(kind,id,info){
+  const cur=currentRun();
+  if(info.file.has(cur)) return `<span class="chip cur" title="Already logged in run ${cur}">✓ ${cur}</span>`;
+  const on=info.local.has(cur);
+  return `<button class="markbtn${on?" on":""}" data-kind="${kind}" data-id="${esc(id)}" title="${on?"Remove this browser-local mark":"Mark as seen in run "+cur}">${on?"✓ run "+cur:"+ run "+cur}</button>`;
+}
+
 async function load(){
   // Same-origin first (works on GitHub Pages next to data.json); fall back to the raw URL.
   for(const url of ["data.json", RAW]){
@@ -165,31 +236,44 @@ function colorDot(c){ return COLORS.includes(c) ? `<span class="dot swatch-${c}"
 function badges(arr,cls="tag"){ return (arr||[]).map(t=>`<span class="b ${cls}">${esc(t)}</span>`).join(""); }
 function costStr(c){ if(!c) return ""; const p=[]; if(c.gems)p.push(c.gems+" gem"+(c.gems>1?"s":"")); if(c.coins)p.push(c.coins+" coin"+(c.coins>1?"s":"")); if(c.keys)p.push(c.keys+" key"+(c.keys>1?"s":"")); return p.join(", "); }
 
-function roomCard(r){
-  const cls = COLORS.includes(r.color)?`bd-${r.color}`:"";
-  const bits=[];
-  bits.push(`<div class="meta">${titleCase(r.color||"?")} · ${esc(r.rarity||"?")}${r.doors!=null?` · ${r.doors} door${r.doors===1?"":"s"}`:""}${r.digSpot?` · dig spot`:""}</div>`);
-  const cost=costStr(r.cost); if(cost) bits.push(`<div class="meta">Cost: ${esc(cost)}</div>`);
-  if(r.effect) bits.push(`<div class="eff">${esc(r.effect)}</div>`);
-  (r.variants||[]).forEach(v=>{
-    bits.push(`<div class="variant"><div class="vn">${colorDot(v.color)}${esc(v.name)}${v.source?` <span class="b">${esc(v.source)}</span>`:""}</div>${v.effect?`<div class="meta">${esc(v.effect)}</div>`:""}${v.notes?`<div class="meta">${esc(v.notes)}</div>`:""}</div>`);
-  });
-  const foot=[]; if(r.firstSeenRun!=null) foot.push(`run ${esc(r.firstSeenRun)}`); if(r.firstSeen) foot.push(esc(r.firstSeen));
-  if(foot.length) bits.push(`<div class="meta">First seen: ${foot.join(" · ")}</div>`);
-  if(r.notes) bits.push(`<div class="meta">${esc(r.notes)}</div>`);
-  return `<div class="card room ${cls}"><h3><span class="nm">${colorDot(r.color)}<span>${esc(r.name)}</span></span></h3>${bits.join("")}<div class="badges">${badges(r.tags)}</div></div>`;
+function roomsTable(rows){
+  const head=`<thead><tr><th></th><th>Room</th><th>Color</th><th>Rarity</th><th>Doors</th><th>Cost</th><th>Dig</th><th>Effect</th><th>Runs</th><th>Mark</th></tr></thead>`;
+  const body="<tbody>"+rows.map(r=>{
+    const info=runInfo("room",r.id);
+    const cost=costStr(r.cost);
+    const vnames=(r.variants||[]).map(v=>v.name).join(", ");
+    const vbadge=(r.variants||[]).length?` <span class="b" title="Variants: ${esc(vnames)}">▸${r.variants.length}</span>`:"";
+    return `<tr>`+
+      `<td>${colorDot(r.color)}</td>`+
+      `<td class="nm">${esc(r.name)}${vbadge}</td>`+
+      `<td>${esc(titleCase(r.color||""))}</td>`+
+      `<td>${esc(r.rarity||"")}</td>`+
+      `<td class="num">${r.doors!=null?esc(r.doors):""}</td>`+
+      `<td>${esc(cost)}</td>`+
+      `<td class="num">${r.digSpot?"●":""}</td>`+
+      `<td class="eff" title="${esc(r.effect||"")}">${esc(r.effect||"")}</td>`+
+      `<td class="runs">${runChips(info)}</td>`+
+      `<td>${markBtn("room",r.id,info)}</td>`+
+    `</tr>`;
+  }).join("")+"</tbody>";
+  return `<div class="tablewrap"><table>${head}${body}</table></div>`;
 }
 
-function itemCard(i){
-  const bits=[];
-  bits.push(`<div class="meta">${esc(i.type||"Item")}${i.found===false?" · not yet found":""}</div>`);
-  if(i.effect) bits.push(`<div class="eff">${esc(i.effect)}</div>`);
-  if(i.location) bits.push(`<div class="meta">Where: ${esc(i.location)}</div>`);
-  if(i.value && i.value.coins!=null) bits.push(`<div class="meta">Price: ${esc(i.value.coins)} coins</div>`);
-  const foot=[]; if(i.firstSeenRun!=null) foot.push(`run ${esc(i.firstSeenRun)}`); if(i.firstSeen) foot.push(esc(i.firstSeen));
-  if(foot.length) bits.push(`<div class="meta">First seen: ${foot.join(" · ")}</div>`);
-  if(i.notes) bits.push(`<div class="meta">${esc(i.notes)}</div>`);
-  return `<div class="card"><h3><span class="nm"><span>${esc(i.name)}</span></span></h3>${bits.join("")}<div class="badges">${badges(i.tags)}</div></div>`;
+function itemsTable(rows){
+  const head=`<thead><tr><th>Item</th><th>Type</th><th>Effect</th><th>Where</th><th>Found</th><th>Runs</th><th>Mark</th></tr></thead>`;
+  const body="<tbody>"+rows.map(i=>{
+    const info=runInfo("item",i.id);
+    return `<tr>`+
+      `<td class="nm">${esc(i.name)}</td>`+
+      `<td>${esc(i.type||"")}</td>`+
+      `<td class="eff" title="${esc(i.effect||"")}">${esc(i.effect||"")}</td>`+
+      `<td class="eff" title="${esc(i.location||"")}">${esc(i.location||"")}</td>`+
+      `<td class="num">${i.found===false?"":"✓"}</td>`+
+      `<td class="runs">${runChips(info)}</td>`+
+      `<td>${markBtn("item",i.id,info)}</td>`+
+    `</tr>`;
+  }).join("")+"</tbody>";
+  return `<div class="tablewrap"><table>${head}${body}</table></div>`;
 }
 
 function runCard(run){
@@ -252,8 +336,8 @@ function matches(obj){
 function render(){
   const v=document.getElementById("view");
   let rows, html;
-  if(TAB==="rooms"){ rows=(DATA.rooms||[]).filter(matches); html=rows.length?`<div class="grid">${rows.map(roomCard).join("")}</div>`:""; }
-  else if(TAB==="items"){ rows=(DATA.items||[]).filter(matches); html=rows.length?`<div class="grid">${rows.map(itemCard).join("")}</div>`:""; }
+  if(TAB==="rooms"){ rows=(DATA.rooms||[]).filter(matches); html=rows.length?roomsTable(rows):""; }
+  else if(TAB==="items"){ rows=(DATA.items||[]).filter(matches); html=rows.length?itemsTable(rows):""; }
   else if(TAB==="runs"){ rows=(DATA.runs||[]).filter(matches).sort((a,b)=>b.id-a.id); html=rows.length?`<div class="grid">${rows.map(runCard).join("")}</div>`:""; }
   else if(TAB==="sightings"){ rows=(DATA.sightings||[]).filter(matches); html=rows.length?sightingsView(rows):""; }
   else if(TAB==="puzzles"){ rows=(DATA.puzzles||[]).filter(matches); html=rows.length?`<div class="grid">${rows.map(puzzleCard).join("")}</div>`:""; }
@@ -281,7 +365,7 @@ function renderNav(){
       (m.source?` · <a href="${esc(m.source)}">source</a>`:"");
     document.getElementById("footer").innerHTML=
       `Read-only viewer · data from <code>${esc(src)}</code>`+(m.source?` · <a href="${esc(m.source)}">repo</a>`:"");
-    renderNav(); render(); renderRun();
+    renderNav(); render(); renderRun(); renderMarksBar();
   }catch(e){
     document.getElementById("subtitle").textContent="";
     document.getElementById("error").innerHTML=`<div class="err">${esc(e.message||e)}</div>`;
@@ -294,6 +378,10 @@ function wireControls(){
   const tb=document.getElementById("tipsBtn");
   tb.onclick=()=>{ TIPS_ON=!TIPS_ON; tb.classList.toggle("active",TIPS_ON); tb.setAttribute("aria-pressed",String(TIPS_ON)); renderTips(); };
   document.getElementById("search").addEventListener("input",e=>{ Q=e.target.value.trim().toLowerCase(); render(); });
+  document.getElementById("view").addEventListener("click",e=>{
+    const b=e.target.closest(".markbtn");
+    if(b) toggleMark(b.dataset.kind, b.dataset.id, currentRun());
+  });
 }
 wireControls();
 </script>

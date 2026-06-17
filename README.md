@@ -82,6 +82,17 @@ The header has three controls:
   logging chat “new run” (it bumps `meta.currentRun` and adds to `runs[]`).
 - **💡 Tips** — toggles the `tips[]` panel (training tips / examples, with images).
 
+**Rooms and Items are tables** (not tiles), each with a **Runs** column showing
+every run the thing has appeared in, and a **Mark** button:
+
+- Set the run number with `−` / `+`, then click **“+ run N”** on a row to mark that
+  room/item as seen in that run. The current-run chip is highlighted.
+- Those marks are **browser-local** (`localStorage`, key `bp_marks`) — shown as
+  dashed amber chips and summarised in a bar under the search box, with a *clear*
+  link. They are **not** written to `data.json`; to make them permanent, tell the
+  logging chat (e.g. *“in run 2 the Courtyard had 2 gems”*), which adds a real
+  `sighting`. Runs already in the file show as solid chips.
+
 ## Logging workflow
 
 The logging is done from a **separate normal Claude chat** (not from inside this
