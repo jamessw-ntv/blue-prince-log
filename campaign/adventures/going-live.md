@@ -33,6 +33,9 @@ Offer one (or Session Zero). **Level 1: HP 12, MP 6, Luck 5, prof +2.**
 | **Rae** | kindergarten teacher | **Beast-Tamer** | monsters hesitate (WIS check to pacify one/scene) |
 
 **Attributes:** STR DEX CON INT WIS CHA + **Luck** (boosts loot rarity, crit range, random events).
+**Pre-gen arrays (AC 10 + DEX, prof +2):** **Dent** STR+2 DEX+0 CON+2 INT+0 WIS+1 CHA+1 (AC 10) ·
+**Mo** STR+0 DEX+2 CON+1 INT+2 WIS+1 CHA+1 (AC 12) · **Rae** STR+0 DEX+1 CON+1 INT+1 WIS+3 CHA+2 (AC 11).
+**XP / loot / showmanship / Luck numbers:** use the **§9 "LitRPG economy"** tables as-is.
 
 ## Companion — BUDDY-7
 A **Sponsor-issued floating mascot drone**: a grinning corporate logo with a speaker, relentlessly

@@ -67,7 +67,7 @@ the shakes; the well's the only water for a day's walk. The old shrine below —
 ## Act 3 — Vorn's Cell & the Reveal *(b3)*
 A monk's cell turned charnel-study. **Investigation DC 13** uncovers Vorn's journal: he was the
 village healer; the spring "spoke" to him in a plague-year and he has been *feeding* it. A **trapped
-reliquary** (**Perception DC 14** to spot, **Dex (Thieves' Tools) DC 14** to disarm — a poison-needle,
+reliquary** (**Perception DC 14** to spot, **Dex (Thieves' Tools) DC 14** to disarm (no tools/proficiency? raw **Dex DC 14**, or wedge it shut with Str DC 13 — a failed disarm springs the needle) — a poison-needle,
 **DC 13 Con save** or 2d6 poison) holds a **Potion of Healing** + a silver holy symbol (the cleanse
 focus). **(b3 resolved — the desecration is understood; the altar must be reconsecrated.)**
 
@@ -92,7 +92,9 @@ wants to be fed. Won't you feed it?"*
 - **Skeleton** — AC 13, HP 13 (2d8+4). Shortsword **+4, 1d6+2**. Vulnerable to bludgeoning.
 - **Cultist** — AC 12, HP 9 (2d8). Scimitar **+3, 1d6+1**.
 - **Vorn Hule, Ghoul-Priest** *(SRD ghoul, augmented)* — AC 13, HP 36, Speed 30. **Multiattack:** bite
-  **+4, 2d6+2**, and claws **+4, 2d4+2 + Con save DC 10 or paralyzed (1 min, save ends)**. *Spellcasting
+  **+6, 2d6+2**, and claws **+6, 2d4+2 + Con save DC 13 or paralyzed (1 min, save ends; a paralyzed
+  PC within 5 ft is **auto-crit**)**. **Round 1 he opens with Hold Person** on the front-liner to
+  strip the tank — so the paralysis/death-save stakes actually bite. *Spellcasting
   (Wis, DC 13):* Cure Wounds (on himself), Inflict Wounds **+4, 3d10**, Hold Person. Undead — turnable.
 
 ## Endings *(b5)* & rewards

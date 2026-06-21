@@ -275,6 +275,16 @@ Dungeon Crawler Carl — capture the vibe, never copy its text, world, or charac
 - **Progression:** XP for kills, discoveries, quests, and — in game-show flavours —
   **showmanship** (entertaining the audience). Leveling grants attribute points, HP/MP, and
   a new skill / a System "choice" (pick one of N boons). Levelling is a printed plot event.
+  - **XP curve:** L1→2 **100** · L2→3 **300** · L3→4 **600** · L4→5 **1000** · then +500/level.
+  - **XP awards:** trash **15** · elite/pack **30** · mini-boss **60** · floor boss **100** ·
+    discovery/secret **15** · quest **25–50** · **showmanship beat +10–25**.
+  - **Showmanship:** a running score; a *big beat* (≈+20 in one action, or a crowd-pleasing
+    stunt/kill) grants **advantage on the follow-up** *or* **clears one debuff stack**, and raises
+    **Sponsor interest** (Low→Rising→High→Featured) — better loot, harder fights.
+  - **Luck:** add **Luck** to loot-rarity rolls; **Luck ≥ 5 = "high"** → crit range widens to
+    **19–20**; the System may spend Luck for lucky breaks.
+  - **Loot rarity (d20 + Luck):** ≤7 Common · 8–12 Uncommon · 13–17 Rare · 18–22 Epic ·
+    23–27 Legendary · 28+ Mythic (+5% per Sponsor tier above Low).
 - **Skills & abilities:** gained by use, loot/grants, or class; **ranks** Novice → Apprentice
   → Adept → Expert → Master; active (MP/cooldown) or passive.
 - **Classes:** chosen or **granted in-world** (sometimes ironically). Build originals.
@@ -385,6 +395,8 @@ STR # DEX # CON # INT # WIS # CHA #  (Luck #)
 [ SKILL ] <Name> (Rank: Novice)   <effect>
 [ ACHIEVEMENT ] <Name>   Reward: <buff/title/loot>
 [ QUEST ]  <Name> — New/Updated/Complete   Objective: <text>
+[ LOOT BOX ]  ✦ rarity d20+Luck = N → <TIER> ✦
+[ SYSTEM ]  ⬆ CLASS UNLOCKED — <Class>   <one-line flavour + starter skill>
 ```
 **Rarity tiers:** Common, Uncommon, Rare, Epic, Legendary, Mythic.
 

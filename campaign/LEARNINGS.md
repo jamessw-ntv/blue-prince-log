@@ -5,6 +5,25 @@ first. See `./SELF-IMPROVEMENT.md` for the loop. Mark items **Done** when folded
 
 ---
 
+## 2026-06-21 — Gate 4 breadth: LitRPG + 5e starters autoplayed + folded
+**Going Live (LitRPG):** System-flavour/fun **5** — host, showmanship, sponsored choices, ironic
+class all sing. But Runnable **3**: §9/§13 printed the *shapes* but no tables, so the DM invented the
+whole economy. **5e Sunless Shrine:** faithful 5e *runs* (slots, Turn/Destroy Undead, Weapon Mastery,
+Hit Dice, Arcane Recovery; fidelity 4) but ghoul **paralysis + death saves never fired** (DC 10 +
+a claw that can't hit an AC-19 tank) — stakes too soft.
+
+### [DONE] folded
+- **§9:** a real **LitRPG economy** — XP curve + per-event awards, a Showmanship rule, a Luck
+  definition (incl. crit range), and a **loot-rarity table** (d20+Luck → tier).
+- **§13:** added `[ LOOT BOX ]` and `[ CLASS UNLOCKED ]` notification formats.
+- **Going Live:** printed the 3 pre-gen **ability arrays + AC** and pointed at the §9 economy.
+- **Sunless Shrine:** tuned **Vorn** to bite (claws **+6**, paralysis **DC 13**, opens with Hold
+  Person, printed the auto-crit-on-paralyzed) and added a **Thieves'-Tools fallback** for a no-Rogue party.
+
+*Next (lean, ~1 run each): re-validate the two starters, then the royalty-free complete campaign.*
+
+---
+
 ## 2026-06-21 — Gate 3 hardening: 3 more Emberfall tests (Rogue/Cleric/Ranger) + fold
 Three more independent autoplays — **Rogue/Shadows→dark**, **Cleric/Walls→destroy**, **Ranger/Parley
 (no-tank, no-Cleric)→turn-the-pact** — all ≥4 on every axis (Class-spotlight 5/5/4). Validated: the
