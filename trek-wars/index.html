@@ -1,0 +1,813 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+<title>Trek &amp; Wars — Comics + Books Map</title>
+<!-- Shared hub design system. This folder is one level deep, so ../assets/. -->
+<link rel="stylesheet" href="../assets/hub.css" />
+<style>
+/* Project-specific styles. The chrome names below are aliased onto hub tokens
+   (so the app keeps using var(--surface) etc. without redefining hub's tokens),
+   and the franchise / media / status palette is this project's own visual
+   encoding — node colour carries meaning, so it stays. No external fonts. */
+:root {
+  /* aliases → hub tokens (do not redefine the hub tokens themselves) */
+  --surface:  var(--panel);
+  --surface2: var(--panel2);
+  --border:   var(--line);
+  --faint:    var(--black);
+
+  /* semantic palette (franchise / media / publisher / status) */
+  --trek: #3ab8ff;
+  --trek-dim: rgba(58,184,255,0.12);
+  --trek-glow: rgba(58,184,255,0.4);
+
+  --wars: #f5c842;
+  --wars-dim: rgba(245,200,66,0.1);
+  --wars-glow: rgba(245,200,66,0.35);
+
+  --comics: #e03070;
+  --books: #42e0a0;
+
+  --idw: #3ab8ff;
+  --marvel: #e03030;
+  --dh: #f5c842;
+  --bantam: #cc88ff;
+  --pocket: #88aaff;
+  --delrey: #ff9966;
+
+  --done: #3ddc84;
+  --live: #ff7043;
+  --soon: #a78bfa;
+  --legends: #9966cc;
+  --canon: #44aaff;
+
+  /* HUD monospace — system stack, no network dependency */
+  --mono: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body { overflow-x: hidden; }
+
+/* ── TOP BAR ── */
+.topbar {
+  position: sticky; top: 0; z-index: 200;
+  background: rgba(15,20,34,0.95);
+  backdrop-filter: blur(10px);
+  border-bottom: 1px solid var(--border);
+  padding: 10px 14px;
+  display: flex; flex-wrap: wrap; gap: 8px; align-items: center;
+}
+
+.topbar-title { font-weight: 700; font-size: 13px; margin-right: 4px; }
+.topbar-title .t { color: var(--trek); }
+.topbar-title .w { color: var(--wars); }
+
+.seg { display: flex; background: var(--surface2); border: 1px solid var(--border); border-radius: 7px; overflow: hidden; }
+.seg-btn { padding: 5px 11px; font-family: var(--mono); font-size: 9px; letter-spacing: .5px; background: transparent; color: var(--muted); border: none; cursor: pointer; transition: all .15s; white-space: nowrap; }
+.seg-btn.active { background: var(--surface); color: var(--text); }
+
+.filter-pill { padding: 5px 11px; font-family: var(--mono); font-size: 9px; border: 1px solid var(--border); border-radius: 6px; background: transparent; color: var(--muted); cursor: pointer; transition: all .15s; letter-spacing: .4px; }
+.filter-pill.on-trek  { border-color: var(--trek);   color: var(--trek);   background: var(--trek-dim); }
+.filter-pill.on-wars  { border-color: var(--wars);   color: var(--wars);   background: var(--wars-dim); }
+.filter-pill.on-comics{ border-color: var(--comics); color: var(--comics); background: rgba(224,48,112,.1); }
+.filter-pill.on-books { border-color: var(--books);  color: var(--books);  background: rgba(66,224,160,.08); }
+
+/* ── STAR MAP ── */
+#map-view {
+  position: relative;
+  width: 100%;
+  min-height: calc(100vh - 96px);
+  overflow: hidden;
+  cursor: grab;
+}
+#map-view.dragging { cursor: grabbing; }
+
+#starfield {
+  position: absolute; inset: 0;
+  pointer-events: none;
+}
+
+#map-canvas {
+  position: absolute;
+  transform-origin: 0 0;
+  width: 3200px;
+  height: 2200px;
+}
+
+/* Axis labels on map */
+.map-axis-label {
+  position: absolute;
+  font-family: var(--mono);
+  font-size: 9px;
+  color: var(--muted);
+  pointer-events: none;
+  white-space: nowrap;
+}
+
+.map-era-line {
+  position: absolute;
+  top: 0; bottom: 0;
+  width: 1px;
+  background: rgba(255,255,255,0.04);
+  pointer-events: none;
+}
+
+/* Franchise label bands */
+.map-band {
+  position: absolute;
+  left: 0; right: 0;
+  pointer-events: none;
+}
+.map-band-label {
+  position: absolute;
+  left: 8px;
+  font-family: var(--mono);
+  font-size: 9px;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  opacity: .5;
+}
+
+/* Nodes */
+.node {
+  position: absolute;
+  transform: translate(-50%, -50%);
+  cursor: pointer;
+  z-index: 10;
+  transition: transform .15s;
+}
+.node:hover { transform: translate(-50%, -50%) scale(1.2); z-index: 20; }
+
+.node-ring {
+  border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  position: relative;
+}
+
+.node-label {
+  position: absolute;
+  top: calc(100% + 5px);
+  left: 50%;
+  transform: translateX(-50%);
+  font-family: var(--mono);
+  font-size: 8px;
+  white-space: nowrap;
+  text-align: center;
+  pointer-events: none;
+  line-height: 1.3;
+}
+
+/* Connection lines between related nodes */
+.conn-line {
+  position: absolute;
+  pointer-events: none;
+  z-index: 1;
+}
+
+/* ── TIMELINE VIEW ── */
+#timeline-view {
+  display: none;
+  padding: 12px 0 60px;
+}
+
+.tl-section { border-bottom: 1px solid var(--border); }
+.tl-section-head { display: flex; align-items: center; gap: 10px; padding: 12px 14px 10px; cursor: pointer; }
+.tl-section-head:active { background: var(--faint); }
+.tl-sec-dot { width: 10px; height: 10px; border-radius: 50%; flex-shrink: 0; }
+.tl-sec-name { font-weight: 700; font-size: 13px; }
+.tl-sec-sub { font-family: var(--mono); font-size: 9px; color: var(--muted); margin-top: 1px; }
+.tl-sec-chev { margin-left: auto; font-size: 10px; color: var(--muted); transition: transform .2s; }
+.tl-section.coll .tl-sec-chev { transform: rotate(-90deg); }
+.tl-section.coll .tl-body { display: none; }
+
+.tl-axis-row {
+  display: flex; align-items: center;
+  padding: 0 14px 2px;
+  gap: 0;
+}
+.tl-row-spacer { width: 160px; flex-shrink: 0; }
+.tl-axis-labels { flex: 1; display: flex; justify-content: space-between; font-family: var(--mono); font-size: 8px; color: var(--muted); }
+
+.tl-row {
+  display: flex; align-items: center; gap: 0;
+  padding: 4px 14px;
+  min-height: 46px;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: background .12s;
+}
+.tl-row:hover { background: var(--faint); }
+
+.tl-row-label { width: 160px; flex-shrink: 0; padding-right: 10px; }
+.tl-row-name { font-size: 11px; font-weight: 600; line-height: 1.25; }
+.tl-row-sub { font-family: var(--mono); font-size: 8px; color: var(--muted); margin-top: 1px; }
+.tl-pip-row { display: flex; flex-wrap: wrap; gap: 2px; margin-top: 3px; }
+.tl-pip { width: 6px; height: 6px; border-radius: 1px; flex-shrink: 0; }
+.tl-pip.out  { background: var(--done); }
+.tl-pip.todo { background: var(--border); border: 1px solid rgba(167,139,250,.4); }
+.tl-pip-more { font-family: var(--mono); font-size: 8px; color: var(--muted); }
+
+.tl-bar-area { flex: 1; position: relative; height: 46px; }
+.tl-bar {
+  position: absolute; top: 50%; transform: translateY(-50%);
+  height: 22px; border-radius: 4px;
+  display: flex; align-items: center; padding: 0 6px;
+  font-family: var(--mono); font-size: 8px; white-space: nowrap; overflow: hidden;
+  min-width: 4px;
+}
+.tl-status { width: 44px; flex-shrink: 0; padding-left: 6px; }
+.tl-badge { font-family: var(--mono); font-size: 7px; padding: 2px 5px; border-radius: 3px; display: inline-block; }
+.tl-badge.complete { background: rgba(61,220,132,.1); color: var(--done); border: 1px solid rgba(61,220,132,.3); }
+.tl-badge.ongoing  { background: rgba(255,112,67,.1);  color: var(--live); border: 1px solid rgba(255,112,67,.3); }
+.tl-badge.upcoming { background: rgba(167,139,250,.1); color: var(--soon); border: 1px solid rgba(167,139,250,.3); }
+.tl-badge.legends  { background: rgba(153,102,204,.1); color: var(--legends); border: 1px solid rgba(153,102,204,.3); }
+
+/* ── DETAIL PANEL ── */
+#detail-panel {
+  position: fixed;
+  bottom: 0; left: 0; right: 0;
+  background: var(--surface);
+  border-top: 1px solid var(--border);
+  border-radius: 16px 16px 0 0;
+  padding: 14px 16px 30px;
+  transform: translateY(100%);
+  transition: transform .25s cubic-bezier(.4,0,.2,1);
+  z-index: 300;
+  max-height: 75vh;
+  overflow-y: auto;
+}
+#detail-panel.open { transform: translateY(0); }
+.dp-handle { width: 36px; height: 4px; background: var(--border); border-radius: 2px; margin: 0 auto 14px; }
+.dp-title { font-weight: 700; font-size: 16px; line-height: 1.3; margin-bottom: 4px; }
+.dp-sub { font-family: var(--mono); font-size: 10px; color: var(--muted); margin-bottom: 12px; }
+.dp-meta { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 12px; }
+.dp-tag { font-family: var(--mono); font-size: 8px; padding: 3px 8px; border-radius: 4px; }
+.dp-tag.trek    { background: var(--trek-dim);  color: var(--trek);   border: 1px solid rgba(58,184,255,.3); }
+.dp-tag.wars    { background: var(--wars-dim);  color: var(--wars);   border: 1px solid rgba(245,200,66,.3); }
+.dp-tag.comic   { background: rgba(224,48,112,.1); color: var(--comics); border: 1px solid rgba(224,48,112,.3); }
+.dp-tag.book    { background: rgba(66,224,160,.08); color: var(--books); border: 1px solid rgba(66,224,160,.25); }
+.dp-tag.legends { background: rgba(153,102,204,.1); color: var(--legends); border: 1px solid rgba(153,102,204,.3); }
+.dp-tag.canon   { background: rgba(68,170,255,.1); color: var(--canon); border: 1px solid rgba(68,170,255,.3); }
+.dp-tag.complete{ background: rgba(61,220,132,.1); color: var(--done); border: 1px solid rgba(61,220,132,.3); }
+.dp-tag.ongoing { background: rgba(255,112,67,.1);  color: var(--live); border: 1px solid rgba(255,112,67,.3); }
+.dp-tag.upcoming{ background: rgba(167,139,250,.1); color: var(--soon); border: 1px solid rgba(167,139,250,.3); }
+.dp-body { font-size: 13px; color: var(--muted); line-height: 1.7; margin-bottom: 14px; }
+.dp-body strong { color: var(--text); }
+.dp-avail { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 6px; }
+.dp-avail-label { font-family: var(--mono); font-size: 9px; color: var(--muted); width: 100%; }
+.avail-btn { font-family: var(--mono); font-size: 9px; padding: 5px 10px; border-radius: 6px; text-decoration: none; display: inline-block; }
+.avail-btn.mu  { background: rgba(224,48,48,.12); color: #ff9999; border: 1px solid rgba(224,48,48,.3); }
+.avail-btn.gc  { background: rgba(58,184,255,.1);  color: #88ccff; border: 1px solid rgba(58,184,255,.3); }
+.avail-btn.amz { background: rgba(255,165,0,.1);   color: #ffcc77; border: 1px solid rgba(255,165,0,.3); }
+.avail-btn.lcs { background: rgba(140,140,200,.08);color: #aaaacc; border: 1px solid rgba(140,140,200,.25); }
+.avail-btn.kindle { background: rgba(255,165,0,.1); color: #ffcc77; border: 1px solid rgba(255,165,0,.3); }
+.dp-close { position: absolute; top: 14px; right: 16px; font-size: 20px; color: var(--muted); cursor: pointer; background: none; border: none; line-height: 1; }
+
+/* ── LEGEND OVERLAY ── */
+.legend-overlay {
+  position: fixed;
+  bottom: 12px; right: 12px;
+  background: rgba(23,29,46,0.92);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 10px 12px;
+  font-family: var(--mono);
+  font-size: 8px;
+  color: var(--muted);
+  z-index: 150;
+  line-height: 2;
+  backdrop-filter: blur(8px);
+}
+.legend-overlay.tl-mode { display: none; }
+.leg-row { display: flex; align-items: center; gap: 7px; }
+.leg-dot { width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0; }
+.leg-sq { width: 10px; height: 6px; border-radius: 2px; flex-shrink: 0; }
+
+/* ── STARFIELD ── */
+.star { position: absolute; border-radius: 50%; background: white; animation: twinkle var(--d, 3s) var(--delay, 0s) infinite alternate; }
+@keyframes twinkle { from { opacity: var(--lo, 0.1); } to { opacity: var(--hi, 0.5); } }
+</style>
+</head>
+<body>
+
+<!-- Standard hub bar: back-link + crumb, on every project page. -->
+<div class="hubbar">
+  <a class="backlink" href="../">← Hub</a>
+  <span class="crumb"><b>Trek &amp; Wars</b> · Comics + Books Map</span>
+</div>
+
+<!-- TOP BAR -->
+<div class="topbar">
+  <div class="topbar-title"><span class="t">TREK</span> &amp; <span class="w">WARS</span></div>
+  <div class="seg">
+    <button class="seg-btn active" id="btn-map" onclick="setView('map')">🌌 MAP</button>
+    <button class="seg-btn" id="btn-tl" onclick="setView('timeline')">▬ TIMELINE</button>
+  </div>
+  <div class="seg">
+    <button class="seg-btn active" id="btn-rel" onclick="setAxis('release')">RELEASE</button>
+    <button class="seg-btn" id="btn-era" onclick="setAxis('era')">ERA</button>
+  </div>
+  <button class="filter-pill on-trek"   id="fp-trek"   onclick="toggleFilter('trek')">TREK</button>
+  <button class="filter-pill on-wars"   id="fp-wars"   onclick="toggleFilter('wars')">WARS</button>
+  <button class="filter-pill on-comics" id="fp-comics" onclick="toggleFilter('comics')">COMICS</button>
+  <button class="filter-pill on-books"  id="fp-books"  onclick="toggleFilter('books')">BOOKS</button>
+</div>
+
+<!-- MAP VIEW -->
+<div id="map-view">
+  <canvas id="starfield"></canvas>
+  <div id="map-canvas"></div>
+</div>
+
+<!-- TIMELINE VIEW -->
+<div id="timeline-view"></div>
+
+<!-- DETAIL PANEL -->
+<div id="detail-panel">
+  <button class="dp-close" onclick="closeDetail()">×</button>
+  <div class="dp-handle"></div>
+  <div class="dp-title" id="dp-title"></div>
+  <div class="dp-sub" id="dp-sub"></div>
+  <div class="dp-meta" id="dp-meta"></div>
+  <div class="dp-body" id="dp-body"></div>
+  <div class="dp-avail" id="dp-avail"></div>
+</div>
+
+<!-- LEGEND -->
+<div class="legend-overlay" id="legend">
+  <div class="leg-row"><div class="leg-dot" style="background:var(--trek)"></div> Star Trek</div>
+  <div class="leg-row"><div class="leg-dot" style="background:var(--wars)"></div> Star Wars</div>
+  <div class="leg-row"><div class="leg-sq" style="background:var(--comics)"></div> Comics</div>
+  <div class="leg-row"><div class="leg-sq" style="background:var(--books)"></div> Books / Novels</div>
+  <div class="leg-row"><div class="leg-dot" style="background:var(--legends)"></div> Legends / Non-canon</div>
+  <div class="leg-row" style="margin-top:4px;color:var(--muted)">Pinch / scroll to zoom</div>
+  <div class="leg-row" style="color:var(--muted)">Drag to pan · Tap node</div>
+</div>
+
+<script>
+// ═══════════════════════════════════════════════════════════════════════════
+// DATA  (loaded from data.json — the single source of truth)
+// ═══════════════════════════════════════════════════════════════════════════
+// Entry shape (see data.json):
+//   rel: [startYear, endYear] decimal (release date)
+//   eraYear: in-universe year for era axis
+//     Trek: stardate year (2266, 2378 …); Wars: years vs ANH (negative=BBY)
+//   type: 'comic' | 'book'  ·  franchise: 'trek' | 'wars'
+//   canon: true=canon/current, false=legends/non-canon/pre-Disney
+//   publisher colour keys: idw, marvel, dh, bantam, pocket, delrey
+
+let DATA = [];
+
+// Raw URL points at the live repo (updates within seconds of a push), with a
+// same-origin fallback for branch previews / file://. Mirrors blue-prince.
+const RAW = "https://raw.githubusercontent.com/jamessw-ntv/jamessw-ntv.github.io/main/trek-wars/data.json";
+async function loadData(){
+  const bust = "?_=" + Date.now();
+  for(const url of [RAW + bust, "data.json" + bust]){
+    try{ const r = await fetch(url, {cache:"no-store"}); if(r.ok){ return await r.json(); } }catch(e){}
+  }
+  throw new Error("Could not load data.json (tried " + RAW + " and same-origin).");
+}
+
+// ═══════════════════════════════════════════════════════════════════════════
+// STATE
+// ═══════════════════════════════════════════════════════════════════════════
+let viewMode = 'map';
+let axisMode = 'release';
+let filters = { trek: true, wars: true, comics: true, books: true };
+let activeNode = null;
+
+// Map pan/zoom
+let panX = 0, panY = 0, zoom = 1;
+let isDragging = false, lastX = 0, lastY = 0;
+
+// ═══════════════════════════════════════════════════════════════════════════
+// LAYOUT CONSTANTS
+// ═══════════════════════════════════════════════════════════════════════════
+const MAP_W = 3200, MAP_H = 2200;
+const TREK_Y_CENTER = 520;
+const WARS_Y_CENTER = 1580;
+const COMIC_Y_OFFSET = -120;
+const BOOK_Y_OFFSET  = 120;
+
+// Release axis: 1967–2028 mapped to x: 100–3100
+const X_MIN_YEAR = 1967, X_MAX_YEAR = 2028;
+const X_LEFT = 120, X_RIGHT = 3080;
+
+function yearToX(year) {
+  return X_LEFT + ((year - X_MIN_YEAR) / (X_MAX_YEAR - X_MIN_YEAR)) * (X_RIGHT - X_LEFT);
+}
+
+// Era axis for Trek: 2260–2410 → x
+function trekEraToX(y) {
+  const min = 2255, max = 2510;
+  return X_LEFT + ((y - min) / (max - min)) * (X_RIGHT - X_LEFT);
+}
+
+// Era axis for Wars: BBY/ABY buckets
+const ERA_B = [-4000, -232, -19, 0, 6, 45, 130];
+function warsEraToX(val) {
+  const b = ERA_B;
+  for (let i = 0; i < b.length - 1; i++) {
+    if (val >= b[i] && val <= b[i+1]) {
+      return X_LEFT + ((i + (val - b[i]) / (b[i+1] - b[i])) / (b.length - 1)) * (X_RIGHT - X_LEFT);
+    }
+  }
+  return val < b[0] ? X_LEFT : X_RIGHT;
+}
+
+function getNodeX(d) {
+  if (axisMode === 'release') return yearToX((d.rel[0] + d.rel[1]) / 2);
+  return d.franchise === 'trek' ? trekEraToX(d.eraYear) : warsEraToX(d.eraYear);
+}
+
+function getNodeY(d) {
+  const base = d.franchise === 'trek' ? TREK_Y_CENTER : WARS_Y_CENTER;
+  const typeOffset = d.type === 'comic' ? COMIC_Y_OFFSET : BOOK_Y_OFFSET;
+  const jitter = ((d.id.charCodeAt(5) || 0) % 60) - 30;
+  return base + typeOffset + jitter;
+}
+
+function getNodeSize(d) {
+  if (d.issues === null) return 18;
+  if (d.issues > 200) return 34;
+  if (d.issues > 80) return 26;
+  if (d.issues > 20) return 20;
+  return 14;
+}
+
+function getNodeColor(d) {
+  if (!filters[d.franchise] || !filters[d.type + 's']) return null;
+  const baseColor = d.type === 'comic' ? 'var(--comics)' : 'var(--books)';
+  return baseColor;
+}
+
+// ═══════════════════════════════════════════════════════════════════════════
+// RENDER MAP
+// ═══════════════════════════════════════════════════════════════════════════
+function renderMap() {
+  const canvas = document.getElementById('map-canvas');
+  canvas.innerHTML = '';
+  canvas.style.transform = `translate(${panX}px, ${panY}px) scale(${zoom})`;
+
+  // Band backgrounds
+  const trekBand = document.createElement('div');
+  trekBand.style.cssText = `position:absolute;left:0;right:0;top:${TREK_Y_CENTER - 280}px;height:560px;background:linear-gradient(to bottom, transparent, rgba(58,184,255,0.03) 30%, rgba(58,184,255,0.03) 70%, transparent);pointer-events:none;`;
+  canvas.appendChild(trekBand);
+
+  const warsBand = document.createElement('div');
+  warsBand.style.cssText = `position:absolute;left:0;right:0;top:${WARS_Y_CENTER - 280}px;height:560px;background:linear-gradient(to bottom, transparent, rgba(245,200,66,0.03) 30%, rgba(245,200,66,0.03) 70%, transparent);pointer-events:none;`;
+  canvas.appendChild(warsBand);
+
+  // Labels
+  const addLabel = (text, x, y, color, size='10px') => {
+    const el = document.createElement('div');
+    el.style.cssText = `position:absolute;left:${x}px;top:${y}px;font-family:var(--mono);font-size:${size};color:${color};letter-spacing:1.5px;text-transform:uppercase;pointer-events:none;`;
+    el.textContent = text;
+    canvas.appendChild(el);
+  };
+
+  addLabel('STAR TREK', 20, TREK_Y_CENTER - 280, 'rgba(58,184,255,0.4)', '11px');
+  addLabel('comics ↑', 20, TREK_Y_CENTER - 160, 'rgba(224,48,112,0.35)', '9px');
+  addLabel('books ↓', 20, TREK_Y_CENTER + 100, 'rgba(66,224,160,0.35)', '9px');
+  addLabel('STAR WARS', 20, WARS_Y_CENTER - 280, 'rgba(245,200,66,0.4)', '11px');
+  addLabel('comics ↑', 20, WARS_Y_CENTER - 160, 'rgba(224,48,112,0.35)', '9px');
+  addLabel('books ↓', 20, WARS_Y_CENTER + 100, 'rgba(66,224,160,0.35)', '9px');
+
+  // Axis tick lines + labels
+  const tickYears = axisMode === 'release'
+    ? [1967,1975,1980,1985,1990,1995,2000,2005,2010,2015,2020,2025,2028]
+    : null;
+
+  if (tickYears) {
+    tickYears.forEach(y => {
+      const x = yearToX(y);
+      const line = document.createElement('div');
+      line.style.cssText = `position:absolute;left:${x}px;top:0;bottom:0;width:1px;background:rgba(255,255,255,0.04);pointer-events:none;`;
+      canvas.appendChild(line);
+      addLabel(String(y), x - 12, 20, 'rgba(255,255,255,0.15)', '9px');
+      addLabel(String(y), x - 12, MAP_H - 30, 'rgba(255,255,255,0.15)', '9px');
+    });
+  }
+
+  // Divider line between Trek and Wars
+  const divider = document.createElement('div');
+  divider.style.cssText = `position:absolute;left:${X_LEFT}px;right:${MAP_W - X_RIGHT}px;top:${(TREK_Y_CENTER + WARS_Y_CENTER)/2}px;height:1px;background:rgba(255,255,255,0.06);pointer-events:none;`;
+  canvas.appendChild(divider);
+
+  // Nodes
+  DATA.forEach(d => {
+    const visible = filters[d.franchise] && filters[d.type + 's'];
+    if (!visible) return;
+
+    const x = getNodeX(d);
+    const y = getNodeY(d);
+    const size = getNodeSize(d);
+
+    const node = document.createElement('div');
+    node.className = 'node';
+    node.style.left = x + 'px';
+    node.style.top  = y + 'px';
+
+    const isLegends = !d.canon;
+    const typeColor = d.type === 'comic' ? '#e03070' : '#42e0a0';
+    const glow = d.franchise === 'trek' ? 'var(--trek-glow)' : 'var(--wars-glow)';
+    const statusOp = d.status === 'upcoming' ? 0.5 : d.status === 'ongoing' ? 1 : 0.75;
+
+    const ring = document.createElement('div');
+    ring.className = 'node-ring';
+    ring.style.cssText = `
+      width:${size}px;height:${size}px;
+      background:${isLegends ? 'rgba(153,102,204,0.15)' : `rgba(${d.franchise==='trek'?'58,184,255':'245,200,66'},0.1)`};
+      border:2px solid ${isLegends ? 'rgba(153,102,204,0.6)' : typeColor};
+      box-shadow:0 0 ${size/2}px ${isLegends ? 'rgba(153,102,204,0.3)' : typeColor};
+      opacity:${statusOp};
+    `;
+
+    // Inner dot
+    const dot = document.createElement('div');
+    dot.style.cssText = `width:${Math.max(4, size*0.35)}px;height:${Math.max(4, size*0.35)}px;border-radius:50%;background:${isLegends ? 'rgba(153,102,204,0.8)' : typeColor};`;
+    ring.appendChild(dot);
+
+    // Upcoming = dashed look
+    if (d.status === 'upcoming') ring.style.borderStyle = 'dashed';
+
+    const label = document.createElement('div');
+    label.className = 'node-label';
+    label.style.color = isLegends ? 'var(--legends)' : 'var(--muted)';
+    const shortName = d.name.length > 22 ? d.name.slice(0, 20) + '…' : d.name;
+    const yearRange = axisMode === 'release' ? `${Math.floor(d.rel[0])}` : d.eraYear != null ? (d.eraYear < 0 ? `${Math.abs(d.eraYear)} BBY` : `${d.eraYear} ABY`) : '';
+    label.innerHTML = `${shortName}<br><span style="color:var(--muted);font-size:7px">${yearRange}</span>`;
+
+    node.appendChild(ring);
+    node.appendChild(label);
+    node.addEventListener('click', (e) => { e.stopPropagation(); openDetail(d); });
+    node.addEventListener('touchend', (e) => { e.preventDefault(); openDetail(d); });
+    canvas.appendChild(node);
+  });
+}
+
+// ═══════════════════════════════════════════════════════════════════════════
+// RENDER TIMELINE
+// ═══════════════════════════════════════════════════════════════════════════
+
+const TL_SECTIONS = [
+  { key:'trek-comics',  label:'Star Trek Comics',  sub:'Gold Key → IDW',     dot:'var(--idw)',    filter:(d)=>d.franchise==='trek'&&d.type==='comic' },
+  { key:'trek-books',   label:'Star Trek Novels',  sub:'Bantam → Gallery',   dot:'var(--pocket)', filter:(d)=>d.franchise==='trek'&&d.type==='book'  },
+  { key:'wars-comics',  label:'Star Wars Comics',  sub:'Marvel 77 → now',    dot:'var(--marvel)', filter:(d)=>d.franchise==='wars'&&d.type==='comic' },
+  { key:'wars-books',   label:'Star Wars Novels',  sub:'Del Rey → now',      dot:'var(--delrey)', filter:(d)=>d.franchise==='wars'&&d.type==='book'  },
+];
+
+const tlCollapsed = {};
+
+function renderTimeline() {
+  const container = document.getElementById('timeline-view');
+  container.innerHTML = '';
+
+  const relMin = 1967, relMax = 2028;
+
+  TL_SECTIONS.forEach(sec => {
+    const items = DATA.filter(sec.filter).filter(d => filters[d.franchise] && filters[d.type+'s']);
+    if (!items.length) return;
+
+    const secEl = document.createElement('div');
+    secEl.className = `tl-section${tlCollapsed[sec.key] ? ' coll' : ''}`;
+
+    const head = document.createElement('div');
+    head.className = 'tl-section-head';
+    head.innerHTML = `
+      <div class="tl-sec-dot" style="background:${sec.dot}"></div>
+      <div>
+        <div class="tl-sec-name">${sec.label}</div>
+        <div class="tl-sec-sub">${sec.sub}</div>
+      </div>
+      <div class="tl-sec-chev">▼</div>`;
+    head.onclick = () => { tlCollapsed[sec.key] = !tlCollapsed[sec.key]; renderTimeline(); };
+
+    const body = document.createElement('div');
+    body.className = 'tl-body';
+
+    // Axis
+    const axisRow = document.createElement('div');
+    axisRow.className = 'tl-axis-row';
+    const years = axisMode === 'release' ? [1967,1980,1990,2000,2010,2020,2028] : null;
+    axisRow.innerHTML = `<div class="tl-row-spacer"></div><div class="tl-axis-labels">${
+      years ? years.map(y=>`<span>${y}</span>`).join('') : '<span></span>'
+    }</div>`;
+    body.appendChild(axisRow);
+
+    items.sort((a,b)=>a.rel[0]-b.rel[0]).forEach(d => {
+      const row = document.createElement('div');
+      row.className = 'tl-row';
+      row.onclick = () => openDetail(d);
+
+      const total = d.issues || (d.out + 4);
+      const showPips = Math.min(total, 24);
+      let pips = '';
+      for (let i=0;i<showPips;i++) pips += `<div class="tl-pip ${i<d.out?'out':'todo'}"></div>`;
+      if (total>24) pips += `<span class="tl-pip-more">+${total-24}</span>`;
+
+      const barL = axisMode === 'release'
+        ? ((d.rel[0]-relMin)/(relMax-relMin)*100)
+        : (d.franchise==='trek' ? ((d.eraYear-2255)/(2510-2255)*100) : (warsEraToX(d.eraYear)-X_LEFT)/(X_RIGHT-X_LEFT)*100);
+      const barW = axisMode === 'release'
+        ? Math.max(((d.rel[1]-d.rel[0])/(relMax-relMin)*100), 1.5)
+        : 6;
+      const barColor = d.type==='comic' ? 'var(--comics)' : 'var(--books)';
+      const barOp = d.canon ? 1 : 0.55;
+      const borderStyle = d.status==='upcoming' ? 'dashed' : 'solid';
+
+      const statusBadge = d.canon===false ? 'legends' : d.status;
+      const badgeLabel = d.canon===false ? 'LEGENDS' : d.status.toUpperCase();
+
+      row.innerHTML = `
+        <div class="tl-row-label">
+          <div class="tl-row-name">${d.name}</div>
+          <div class="tl-row-sub">${d.publisher} · ${Math.floor(d.rel[0])}–${Math.ceil(d.rel[1])}</div>
+          <div class="tl-pip-row">${pips}</div>
+        </div>
+        <div class="tl-bar-area">
+          <div class="tl-bar" style="left:${barL}%;width:${barW}%;background:${barColor};opacity:${barOp};border:1px ${borderStyle} ${barColor};color:var(--bg);font-size:7px;"></div>
+        </div>
+        <div class="tl-status"><span class="tl-badge ${statusBadge}">${badgeLabel}</span></div>`;
+
+      body.appendChild(row);
+    });
+
+    secEl.appendChild(head);
+    secEl.appendChild(body);
+    container.appendChild(secEl);
+  });
+}
+
+// ═══════════════════════════════════════════════════════════════════════════
+// DETAIL PANEL
+// ═══════════════════════════════════════════════════════════════════════════
+function openDetail(d) {
+  document.getElementById('dp-title').textContent = d.name;
+  document.getElementById('dp-sub').textContent = `${d.publisher} · ${Math.floor(d.rel[0])}–${Math.ceil(d.rel[1])}`;
+
+  const tags = [
+    `<span class="dp-tag ${d.franchise}">${d.franchise.toUpperCase()}</span>`,
+    `<span class="dp-tag ${d.type}">${d.type.toUpperCase()}</span>`,
+    `<span class="dp-tag ${d.canon ? 'canon' : 'legends'}">${d.canon ? 'CANON' : 'LEGENDS'}</span>`,
+    `<span class="dp-tag ${d.status}">${d.status.toUpperCase()}</span>`,
+  ];
+  if (d.issues) tags.push(`<span class="dp-tag" style="background:rgba(255,255,255,.05);color:var(--muted);border:1px solid var(--border)">${d.out}${d.issues ? '/'+d.issues : '+'} issues/books</span>`);
+  document.getElementById('dp-meta').innerHTML = tags.join('');
+  document.getElementById('dp-body').innerHTML = d.desc;
+
+  const availEl = document.getElementById('dp-avail');
+  if (d.avail && d.avail.length) {
+    availEl.innerHTML = `<div class="dp-avail-label">WHERE TO READ</div>` +
+      d.avail.map(a => `<a class="avail-btn ${a.c}" href="${a.u}" target="_blank" rel="noopener">${a.l} →</a>`).join('');
+  } else {
+    availEl.innerHTML = '';
+  }
+
+  document.getElementById('detail-panel').classList.add('open');
+}
+
+function closeDetail() {
+  document.getElementById('detail-panel').classList.remove('open');
+}
+
+document.getElementById('map-view').addEventListener('click', closeDetail);
+
+// ═══════════════════════════════════════════════════════════════════════════
+// PAN + ZOOM
+// ═══════════════════════════════════════════════════════════════════════════
+const mapView = document.getElementById('map-view');
+const mapCanvas = document.getElementById('map-canvas');
+
+function applyTransform() {
+  mapCanvas.style.transform = `translate(${panX}px, ${panY}px) scale(${zoom})`;
+}
+
+// Mouse drag
+mapView.addEventListener('mousedown', e => {
+  if (e.target.closest('.node')) return;
+  isDragging = true; lastX = e.clientX; lastY = e.clientY;
+  mapView.classList.add('dragging');
+});
+window.addEventListener('mousemove', e => {
+  if (!isDragging) return;
+  panX += e.clientX - lastX; panY += e.clientY - lastY;
+  lastX = e.clientX; lastY = e.clientY;
+  applyTransform();
+});
+window.addEventListener('mouseup', () => { isDragging = false; mapView.classList.remove('dragging'); });
+
+// Touch pan
+let t0 = null, t0dist = null, t0zoom = null;
+mapView.addEventListener('touchstart', e => {
+  if (e.touches.length === 1 && !e.target.closest('.node')) {
+    t0 = { x: e.touches[0].clientX, y: e.touches[0].clientY, px: panX, py: panY };
+  } else if (e.touches.length === 2) {
+    const dx = e.touches[0].clientX - e.touches[1].clientX;
+    const dy = e.touches[0].clientY - e.touches[1].clientY;
+    t0dist = Math.sqrt(dx*dx+dy*dy); t0zoom = zoom;
+  }
+}, { passive: true });
+mapView.addEventListener('touchmove', e => {
+  if (e.touches.length === 1 && t0) {
+    panX = t0.px + e.touches[0].clientX - t0.x;
+    panY = t0.py + e.touches[0].clientY - t0.y;
+    applyTransform();
+  } else if (e.touches.length === 2 && t0dist) {
+    const dx = e.touches[0].clientX - e.touches[1].clientX;
+    const dy = e.touches[0].clientY - e.touches[1].clientY;
+    const dist = Math.sqrt(dx*dx+dy*dy);
+    zoom = Math.max(0.3, Math.min(3, t0zoom * dist / t0dist));
+    applyTransform();
+  }
+}, { passive: true });
+mapView.addEventListener('touchend', () => { t0 = null; t0dist = null; });
+
+// Scroll zoom
+mapView.addEventListener('wheel', e => {
+  e.preventDefault();
+  zoom = Math.max(0.3, Math.min(3, zoom * (e.deltaY < 0 ? 1.1 : 0.9)));
+  applyTransform();
+}, { passive: false });
+
+// ═══════════════════════════════════════════════════════════════════════════
+// STARFIELD
+// ═══════════════════════════════════════════════════════════════════════════
+function buildStarfield() {
+  const c = document.getElementById('starfield');
+  c.width = window.innerWidth;
+  c.height = window.innerHeight;
+  const ctx = c.getContext('2d');
+  ctx.clearRect(0,0,c.width,c.height);
+  for (let i=0; i<200; i++) {
+    const x = Math.random()*c.width;
+    const y = Math.random()*c.height;
+    const r = Math.random()*1.2;
+    const a = Math.random()*0.5+0.05;
+    ctx.beginPath();
+    ctx.arc(x,y,r,0,Math.PI*2);
+    ctx.fillStyle = `rgba(255,255,255,${a})`;
+    ctx.fill();
+  }
+}
+
+// ═══════════════════════════════════════════════════════════════════════════
+// CONTROLS
+// ═══════════════════════════════════════════════════════════════════════════
+function setView(v) {
+  viewMode = v;
+  document.getElementById('btn-map').classList.toggle('active', v==='map');
+  document.getElementById('btn-tl').classList.toggle('active', v==='timeline');
+  document.getElementById('map-view').style.display = v==='map' ? 'block' : 'none';
+  document.getElementById('timeline-view').style.display = v==='timeline' ? 'block' : 'none';
+  document.getElementById('legend').classList.toggle('tl-mode', v==='timeline');
+  fullRender();
+}
+
+function setAxis(a) {
+  axisMode = a;
+  document.getElementById('btn-rel').classList.toggle('active', a==='release');
+  document.getElementById('btn-era').classList.toggle('active', a==='era');
+  fullRender();
+}
+
+function toggleFilter(key) {
+  filters[key] = !filters[key];
+  const btn = document.getElementById(`fp-${key}`);
+  const onClass = key==='trek' ? 'on-trek' : key==='wars' ? 'on-wars' : key==='comics' ? 'on-comics' : 'on-books';
+  btn.classList.toggle(onClass, filters[key]);
+  fullRender();
+}
+
+function fullRender() {
+  if (viewMode === 'map') renderMap();
+  else renderTimeline();
+}
+
+// ═══════════════════════════════════════════════════════════════════════════
+// INIT
+// ═══════════════════════════════════════════════════════════════════════════
+// Initial pan to center Trek section
+panX = -200;
+panY = -300;
+zoom = 0.45;
+
+buildStarfield();
+window.addEventListener('resize', buildStarfield);
+
+(async function () {
+  try {
+    const data = await loadData();
+    DATA = (data && data.entries) ? data.entries : [];
+    fullRender();
+  } catch (e) {
+    document.getElementById('map-canvas').innerHTML =
+      `<div style="position:absolute;left:140px;top:140px;color:#ffb4b4;font-family:var(--mono);font-size:13px;max-width:520px;line-height:1.6">${e.message || e}</div>`;
+  }
+})();
+</script>
+</body>
+</html>
