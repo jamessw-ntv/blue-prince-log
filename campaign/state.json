@@ -1,0 +1,64 @@
+{
+  "campaign": { "name": "Smoke Over Bramblewick", "location": "The Flooded Mine", "floor": "Entry Shaft" },
+  "currency": { "name": "Gold", "amount": 40 },
+  "map": {
+    "note": "Act 2 — green haze, dripping timbers. A spore-thrall shambles up the shaft. Black water rising to the south.",
+    "legend": { "@": "Party", "E": "Spore-Thrall", "+": "Door", "~": "Black water", ">": "Deeper", "$": "Cache" },
+    "grid": [
+      "#########",
+      "#@..+..E#",
+      "#.#####.#",
+      "#..~~...#",
+      "#.>...$.#",
+      "#########"
+    ]
+  },
+  "party": [
+    {
+      "name": "Bran Holt", "class": "Fighter", "title": "Bramblewick's Hope", "level": 2, "role": "leader",
+      "hp": 13, "hpMax": 16, "mp": 0, "mpMax": 0,
+      "status": [ { "name": "Bruised", "desc": "Took a claw on the ladder." } ],
+      "abilities": [
+        { "name": "Second Wind", "desc": "Bonus action: recover some HP, once per rest." },
+        { "name": "Action Surge", "desc": "One extra action, once per rest." }
+      ],
+      "items": [
+        { "name": "Longsword", "rarity": "Common", "qty": 1, "desc": "1d8 slashing." },
+        { "name": "Shield", "rarity": "Common", "qty": 1, "desc": "+2 AC (already counted)." },
+        { "name": "Torch", "rarity": "Common", "qty": 3, "desc": "Light; the haze hates fire." }
+      ]
+    },
+    {
+      "name": "Corwin", "class": "Ranger", "title": "", "level": 2, "role": "companion",
+      "hp": 12, "hpMax": 13, "mp": 0, "mpMax": 0,
+      "status": [],
+      "abilities": [ { "name": "Hunter's Volley", "desc": "A flurry of arrows at the front rank." } ],
+      "items": [
+        { "name": "Longbow", "rarity": "Common", "qty": 1, "desc": "1d8 piercing, ranged." },
+        { "name": "Hunting Knife", "rarity": "Common", "qty": 1, "desc": "1d4." }
+      ]
+    },
+    {
+      "name": "Lysa", "class": "Bard", "title": "", "level": 2, "role": "companion",
+      "hp": 10, "hpMax": 11, "mp": 6, "mpMax": 8,
+      "status": [ { "name": "Inspired", "desc": "Next check has +1d4." } ],
+      "abilities": [
+        { "name": "Bardic Inspiration", "desc": "Grant an ally +1d4 on a roll." },
+        { "name": "Healing Word", "desc": "Bonus action: heal at range." }
+      ],
+      "items": [
+        { "name": "Lute", "rarity": "Common", "qty": 1, "desc": "Spellcasting focus." },
+        { "name": "Healer's Kit", "rarity": "Common", "qty": 1, "desc": "Stabilise the downed." }
+      ]
+    }
+  ],
+  "quests": {
+    "active": [ "Find Miller Coll in the mine", "Stop the green smoke at its source" ],
+    "completed": [ "Investigate Bramblewick (Act 1)" ]
+  },
+  "log": [
+    "[ QUEST ] Smoke Over Bramblewick — descended into the flooded mine.",
+    "A spore-thrall shambles up the entry shaft. Roll initiative!",
+    "[ SYSTEM ] STATUS  Bran Holt · Fighter · Lv 2  ·  HP 13/16"
+  ]
+}
