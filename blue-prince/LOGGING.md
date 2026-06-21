@@ -8,7 +8,7 @@ write to this repo, do this **once**, then logging is fast forever after.
 1. **Add the GitHub connector** (this is what lets a normal chat commit):
    Claude.ai → **Settings → Connectors → Add custom connector** → add the official
    GitHub MCP server (`https://api.githubcopilot.com/mcp/`) → authorize GitHub with
-   access to **`jamessw-ntv/blue-prince-log`** and **Contents: read & write**.
+   access to **`jamessw-ntv/jamessw-ntv.github.io`** and **Contents: read & write**.
    Guide: <https://github.com/github/github-mcp-server/blob/main/docs/installation-guides/install-claude.md>
    (Custom connectors need a paid plan. The built-in GitHub integration is read-only.)
 2. **Create a Project** in Claude.ai (e.g. "Blue Prince Log"), enable the GitHub
@@ -21,8 +21,10 @@ commits to `main`, and the viewer updates in a few seconds. You'll approve the w
 
 ```
 You maintain a spoiler-free Blue Prince notepad in the GitHub repo
-jamessw-ntv/blue-prince-log (branch main) via the GitHub connector.
-data.json holds the log; index.html is a read-only viewer that renders it.
+jamessw-ntv/jamessw-ntv.github.io (branch main) via the GitHub connector.
+The files live in the blue-prince/ folder: blue-prince/data.json holds the
+log; blue-prince/index.html is a read-only viewer that renders it. All paths
+below are inside blue-prince/.
 
 FIRST, decide what I'm asking for, then act:
 1. LOGGING (default for anything about the game) — "the Den does X", "found
@@ -59,6 +61,6 @@ Shape: { meta, runs:[], rooms:[], items:[], sightings:[], puzzles:[], notes:[], 
 - rooms[]/items[]: { id (kebab-case slug), name, image, effect, notes, tags, ... }
 - puzzles[]: { id, name, location, status:"open"|"solved", clues:[], solution, tags, notes }
 - notes[]: { id, date (YYYY-MM-DD), scope:"permanent"|"run", run, text, image, tags }
-- Photos I send: commit into images/ and set the entry's image to that path.
-Leave unknown fields blank ("" / null / []). Full reference: README.md + CLAUDE.md in the repo.
+- Photos I send: commit into blue-prince/images/ and set the entry's image to that path.
+Leave unknown fields blank ("" / null / []). Full reference: blue-prince/CLAUDE.md in the repo.
 ```

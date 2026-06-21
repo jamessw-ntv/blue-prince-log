@@ -1,0 +1,74 @@
+/* hub.css — shared design system for jamessw-ntv.github.io
+   One source of truth for tokens + common components. Every project page
+   links this (relatively) so the whole site looks like one product.
+
+   Page-specific CSS is fine on top of this; just don't redefine the tokens. */
+
+:root{
+  /* core palette */
+  --bg:#0f1422; --panel:#171d2e; --panel2:#1f2740; --line:#2b3550;
+  --text:#e8ecf6; --muted:#9aa6c4; --accent:#6ea8fe;
+  /* accent swatches (shared across projects that need category colours) */
+  --blue:#3b82f6; --orange:#f97316; --green:#22c55e; --purple:#a855f7;
+  --yellow:#eab308; --red:#ef4444; --black:#0b0f1a;
+  /* layout */
+  --maxw:1100px; --radius:12px;
+  --font: 15px/1.5 system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Arial,sans-serif;
+}
+
+*{box-sizing:border-box}
+html,body{height:100%}
+body{margin:0;background:var(--bg);color:var(--text);font:var(--font)}
+a{color:var(--accent)}
+
+/* ---- shared top bar with the "back to hub" link ---------------------- */
+.hubbar{display:flex;align-items:center;gap:12px;
+  padding:10px 22px;border-bottom:1px solid var(--line);
+  background:linear-gradient(180deg,#141b2e,#0f1422)}
+.hubbar .backlink{display:inline-flex;align-items:center;gap:6px;
+  text-decoration:none;color:var(--muted);font-size:13px;
+  background:var(--panel);border:1px solid var(--line);
+  padding:6px 12px;border-radius:999px}
+.hubbar .backlink:hover{color:var(--text)}
+.hubbar .crumb{color:var(--muted);font-size:13px}
+.hubbar .crumb b{color:var(--text)}
+
+/* ---- page scaffolding ----------------------------------------------- */
+.wrap{max-width:var(--maxw);margin:0 auto;padding:0 22px 60px}
+header.page{padding:20px 22px 8px;border-bottom:1px solid var(--line);
+  background:linear-gradient(180deg,#141b2e,#0f1422)}
+header.page h1{margin:0 0 4px;font-size:22px;letter-spacing:.2px}
+.sub{color:var(--muted);font-size:13px}
+.sub b{color:var(--text)}
+
+/* ---- cards + grid (used by the menu and most projects) -------------- */
+.grid{display:grid;gap:14px;grid-template-columns:repeat(auto-fill,minmax(260px,1fr))}
+.card{background:var(--panel);border:1px solid var(--line);border-radius:var(--radius);
+  padding:16px;text-decoration:none;color:inherit;display:block;transition:border-color .15s,transform .15s}
+a.card:hover{border-color:var(--accent);transform:translateY(-2px)}
+.card .ico{font-size:26px;line-height:1;margin-bottom:10px}
+.card h3{margin:0 0 6px;font-size:16px}
+.card p{margin:0;color:var(--muted);font-size:13.5px}
+.card.disabled{opacity:.5;pointer-events:none}
+
+/* ---- badges / status ------------------------------------------------ */
+.badges{display:flex;flex-wrap:wrap;gap:6px;margin:10px 0 0}
+.b{font-size:11px;padding:2px 8px;border-radius:999px;background:var(--panel2);
+  color:var(--muted);border:1px solid var(--line)}
+.b.tag{background:#11203a;color:#9cc4ff;border-color:#1d3a63}
+.status{font-size:11px;padding:2px 8px;border-radius:999px;font-weight:600}
+.status.active{background:#103226;color:#7ee2b8;border:1px solid #1d5742}
+.status.wip{background:#3a2a11;color:#ffcf8a;border:1px solid #5a4012}
+.status.planned{background:var(--panel2);color:var(--muted);border:1px solid var(--line)}
+
+/* ---- buttons / pills ------------------------------------------------ */
+.toggle{background:var(--panel);color:var(--muted);border:1px solid var(--line);
+  padding:8px 13px;border-radius:999px;cursor:pointer;font-size:13px;text-decoration:none;display:inline-block}
+.toggle:hover{color:var(--text)}
+.toggle.active{background:#3a2f10;color:#ffd479;border-color:#5a4012}
+
+/* ---- footer --------------------------------------------------------- */
+footer.site{color:var(--muted);font-size:12px;border-top:1px solid var(--line);
+  margin-top:30px;padding:14px 22px;text-align:center}
+
+.hidden{display:none!important}

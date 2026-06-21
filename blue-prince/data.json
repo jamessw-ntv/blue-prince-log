@@ -4,8 +4,8 @@
     "title": "Blue Prince — Room & Item Log",
     "schemaVersion": 3,
     "updated": "2026-06-17",
-    "source": "https://github.com/jamessw-ntv/blue-prince-log",
-    "viewer": "https://jamessw-ntv.github.io/blue-prince-log/",
+    "source": "https://github.com/jamessw-ntv/jamessw-ntv.github.io",
+    "viewer": "https://jamessw-ntv.github.io/blue-prince/",
     "note": "Spoiler-free notepad. Starts empty on purpose — rooms, items, puzzles and notes are added from your own play via a Claude chat (committed to main); the viewer reads this file same-origin."
   },
   "runs": [],

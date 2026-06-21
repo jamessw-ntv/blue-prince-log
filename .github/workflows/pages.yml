@@ -32,7 +32,7 @@ jobs:
         with:
           enablement: true
 
-      # Publish the whole repo root (index.html + data.json) as the site.
+      # Publish the whole repo root (menu index.html + each project folder) as the site.
       - name: Upload site
         uses: actions/upload-pages-artifact@v3
         with:

@@ -1,0 +1,40 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>PROJECT TITLE</title>
+<!-- All projects link the shared design system, so the whole site looks consistent.
+     This template lives at /_template/, so the path up to assets is ../assets/.
+     A real project folder is also one level deep (e.g. /sports/), so the same
+     ../assets/ path is correct there too. -->
+<link rel="stylesheet" href="../assets/hub.css" />
+<style>
+  /* Put ONLY project-specific styles here. Never redefine the :root tokens —
+     pull colours/spacing from hub.css so everything stays on-brand. */
+</style>
+</head>
+<body>
+<!-- Standard hub bar: every project page has this exact back-link at the top. -->
+<div class="hubbar">
+  <a class="backlink" href="../">← Hub</a>
+  <span class="crumb"><b>PROJECT TITLE</b></span>
+</div>
+
+<header class="page">
+  <div class="wrap" style="padding-bottom:0">
+    <h1>PROJECT TITLE</h1>
+    <div class="sub">One-line description of what this project is.</div>
+  </div>
+</header>
+
+<div class="wrap">
+  <!-- Project content goes here. If the project is data-driven, follow the
+       Blue Prince pattern: keep the data in a data.json beside this file and
+       render it client-side. If it's static, just write the markup. -->
+  <p>Replace me.</p>
+</div>
+
+<footer class="site">Part of the <a href="../">projects hub</a>.</footer>
+</body>
+</html>
