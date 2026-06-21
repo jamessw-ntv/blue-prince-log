@@ -10,7 +10,6 @@
     {
       "id": "trek-goldkey",
       "name": "Star Trek (Gold Key)",
-      "sub": "Gold Key Comics",
       "type": "comic",
       "franchise": "trek",
       "canon": false,
@@ -18,9 +17,7 @@
         1967,
         1979
       ],
-      "eraYear": 2266,
       "publisher": "Gold Key",
-      "pubColor": "#ffcc44",
       "issues": 61,
       "out": 61,
       "status": "complete",
@@ -36,7 +33,6 @@
     {
       "id": "trek-marvel77",
       "name": "Star Trek (Marvel 1979–1982)",
-      "sub": "Marvel Comics · TMP era",
       "type": "comic",
       "franchise": "trek",
       "canon": false,
@@ -44,9 +40,7 @@
         1979.75,
         1982.5
       ],
-      "eraYear": 2273,
       "publisher": "Marvel",
-      "pubColor": "var(--marvel)",
       "issues": 18,
       "out": 18,
       "status": "complete",
@@ -62,7 +56,6 @@
     {
       "id": "trek-dc84",
       "name": "Star Trek (DC 1984–1996)",
-      "sub": "DC Comics · Movie era",
       "type": "comic",
       "franchise": "trek",
       "canon": false,
@@ -70,9 +63,7 @@
         1984,
         1996
       ],
-      "eraYear": 2285,
       "publisher": "DC",
-      "pubColor": "#0099ff",
       "issues": 80,
       "out": 80,
       "status": "complete",
@@ -88,7 +79,6 @@
     {
       "id": "trek-wildstorm",
       "name": "Star Trek (WildStorm/Tokyopop)",
-      "sub": "Late 90s / early 2000s",
       "type": "comic",
       "franchise": "trek",
       "canon": false,
@@ -96,9 +86,7 @@
         1999,
         2004
       ],
-      "eraYear": 2375,
       "publisher": "WildStorm",
-      "pubColor": "#8866cc",
       "issues": 20,
       "out": 20,
       "status": "complete",
@@ -114,7 +102,6 @@
     {
       "id": "trek-idw-kelvin",
       "name": "Star Trek: Countdown + Kelvin Ongoing",
-      "sub": "IDW · 2009–2016",
       "type": "comic",
       "franchise": "trek",
       "canon": true,
@@ -122,9 +109,7 @@
         2009,
         2016.75
       ],
-      "eraYear": 2260,
       "publisher": "IDW",
-      "pubColor": "var(--idw)",
       "issues": 64,
       "out": 64,
       "status": "complete",
@@ -145,7 +130,6 @@
     {
       "id": "trek-idw-tv",
       "name": "IDW TV Era (Discovery/Picard/SNW)",
-      "sub": "IDW · 2017–2024",
       "type": "comic",
       "franchise": "trek",
       "canon": true,
@@ -153,9 +137,7 @@
         2017.75,
         2024.75
       ],
-      "eraYear": 2380,
       "publisher": "IDW",
-      "pubColor": "var(--idw)",
       "issues": 30,
       "out": 30,
       "status": "complete",
@@ -176,7 +158,6 @@
     {
       "id": "trek-idw-shared",
       "name": "IDW Shared Universe (Sisko / Defiant era)",
-      "sub": "IDW · 2022–2025",
       "type": "comic",
       "franchise": "trek",
       "canon": true,
@@ -184,9 +165,7 @@
         2022.75,
         2025.5
       ],
-      "eraYear": 2378,
       "publisher": "IDW",
-      "pubColor": "var(--idw)",
       "issues": 58,
       "out": 58,
       "status": "complete",
@@ -207,7 +186,6 @@
     {
       "id": "trek-idw-now",
       "name": "IDW Current (Red Shirts / SNW / Voyager)",
-      "sub": "IDW · 2025–present",
       "type": "comic",
       "franchise": "trek",
       "canon": true,
@@ -215,9 +193,7 @@
         2025.5,
         2026.75
       ],
-      "eraYear": 2370,
       "publisher": "IDW",
-      "pubColor": "var(--idw)",
       "issues": 15,
       "out": 8,
       "status": "ongoing",
@@ -238,7 +214,6 @@
     {
       "id": "trek-idw-2026",
       "name": "IDW 2026 Relaunch (Seven / Raffi)",
-      "sub": "IDW · Sep 2026 onward",
       "type": "comic",
       "franchise": "trek",
       "canon": true,
@@ -246,9 +221,7 @@
         2026.67,
         2028
       ],
-      "eraYear": 2402,
       "publisher": "IDW",
-      "pubColor": "var(--idw)",
       "issues": null,
       "out": 0,
       "status": "upcoming",
@@ -269,7 +242,6 @@
     {
       "id": "trek-blish",
       "name": "James Blish Adaptations",
-      "sub": "Bantam Books · 1967–1977",
       "type": "book",
       "franchise": "trek",
       "canon": false,
@@ -277,9 +249,7 @@
         1967,
         1977
       ],
-      "eraYear": 2266,
       "publisher": "Bantam",
-      "pubColor": "var(--bantam)",
       "issues": 12,
       "out": 12,
       "status": "complete",
@@ -295,7 +265,6 @@
     {
       "id": "trek-bantam-orig",
       "name": "Bantam Original Novels",
-      "sub": "Bantam Books · 1976–1981",
       "type": "book",
       "franchise": "trek",
       "canon": false,
@@ -303,9 +272,7 @@
         1976,
         1981
       ],
-      "eraYear": 2266,
       "publisher": "Bantam",
-      "pubColor": "var(--bantam)",
       "issues": 13,
       "out": 13,
       "status": "complete",
@@ -321,7 +288,6 @@
     {
       "id": "trek-pocket-tos",
       "name": "Pocket Books Numbered Series",
-      "sub": "Pocket Books · 1979–2000s",
       "type": "book",
       "franchise": "trek",
       "canon": false,
@@ -329,9 +295,7 @@
         1979,
         2006
       ],
-      "eraYear": 2270,
       "publisher": "Pocket",
-      "pubColor": "var(--pocket)",
       "issues": 90,
       "out": 90,
       "status": "complete",
@@ -352,7 +316,6 @@
     {
       "id": "trek-litverse",
       "name": "Pocket Books Litverse",
-      "sub": "Pocket Books · 1999–2019",
       "type": "book",
       "franchise": "trek",
       "canon": false,
@@ -360,9 +323,7 @@
         1999,
         2019
       ],
-      "eraYear": 2380,
       "publisher": "Pocket",
-      "pubColor": "var(--pocket)",
       "issues": 150,
       "out": 150,
       "status": "complete",
@@ -383,7 +344,6 @@
     {
       "id": "trek-gallery",
       "name": "Gallery Books / Modern Tie-ins",
-      "sub": "Gallery Books · 2019–present",
       "type": "book",
       "franchise": "trek",
       "canon": true,
@@ -391,9 +351,7 @@
         2019,
         2026
       ],
-      "eraYear": 2399,
       "publisher": "Gallery",
-      "pubColor": "#88aaff",
       "issues": 20,
       "out": 20,
       "status": "ongoing",
@@ -414,7 +372,6 @@
     {
       "id": "wars-marvel77",
       "name": "Star Wars (Marvel 1977–1986)",
-      "sub": "Marvel Comics · Original run",
       "type": "comic",
       "franchise": "wars",
       "canon": false,
@@ -422,9 +379,7 @@
         1977,
         1986
       ],
-      "eraYear": 0,
       "publisher": "Marvel",
-      "pubColor": "var(--marvel)",
       "issues": 107,
       "out": 107,
       "status": "complete",
@@ -445,7 +400,6 @@
     {
       "id": "wars-dh-classic",
       "name": "Dark Horse Classic Era",
-      "sub": "Dark Horse · 1991–2014",
       "type": "comic",
       "franchise": "wars",
       "canon": false,
@@ -453,9 +407,7 @@
         1991,
         2014
       ],
-      "eraYear": -3,
       "publisher": "Dark Horse",
-      "pubColor": "var(--dh)",
       "issues": 500,
       "out": 500,
       "status": "complete",
@@ -476,7 +428,6 @@
     {
       "id": "wars-marvel-relaunch",
       "name": "Marvel Relaunch — SW + Vader + Aphra",
-      "sub": "Marvel · 2015–2025",
       "type": "comic",
       "franchise": "wars",
       "canon": true,
@@ -484,9 +435,7 @@
         2015,
         2025.33
       ],
-      "eraYear": 0,
       "publisher": "Marvel",
-      "pubColor": "var(--marvel)",
       "issues": 290,
       "out": 290,
       "status": "complete",
@@ -507,7 +456,6 @@
     {
       "id": "wars-hr-comics",
       "name": "High Republic Comics (Marvel + Dark Horse)",
-      "sub": "2021–2025",
       "type": "comic",
       "franchise": "wars",
       "canon": true,
@@ -515,9 +463,7 @@
         2021.08,
         2025.58
       ],
-      "eraYear": -232,
       "publisher": "Multi",
-      "pubColor": "#cc9944",
       "issues": 100,
       "out": 100,
       "status": "complete",
@@ -538,7 +484,6 @@
     {
       "id": "wars-marvel-now",
       "name": "Marvel Current (2025 Relaunch)",
-      "sub": "Marvel · 2025–present",
       "type": "comic",
       "franchise": "wars",
       "canon": true,
@@ -546,9 +491,7 @@
         2025.33,
         2027
       ],
-      "eraYear": 6,
       "publisher": "Marvel",
-      "pubColor": "var(--marvel)",
       "issues": null,
       "out": 26,
       "status": "ongoing",
@@ -569,7 +512,6 @@
     {
       "id": "wars-dh-now",
       "name": "Dark Horse Current (Bad Batch / Pathfinders)",
-      "sub": "Dark Horse · 2025–present",
       "type": "comic",
       "franchise": "wars",
       "canon": true,
@@ -577,9 +519,7 @@
         2025,
         2027
       ],
-      "eraYear": -19,
       "publisher": "Dark Horse",
-      "pubColor": "var(--dh)",
       "issues": null,
       "out": 10,
       "status": "ongoing",
@@ -600,7 +540,6 @@
     {
       "id": "wars-novel76",
       "name": "ANH Novelisation + Splinter",
-      "sub": "Del Rey · 1976–1978",
       "type": "book",
       "franchise": "wars",
       "canon": false,
@@ -608,9 +547,7 @@
         1976,
         1978
       ],
-      "eraYear": 0,
       "publisher": "Del Rey",
-      "pubColor": "var(--delrey)",
       "issues": 2,
       "out": 2,
       "status": "complete",
@@ -626,7 +563,6 @@
     {
       "id": "wars-early-novels",
       "name": "Han Solo / Lando Adventures",
-      "sub": "Del Rey · 1979–1983",
       "type": "book",
       "franchise": "wars",
       "canon": false,
@@ -634,9 +570,7 @@
         1979,
         1983
       ],
-      "eraYear": -5,
       "publisher": "Del Rey",
-      "pubColor": "var(--delrey)",
       "issues": 6,
       "out": 6,
       "status": "complete",
@@ -652,7 +586,6 @@
     {
       "id": "wars-thrawn",
       "name": "Thrawn Trilogy (Heir to the Empire)",
-      "sub": "Bantam · 1991–1993",
       "type": "book",
       "franchise": "wars",
       "canon": false,
@@ -660,9 +593,7 @@
         1991,
         1993
       ],
-      "eraYear": 9,
       "publisher": "Bantam",
-      "pubColor": "var(--bantam)",
       "issues": 3,
       "out": 3,
       "status": "complete",
@@ -683,7 +614,6 @@
     {
       "id": "wars-bantam-eu",
       "name": "Bantam Expanded Universe Era",
-      "sub": "Bantam · 1993–1999",
       "type": "book",
       "franchise": "wars",
       "canon": false,
@@ -691,9 +621,7 @@
         1993,
         1999
       ],
-      "eraYear": 7,
       "publisher": "Bantam",
-      "pubColor": "var(--bantam)",
       "issues": 40,
       "out": 40,
       "status": "complete",
@@ -714,7 +642,6 @@
     {
       "id": "wars-njorder",
       "name": "New Jedi Order + Legacy of the Force",
-      "sub": "Del Rey · 1999–2008",
       "type": "book",
       "franchise": "wars",
       "canon": false,
@@ -722,9 +649,7 @@
         1999,
         2008
       ],
-      "eraYear": 25,
       "publisher": "Del Rey",
-      "pubColor": "var(--delrey)",
       "issues": 25,
       "out": 25,
       "status": "complete",
@@ -745,7 +670,6 @@
     {
       "id": "wars-fatejedi",
       "name": "Fate of the Jedi + Last Books of Legends",
-      "sub": "Del Rey · 2009–2014",
       "type": "book",
       "franchise": "wars",
       "canon": false,
@@ -753,9 +677,7 @@
         2009,
         2014
       ],
-      "eraYear": 43,
       "publisher": "Del Rey",
-      "pubColor": "var(--delrey)",
       "issues": 15,
       "out": 15,
       "status": "complete",
@@ -776,7 +698,6 @@
     {
       "id": "wars-canon-novels",
       "name": "Canon Novel Era",
-      "sub": "Del Rey / Disney · 2014–present",
       "type": "book",
       "franchise": "wars",
       "canon": true,
@@ -784,9 +705,7 @@
         2014,
         2026
       ],
-      "eraYear": 0,
       "publisher": "Del Rey",
-      "pubColor": "var(--delrey)",
       "issues": 80,
       "out": 80,
       "status": "ongoing",
@@ -807,7 +726,6 @@
     {
       "id": "wars-hr-novels",
       "name": "High Republic Novels",
-      "sub": "Del Rey · 2021–2024",
       "type": "book",
       "franchise": "wars",
       "canon": true,
@@ -815,9 +733,7 @@
         2021,
         2024.5
       ],
-      "eraYear": -232,
       "publisher": "Del Rey",
-      "pubColor": "var(--delrey)",
       "issues": 15,
       "out": 15,
       "status": "complete",

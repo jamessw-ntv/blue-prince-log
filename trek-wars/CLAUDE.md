@@ -21,12 +21,12 @@ desktop from the same markup.
 
 ```
 id        unique kebab-case (detail lookup)
-name, sub display name + sub-label
+name      display name
 type      'comic' | 'book'      → bar colour (pink / green) + swimlane
 franchise 'trek' | 'wars'       → swimlane
 canon     true = current canon · false = Legends / pre-Disney / non-canon (dimmed bar)
 rel       [startYear, endYear] decimals — bar position + width on the 1967→present axis
-publisher plain text  ·  pubColor / eraYear are kept but not used by the timeline
+publisher plain text
 issues    total count (null = ongoing/unknown) · out = released so far
 status    'complete' | 'ongoing' | 'upcoming'  → tag + bar style (upcoming = dashed)
 avail[]   where to read — { l: label, c: class, u: url }
