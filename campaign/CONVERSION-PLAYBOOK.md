@@ -23,6 +23,10 @@ Living Map, stat blocks, and branches. This is the "Run a module" / Pre-Made Lib
 5. **Decisions → branches** + a moral/ending fork; set the win condition(s).
 6. **Wrap:** seed the initial `state.json`, write the §12 save body, and add **attribution**.
 
+**Completeness check (don't skip):** every hazard prints a **DC**; every grapple/restrain prints an
+**escape save**; every open-ended effect (a "wish"/boon) is **GM-bounded**; every monster prints an
+**Init** mod + attack bonus. *(The fine-grain a live run exposes — folded from the worked-example validation.)*
+
 ## Legal (required)
 Adapting a **CC-BY-SA** module: **credit the author + the source** and **release your adaptation
 under CC-BY-SA 4.0** too (share-alike). SRD content keeps its CC-BY-4.0 attribution (§17). **Never

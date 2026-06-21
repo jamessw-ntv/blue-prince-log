@@ -48,6 +48,13 @@ frees the child early (changes the shrine fight).
   King dies). **Weak point:** its **golden tongue** (AC 16) — sever it (it has 15 HP) to end the
   Wish-Tithe and give the King disadvantage.
 
+**Step 4.5 · DCs & guardrails (the fine-grain a live table needs):** n2 current — STR/Athletics
+**DC 13** or swept 10 ft (a Drowned grapples the swept PC). Grapple & tongue **escape: STR/DEX vs
+DC 14**. Shrine side-edge: **3 Cultists**; freeing Wick early = they fight at disadvantage and rout at
+1 down. **Wish-Tithe scope:** the boon is *one significant favour the GM can honour* (a heal, a truth,
+one creature raised, a door opened) — never an "I-win"; the lost voice returns when the King dies, or
+via **Greater Restoration / Remove Curse**.
+
 **Step 5 · Decisions → branches + endings:**
 - Free the caged child early (alters the shrine fight) · **accept a wish** (power now, voice lost — a
   real moral fork) · **sever the tongue** (the clean win lever) vs grind the HP.

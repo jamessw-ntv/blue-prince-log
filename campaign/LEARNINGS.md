@@ -5,6 +5,23 @@ first. See `./SELF-IMPROVEMENT.md` for the loop. Mark items **Done** when folded
 
 ---
 
+## 2026-06-21 — Module-conversion POC VALIDATED (Conversion-fidelity 4.5)
+The converted one-page dungeon ("Toad-King's Cistern") **played as a real campaign** start→finish:
+all 5 beats fired, the Living-Map edges resolved, and the **Wish-Tithe moral fork** (accept a wish →
+lose your voice → healer silenced mid-boss) **interlocked** with the **sever-the-golden-tongue** win
+lever for a better climax. Proves the 6-step pipeline outputs a runnable campaign. *(Notably, this
+NEW kind of test surfaced fresh gaps the flagship runs never did — evidence that new test dimensions
+still pay, while re-running old ones wouldn't.)*
+
+### [DONE] folded
+- **converted-example.md:** printed the missing **DCs** (n2 current, grapple/tongue escape), the
+  **cultist count**, **bounded the Wish-Tithe** scope, and a **voice-cure** (King's death / Greater Restoration).
+- **CONVERSION-PLAYBOOK.md:** added a **completeness check** (every hazard a DC, every grapple an
+  escape save, every open-ended boon GM-bounded, every monster an Init + attack bonus) so future
+  conversions don't repeat it.
+
+---
+
 ## 2026-06-21 — Gate 4: starters RE-VALIDATED (both pass) + final folds
 **LitRPG re-run: Runnable 3→5** — the new §9 economy resolved everything; **no invented numbers**
 (quoted a clean `d20+Luck=14→RARE` and a 175-XP level-up). **5e re-run: Fair 4→5, fidelity 4→5** —
