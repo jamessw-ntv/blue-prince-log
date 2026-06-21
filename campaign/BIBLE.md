@@ -57,6 +57,26 @@ Only the middle two change per game:
 Dungeon-Crawler-style crawl → *LitRPG* rules; an original → *any* rules. A "module" is just a
 chapter; a campaign is one or more chained. Everything serialises into **one save**.
 
+## Design philosophy
+A handful of principles drive every part of the build:
+- **One engine, many games.** The engine core is constant; only the *rules* and the *story* swap.
+  Build the system once, play any genre.
+- **The story is data, played live.** A locked **spine** (a few beats that must happen) sits inside an
+  open **sandbox**, and everything you actually do is written to an **append-only Living Map** —
+  *explored space becomes canon.* The GM improvises freely but never retcons.
+- **Rails are gravity, not fences.** Go anywhere; the world *pulls* you back with consequence, never an
+  invisible wall. **Fail forward** — failure complicates, rarely dead-ends.
+- **Companions are characters, not menus.** They have drives and flaws, **advise and vote** at forks,
+  remember how you treat them (**approval**), and can leave.
+- **The engine adapts and self-heals.** Difficulty, goals, and curveballs flex on the fly; if anything
+  breaks mid-game the GM repairs it *in-world* and the story **picks back up** — it never hard-stops.
+- **It gets better every time it's played.** Every session feeds a **self-improvement loop**; the
+  engine can even **play itself** (autoplay) to harden between sessions.
+- **Boring tech, on purpose.** Plain Markdown + JSON + a static HTML dashboard; Notion for saves. No
+  build step, no lock-in — open it and read it.
+- **Legal & original.** Authentic 5e reproduces the **SRD 5.2** (CC-BY-4.0, attributed); LitRPG is an
+  **original homage**; open modules ingest under their CC licence.
+
 ## Story shape — a spine you must finish, freedom in between, a map of everywhere you go
 There's a **locked main story** (a few beats that must complete) with an **open sandbox**
 between them; whatever path you take is **recorded into a permanent map** (generated as you go,
@@ -97,8 +117,13 @@ costs approval). You can set their **personalities at Session Zero** and tune in
 | `SELF-IMPROVEMENT.md` | The learn-and-fold loop |
 | `LEARNINGS.md` | The running record of what each session taught us |
 | `PROJECT-HANDOFF.md` | Origin, backstory, decisions |
+| `CONVERSION-PLAYBOOK.md` | Ingest any open module → a playable campaign |
 | `adventures/the-crossroads-test.md` | "The Ember Key" — 5-min engine test |
 | `adventures/smoke-over-bramblewick.md` | First Rules-Light one-shot |
+| `adventures/emberfall.md` | **Flagship** — 30-min Rules-Light heroic campaign |
+| `adventures/going-live.md` | LitRPG starter (game-show crawl) |
+| `adventures/sunless-shrine.md` | Authentic 5e starter (SRD) |
+| `adventures/converted-example.md` | Module-conversion worked example |
 
 **In Notion (the PKM wiki + saves):** the **AI Dungeon Master hub** (with the agent bootstrap),
 the module pages (GM Engine, the three Systems, Companions, Campaign Creation, Save & Load,
@@ -109,8 +134,14 @@ System UI Kit, Legal), and the **Campaigns** database (one page per save).
 - Everything is **self-contained** here and in Notion; **nothing** lives in any work repo.
 - **Legal:** Authentic 5e reproduces SRD 5.2 (CC-BY-4.0, attributed); LitRPG is original homage.
 
-## Status (2026-06-21)
-Engine + dashboard live; turnkey load wired; **Gate 1 met** (the engine self-plays and
-branches). One Rules-Light one-shot ready, one micro-test. **Next:** Gate 2 — dial in the
-nuance (the story spine/map above, companion voting) and autoplay a full party scene. See
-`./GOAL-STATE.md` for the gates and `./LEARNINGS.md` for the latest.
+## Status (2026-06-21) — ~90% to the goal
+**Built, validated, and hardened.** All four gates are effectively cleared: the engine self-plays and
+branches (Gate 1), party play + companion voting are dialed in (Gate 2), the **flagship *Emberfall***
+passes the bar across all 6 classes / 3 routes / 4 endings (Gate 3), and breadth is done — a starter
+in **every system** plus a **module-conversion pipeline** (Gate 4). Across **21 autoplay/stress runs**
+— including a 5-agent comprehensive batch (full-stack **4.8**, adaptive **4.6**, adversarial **4.2**,
+save/load **4.0**, a balance audit) — the engine held **without invisible walls or dead-ends**, and the
+**Adaptive Director** (dynamic difficulty, curveballs, **self-healing**) is now canon. **Remaining:**
+your one **blessing play** (the "is it fun" call no agent can make) + optional dashboard-render polish
+(show approval + the story-map on the HUD). See `./GOAL-STATE.md` for the gates and `./LEARNINGS.md`
+for the full audit trail.
