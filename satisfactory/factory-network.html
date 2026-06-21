@@ -1,0 +1,1430 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<title>Satisfactory 1.0 — Modular Factory Plan</title>
+<!-- Fully self-contained: no external libraries, works 100% offline. -->
+<!-- Hub design system: provides the :root tokens and the .hubbar back-link.
+     The app's own palette below is scoped to `body` so it never redefines the
+     hub :root (per docs/DESIGN.md). -->
+<link rel="stylesheet" href="../assets/hub.css"/>
+<style>
+  body{--bg:#0e1116;--panel:#161b22;--panel2:#1c232d;--line:#2a323d;--txt:#e6edf3;
+    --muted:#9aa7b4;--orange:#ff9e3d;--teal:#2dd4bf;--blue:#5aa9ff;--purple:#b692ff;
+    --green:#5dd47a;--grey:#8b97a3;--red:#ff6b6b;}
+  *{box-sizing:border-box}
+  body{margin:0;font-family:-apple-system,Segoe UI,Roboto,Helvetica,Arial,sans-serif;
+       background:var(--bg);color:var(--txt);font-size:15px;line-height:1.5}
+  header{padding:14px 22px;border-bottom:1px solid var(--line);background:linear-gradient(90deg,#16202b,#161b22)}
+  header h1{margin:0;font-size:19px}header h1 span{color:var(--orange)}
+  header p{margin:3px 0 0;color:var(--muted);font-size:13px}
+  nav{display:flex;gap:4px;padding:9px 18px 0;border-bottom:1px solid var(--line);background:var(--panel);flex-wrap:wrap}
+  nav button{background:transparent;border:none;color:var(--muted);padding:10px 15px;cursor:pointer;
+       font-size:14px;border-bottom:2px solid transparent;border-radius:6px 6px 0 0}
+  nav button:hover{color:var(--txt);background:var(--panel2)}
+  nav button.active{color:var(--orange);border-bottom-color:var(--orange)}
+  main{padding:16px 22px;max-width:1240px;margin:0 auto}
+  .tab{display:none}.tab.active{display:block}
+  .controls{display:flex;gap:6px;align-items:center;flex-wrap:wrap;margin-bottom:10px}
+  .controls .lbl{color:var(--muted);font-size:13px;margin-right:4px}
+  .pbtn{background:var(--panel2);border:1px solid var(--line);color:var(--txt);padding:6px 12px;border-radius:20px;cursor:pointer;font-size:13px}
+  .pbtn:hover{border-color:var(--orange)}.pbtn.active{background:var(--orange);color:#1a1205;border-color:var(--orange);font-weight:600}
+  .legend{display:flex;gap:14px;flex-wrap:wrap;margin-top:9px;font-size:12px;color:var(--muted)}
+  .legend .k{display:inline-flex;align-items:center;gap:6px}
+  .dot{width:11px;height:11px;border-radius:50%;display:inline-block}
+  .ln{width:18px;border-top:3px solid;display:inline-block}
+  .hint{color:var(--muted);font-size:13px;margin:8px 0}
+  .card{background:var(--panel);border:1px solid var(--line);border-radius:10px;margin-bottom:12px;overflow:hidden}
+  .card h3{margin:0;padding:13px 16px;cursor:pointer;display:flex;align-items:center;gap:10px;font-size:16px;background:var(--panel2)}
+  .card h3:hover{background:#222b36}
+  .chip{font-size:11px;padding:2px 9px;border-radius:20px;font-weight:600;cursor:default}
+  .chip.p0{background:#26303a;color:#bcd0e0}.chip.p1{background:#3a2a12;color:#ffce8a}
+  .chip.p2{background:#12303a;color:#8fe6ff}.chip.p3{background:#1c2f17;color:#b7f0a0}
+  .chip.p4{background:#2a1c3a;color:#d3b6ff}.chip.p5{background:#3a1220;color:#ffadc4}
+  .tgt{margin-left:auto;color:var(--teal);font-size:13px;font-weight:600}
+  .body{padding:14px 16px;display:none}.card.open .body{display:block}
+  .meta{color:var(--muted);font-size:13px;margin-bottom:10px}.meta b{color:var(--txt)}
+  table{width:100%;border-collapse:collapse;font-size:13px;margin:6px 0}
+  th,td{text-align:left;padding:7px 9px;border-bottom:1px solid var(--line)}
+  th{color:var(--muted);font-weight:600;font-size:12px;text-transform:uppercase;letter-spacing:.3px}
+  td.n{font-weight:700;color:var(--orange);width:46px}
+  .tlink{color:var(--teal);cursor:pointer;text-decoration:underline dotted}
+  .approx{background:#2a2412;border:1px solid #4a3d12;color:#ffd98a;padding:8px 12px;border-radius:8px;font-size:13px;margin-bottom:10px}
+  .verified{background:#13261a;border:1px solid #1f4a2c;color:#8fe6a8;padding:7px 12px;border-radius:8px;font-size:12px;margin-bottom:10px}
+  .tpl{background:var(--panel);border:1px solid var(--line);border-radius:10px;margin-bottom:10px;padding:13px 16px}
+  .tpl h4{margin:0 0 4px;font-size:15px}.tpl .id{color:var(--teal);font-family:monospace}
+  .tpl .spec{color:var(--muted);font-size:13px}
+  .usedby{margin-top:8px;font-size:12px}.usedby .u{display:inline-block;background:var(--panel2);border:1px solid var(--line);
+     border-radius:6px;padding:2px 8px;margin:2px 3px 0 0;cursor:pointer;color:#cfe}
+  .invphase,.shopphase{background:var(--panel);border:1px solid var(--line);border-radius:10px;margin-bottom:14px}
+  .invphase>h3,.shopphase>h3{margin:0;padding:12px 16px;background:var(--panel2);display:flex;align-items:center;gap:12px}
+  .prog{flex:1;height:8px;background:#0c1014;border-radius:6px;overflow:hidden;max-width:300px}
+  .prog>i{display:block;height:100%;background:var(--green);width:0}
+  .pct{color:var(--muted);font-size:13px;min-width:84px;text-align:right}
+  .invrow{display:flex;align-items:flex-start;gap:11px;padding:9px 16px;border-bottom:1px solid var(--line)}
+  .invrow:last-child{border-bottom:none}.invrow input{margin-top:3px;width:17px;height:17px;accent-color:var(--green);cursor:pointer}
+  .invrow .it{flex:1}.invrow .it .nm{font-size:14px}.invrow .it .nt{color:var(--muted);font-size:12px}
+  .invrow.done .nm{text-decoration:line-through;color:var(--muted)}
+  .tag{font-size:10px;padding:2px 7px;border-radius:5px;text-transform:uppercase;letter-spacing:.4px;font-weight:600}
+  .tag.deliverable{background:#3a2a12;color:#ffce8a}.tag.module{background:#12303a;color:#8fe6ff}
+  .tag.milestone{background:#26303a;color:#bcd0e0}.tag.qty{background:#1c2f17;color:#b7f0a0}
+  .toolbar{display:flex;gap:8px;margin-bottom:14px;flex-wrap:wrap}
+  .toolbar button{background:var(--panel2);border:1px solid var(--line);color:var(--txt);padding:8px 14px;border-radius:7px;cursor:pointer;font-size:13px}
+  .toolbar button:hover{border-color:var(--orange)}.toolbar button.warn:hover{border-color:var(--red);color:var(--red)}
+  a{color:var(--teal)}code{background:var(--panel2);padding:1px 5px;border-radius:4px;font-size:13px}
+  .warnbar{background:#3a1212;border:1px solid #5a1d1d;color:#ffb3b3;padding:8px 12px;border-radius:8px;font-size:13px;margin:10px 0;display:none}
+  .raw{display:inline-block;background:#222b36;border:1px solid var(--line);border-radius:6px;padding:2px 9px;margin:2px 4px 0 0;font-size:13px}
+  .raw b{color:var(--orange)}
+  @media print{
+    nav,.toolbar,.controls,#bpControls,header p,.prog{display:none!important}
+    body,header,main{background:#fff!important;color:#000!important}
+    .tab:not(.active){display:none!important}
+    .invphase{border:1px solid #bbb!important;break-inside:avoid;margin-bottom:8px}
+    .invphase>h3,.shopphase>h3{background:#eee!important;color:#000!important}
+    .invrow{border-color:#ddd!important}.invrow .nm,.invrow .nt,.meta,a,.u{color:#000!important}
+    .tag,.chip{border:1px solid #ccc!important}
+    input[type=checkbox]{filter:grayscale(1)}
+  }
+</style>
+</head>
+<body>
+<div class="hubbar">
+  <a class="backlink" href="../">← Hub</a>
+  <span class="crumb"><b>Satisfactory 1.0 Build Planner</b></span>
+</div>
+<header>
+  <h1><span>SATISFACTORY</span> 1.0 — Modular Factory Plan</h1>
+  <p>Verified, build-once works · guided step-by-step · organic map + grid blueprints · power &amp; trains planned · fully offline.</p>
+</header>
+<nav>
+  <button data-tab="inventory" class="active">✅ Do Next</button>
+  <button data-tab="buildmap">🗺️ Build Map</button>
+  <button data-tab="blueprints">📐 Blueprints</button>
+  <span style="flex:1 1 12px"></span>
+  <button data-tab="shopping">📋 Items We Need</button>
+  <button data-tab="modules">🏭 Districts</button>
+  <button data-tab="templates">🧩 Templates</button>
+  <button data-tab="guide">📖 Guide</button>
+</nav>
+<main>
+
+  <!-- 2D BUILD MAP (spatial, no-overlap, step-through) -->
+  <section id="tab-buildmap" class="tab">
+    <div class="controls">
+      <span class="lbl">Build sequence:</span>
+      <button class="pbtn" id="bmPrev">◀ Prev</button>
+      <button class="pbtn" id="bmPlay">▶ Play</button>
+      <button class="pbtn" id="bmNext">Next ▶</button>
+      <input id="bmSlider" type="range" min="0" max="12" value="0" step="1" style="flex:1;min-width:140px;accent-color:var(--orange)">
+      <span class="lbl" id="bmStepLbl">Step 0 / 12</span>
+      <span class="lbl" style="margin-left:6px">🔍</span>
+      <button class="pbtn" id="bmZoomOut" title="Zoom out">−</button>
+      <button class="pbtn" id="bmZoomIn" title="Zoom in">+</button>
+      <button class="pbtn" id="bmZoomReset" title="Reset view">⟲</button>
+    </div>
+    <div id="bmCaption" class="hint" style="min-height:40px;background:var(--panel);border:1px solid var(--line);border-radius:8px;padding:9px 13px;color:var(--txt)"></div>
+    <svg id="bmap" viewBox="0 0 1200 760" style="width:100%;height:auto;background:#0a0d12;border:1px solid var(--line);border-radius:10px;margin-top:8px"></svg>
+    <div id="bmInside" style="display:none;margin-top:8px"></div>
+    <div class="legend">
+      <span class="k"><span class="dot" style="background:var(--orange)"></span>★ Project Assembly panel (12 finals)</span>
+      <span class="k"><span class="dot" style="background:#ffce8a"></span>District panel → its area blocks (zoom in)</span>
+      <span class="k"><span class="ln" style="border-color:var(--teal)"></span>Belt feed (core districts)</span>
+      <span class="k"><span class="ln" style="border-color:var(--orange);border-style:dashed"></span>🚆 Train feed (far districts E/F/G)</span>
+      <span class="k"><span class="ln" style="border-color:var(--purple)"></span>Finished part → ★</span>
+      <span class="k">♻ <b style="color:#8fe6a8">Build-once — districts only grow.</b></span>
+    </div>
+    <p class="hint">🔍 <b>Scroll to zoom right in, drag to pan, double-click to reset.</b> Each district is a panel containing its <b>area blocks</b> (§N · building ×count) — <b>zoom in</b> to read them, <b>click an area</b> for its belt web. Lines are the real cross-district feeds: <b style="color:#2dd4bf">teal belts</b> between core districts, <b style="color:#ff9e3d">dashed orange 🚆 trains</b> to/from the far districts (Aluminium / Nuclear / Quantum), <b style="color:#b692ff">purple</b> = finished parts to ★. ▶ <b>Play</b> / the slider builds it out and darkens what's not built yet. Click a district header for its summary + a focused placement view.</p>
+  </section>
+
+  <!-- BLUEPRINTS — fixed grid floor-plans, zoom over→module, per-step check-off -->
+  <section id="tab-blueprints" class="tab">
+    <div id="bpControls" class="controls"></div>
+    <div id="bpWrap">
+      <div id="bpStage" style="width:100%"></div>
+      <div id="bpSteps" style="width:100%;margin-top:16px;border-top:1px solid var(--line);padding-top:12px"></div>
+    </div>
+  </section>
+
+  <!-- DISTRICTS overview -->
+  <section id="tab-modules" class="tab">
+    <p class="hint">The <b>6 production districts + ★ Project Assembly</b>. Each is a self-contained mini-base making one material family, sized to total demand. Click a card to see what it makes, what it imports, and its raw feed; jump to its floor plan or the map.</p>
+    <div id="cards"></div>
+  </section>
+
+  <section id="tab-templates" class="tab">
+    <p class="hint">🔎 <b>Find any item</b> — type below to see where it's <b>made</b> and what it <b>feeds</b>, then jump to that district's floor plan. Each card is one recipe (1 machine, 100%, verified).</p>
+    <input id="tplSearch" type="search" placeholder="Search an item or building… e.g. Rotor, Stator, Computer, Aluminum" style="width:100%;max-width:420px;padding:8px 11px;margin-bottom:10px;background:var(--panel);border:1px solid var(--line);border-radius:8px;color:var(--txt);font-size:14px">
+    <div id="tpls"></div>
+  </section>
+
+  <section id="tab-shopping" class="tab">
+    <p class="hint">Your whole-build shopping list, demand-solved: <b>raw nodes</b> to claim, the <b>total buildings</b> bill, your <b>Power-Shard + Somersloop</b> budget, and <b>parts to deliver</b> per phase. Everything respects the ⚡ MAX toggle (set in Blueprints).</p>
+    <div id="rawfeed"></div>
+    <h2>Parts to deliver to the Space Elevator</h2>
+    <div id="deliv"></div>
+  </section>
+
+  <section id="tab-inventory" class="tab active">
+    <p class="hint" style="margin-top:0">Your guided to-do: the <b>▶ Do This Now</b> card always shows the single next thing to build (with where, machines, belt-mark, output) — tick <b>Done</b> and it advances. Or work any phase/section directly. <b>Tick anything you've already built</b> to mark it — it greys/colours green on the Build Map &amp; Blueprints too. Districts start small and <b>Expand …</b> steps grow them each phase (you left room).</p>
+    <div class="toolbar">
+      <button id="printinv">🖨️ Print manual</button>
+      <button id="exportall">⬇️ Steps CSV</button>
+      <button id="savecode">🔑 Save code</button>
+      <button id="loadcode">📥 Load code</button>
+      <button id="collapseDone">👁️ Hide completed</button>
+      <button id="resetinv" class="warn">↺ Reset all</button>
+      <span class="pct" id="overall" style="margin-left:auto;align-self:center"></span>
+    </div>
+    <div id="invlist"></div>
+  </section>
+
+  <section id="tab-guide" class="tab">
+    <h2>How to use this</h2>
+    <ol>
+      <li><b><code>README.md</code></b> — philosophy, map/node/transport strategy, master timeline.</li>
+      <li><b><code>build-guide.md</code></b> — step-by-step, exact bills per module.</li>
+      <li><b><code>templates.md</code></b> — reusable building blocks.</li>
+      <li><b><code>train-network.md</code></b> — end-game rail plan.</li>
+      <li><b><code>power.md</code></b> — power plan: when to switch biomass → coal → fuel → nuclear.</li>
+      <li><b><code>VERIFICATION.md</code></b> — every recipe/quantity cross-checked, with sources.</li>
+      <li><b><code>architecture.md</code></b> — the district model (6 material mini-bases + 1 Project Assembly), why it's grouped this way, and the build/expand order.</li>
+      <li><b>This app</b> — the <b>✅ Do Next</b> spine walks you HUB → launch one tick-off step at a time; the <b>🗺️ Build Map</b> shows the districts; the <b>📐 Blueprints</b> tab is the per-district top-down floor plan + turn-by-turn build steps (with the <b>▦ All districts</b> appendix); plus Templates, Items We Need, and your saved inventory.</li>
+    </ol>
+    <h3>Just want to follow it? Do this:</h3>
+    <p>Open <b>✅ Do Next</b> and keep doing the orange “▶ DO THIS NOW” card, hitting <b>✓ Done</b> after each. It walks Phase 0 setup → build <b>Ironworks</b> → add <b>Smart Plating</b> to ★ → deliver → coal power → <b>Steelworks + Copperworks</b> → … → <b>launch 🚀</b>. Tap <b>📐 Blueprint</b> on any step to see exactly where the machines and belts go.</p>
+    <h3>Assumptions baked in</h3>
+    <p>Everything <b>above ground</b> (fly mod), and <b>MAX output</b>: every machine at <b>250% (3 Power Shards) + a Somersloop (2×)</b> = 5× each, so counts are ~⅕. Toggle ⚡ MAX off in Blueprints to see 100% counts. Far districts (Aluminium / Nuclear / Quantum) are <b>railed in</b>.</p>
+    <h3>Belts &amp; pipes — when you get them, when to upgrade</h3>
+    <p>Each build step prints the <b>exact belt Mk</b> for that line and flags <span class="tag qty">upgrade</span> when a trunk outgrows its belt. Lay the best belt you have unlocked, then come back and upgrade the fat trunks as new Mks arrive. Rough unlock timing:</p>
+    <table style="margin:4px 0">
+      <thead><tr><th>Carrier</th><th>Throughput</th><th>You'll have it by…</th></tr></thead>
+      <tbody>
+        <tr><td><b>Belt Mk.1</b></td><td>60 /min</td><td>start (HUB)</td></tr>
+        <tr><td><b>Belt Mk.2</b></td><td>120 /min</td><td>Phase 0–1 (Logistics Mk.2)</td></tr>
+        <tr><td><b>Belt Mk.3</b></td><td>270 /min</td><td>Phase 2 (Tier 4)</td></tr>
+        <tr><td><b>Belt Mk.4</b></td><td>480 /min</td><td>Phase 3 (Tier 5)</td></tr>
+        <tr><td><b>Belt Mk.5</b></td><td>780 /min</td><td>Phase 4 (Tier 7)</td></tr>
+        <tr><td><b>Belt Mk.6</b></td><td>1200 /min</td><td>Phase 4–5 (Tier 8)</td></tr>
+        <tr><td><b>Pipe Mk.1 / Mk.2</b></td><td>300 / 600 m³/min</td><td>Phase 3 oil / Phase 4</td></tr>
+      </tbody>
+    </table>
+    <p class="hint">If a trunk needs more than your best belt can carry, <b>split it across two belts</b> until the next Mk unlocks. Fluids (oil, water, alumina, nitrogen, heavy oil residue) always go on <b>pipes</b>, never belts.</p>
+    <h3>The order, in one breath</h3>
+    <p>Tier 0 → Assembler → <b>Ironworks</b> + <b>★ Smart Plating</b> → Phase 1 → <b>Steelworks</b> + <b>Copperworks</b> + <b>★ Versatile Framework/Automated Wiring</b> → Phase 2 → <b>Oil & Electronics</b> + <b>★ Modular Engine/ACU</b> → Phase 3 → <b>trains</b> + <b>Aluminium</b>/<b>Nuclear</b> + <b>★ ADS/MFG/TPR/Nuclear Pasta</b> → Phase 4 → <b>Quantum & SAM</b> + <b>★ Sculptor/AI Server/Warp Drive</b> → Phase 5 → <b>launch 🚀</b>.</p>
+    <h3>Tune the late game</h3>
+    <p><a href="https://www.satisfactorytools.com/" target="_blank">satisfactorytools.com</a> · <a href="https://satisfactory-calculator.com/en/planners/production" target="_blank">production planner</a> · <a href="https://satisfactory-calculator.com/en/interactive-map" target="_blank">resource map</a>.</p>
+    <h3>♻ Useful alternate recipes (optional — shrink the build)</h3>
+    <p class="hint" style="margin-top:0">The plan uses <b>standard recipes</b> so the numbers are exact and unlock-safe. If you have these alts (from Hard Drives), they cut machines or close loops — recompute exact counts in the <a href="https://www.satisfactorytools.com/" target="_blank">planner</a>:</p>
+    <table>
+      <thead><tr><th>Alt recipe</th><th>Building</th><th>Why it helps</th></tr></thead>
+      <tbody>
+        <tr><td><b>Recycled Plastic</b> (30 Rubber + 30 Heavy Oil Residue → 60 Plastic)</td><td>Refinery</td><td>Pair with Recycled Rubber to <b>consume all Heavy Oil Residue</b> and roughly halve crude-oil draw — closes the byproduct loop from the Oil district.</td></tr>
+        <tr><td><b>Recycled Rubber</b> (30 Plastic + 30 Heavy Oil Residue → 60 Rubber)</td><td>Refinery</td><td>The other half of the loop; together they turn HOR into free Plastic/Rubber.</td></tr>
+        <tr><td><b>Cast Screw</b> (12.5 Iron Ingot → 50 Screw)</td><td>Constructor</td><td>Skips the Iron Rod step for screws — fewer machines in Ironworks.</td></tr>
+        <tr><td><b>Steel Rod / Steel Screw</b></td><td>Constructor</td><td>Rods/screws from cheap steel — frees iron once Steelworks is big.</td></tr>
+        <tr><td><b>Coated Iron Plate, Stitched Iron Plate</b></td><td>Assembler</td><td>More Reinforced Iron Plate per input — shrinks the RIP-heavy chains.</td></tr>
+        <tr><td><b>Sloppy Alumina, Electrode Aluminum Scrap</b></td><td>Refinery</td><td>Far less waste water / coal in the aluminium chain.</td></tr>
+        <tr><td><b>Heavy Oil Residue → Residual Fuel / Petroleum Coke</b></td><td>Refinery</td><td>If you don't run the recycled loop, burn HOR for power (see each oil district's ⚠ Utilities note).</td></tr>
+      </tbody>
+    </table>
+    <p class="hint">Turning these on changes machine counts but never the build <i>order</i> or districts. The app stays on standard recipes by design.</p>
+  </section>
+</main>
+
+<script>
+/* =====================================================================
+   TEMPLATES — verified standard recipes. in/out = per ONE machine @100%.
+   [item, perMinuteRate].  approx=true => rate depends on alts/craft-time.
+   ===================================================================== */
+const T = {
+ 'T-IRON':     {name:'Iron Ingot bank',     b:'Smelter',    r:'Iron Ingot',     in:[['Iron Ore',30]],                 out:['Iron Ingot',30], fp:'1×2 / smelter', ph:0},
+ 'T-COPPER':   {name:'Copper Ingot bank',   b:'Smelter',    r:'Copper Ingot',   in:[['Copper Ore',30]],               out:['Copper Ingot',30], fp:'1×2 / smelter', ph:0},
+ 'T-CATERIUM': {name:'Caterium Ingot bank', b:'Smelter',    r:'Caterium Ingot', in:[['Caterium Ore',45]],             out:['Caterium Ingot',15], fp:'1×2 / smelter', ph:2},
+ 'T-STEEL':    {name:'Steel Ingot bank',    b:'Foundry',    r:'Steel Ingot',    in:[['Iron Ore',45],['Coal',45]],     out:['Steel Ingot',45], fp:'2×2 / foundry', ph:1},
+ 'T-PLATE':    {name:'Iron Plate cell',     b:'Constructor',r:'Iron Plate',     in:[['Iron Ingot',30]],               out:['Iron Plate',20], fp:'1×2', ph:0},
+ 'T-ROD':      {name:'Iron Rod cell',       b:'Constructor',r:'Iron Rod',       in:[['Iron Ingot',15]],               out:['Iron Rod',15], fp:'1×2', ph:0},
+ 'T-SCREW':    {name:'Screw cell',          b:'Constructor',r:'Screw',          in:[['Iron Rod',10]],                 out:['Screw',40], fp:'1×2', ph:0},
+ 'T-WIRE':     {name:'Wire cell',           b:'Constructor',r:'Wire',           in:[['Copper Ingot',15]],             out:['Wire',30], fp:'1×2', ph:0},
+ 'T-CABLE':    {name:'Cable cell',          b:'Constructor',r:'Cable',          in:[['Wire',60]],                     out:['Cable',30], fp:'1×2', ph:0},
+ 'T-CONCRETE': {name:'Concrete cell',       b:'Constructor',r:'Concrete',       in:[['Limestone',45]],                out:['Concrete',15], fp:'1×2', ph:0},
+ 'T-COPSHEET': {name:'Copper Sheet cell',   b:'Constructor',r:'Copper Sheet',   in:[['Copper Ingot',20]],             out:['Copper Sheet',10], fp:'1×2', ph:2},
+ 'T-SILICA':   {name:'Silica cell',         b:'Constructor',r:'Silica',         in:[['Raw Quartz',22.5]],             out:['Silica',37.5], fp:'1×2', ph:4},
+ 'T-QUARTZX':  {name:'Quartz Crystal cell', b:'Constructor',r:'Quartz Crystal', in:[['Raw Quartz',37.5]],             out:['Quartz Crystal',22.5], fp:'1×2', ph:4},
+ 'T-QUICKWIRE':{name:'Quickwire cell',      b:'Constructor',r:'Quickwire',      in:[['Caterium Ingot',12]],           out:['Quickwire',60], fp:'1×2', ph:3},
+ 'T-BEAM':     {name:'Steel Beam cell',     b:'Constructor',r:'Steel Beam',     in:[['Steel Ingot',60]],              out:['Steel Beam',15], fp:'1×2', ph:1},
+ 'T-PIPE':     {name:'Steel Pipe cell',     b:'Constructor',r:'Steel Pipe',     in:[['Steel Ingot',30]],              out:['Steel Pipe',20], fp:'1×2', ph:1},
+ 'T-RIP':      {name:'Reinforced Iron Plate cell', b:'Assembler', r:'Reinforced Iron Plate', in:[['Iron Plate',30],['Screw',60]], out:['Reinforced Iron Plate',5], fp:'2×3', ph:1},
+ 'T-ROTOR':    {name:'Rotor cell',          b:'Assembler',  r:'Rotor',          in:[['Iron Rod',20],['Screw',100]],   out:['Rotor',4], fp:'2×3', ph:1},
+ 'T-FRAME':    {name:'Modular Frame cell',  b:'Assembler',  r:'Modular Frame',  in:[['Reinforced Iron Plate',3],['Iron Rod',12]], out:['Modular Frame',2], fp:'2×3', ph:1},
+ 'T-STATOR':   {name:'Stator cell',         b:'Assembler',  r:'Stator',         in:[['Steel Pipe',15],['Wire',40]],   out:['Stator',5], fp:'2×3', ph:2},
+ 'T-MOTOR':    {name:'Motor cell',          b:'Assembler',  r:'Motor',          in:[['Rotor',10],['Stator',10]],      out:['Motor',5], fp:'2×3', ph:3},
+ 'T-SMARTPLATE':{name:'Smart Plating cell', b:'Assembler',  r:'Smart Plating',  in:[['Reinforced Iron Plate',2],['Rotor',2]], out:['Smart Plating',2], fp:'2×3', ph:1},
+ 'T-VERSFRAME':{name:'Versatile Framework cell', b:'Assembler', r:'Versatile Framework', in:[['Modular Frame',2.5],['Steel Beam',30]], out:['Versatile Framework',5], fp:'2×3', ph:2},
+ 'T-AUTOWIRE': {name:'Automated Wiring cell',b:'Assembler', r:'Automated Wiring',in:[['Stator',2.5],['Cable',50]],    out:['Automated Wiring',2.5], fp:'2×3', ph:2},
+ 'T-PLASTIC':  {name:'Plastic line',        b:'Refinery',   r:'Plastic',        in:[['Crude Oil',30]],                out:['Plastic',20], by:['Heavy Oil Residue',10], fp:'2×4', ph:3},
+ 'T-RUBBER':   {name:'Rubber line',         b:'Refinery',   r:'Rubber',         in:[['Crude Oil',30]],                out:['Rubber',20], by:['Heavy Oil Residue',20], fp:'2×4', ph:3},
+ 'T-CIRCUIT':  {name:'Circuit Board cell',  b:'Assembler',  r:'Circuit Board',  in:[['Copper Sheet',15],['Plastic',30]], out:['Circuit Board',7.5], fp:'2×3', ph:3},
+ 'T-COMPUTER': {name:'Computer cell',       b:'Manufacturer',r:'Computer',      in:[['Circuit Board',10],['Cable',20],['Plastic',40]], out:['Computer',2.5], fp:'3×4', ph:3},
+ 'T-EIBEAM':   {name:'Encased Industrial Beam cell', b:'Assembler', r:'Encased Industrial Beam', in:[['Steel Beam',18],['Concrete',36]], out:['Encased Industrial Beam',6], fp:'2×3', ph:3},
+ 'T-HMFRAME':  {name:'Heavy Modular Frame cell', b:'Manufacturer', r:'Heavy Modular Frame', in:[['Modular Frame',10],['Steel Pipe',40],['Encased Industrial Beam',10],['Screw',240]], out:['Heavy Modular Frame',2], fp:'3×4', ph:3},
+ 'T-MODENGINE':{name:'Modular Engine cell', b:'Manufacturer',r:'Modular Engine',in:[['Motor',2],['Rubber',15],['Smart Plating',2]], out:['Modular Engine',1], fp:'3×4', ph:3},
+ 'T-ACU':      {name:'Adaptive Control Unit cell', b:'Manufacturer', r:'Adaptive Control Unit', in:[['Automated Wiring',5],['Circuit Board',5],['Heavy Modular Frame',1],['Computer',2]], out:['Adaptive Control Unit',1], fp:'3×4', ph:3},
+ 'T-AILIMITER':{name:'AI Limiter cell',     b:'Assembler',  r:'AI Limiter',     in:[['Copper Sheet',25],['Quickwire',100]], out:['AI Limiter',5], fp:'2×3', ph:4},
+ 'T-HSCONN':   {name:'High-Speed Connector cell', b:'Manufacturer', r:'High-Speed Connector', in:[['Quickwire',210],['Cable',37.5],['Circuit Board',3.75]], out:['High-Speed Connector',3.75], fp:'3×4', ph:4},
+ 'T-SUPERCOMP':{name:'Supercomputer cell',  b:'Manufacturer',r:'Supercomputer', in:[['Computer',7.5],['AI Limiter',3.75],['High-Speed Connector',5.625],['Plastic',52.5]], out:['Supercomputer',1.875], fp:'3×4', ph:4},
+ 'T-EMROD':    {name:'Electromagnetic Control Rod cell', b:'Assembler', r:'Electromagnetic Control Rod', in:[['Stator',6],['AI Limiter',4]], out:['Electromagnetic Control Rod',4], fp:'2×3', ph:4},
+ 'T-HEATSINK': {name:'Heat Sink cell',      b:'Assembler',  r:'Heat Sink',      in:[['Alclad Aluminum Sheet',37.5],['Copper Sheet',22.5]], out:['Heat Sink',7.5], fp:'2×3', ph:4},
+ 'T-COOLING':  {name:'Cooling System cell', b:'Blender',    r:'Cooling System', in:[['Heat Sink',12],['Rubber',12],['Water',30],['Nitrogen Gas',150]], out:['Cooling System',6], fp:'3×4', ph:4},
+ 'T-RCU':      {name:'Radio Control Unit cell', b:'Manufacturer', r:'Radio Control Unit', in:[['Aluminum Casing',40],['Crystal Oscillator',1.25],['Computer',2.5]], out:['Radio Control Unit',2.5], fp:'3×4', ph:4},
+ 'T-TURBOMOTOR':{name:'Turbo Motor cell',   b:'Manufacturer',r:'Turbo Motor',   in:[['Cooling System',7.5],['Radio Control Unit',3.75],['Motor',7.5],['Rubber',45]], out:['Turbo Motor',1.875], fp:'3×4', ph:4},
+ 'T-COPPERPOWDER':{name:'Copper Powder cell',b:'Constructor',r:'Copper Powder', in:[['Copper Ingot',300]],            out:['Copper Powder',50], fp:'1×2', ph:4},
+ 'T-FUSEDFRAME':{name:'Fused Modular Frame cell', b:'Blender', r:'Fused Modular Frame', in:[['Heavy Modular Frame',1.5],['Aluminum Casing',75],['Nitrogen Gas',37.5]], out:['Fused Modular Frame',1.5], fp:'3×4', ph:4},
+ 'T-PCC':      {name:'Pressure Conversion Cube cell', b:'Assembler', r:'Pressure Conversion Cube', in:[['Fused Modular Frame',1],['Radio Control Unit',2]], out:['Pressure Conversion Cube',1], fp:'2×3', ph:4},
+ 'T-CRYSTALOSC':{name:'Crystal Oscillator cell', b:'Manufacturer', r:'Crystal Oscillator', in:[['Quartz Crystal',36],['Cable',28],['Reinforced Iron Plate',5]], out:['Crystal Oscillator',1], fp:'3×4', ph:4, approx:true},
+ /* Aluminium chain (standard; ratios approx — spot-check) */
+ 'T-ALUMINA':  {name:'Alumina Solution line',b:'Refinery',  r:'Alumina Solution',in:[['Bauxite',120],['Water',180]], out:['Alumina Solution',120], fp:'2×4', ph:4, approx:true},
+ 'T-ALSCRAP':  {name:'Aluminum Scrap line', b:'Refinery',   r:'Aluminum Scrap', in:[['Alumina Solution',240],['Coal',120]], out:['Aluminum Scrap',360], fp:'2×4', ph:4, approx:true},
+ 'T-ALINGOT':  {name:'Aluminum Ingot bank', b:'Foundry',    r:'Aluminum Ingot', in:[['Aluminum Scrap',90],['Silica',75]], out:['Aluminum Ingot',60], fp:'2×2', ph:4, approx:true},
+ 'T-ALCASING': {name:'Aluminum Casing cell',b:'Constructor',r:'Aluminum Casing',in:[['Aluminum Ingot',90]],          out:['Aluminum Casing',60], fp:'1×2', ph:4, approx:true},
+ 'T-ALCLAD':   {name:'Alclad Aluminum Sheet cell', b:'Assembler', r:'Alclad Aluminum Sheet', in:[['Aluminum Ingot',30],['Copper Ingot',10]], out:['Alclad Aluminum Sheet',30], fp:'2×3', ph:4, approx:true},
+ /* Phase-4 finals */
+ 'T-ADS':   {name:'Assembly Director System cell', b:'Assembler', r:'Assembly Director System', in:[['Adaptive Control Unit',1.5],['Supercomputer',0.75]], out:['Assembly Director System',0.75], fp:'2×3', ph:4},
+ 'T-MFG':   {name:'Magnetic Field Generator cell', b:'Assembler', r:'Magnetic Field Generator', in:[['Versatile Framework',12.5],['Electromagnetic Control Rod',5]], out:['Magnetic Field Generator',2.5], fp:'2×3', ph:4},
+ 'T-TPR':   {name:'Thermal Propulsion Rocket cell', b:'Manufacturer', r:'Thermal Propulsion Rocket', in:[['Modular Engine',2.5],['Turbo Motor',1],['Cooling System',3],['Fused Modular Frame',1]], out:['Thermal Propulsion Rocket',1], fp:'3×4', ph:4},
+ 'T-PASTA': {name:'Nuclear Pasta cell', b:'Particle Accelerator', r:'Nuclear Pasta', in:[['Copper Powder',100],['Pressure Conversion Cube',0.5]], out:['Nuclear Pasta',0.5], fp:'4×5', ph:4},
+ /* Phase-5 chains */
+ 'T-REANSAM':{name:'Reanimated SAM cell', b:'Constructor', r:'Reanimated SAM', in:[['SAM Ore',120]], out:['Reanimated SAM',30], fp:'1×2', ph:5},
+ 'T-FICINGOT':{name:'Ficsite Ingot cell', b:'Converter', r:'Ficsite Ingot', in:[['Reanimated SAM',40],['Iron Ingot',240]], out:['Ficsite Ingot',10], fp:'3×3', ph:5},
+ 'T-FICTRIGON':{name:'Ficsite Trigon cell', b:'Constructor', r:'Ficsite Trigon', in:[['Ficsite Ingot',30]], out:['Ficsite Trigon',90], fp:'1×2', ph:5},
+ 'T-DIAMONDS':{name:'Diamonds cell', b:'Particle Accelerator', r:'Diamonds', in:[['Coal',600]], out:['Diamonds',30], fp:'4×5', ph:5},
+ 'T-TIMECRYSTAL':{name:'Time Crystal cell', b:'Converter', r:'Time Crystal', in:[['Diamonds',12]], out:['Time Crystal',6], fp:'3×3', ph:5},
+ 'T-DMRESIDUE':{name:'Dark Matter Residue cell', b:'Converter', r:'Dark Matter Residue', in:[['Reanimated SAM',5]], out:['Dark Matter Residue',50], fp:'3×3', ph:5},
+ 'T-DMCRYSTAL':{name:'Dark Matter Crystal cell', b:'Particle Accelerator', r:'Dark Matter Crystal', in:[['Diamonds',30],['Dark Matter Residue',150]], out:['Dark Matter Crystal',30], fp:'4×5', ph:5},
+ 'T-EPM':   {name:'Excited Photonic Matter cell', b:'Converter', r:'Excited Photonic Matter', in:[], out:['Excited Photonic Matter',200], fp:'3×3', ph:5, approx:true},
+ 'T-NQP':   {name:'Neural-Quantum Processor cell', b:'Quantum Encoder', r:'Neural-Quantum Processor', in:[['Time Crystal',15],['Supercomputer',3],['Ficsite Trigon',45],['Excited Photonic Matter',75]], out:['Neural-Quantum Processor',3], fp:'4×4', ph:5},
+ 'T-SUPEROSC':{name:'Superposition Oscillator cell', b:'Quantum Encoder', r:'Superposition Oscillator', in:[['Dark Matter Crystal',30],['Crystal Oscillator',5],['Alclad Aluminum Sheet',45],['Excited Photonic Matter',125]], out:['Superposition Oscillator',5], fp:'4×4', ph:5},
+ 'T-SINGCELL':{name:'Singularity Cell cell', b:'Manufacturer', r:'Singularity Cell', in:[['Nuclear Pasta',1],['Dark Matter Crystal',20],['Iron Plate',100],['Concrete',200]], out:['Singularity Cell',10], fp:'3×4', ph:5},
+ 'T-SCULPTOR':{name:'Biochemical Sculptor cell', b:'Blender', r:'Biochemical Sculptor', in:[['Assembly Director System',0.5],['Ficsite Trigon',40],['Water',10]], out:['Biochemical Sculptor',2], fp:'3×4', ph:5},
+ 'T-AISERVER':{name:'AI Expansion Server cell', b:'Quantum Encoder', r:'AI Expansion Server', in:[['Magnetic Field Generator',4],['Neural-Quantum Processor',4],['Superposition Oscillator',4],['Excited Photonic Matter',100]], out:['AI Expansion Server',4], fp:'4×4', ph:5},
+ 'T-WARP':  {name:'Ballistic Warp Drive cell', b:'Quantum Encoder', r:'Ballistic Warp Drive', in:[['Thermal Propulsion Rocket',1],['Singularity Cell',5],['Superposition Oscillator',2],['Dark Matter Crystal',40],['Excited Photonic Matter',25]], out:['Ballistic Warp Drive',1], fp:'4×4', ph:5},
+};
+
+/* =====================================================================
+   MODULES — compositions. cell = [templateId, count, clock]
+   ===================================================================== */
+const MODULES = [
+ {id:'HUB', name:'Central Hub', phase:0, type:'hub', out:'(all parts converge)', target:'—',
+  desc:'HUB · Space Elevator · AWESOME Sink + Shop · personal storage "mall" · (late) train receiving yard. The only place parts converge.', cells:[]},
+
+ {id:'M1', name:'Smart Plating', phase:1, type:'module', out:'Smart Plating', target:'10 / min',
+  desc:'Phase 1 delivery (50); also covers Phase 2 (500) and feeds Modular Engines in Phase 3. Build once.',
+  cells:[['T-IRON',8,'~97%'],['T-PLATE',3,'100%'],['T-ROD',10,'~95%'],['T-SCREW',10,'~93%'],['T-RIP',2,'100%'],['T-ROTOR',3,'~83%'],['T-SMARTPLATE',5,'100%']]},
+
+ {id:'M2', name:'Versatile Framework', phase:2, type:'module', out:'Versatile Framework', target:'20 / min',
+  desc:'Phase 2 (500) + Phase 3 (2,500). Biggest steel sink (~480 steel ingot/min). Point your best iron + coal here. While on Mk.3 belts, split the steel trunk across two belts until Mk.4.',
+  cells:[['T-IRON',8,'100%'],['T-STEEL',11,'~97%'],['T-PLATE',5,'~90%'],['T-ROD',7,'100%'],['T-SCREW',5,'~90%'],['T-BEAM',8,'100%'],['T-RIP',3,'100%'],['T-FRAME',5,'100%'],['T-VERSFRAME',4,'100%']]},
+
+ {id:'M3', name:'Automated Wiring', phase:2, type:'module', out:'Automated Wiring', target:'5 / min',
+  desc:'Phase 2 (100). Small module, ~20 min of runtime.',
+  cells:[['T-COPPER',4,'100%'],['T-STEEL',1,'50%'],['T-WIRE',8,'100%'],['T-CABLE',4,'~83%'],['T-PIPE',1,'75%'],['T-STATOR',1,'100%'],['T-AUTOWIRE',2,'100%']]},
+
+ {id:'F1', name:'Feeder: Oil → Plastic & Rubber', phase:3, type:'feeder', out:'Plastic + Rubber', target:'as needed',
+  desc:'Refineries on/near oil. Pipe fluids; belt the solid Plastic & Rubber. Feeds engines (rubber) and computers (plastic). Sink/consume the Heavy Oil Residue byproduct.',
+  cells:[['T-PLASTIC',4,'100%'],['T-RUBBER',4,'100%']]},
+
+ {id:'F2', name:'Feeder: Computers', phase:3, type:'feeder', out:'Computer', target:'~5 / min',
+  desc:'Low rate (ACUs need 2 computers each). Feeds M5 and later Supercomputers.',
+  cells:[['T-COPSHEET',3,'100%'],['T-CIRCUIT',3,'100%'],['T-COMPUTER',2,'100%']]},
+
+ {id:'M4', name:'Modular Engine', phase:3, type:'module', out:'Modular Engine', target:'5 / min', approx:true,
+  desc:'Phase 3 (500). 2 Motor + 15 Rubber + 2 Smart Plating → 1 Modular Engine (Manufacturer).',
+  note:'Rubber piped from F1. Slight rounding on the rotor/stator sub-lines — confirm in the planner.',
+  cells:[['T-MODENGINE',5,'100%'],['T-MOTOR',2,'100%'],['T-ROTOR',3,'~83%'],['T-STATOR',2,'100%'],['T-SMARTPLATE',5,'100%']]},
+
+ {id:'M5', name:'Adaptive Control Unit', phase:3, type:'module', out:'Adaptive Control Unit', target:'2 / min', approx:true,
+  desc:'Phase 3 (100). 5 Automated Wiring + 5 Circuit Board + 1 Heavy Modular Frame + 2 Computer → 1 ACU (Manufacturer).',
+  note:'Computers from F2; Heavy Modular Frame sub-line internal. Confirm exact sub-counts in planner.',
+  cells:[['T-ACU',2,'100%'],['T-AUTOWIRE',4,'100%'],['T-CIRCUIT',2,'~67%'],['T-HMFRAME',1,'100%']]},
+
+ {id:'M6', name:'Assembly Director System', phase:4, type:'module', out:'Assembly Director System', target:'~5 / min', approx:true,
+  desc:'Phase 4 (500). 2 Adaptive Control Unit + 1 Supercomputer → 1 ADS (Assembler, 0.75/machine).',
+  note:'ADS is slow per machine (0.75/min) — needs ~7 assemblers for 5/min. ACUs come from a scaled M5; Supercomputer sub-line internal.',
+  cells:[['T-ADS',7,'100%'],['T-SUPERCOMP',3,'100%'],['T-AILIMITER',2,'100%'],['T-HSCONN',3,'100%']]},
+
+ {id:'M7', name:'Magnetic Field Generator', phase:4, type:'module', out:'Magnetic Field Generator', target:'~5 / min', approx:true,
+  desc:'Phase 4 (500). 5 Versatile Framework + 2 Electromagnetic Control Rod → 1 MFG (Assembler, 2.5/machine).',
+  note:'Versatile Framework tapped from M2 buffer; EM Control Rod sub-line internal.',
+  cells:[['T-MFG',2,'100%'],['T-EMROD',3,'~83%'],['T-AILIMITER',3,'100%']]},
+
+ {id:'M8', name:'Thermal Propulsion Rocket', phase:4, type:'module', out:'Thermal Propulsion Rocket', target:'~2.5 / min', approx:true,
+  desc:'Phase 4 (250). 5 Modular Engine + 2 Turbo Motor + 6 Cooling System + 2 Fused Modular Frame → 2 TPR (Manufacturer).',
+  note:'Needs ALUMINIUM + NITROGEN (Cooling Systems, Fused Frames). Train-fed module — see train-network.md.',
+  cells:[['T-TPR',3,'~83%'],['T-TURBOMOTOR',2,'100%'],['T-COOLING',8,'100%'],['T-HEATSINK',5,'100%'],['T-FUSEDFRAME',2,'100%']]},
+
+ {id:'M9', name:'Nuclear Pasta', phase:4, type:'module', out:'Nuclear Pasta', target:'~2.5 / min', approx:true,
+  desc:'Phase 4 (100) + Phase 5 (1,000) = 1,100. 200 Copper Powder + 1 Pressure Conversion Cube → 1 Nuclear Pasta (Particle Accelerator).',
+  note:'The copper-powder MONSTER: ~1,200 Copper Ingot per Nuclear Pasta/min. Put SOMERSLOOPS in the Particle Accelerators (doubles output → halves the copper), rail copper in, and bank through both phases.',
+  cells:[['T-PASTA',5,'100%'],['T-COPPERPOWDER',10,'100%'],['T-PCC',3,'100%'],['T-FUSEDFRAME',3,'100%']]},
+
+ {id:'M10', name:'Biochemical Sculptor', phase:5, type:'module', out:'Biochemical Sculptor', target:'~8 / min', approx:true,
+  desc:'Phase 5 (1,000). 1 Assembly Director System + 80 Ficsite Trigon + 20 Water → 4 Biochemical Sculptor (Blender).',
+  note:'ADS from a scaled M6; Ficsite chain (SAM → Reanimated SAM → Ficsite Ingot → Ficsite Trigon) internal. Planner for exact counts.',
+  cells:[['T-SCULPTOR',2,'100%'],['T-FICTRIGON',2,'100%'],['T-FICINGOT',6,'100%'],['T-REANSAM',2,'100%']]},
+
+ {id:'M11', name:'AI Expansion Server', phase:5, type:'module', out:'AI Expansion Server', target:'~4 / min', approx:true,
+  desc:'Phase 5 (256). 1 MFG + 1 Neural-Quantum Processor + 1 Superposition Oscillator + 25 Excited Photonic Matter → 1 AI Expansion Server (Quantum Encoder).',
+  note:'Deepest chain: needs Time Crystals, Dark Matter, Diamonds, Ficsite, EPM. Lean on the planner.',
+  cells:[['T-AISERVER',1,'100%'],['T-NQP',2,'~67%'],['T-SUPEROSC',1,'~80%'],['T-EPM',2,'100%']]},
+
+ {id:'M12', name:'Ballistic Warp Drive', phase:5, type:'module', out:'Ballistic Warp Drive', target:'~2 / min', approx:true,
+  desc:'Phase 5 (200). 1 Thermal Propulsion Rocket + 5 Singularity Cell + 2 Superposition Oscillator + 40 Dark Matter Crystal + 25 EPM → 1 Ballistic Warp Drive (Quantum Encoder).',
+  note:'Huge Dark Matter demand. TPR tapped from M8. Built on the quantum/dark-matter base.',
+  cells:[['T-WARP',2,'100%'],['T-SINGCELL',2,'100%'],['T-SUPEROSC',2,'100%'],['T-DMCRYSTAL',3,'100%'],['T-EPM',1,'100%']]},
+];
+
+const DELIVERIES = {
+  1:[['Smart Plating',50,'M1']],
+  2:[['Smart Plating',500,'M1'],['Versatile Framework',500,'M2'],['Automated Wiring',100,'M3']],
+  3:[['Versatile Framework',2500,'M2'],['Modular Engine',500,'M4'],['Adaptive Control Unit',100,'M5']],
+  4:[['Assembly Director System',500,'M6'],['Magnetic Field Generator',500,'M7'],['Thermal Propulsion Rocket',250,'M8'],['Nuclear Pasta',100,'M9']],
+  5:[['Nuclear Pasta',1000,'M9'],['Biochemical Sculptor',1000,'M10'],['AI Expansion Server',256,'M11'],['Ballistic Warp Drive',200,'M12']],
+};
+const PHASE_NAMES={0:'Bootstrap',1:'Distribution Platform',2:'Construction Dock',3:'Main Body',4:'Propulsion',5:'Project Assembly'};
+const FAR=['Bauxite','Uranium','Nitrogen Gas','Crude Oil','SAM Ore'];
+const FLUID=['Crude Oil','Water','Alumina Solution','Nitrogen Gas','Dark Matter Residue','Excited Photonic Matter','Heavy Oil Residue','Fuel','Sulfuric Acid','Nitric Acid'];
+const C={hub:'#ff9e3d',module:'#2dd4bf',feeder:'#5aa9ff',raw:'#8b97a3',phase:'#b692ff',machine:'#cfe6ff'};
+
+const INVENTORY = [
+ {phase:0,category:'milestone',id:'P0-M1',item:'Complete all Tier 0 HUB upgrades (in order)',qty:'',note:'Unlocks Smelter/Constructor/Miner/Space Elevator'},
+ {phase:0,category:'milestone',id:'P0-M2',item:'Build Space Elevator at Central Hub',qty:'',note:'Permanent location all game'},
+ {phase:0,category:'milestone',id:'P0-M3',item:'Logistics Mk.2 (belts + splitters/mergers)',qty:'',note:'Needed for clean modules'},
+ {phase:0,category:'milestone',id:'P0-M4',item:'Part Assembly milestone (Assembler)',qty:'',note:'Gate to everything'},
+ {phase:0,category:'milestone',id:'P0-M5',item:'Resource Sink Bonus Program (Sink + Shop)',qty:'',note:'Build Sink at Central Hub'},
+ {phase:0,category:'module',id:'P0-MALL',item:'Central Hub personal mall (storage)',qty:'',note:'One container per part on hand'},
+ {phase:0,category:'milestone',id:'PWR0',item:'⚡ Power: Biomass Burners (bootstrapping)',qty:'',note:'30 MW each; hand/belt-fed — replace at Tier 3'},
+ {phase:1,category:'module',id:'M1',item:'Build Module M1 — Smart Plating (10/min)',qty:'',note:'41 machines; ~233 iron ore/min'},
+ {phase:1,category:'deliverable',id:'P1-D1',item:'Smart Plating',qty:50,note:'Unlocks Tiers 3 & 4'},
+ {phase:2,category:'module',id:'COAL',item:'Coal Power plant (generators by water)',qty:'',note:'Build before the new modules'},
+ {phase:2,category:'module',id:'M2',item:'Build Module M2 — Versatile Framework (20/min)',qty:'',note:'Sized for Phase 2 + 3'},
+ {phase:2,category:'module',id:'M3',item:'Build Module M3 — Automated Wiring (5/min)',qty:'',note:'21 machines'},
+ {phase:2,category:'deliverable',id:'P2-D1',item:'Smart Plating',qty:500,note:'From M1 (~50 min)'},
+ {phase:2,category:'deliverable',id:'P2-D2',item:'Versatile Framework',qty:500,note:'From M2'},
+ {phase:2,category:'deliverable',id:'P2-D3',item:'Automated Wiring',qty:100,note:'From M3 (~20 min)'},
+ {phase:3,category:'module',id:'PWR3',item:'⚡ Power: Fuel Generators (from oil)',qty:'',note:'250 MW each; frees coal up for steel'},
+ {phase:3,category:'module',id:'F1',item:'Feeder F1 — Oil → Plastic & Rubber',qty:'',note:'Pipe fluids; belt solids'},
+ {phase:3,category:'module',id:'F2',item:'Feeder F2 — Computers line',qty:'',note:'~5 computers/min'},
+ {phase:3,category:'module',id:'M4',item:'Build Module M4 — Modular Engine (5/min)',qty:'',note:'Rubber + Smart Plating + Motors'},
+ {phase:3,category:'module',id:'M5',item:'Build Module M5 — Adaptive Control Unit (2/min)',qty:'',note:'Auto Wiring + Circuit Board + Heavy Frame + Computer'},
+ {phase:3,category:'deliverable',id:'P3-D1',item:'Versatile Framework',qty:2500,note:'From M2 (~125 min)'},
+ {phase:3,category:'deliverable',id:'P3-D2',item:'Modular Engine',qty:500,note:'From M4 (~100 min)'},
+ {phase:3,category:'deliverable',id:'P3-D3',item:'Adaptive Control Unit',qty:100,note:'From M5 (~50 min)'},
+ {phase:4,category:'module',id:'RAIL',item:'First train lines to far resources',qty:'',note:'Bauxite / Nitrogen / Oil / Uranium / SAM'},
+ {phase:4,category:'module',id:'ALU',item:'Aluminium sub-factory (bauxite → ingots)',qty:'',note:'Alumina → Scrap → Ingot/Casing/Sheet'},
+ {phase:4,category:'module',id:'NITRO',item:'Nitrogen via Resource Well Pressurizers',qty:'',note:'For Cooling Systems / Fused Frames'},
+ {phase:4,category:'module',id:'M6',item:'Build Module M6 — Assembly Director System',qty:'',note:'2 ACU + 1 Supercomputer (Assembler)'},
+ {phase:4,category:'module',id:'M7',item:'Build Module M7 — Magnetic Field Generator',qty:'',note:'5 VF + 2 EM Control Rod (Assembler)'},
+ {phase:4,category:'module',id:'M8',item:'Build Module M8 — Thermal Propulsion Rocket',qty:'',note:'Turbo Motor + Cooling System + Fused Frame'},
+ {phase:4,category:'module',id:'PWR4',item:'⚡ Power: first Nuclear Power Plant(s)',qty:'',note:'2500 MW; needs water + Nuclear Waste handling'},
+ {phase:4,category:'module',id:'M9',item:'Build Module M9 — Nuclear Pasta',qty:'',note:'Copper powder monster; covers P4+P5'},
+ {phase:4,category:'deliverable',id:'P4-D1',item:'Assembly Director System',qty:500,note:'From M6'},
+ {phase:4,category:'deliverable',id:'P4-D2',item:'Magnetic Field Generator',qty:500,note:'From M7'},
+ {phase:4,category:'deliverable',id:'P4-D3',item:'Thermal Propulsion Rocket',qty:250,note:'From M8'},
+ {phase:4,category:'deliverable',id:'P4-D4',item:'Nuclear Pasta',qty:100,note:'From M9'},
+ {phase:5,category:'module',id:'QUANTUM',item:'Quantum / Dark Matter / Ficsite sub-factories',qty:'',note:'Diamonds→Time Crystal/Dark Matter; SAM→Ficsite; EPM'},
+ {phase:5,category:'module',id:'M10',item:'Build Module M10 — Biochemical Sculptor',qty:'',note:'ADS + Ficsite Trigon + Water (Blender)'},
+ {phase:5,category:'module',id:'M11',item:'Build Module M11 — AI Expansion Server',qty:'',note:'MFG + NQP + Superposition Oscillator + EPM (Quantum Encoder)'},
+ {phase:5,category:'module',id:'M12',item:'Build Module M12 — Ballistic Warp Drive',qty:'',note:'TPR + Singularity Cell + 40 Dark Matter Crystal (Quantum Encoder)'},
+ {phase:5,category:'deliverable',id:'P5-D1',item:'Nuclear Pasta',qty:1000,note:'From M9 (keep running)'},
+ {phase:5,category:'deliverable',id:'P5-D2',item:'Biochemical Sculptor',qty:1000,note:'From M10'},
+ {phase:5,category:'deliverable',id:'P5-D3',item:'AI Expansion Server',qty:256,note:'From M11'},
+ {phase:5,category:'deliverable',id:'P5-D4',item:'Ballistic Warp Drive',qty:200,note:'From M12'},
+ {phase:5,category:'milestone',id:'FINISH',item:'Run final launch sequence & pull the lever 🚀',qty:'',note:'Project Assembly launches — game complete'},
+];
+
+/* ============================ HELPERS ============================ */
+function clockF(c){ if(!c) return 1; const m=String(c).match(/[\d.]+/); return m?(+m[0]/100):1; }
+function moduleMachines(m){
+  return m.cells.map(([tid,n,clock])=>{
+    const t=T[tid]; const f=clockF(clock);
+    return {tid,n,b:t.b,r:t.r,clock,outItem:t.out[0],outRate:+(t.out[1]*n*f).toFixed(1),
+      inputs:t.in.map(([it,rt])=>[it,+(rt*n*f).toFixed(1)])};
+  });
+}
+function producedSet(m){ const s=new Set(); m.cells.forEach(([tid])=>s.add(T[tid].out[0])); return s; }
+function moduleRaw(m){ const made=producedSet(m); const raw=new Set();
+  m.cells.forEach(([tid])=>T[tid].in.forEach(([it])=>{ if(!made.has(it)) raw.add(it); })); return [...raw]; }
+function moduleRawRates(m){ const made=producedSet(m); const acc={};
+  m.cells.forEach(([tid,n,clock])=>{ const f=clockF(clock);
+    T[tid].in.forEach(([it,rt])=>{ if(!made.has(it)) acc[it]=(acc[it]||0)+rt*n*f; }); });
+  Object.keys(acc).forEach(k=>acc[k]=+acc[k].toFixed(1)); return acc; }
+function templateUsedBy(tid){ return MODULES.filter(m=>m.cells.some(c=>c[0]===tid)).map(m=>m.id); }
+function cellArea(tid){ const m=String(T[tid].fp).match(/^(\d+)×(\d+)/); return m?(+m[1]*+m[2]):4; }
+function moduleFootprint(m){ let a=0,cnt=0; m.cells.forEach(([tid,n])=>{ a+=cellArea(tid)*n; cnt+=n; });
+  const pad=Math.ceil(a*1.6), side=Math.ceil(Math.sqrt(pad)); return {machines:cnt,area:a,pad,side,m:side*8}; }
+function footprintHTML(m){ const f=moduleFootprint(m);
+  return `<span class="raw">🏗️ ${f.machines} machines · leave a <b>~${f.side}×${f.side}</b> pad (${f.pad} foundations, ~${f.m}×${f.m} m, belts+spacing included)</span>`; }
+const hasFG = false; // 3D view removed — everything is fixed 2D now
+
+/* ============================ TABS ============================ */
+document.querySelectorAll('nav button').forEach(b=>b.onclick=()=>{
+  document.querySelectorAll('nav button').forEach(x=>x.classList.remove('active'));
+  document.querySelectorAll('.tab').forEach(x=>x.classList.remove('active'));
+  b.classList.add('active'); document.getElementById('tab-'+b.dataset.tab).classList.add('active');
+});
+
+/* ============================ 3D MAP ============================ */
+let Graph=null, maxPhase=5; const expanded=new Set();
+function baseGraph(){
+  const nodes=[], links=[]; const rawSeen=new Set();
+  nodes.push({id:'HUB',label:'CENTRAL HUB',kind:'hub',phase:0,color:C.hub,val:14});
+  for(let p=1;p<=maxPhase;p++) nodes.push({id:'SE'+p,label:'▲ PHASE '+p,kind:'phase',phase:p,color:C.phase,val:9});
+  MODULES.forEach(m=>{
+    if(m.id==='HUB'||m.phase>maxPhase) return;
+    nodes.push({id:m.id,label:m.id+' '+m.name,kind:m.type==='feeder'?'feeder':'module',mod:m.id,phase:m.phase,
+      color:m.type==='feeder'?C.feeder:C.module,val:8});
+    moduleRaw(m).forEach(r=>{
+      const rid='raw_'+r;
+      if(!rawSeen.has(rid)){ rawSeen.add(rid); nodes.push({id:rid,label:r,kind:'raw',phase:m.phase,color:C.raw,val:5}); }
+      links.push({source:rid,target:m.id,transport:FAR.includes(r)?'train':(FLUID.includes(r)?'pipe':'belt')});
+    });
+    if(m.type!=='feeder') links.push({source:m.id,target:'HUB',transport:FLUID.includes(m.out)?'pipe':'belt',label:m.out});
+    else links.push({source:m.id,target:'HUB',transport:'pipe'});
+  });
+  for(let p=1;p<=maxPhase;p++) links.push({source:'HUB',target:'SE'+p,transport:'deliver'});
+  return {nodes,links};
+}
+function withExpansions(g){
+  const nodes=g.nodes.slice(), links=g.links.slice();
+  expanded.forEach(mid=>{
+    const m=MODULES.find(x=>x.id===mid); if(!m||m.phase>maxPhase) return;
+    const mach=moduleMachines(m); const made={};
+    mach.forEach((x,i)=>{ const nid=mid+'::'+i;
+      nodes.push({id:nid,label:x.n+'× '+x.b+'\n'+x.r,kind:'machine',mod:mid,tid:x.tid,phase:m.phase,color:C.machine,val:4});
+      made[x.outItem]=nid; });
+    mach.forEach((x,i)=>{ const nid=mid+'::'+i;
+      x.inputs.forEach(([it])=>{ if(made[it]) links.push({source:made[it],target:nid,transport:'belt',internal:true}); });
+      if(x.outItem===m.out) links.push({source:nid,target:mid,transport:'belt',internal:true});
+    });
+  });
+  return {nodes,links};
+}
+const tColor={belt:'#2dd4bf',pipe:'#5aa9ff',train:'#ff9e3d',deliver:'#b692ff'};
+function renderGraph(){ if(!hasFG) return; Graph.graphData(withExpansions(baseGraph())); }
+function initGraph(){
+  if(!hasFG) return;
+  const el=document.getElementById('graph3d');
+  Graph=ForceGraph3D()(el)
+    .backgroundColor('#0a0d12')
+    .nodeLabel(n=>`<b>${n.label.replace(/\n/g,' · ')}</b>`)
+    .nodeColor(n=>n.color).nodeVal(n=>n.val||5).nodeOpacity(0.95)
+    .linkColor(l=>tColor[l.transport]||'#3f4956')
+    .linkWidth(l=>l.internal?0.6:1.2).linkOpacity(0.55)
+    .linkDirectionalArrowLength(3).linkDirectionalArrowRelPos(1)
+    .linkDirectionalParticles(l=>l.internal?0:2).linkDirectionalParticleWidth(1.4)
+    .onNodeClick(node=>onNode(node))
+    .width(document.getElementById('mapwrap').clientWidth).height(640);
+  if(typeof SpriteText!=='undefined'){
+    try{
+      Graph.nodeThreeObject(n=>{ try{ const s=new SpriteText(n.label.replace(/\n/g,'  ')); s.color=n.color;
+        s.textHeight=(n.kind==='hub'||n.kind==='phase')?7:(n.kind==='machine'?3.5:5);
+        s.backgroundColor='rgba(10,13,18,0.6)'; s.padding=2; s.borderRadius=3; return s; }catch(e){ return undefined; } });
+    }catch(e){ /* labels fall back to hover tooltips + default spheres */ }
+  }
+  try{ Graph.d3Force('charge').strength(-260); Graph.d3Force('link').distance(80); }catch(e){}
+  renderGraph();
+}
+function onNode(node){
+  if(node.kind==='module'||node.kind==='feeder'){
+    if(expanded.has(node.id)) expanded.delete(node.id); else expanded.add(node.id);
+    renderGraph(); showModulePanel(MODULES.find(m=>m.id===node.id));
+  } else if(node.kind==='machine'){ showTemplatePanel(node.tid); }
+  else if(node.kind==='hub'){ showHubPanel(); }
+  else if(node.kind==='phase'){ showPhasePanel(+node.id.slice(2)); }
+  else if(node.kind==='raw'){ showRawPanel(node.label); }
+}
+function openPanel(html){ document.getElementById('panelbody').innerHTML=html; document.getElementById('panel').classList.add('open'); }
+function closePanel(){ document.getElementById('panel').classList.remove('open'); }
+function billHTML(m){
+  const rows=moduleMachines(m).map(x=>`<tr><td class="n">${x.n}×</td><td>${x.b}</td><td>${x.r}</td><td>${x.clock}</td><td>${x.outRate}</td></tr>`).join('');
+  return `<table><thead><tr><th>#</th><th>Building</th><th>Recipe</th><th>Clock</th><th>Out/min</th></tr></thead><tbody>${rows}</tbody></table>`;
+}
+function showModulePanel(m){
+  const exp=expanded.has(m.id); const raw=moduleRawRates(m);
+  const rawHTML=Object.entries(raw).map(([k,v])=>`<span class="raw">${k} <b>${v}/min</b></span>`).join('')||'—';
+  openPanel(`<h3><span class="x" onclick="closePanel()">✕</span><span class="chip p${m.phase}">P${m.phase}</span> ${m.id} · ${m.name}</h3>
+    <div class="meta">${m.desc}</div>
+    ${m.approx?`<div class="approx">⚙️ ${m.note||'Sub-counts tune in the planner.'} <a href="https://www.satisfactorytools.com/" target="_blank">planner →</a></div>`:'<div class="verified">✔ Verified bill (standard recipes, 100% clock).</div>'}
+    <div class="meta"><b>Output:</b> ${m.out} (${m.target})<br><b>Raw feed:</b><br>${rawHTML}<br><b>Footprint:</b><br>${footprintHTML(m)}</div>
+    <button class="pbtn" onclick="toggleExpand('${m.id}')">${exp?'⟲ Collapse machines':'🔍 Expand machines in 3D'}</button>
+    <h4 style="margin:14px 0 4px">Bill of buildings</h4>${billHTML(m)}`);
+}
+function toggleExpand(id){ if(expanded.has(id)) expanded.delete(id); else expanded.add(id); renderGraph(); showModulePanel(MODULES.find(m=>m.id===id)); }
+function showTemplatePanel(tid){
+  const t=T[tid]; const used=templateUsedBy(tid);
+  openPanel(`<h3><span class="x" onclick="closePanel()">✕</span>${t.name}</h3>
+    <div class="meta"><span style="font-family:monospace;color:var(--teal)">${tid}</span> · ${t.b} · <b>${t.r}</b> ${t.approx?'<span class="tag qty">approx</span>':''}</div>
+    <div class="meta"><b>Per machine @100%:</b><br>In: ${t.in.map(i=>i[0]+' '+i[1]).join(', ')||'(none)'}<br>Out: ${t.out[0]} ${t.out[1]}/min<br>Footprint: ${t.fp}</div>
+    <div class="usedby">Used by: ${used.map(u=>`<span class="u" onclick="gotoModule('${u}')">${u}</span>`).join('')||'—'}</div>`);
+}
+function showHubPanel(){ openPanel(`<h3><span class="x" onclick="closePanel()">✕</span>Central Hub</h3>
+  <div class="meta">${MODULES[0].desc}</div>
+  <p class="hint">Every module's output belts/rails here; the Space Elevator and your mall live here all game.</p>`); }
+function showPhasePanel(p){ const d=DELIVERIES[p]||[];
+  openPanel(`<h3><span class="x" onclick="closePanel()">✕</span><span class="chip p${p}">Phase ${p}</span> ${PHASE_NAMES[p]}</h3>
+   <table><thead><tr><th>Deliver</th><th>Qty</th><th>From</th></tr></thead><tbody>${d.map(x=>`<tr><td>${x[0]}</td><td class="n">${x[1]}</td><td><span class="u" onclick="gotoModule('${x[2]}')">${x[2]}</span></td></tr>`).join('')}</tbody></table>`); }
+function showRawPanel(name){ const mods=MODULES.filter(m=>m.phase<=maxPhase && moduleRaw(m).includes(name));
+  openPanel(`<h3><span class="x" onclick="closePanel()">✕</span>${name}</h3>
+   <div class="meta">${FAR.includes(name)?'🚆 Far resource — rail it in (refine at source).':(FLUID.includes(name)?'🔵 Fluid — pipe it.':'🟢 Local resource — belt it.')}</div>
+   <p class="hint">Feeds: ${mods.map(m=>`<span class="u" onclick="gotoModule('${m.id}')">${m.id}</span>`).join('')||'—'}</p>`); }
+function gotoModule(id){ const did=(typeof bpResolve==='function')?bpResolve(id):id; document.querySelector('nav button[data-tab="modules"]').click();
+  const el=document.getElementById('card_'+did); if(el){ el.classList.add('open'); el.scrollIntoView({behavior:'smooth',block:'center'});
+    el.style.outline='2px solid var(--orange)'; setTimeout(()=>el.style.outline='',1600);} }
+
+/* ============================ MODULE CARDS ============================ */
+function renderCards(){
+  const wrap=document.getElementById('cards'); if(!wrap) return; wrap.innerHTML='';
+  DISTRICTS.forEach(d=>{ const banks=districtBanks(d), f=districtFootprint(banks);
+    const makes=banks.map(b=>`<span class="u tlink" onclick="event.stopPropagation();gotoTemplate('${b.tid}')">${b.outItem}</span>`).join(' · ');
+    const allIn=[...new Set(banks.flatMap(b=>b.inputs.map(x=>x[0])))];
+    const imports=allIn.filter(it=>ITEM2DIST[it]&&ITEM2DIST[it]!==d.id);
+    const raws=allIn.filter(it=>!ITEM2DIST[it]);
+    const impHTML=imports.map(it=>`${it} <span style="color:#6b7785">(${DMAP[ITEM2DIST[it]].id})</span>`).join(', ')||'—';
+    const card=document.createElement('div'); card.className='card'; card.id='card_'+d.id;
+    card.innerHTML=`<h3><span class="chip p${d.phase}">P${d.phase}</span> ${d.id==='PA'?'★ ':''}${d.id} · ${d.name}<span class="tgt">${f.machines} machines${bpMax?' (MAX)':''}</span></h3>
+      <div class="body">
+        <div class="meta">📍 <b>${d.near}</b> · lay a <b>~${f.side}×${f.side}</b> pad · ${banks.length} production banks<br>
+        <b>Makes:</b> ${makes}<br>
+        <b>Imports from other districts:</b> ${impHTML}<br>
+        <b>Raw in:</b> ${raws.join(', ')||'—'}</div>
+        <div class="verified">✔ Sized by demand solver to total project need — feeds balanced, no starving lines.</div>
+        <div class="meta"><span class="u" onclick="event.stopPropagation();gotoBlueprint('${d.id}')">📐 Open floor plan →</span> &nbsp;·&nbsp; <span class="u" onclick="event.stopPropagation();gotoMapStep('${d.id}')">🗺️ On the map →</span></div>
+      </div>`;
+    card.querySelector('h3').onclick=()=>card.classList.toggle('open');
+    wrap.appendChild(card);
+  });
+}
+function gotoTemplate(tid){ document.querySelector('nav button[data-tab="templates"]').click();
+  const el=document.getElementById('tpl_'+tid); if(el){ el.scrollIntoView({behavior:'smooth',block:'center'});
+    el.style.outline='2px solid var(--teal)'; setTimeout(()=>el.style.outline='',1600);} }
+
+/* ============================ TEMPLATE CARDS ============================ */
+function templateMiniSvg(t){
+  const ins=t.in.length?t.in:[['raw',0]];
+  const W=300, mh=Math.max(34,ins.length*15+8), my=8, mx=132, mw=72, H=my+mh+8;
+  const col=(typeof BCOL!=='undefined'&&BCOL[t.b])||'#8b97a3', ab=(typeof ABBR!=='undefined'&&ABBR[t.b])||'?';
+  let s=`<svg viewBox="0 0 ${W} ${H}" style="width:100%;max-width:340px;height:auto;background:#0a0d12;border:1px solid var(--line);border-radius:6px;margin:5px 0">`;
+  s+=`<rect x="${mx}" y="${my}" width="${mw}" height="${mh}" rx="4" fill="${col}"/>`;
+  s+=`<text x="${mx+mw/2}" y="${my+mh/2-1}" fill="#0a0d12" font-size="11" font-weight="700" text-anchor="middle">${ab}</text>`;
+  s+=`<text x="${mx+mw/2}" y="${my+mh/2+11}" fill="#0c1620" font-size="7.5" text-anchor="middle">${t.b}</text>`;
+  ins.forEach((inp,k)=>{ const yy=my+12+k*15, fluid=isFluidItem(inp[0]), bc=fluid?'#5aa9ff':'#2dd4bf';
+    s+=`<line x1="6" y1="${yy}" x2="${mx}" y2="${yy}" stroke="${bc}" stroke-width="2"${fluid?' stroke-dasharray="3 3"':''}/>`;
+    s+=`<polygon points="${mx},${yy} ${mx-6},${yy-3} ${mx-6},${yy+3}" fill="${bc}"/>`;
+    s+=`<text x="8" y="${yy-3}" fill="#cdd6df" font-size="8.5">${inp[0]} ${inp[1]||''}</text>`; });
+  const oy=my+mh/2;
+  s+=`<line x1="${mx+mw}" y1="${oy}" x2="${W-8}" y2="${oy}" stroke="#b692ff" stroke-width="2.5"/>`;
+  s+=`<polygon points="${W-8},${oy} ${W-15},${oy-3} ${W-15},${oy+3}" fill="#b692ff"/>`;
+  s+=`<text x="${W-10}" y="${oy-4}" fill="#c9b6ff" font-size="8.5" text-anchor="end">${t.out[0]} ${t.out[1]}</text>`;
+  return s+'</svg>';
+}
+function renderTemplates(){
+  const wrap=document.getElementById('tpls'); wrap.innerHTML='';
+  Object.entries(T).forEach(([tid,t])=>{
+    const owner=(typeof ITEM2DIST!=='undefined')?ITEM2DIST[t.out[0]]:null;
+    const cons=DISTRICTS.filter(dd=>dd.t.some(x=>T[x]&&T[x].in.some(z=>z[0]===t.out[0]))).map(dd=>dd.id);
+    const d=document.createElement('div'); d.className='tpl'; d.id='tpl_'+tid;
+    d.innerHTML=`<h4><span class="id">${tid}</span> — ${t.name} ${t.approx?'<span class="tag qty">approx</span>':''}</h4>
+      <div class="spec"><b>${t.b}</b> · ${t.r} &nbsp;|&nbsp; In: ${t.in.map(i=>i[0]+' '+i[1]).join(', ')||'(none)'} &nbsp;→&nbsp; Out: ${t.out[0]} ${t.out[1]}/min &nbsp;|&nbsp; ${t.fp}</div>
+      ${templateMiniSvg(t)}
+      <div class="usedby">Made in: ${owner?`<span class="u" onclick="gotoBlueprint('${owner}')">${owner} · ${DMAP[owner].name}</span>`:'—'}${cons.length?' &nbsp;·&nbsp; Feeds: '+cons.map(u=>`<span class="u" onclick="gotoBlueprint('${u}')">${u==='PA'?'★ PA':u}</span>`).join(' '):''}</div>`;
+    wrap.appendChild(d);
+  });
+}
+
+/* ============================ SHOPPING ============================ */
+const SLOOP_SLOTS={Smelter:1,Foundry:1,Constructor:1,Assembler:2,Manufacturer:4,Refinery:2,Blender:4,'Particle Accelerator':4,Converter:2,'Quantum Encoder':4};
+/* base MW per machine @100% (1.0). At MAX: ×2.5^1.321 (overclock) ×2 (Somersloop power). */
+const BASE_MW={Smelter:4,Foundry:16,Constructor:4,Assembler:15,Manufacturer:55,Refinery:30,Blender:75,'Particle Accelerator':500,Converter:100,'Quantum Encoder':1000};
+function machinePower(b){ const base=BASE_MW[b]||10; return bpMax ? base*Math.pow(2.5,1.321)*2 : base; }
+const GEN={1:{n:'Biomass → Coal',mw:75},2:{n:'Coal',mw:75},3:{n:'Fuel',mw:250},4:{n:'Nuclear',mw:2500},5:{n:'Nuclear',mw:2500}};
+const TECH={
+ 1:['Finish HUB Tiers 0–2','Part Assembly → Assembler','Logistics Mk.2 (belts Mk.2, splitters/mergers)','Miner Mk.1→Mk.2','Space Elevator built'],
+ 2:['Tier 3 Coal Power','Tier 3 Basic Steel Production','Tier 4 Logistics Mk.3 (Belt Mk.3)','Tier 4 Advanced Steel (Encased Beam)'],
+ 3:['Tier 5 Oil Processing (Plastic/Rubber/Fuel)','Tier 5 Belt Mk.4 + Pipelines Mk.1','Manufacturer','Tier 6 Railway (start trains)'],
+ 4:['Tier 7 Bauxite Refinement (Aluminium) + Pipe Mk.2','Tier 7 Belt Mk.5','Tier 8 Nuclear Power + Particle Accelerator','Tier 8 Belt Mk.6','Power Shards/Somersloops via MAM + exploration'],
+ 5:['Tier 9 Matter Conversion (Converter)','Quantum Encoder + Quantum Energy','Spatial/Temporal tech for finals']
+};
+function allDistrictBanks(){ const out=[]; DISTRICTS.forEach(d=>districtBanks(d).forEach(b=>out.push({d,b}))); return out; }
+function phasePower(){ const mach={1:0,2:0,3:0,4:0,5:0}, mw={1:0,2:0,3:0,4:0,5:0};
+  DISTRICTS.forEach(d=>{ if(d.id==='PA') return; districtBanks(d).forEach(b=>{ mach[d.phase]+=b.n; mw[d.phase]+=machinePower(b.b)*b.n; }); });
+  districtBanks(DMAP['PA']).forEach(b=>{ const ph=(T[b.tid]&&T[b.tid].ph)||1; if(mw[ph]!==undefined){ mach[ph]+=b.n; mw[ph]+=machinePower(b.b)*b.n; } });
+  return {mach,mw}; }
+function renderShopping(){
+  const all=allDistrictBanks();
+  const rWrap=document.getElementById('rawfeed'); rWrap.innerHTML='';
+  // ---- 1) RAW NODES (demand-solved totals) ----
+  const farSet=['Bauxite','Uranium','Nitrogen Gas','SAM Ore','Crude Oil'], fluidSet=FLUID;
+  const raw={}; all.forEach(({b})=>b.inputs.forEach(([it,r])=>{ if(ITEM2DIST[it]===undefined) raw[it]=(raw[it]||0)+r; }));
+  const rawKeys=Object.keys(raw).sort((a,b)=>raw[b]-raw[a]);
+  const nrows=rawKeys.map(k=>{ const v=+raw[k].toFixed(1), fluid=fluidSet.includes(k);
+    const per = fluid?'' : `~${Math.ceil(v/(240*(bpMax?2.5:1)))} pure <span style="color:var(--muted)">/ ${Math.ceil(v/(120*(bpMax?2.5:1)))} normal</span>`;
+    const via = farSet.includes(k)?'🚆 rail / refine at source':(fluid?'🔵 pump + pipe':'belt');
+    return `<tr><td><b>${k}</b></td><td class="n">${v}</td><td>${fluid?'<span style="color:var(--muted)">extractor/well</span>':per}</td><td>${via}</td></tr>`; }).join('');
+  const ns=document.createElement('div'); ns.className='shopphase';
+  ns.innerHTML=`<h3>🪨 Raw nodes to claim — whole build ${bpMax?'(MAX: miners overclocked too)':'(100%)'}</h3>`+
+    '<table><thead><tr><th>Resource</th><th>Total/min</th><th>Nodes (≈ Mk.2 miner'+(bpMax?' @250%':'')+')</th><th>Bring via</th></tr></thead><tbody>'+nrows+'</tbody></table>'+
+    `<div style="padding:6px 16px 12px;color:var(--muted);font-size:12px">Mk.2 miner ≈ pure 240 / normal 120 / impure 60 /min${bpMax?' (×2.5 at 250%)':''}. Prefer <b>pure</b> for the big eaters; <b>slug</b> (Power Shard) lesser nodes to close gaps. Far resources are railed in.</div>`;
+  rWrap.appendChild(ns);
+  // ---- 2) BUILDINGS BILL ----
+  const bld={}; let totMach=0; all.forEach(({b})=>{ bld[b.b]=(bld[b.b]||0)+b.n; totMach+=b.n; });
+  const brows=Object.entries(bld).sort((a,b)=>b[1]-a[1]).map(([k,v])=>`<tr><td><b>${ABBR[k]||''} ${k}</b></td><td class="n">${v}</td></tr>`).join('');
+  const bs=document.createElement('div'); bs.className='shopphase';
+  bs.innerHTML=`<h3>🏭 Buildings to make — whole build (${totMach} machines${bpMax?' at MAX 250%+sloop':''})</h3>`+
+    '<table><thead><tr><th>Building</th><th>Count</th></tr></thead><tbody>'+brows+'</tbody></table>';
+  rWrap.appendChild(bs);
+  // ---- 3) POWER SHARD + SOMERSLOOP BUDGET ----
+  if(bpMax){ let shards=0, sloops=0; all.forEach(({b})=>{ shards+=b.n*3; sloops+=b.n*(SLOOP_SLOTS[b.b]||1); });
+    const ps=document.createElement('div'); ps.className='shopphase';
+    ps.innerHTML=`<h3>⚡ Power Shards & Somersloops budget (MAX everything)</h3>`+
+      `<table><thead><tr><th>Item</th><th>Needed</th><th>Where</th></tr></thead><tbody>`+
+      `<tr><td><b>Power Shards</b> (3 per machine → 250%)</td><td class="n">${shards}</td><td>Power Slugs (green/yellow/purple) → MAM; ${totMach} machines × 3</td></tr>`+
+      `<tr><td><b>Somersloops</b> (fill every slot → 2×)</td><td class="n">${sloops}</td><td>found in the world; 1–4 per machine by type</td></tr>`+
+      `</tbody></table><div style="padding:6px 16px 12px;color:var(--muted);font-size:12px">These totals are large — practical for a slug/sloop-rich save (you said you'll have enough). Turn ⚡ MAX off in Blueprints to plan a 100% build instead.</div>`;
+    rWrap.appendChild(ps);
+  }
+  // ---- 4) POWER PLAN (per phase, cumulative, generators needed) ----
+  const pp=phasePower(); let cum=0;
+  let tot100=0; all.forEach(({b})=>tot100+=(BASE_MW[b.b]||10)*b.n);
+  const totMaxMW=Math.round(tot100*Math.pow(2.5,1.321)*2);
+  const prows=[1,2,3,4,5].map(p=>{ cum+=pp.mw[p]; const g=GEN[p], cnt=Math.ceil(cum*1.4/g.mw);
+    return `<tr><td><span class="chip p${p}">P${p}</span></td><td class="n">+${Math.round(pp.mw[p])}</td><td class="n"><b>${Math.round(cum)}</b></td><td>${g.n}</td><td class="n">~${cnt}× ${g.mw}MW</td></tr>`; }).join('');
+  const pw=document.createElement('div'); pw.className='shopphase';
+  pw.innerHTML=`<h3>⚡ Power plan — cumulative draw &amp; generators ${bpMax?'(at full MAX overclock)':'(100%)'}</h3>`+
+    '<table><thead><tr><th>Phase</th><th>+MW added</th><th>Total MW</th><th>Generator (tier)</th><th>Build (×1.4)</th></tr></thead><tbody>'+prows+'</tbody></table>'+
+    `<div style="padding:6px 16px 12px;color:var(--muted);font-size:12px"><b style="color:var(--orange)">Ramp your overclock — don't power 9 GW on coal in Phase 1.</b> Overclocking is power-hungry (~6.7× MW/machine), so a fully-MAX build draws <b>more</b> total power than 100%. Run machines near <b>100% early</b>, then crank to <b>250%+sloop as Fuel→Nuclear come online</b> (Phase 3–4). Whole build ≈ <b>${Math.round(tot100)} MW</b> at 100% / <b>${totMaxMW} MW</b> fully overclocked. The Generator column is the tier-appropriate type; keep ~40% headroom, stack new type on old, and add Power Storage for the end-game Particle-Accelerator/Quantum spikes.</div>`;
+  rWrap.appendChild(pw);
+  // ---- deliveries ----
+  const dWrap=document.getElementById('deliv'); dWrap.innerHTML='';
+  for(let p=1;p<=5;p++){ const d=DELIVERIES[p];
+    const sec=document.createElement('div'); sec.className='shopphase';
+    sec.innerHTML=`<h3><span class="chip p${p}">Phase ${p}</span> ${PHASE_NAMES[p]}</h3>`+
+      `<table><thead><tr><th>Part</th><th>Qty</th><th>Where it's assembled</th></tr></thead><tbody>`+
+      d.map(x=>`<tr><td>${x[0]}</td><td class="n">${x[1]}</td><td><span class="u" onclick="gotoBlueprint('${x[2]}')">★ Project Assembly</span></td></tr>`).join('')+
+      `</tbody></table>`;
+    dWrap.appendChild(sec);
+  }
+}
+
+/* ============================ INVENTORY ============================ */
+const LS='satis_plan_progress_v2';
+function loadState(){ try{return JSON.parse(localStorage.getItem(LS))||{};}catch(e){return {};} }
+function saveState(s){ localStorage.setItem(LS,JSON.stringify(s)); }
+let state=loadState(), hideDone=false;
+function gotoMapStep(id){ const b=document.querySelector('nav button[data-tab="buildmap"]'); if(b) b.click(); const did=(typeof WORKS2DIST!=='undefined'&&WORKS2DIST[id])||id; if(BM_SEQI[did]!==undefined){ bmStep=BM_SEQI[did]; bmApply(); if(typeof showDistrict==='function') showDistrict(did); } }
+function worksOutputRate(id){ const m=MODULES.find(x=>x.id===id); if(!m) return 0; const b=moduleMachines(m); const f=b.find(x=>x.outItem===m.out)||b[b.length-1]; return f?f.outRate:0; }
+function delivInfo(r){ const list=DELIVERIES[r.phase]||[]; const d=list.find(x=>x[0]===r.item&&x[1]===r.qty)||list.find(x=>x[0]===r.item); if(!d) return null; const rate=worksOutputRate(d[2]); return {module:d[2],rate,min:rate?Math.round(r.qty/rate):0}; }
+function worksSections(id){ const m=MODULES.find(x=>x.id===id); if(!m) return []; const banks=moduleMachines(m), f=moduleFootprint(m);
+  const arr=[{key:'bp:'+id+':pad',works:id,phase:m.phase,label:'Lay a ~'+f.side+'×'+f.side+' pad for '+(WORKS[id]||m.name),detail:'Flat &amp; wide, one level; leave a gap to the right for the next works.'}];
+  banks.forEach((bk,i)=>arr.push({key:'bp:'+id+':'+i,works:id,phase:m.phase,label:'§'+(i+1)+' '+sName(bk)+' — place '+bk.n+'× '+bk.b,detail:bk.r+(bk.clock&&bk.clock!=='100%'?' @'+bk.clock:'')+' · feed '+(bk.inputs.map(x=>x[0]).join(', ')||'raw ore')+' · output <b>'+bk.outItem+' '+bk.outRate+'/min</b> on a '+(beltMk(bk.outRate)||'Mk.1')+' belt'}));
+  return arr; }
+function stripTags(s){ return String(s).replace(/<[^>]+>/g,' ').replace(/\s+/g,' ').trim(); }
+function invStep(r){ let det=r.note||''; if(r.category==='deliverable'){ const di=delivInfo(r); if(di&&di.min) det+=' · ≈ <b>'+di.min+' min</b> at '+di.rate+'/min'; }
+  return {key:r.id,phase:r.phase,label:(r.qty!==''?r.qty+'× ':'')+r.item,detail:det,cat:r.category,deliv:r.category==='deliverable',district:r.category==='deliverable'?'PA':null}; }
+function pushDistrict(out,d,p){ const banks=districtBanks(d);
+  out.push({key:'bp:'+d.id+':pad',phase:p,district:d.id,label:'Build '+d.id+' · '+d.name+' — lay the platform near '+d.near,detail:'Above ground, flat &amp; wide, one level. Leave room to expand later.'});
+  if(/train/.test(d.near)) out.push({key:'bp:'+d.id+':rail',phase:p,district:d.id,label:'🚆 '+d.id+': rail link to your core',detail:'Station + freight platform here; ship refined parts back, never raw ore. See train-network.md.'});
+  banks.forEach((bk,i)=>{ const now=bankNowCount(d,bk); out.push({key:'bp:'+d.id+':'+i,phase:p,district:d.id,label:'['+d.id+'] §'+(i+1)+' '+bk.r+' — '+now+'× '+bk.b+(bk.n>now?' (→'+bk.n+')':''),detail:stripTags(bankStepHTML(d,banks,bk,i))}); }); }
+function pushPAphase(out,p){ const d=DMAP['PA'], banks=districtBanks(d);
+  if(p===1) out.push({key:'bp:PA:pad',phase:1,district:'PA',label:'★ Project Assembly — set up the pad by the Space Elevator',detail:'The Hub / Space Elevator area (built in Phase 0) is your ★ platform. Keep a flat space beside it for the final-part assemblers + a buffer of each part — this is the only zone that changes every phase.'});
+  banks.forEach((bk,i)=>{ if(T[bk.tid]&&T[bk.tid].ph===p){ const now=bankNowCount(d,bk); out.push({key:'bp:PA:'+i,phase:p,district:'PA',label:'[★ PA] §'+(i+1)+' '+bk.r+' — '+now+'× '+bk.b+(bk.n>now?' (→'+bk.n+')':''),detail:stripTags(bankStepHTML(d,banks,bk,i))}); } }); }
+function bankBuiltPhase(d,bk){ return d.id==='PA' ? ((T[bk.tid]&&T[bk.tid].ph)||1) : d.phase; }
+function bankNowCount(d,bk){ return Math.max(1,Math.min(bk.n,bankCountAt(bk.tid,bankBuiltPhase(d,bk)))); }
+function pushExpansions(out,p){ DISTRICTS.forEach(d=>{ const banks=districtBanks(d), grew=[];
+    banks.forEach(bk=>{ if(p<=bankBuiltPhase(d,bk)) return; const nw=bankNowCount(d,bk);
+      // running total built = max(what you built "now", demand at that phase) — nets out the floored "+1 now" for zero-at-build banks
+      const add=Math.max(nw,bankCountAt(bk.tid,p))-Math.max(nw,bankCountAt(bk.tid,p-1)); if(add>0) grew.push('+'+add+'× '+bk.r); });
+    if(grew.length) out.push({key:'exp:'+d.id+':'+p,phase:p,district:d.id,label:(d.id==='PA'?'★ ':'')+'Expand '+d.id+' · '+d.name+' for Phase '+p,detail:'New Phase '+p+' consumers need more — add machines into the room you left: '+grew.join(', ')+'.'}); }); }
+const POWERROW={2:'COAL',3:'PWR3',4:'PWR4'};
+function masterSteps(){ const out=[];
+  INVENTORY.filter(r=>r.phase===0).forEach(r=>out.push(invStep(r)));
+  for(let p=1;p<=5;p++){
+    if(POWERROW[p]){ const r=INVENTORY.find(x=>x.id===POWERROW[p]); if(r) out.push(invStep(r)); }
+    DISTRICTS.filter(d=>d.id!=='PA'&&d.phase===p).forEach(d=>pushDistrict(out,d,p));
+    pushPAphase(out,p);
+    pushExpansions(out,p);
+    INVENTORY.filter(r=>r.phase===p&&r.category==='deliverable').forEach(r=>out.push(invStep(r)));
+  }
+  const fin=INVENTORY.find(r=>r.id==='FINISH'); if(fin) out.push(invStep(fin));
+  return out; }
+function fmtMin(m){ m=Math.round(m); return m<90?m+' min':(m/60).toFixed(1)+' h'; }
+function phaseDeliverMin(p){ const ds=DELIVERIES[p]||[]; let mx=0; ds.forEach(([item,qty])=>{ const r=FINAL_RATES[item]*(bpScale||1); if(r) mx=Math.max(mx,qty/r); }); return mx; }
+function tickKey(key){ state[key]=true; const mm=String(key).match(/^bp:([^:]+):/); if(mm){ const id=mm[1],m=MODULES.find(x=>x.id===id);
+  if(m){ const banks=moduleMachines(m); if(state['bp:'+id+':pad']&&banks.every((b,i)=>state['bp:'+id+':'+i])) state[id]=true; } } saveState(state); }
+function renderInventory(){
+  const wrap=document.getElementById('invlist'); wrap.innerHTML=''; let tA=0,dA=0;
+  // ----- guided "DO THIS NOW" at section granularity -----
+  const ms=masterSteps(); const STEPNO=new Map(); ms.forEach((s,i)=>STEPNO.set(s,i+1));
+  const done0=ms.filter(s=>state[s.key]).length;
+  const next=ms.find(s=>!state[s.key]); const nextNo=next?STEPNO.get(next):ms.length;
+  const nb=document.createElement('div'); nb.className='invphase'; nb.style.borderColor='var(--orange)';
+  if(next){ let links='';
+    if(next.district) links=` <button class="pbtn" onclick="gotoBlueprint('${next.district}')">📐 Blueprint</button> <button class="pbtn" onclick="gotoMapStep('${next.district}')">🗺️ On map</button>`;
+    nb.innerHTML=`<h3 style="background:#2a1c08"><span class="chip p${next.phase}">Phase ${next.phase}</span> ▶ DO THIS NOW <span class="pct" style="margin-left:auto">Step ${nextNo} of ${ms.length}</span></h3>
+      <div style="padding:12px 16px"><div style="font-size:16px;font-weight:700;color:var(--orange)">Step ${nextNo} — ${next.label}</div>
+        <div class="nt" style="margin:5px 0 11px">${next.detail||''}</div>
+        <button class="pbtn" id="doNext" style="background:var(--orange);color:#1a1205;border-color:var(--orange);font-weight:700">✓ Done — next</button>${links}</div>`;
+  } else nb.innerHTML=`<h3 style="background:#13261a">🎉 Every step done — pull the lever and launch! 🚀</h3>`;
+  wrap.appendChild(nb);
+  const dn0=document.getElementById('doNext'); if(dn0&&next) dn0.onclick=()=>{ tickKey(next.key); renderInventory(); if(typeof renderBlueprints==='function') renderBlueprints(); };
+  // ----- districts online now -----
+  const online=DISTRICTS.filter(d=>{ const banks=districtBanks(d); return state['bp:'+d.id+':pad']&&banks.length&&banks.every((b,i)=>state['bp:'+d.id+':'+i]); });
+  if(online.length){ const rb=document.createElement('div'); rb.className='invphase';
+    rb.innerHTML=`<h3 style="background:#13261a">⚙️ Districts online (${online.length})</h3><div style="padding:9px 16px">`+
+      online.map(d=>`<span class="raw"><b>${d.id==='PA'?'★':d.id}</b> ${d.name}</span>`).join(' ')+`</div>`;
+    wrap.appendChild(rb); }
+  // ----- live power readout (sum power of every machine you've ticked) -----
+  let mwOn=0; ms.forEach(s=>{ if(state[s.key]){ const mm=String(s.key).match(/^bp:([^:]+):(\d+)$/); if(mm){ const dd=DMAP[mm[1]]; if(dd){ const bk=districtBanks(dd)[+mm[2]]; if(bk) mwOn+=machinePower(bk.b)*bk.n; } } } });
+  if(mwOn>0){ const g=GEN[next?next.phase:5]||GEN[5]; const need=Math.ceil(mwOn*1.4/g.mw); const pb=document.createElement('div'); pb.className='invphase';
+    pb.innerHTML=`<h3 style="background:#2a1c08">⚡ Power online so far: ~${Math.round(mwOn)} MW</h3><div style="padding:9px 16px;color:var(--muted);font-size:13px">Keep generators ≥ this with ~40% headroom — you're on <b>${g.n}</b>: ~<b>${need}× ${g.mw}MW</b> generators. Full plan in <span class="u" onclick="document.querySelector('nav button[data-tab=&quot;shopping&quot;]').click()">📋 Items We Need</span>.</div>`;
+    wrap.appendChild(pb); }
+  // ----- FULL numbered encyclopaedia: every step, in order, grouped by phase -----
+  for(let p=0;p<=5;p++){ const steps=ms.filter(s=>s.phase===p); if(!steps.length) continue;
+    const done=steps.filter(s=>state[s.key]).length; tA+=steps.length; dA+=done;
+    const pct=Math.round(done/steps.length*100);
+    const sec=document.createElement('div'); sec.className='invphase';
+    sec.innerHTML=`<h3><span class="chip p${p}">Phase ${p}</span> ${PHASE_NAMES[p]}<div class="prog"><i style="width:${pct}%"></i></div><span class="pct">${done}/${steps.length} · ${pct}%</span><button class="pbtn phdone" data-p="${p}" style="margin-left:8px;padding:3px 9px">${done===steps.length?'↺ undo':'✓ all'}</button></h3>`;
+    if(TECH[p]) sec.innerHTML+=`<div style="padding:7px 16px 2px;color:var(--muted);font-size:12px">🔓 <b>Unlock first:</b> ${TECH[p].join(' · ')}</div>`;
+    { const pm=phaseDeliverMin(p); if(pm) sec.innerHTML+=`<div style="padding:1px 16px 6px;color:var(--muted);font-size:12px">⏱ once built, ~<b>${fmtMin(pm)}</b> of running to hit this phase's deliveries (lines run in parallel${bpScale!==1?', at ×'+bpScale+' rate':''}).</div>`; }
+    steps.forEach(s=>{ const ch=!!state[s.key]; if(hideDone&&ch) return; const no=STEPNO.get(s);
+      const isNext=next&&next.key===s.key;
+      const row=document.createElement('div'); row.className='invrow'+(ch?' done':'');
+      if(isNext){ row.style.borderLeft='3px solid var(--orange)'; row.style.background='rgba(255,158,61,0.06)'; }
+      const tag=s.district?`<span class="tag module">${s.district==='PA'?'★ PA':s.district}</span> `:(s.cat?`<span class="tag ${s.cat}">${s.cat}</span> `:'');
+      const links=s.district?` <span class="u" onclick="event.stopPropagation();gotoBlueprint('${s.district}')">📐</span> <span class="u" onclick="event.stopPropagation();gotoMapStep('${s.district}')">🗺️</span>`:(s.deliv?` <span class="u" onclick="event.stopPropagation();gotoMapStep('PA')">🗺️</span>`:'');
+      row.innerHTML=`<input type="checkbox" ${ch?'checked':''}><div class="it"><div class="nm">${isNext?'▶ ':''}<b style="color:#8b97a3">Step ${no}</b> — ${tag}${s.label}${links}</div><div class="nt">${s.detail||''}</div></div>`;
+      row.querySelector('input').onchange=e=>{ if(e.target.checked) state[s.key]=true; else delete state[s.key]; saveState(state); renderInventory(); if(typeof renderBlueprints==='function') renderBlueprints(); };
+      sec.appendChild(row);
+    });
+    wrap.appendChild(sec);
+  }
+  wrap.querySelectorAll('.phdone').forEach(b=>b.onclick=()=>{ const p=+b.dataset.p, steps=ms.filter(s=>s.phase===p), all=steps.every(s=>state[s.key]);
+    steps.forEach(s=>{ if(all) delete state[s.key]; else state[s.key]=true; }); saveState(state); renderInventory(); if(typeof renderBlueprints==='function') renderBlueprints(); });
+  document.getElementById('overall').textContent=`Overall: ${dA}/${tA} steps · ${Math.round(dA/tA*100)}%`;
+}
+document.getElementById('resetinv').onclick=()=>{ if(confirm('Reset all progress?')){ state={}; saveState(state); renderInventory(); } };
+document.getElementById('collapseDone').onclick=e=>{ hideDone=!hideDone; e.target.textContent=hideDone?'👁️ Show completed':'👁️ Hide completed'; renderInventory(); };
+function dlCsv(csv,name){ const a=document.createElement('a'); a.href=URL.createObjectURL(new Blob([csv],{type:'text/csv'})); a.download=name; a.click(); }
+document.getElementById('exportall').onclick=()=>{ const e=s=>`"${String(s).replace(/"/g,'""')}"`; let csv='phase,step,detail,done\n';
+  masterSteps().forEach(s=>{ const dn=state[s.key]||(s.works&&state[s.works]); csv+=[s.phase,e(s.label),e(String(s.detail||'').replace(/<[^>]+>/g,'')),dn?'yes':'no'].join(',')+'\n'; });
+  dlCsv(csv,'satisfactory-all-steps.csv'); };
+document.getElementById('printinv').onclick=()=>window.print();
+/* item search: filter template cards live by item / building / recipe / district */
+(function(){ const sb=document.getElementById('tplSearch'); if(!sb) return;
+  sb.oninput=()=>{ const q=sb.value.trim().toLowerCase();
+    document.querySelectorAll('#tpls .tpl').forEach(el=>{ el.style.display=(!q||el.textContent.toLowerCase().includes(q))?'':'none'; }); }; })();
+/* progress as a portable code (resume on another device) */
+document.getElementById('savecode').onclick=()=>{ try{ const code=btoa(unescape(encodeURIComponent(JSON.stringify(state))));
+  const ta=document.createElement('textarea'); ta.value=code; document.body.appendChild(ta); ta.select();
+  let copied=false; try{ copied=document.execCommand('copy'); }catch(e){}
+  document.body.removeChild(ta);
+  prompt(copied?'✅ Copied! Your progress code (paste into Load code on another device):':'Copy this progress code (Load code on another device):', code);
+}catch(e){ alert('Could not make a code: '+e.message); } };
+document.getElementById('loadcode').onclick=()=>{ const code=prompt('Paste a progress code to restore (this replaces your current ticks):'); if(!code) return;
+  try{ const obj=JSON.parse(decodeURIComponent(escape(atob(code.trim())))); if(typeof obj!=='object'||!obj) throw new Error('not valid'); state=obj; saveState(state); renderInventory(); if(typeof renderBlueprints==='function') renderBlueprints(); if(typeof buildBuildMap==='function') buildBuildMap(); alert('✅ Progress restored.'); }
+  catch(e){ alert('That code wasn\'t valid: '+e.message); } };
+
+/* ============================ 2D BUILD MAP — material districts ============================ */
+const SVGNS='http://www.w3.org/2000/svg';
+const phaseCol={0:'#bcd0e0',1:'#ffce8a',2:'#8fe6ff',3:'#b7f0a0',4:'#d3b6ff',5:'#ffadc4'};
+const BM_CTR={x:600,y:400}; const BM_ELEV=BM_CTR;
+/* the modular mini-base DISTRICTS (see architecture.md). ang = compass placement; PA = centre. */
+const DISTRICTS=[
+ {id:'A',name:'Ironworks',near:'iron + limestone',ang:200,phase:1,col:'#6fcf97',t:['T-IRON','T-PLATE','T-ROD','T-SCREW','T-RIP','T-ROTOR','T-FRAME','T-CONCRETE']},
+ {id:'B',name:'Copperworks',near:'copper + caterium',ang:340,phase:2,col:'#5ab0e6',t:['T-COPPER','T-CATERIUM','T-WIRE','T-CABLE','T-COPSHEET','T-QUICKWIRE','T-AILIMITER']},
+ {id:'C',name:'Steelworks',near:'iron + coal',ang:158,phase:2,col:'#e6915a',t:['T-STEEL','T-BEAM','T-PIPE','T-EIBEAM','T-STATOR','T-MOTOR']},
+ {id:'D',name:'Oil & Electronics',near:'crude oil',ang:55,phase:3,col:'#b692ff',t:['T-PLASTIC','T-RUBBER','T-QUARTZX','T-SILICA','T-CIRCUIT','T-COMPUTER','T-HSCONN','T-HMFRAME','T-CRYSTALOSC','T-SUPERCOMP']},
+ {id:'E',name:'Aluminium & Cooling',near:'bauxite (train)',ang:-48,phase:4,col:'#cbb27a',t:['T-ALUMINA','T-ALSCRAP','T-ALINGOT','T-ALCASING','T-ALCLAD','T-HEATSINK','T-COOLING','T-FUSEDFRAME','T-RCU','T-TURBOMOTOR','T-EMROD']},
+ {id:'F',name:'Nuclear & Particle',near:'uranium (train)',ang:28,phase:4,col:'#ff6b9d',t:['T-COPPERPOWDER','T-PCC','T-PASTA','T-DIAMONDS']},
+ {id:'G',name:'Quantum & SAM',near:'SAM (train)',ang:108,phase:5,col:'#ffadc4',t:['T-REANSAM','T-DMRESIDUE','T-FICINGOT','T-FICTRIGON','T-TIMECRYSTAL','T-DMCRYSTAL','T-EPM','T-NQP','T-SUPEROSC','T-SINGCELL']},
+ {id:'PA',name:'Project Assembly',near:'by the Space Elevator',ang:null,phase:1,col:'#ff9e3d',t:['T-SMARTPLATE','T-VERSFRAME','T-AUTOWIRE','T-MODENGINE','T-ACU','T-ADS','T-MFG','T-TPR','T-SCULPTOR','T-AISERVER','T-WARP']},
+];
+const DMAP={}; DISTRICTS.forEach(d=>DMAP[d.id]=d);
+const WORKS2DIST={M1:'PA',M2:'PA',M3:'PA',M4:'PA',M5:'PA',M6:'PA',M7:'PA',M8:'PA',M9:'F',M10:'PA',M11:'PA',M12:'PA',F1:'D',F2:'D'};
+const BM_RES=[ {n:'Iron Ore',ang:185,t:'belt'},{n:'Coal',ang:215,t:'belt'},{n:'Limestone',ang:150,t:'belt'},
+  {n:'Caterium',ang:312,t:'belt'},{n:'Copper Ore',ang:340,t:'belt'},{n:'Quartz',ang:72,t:'belt'},
+  {n:'Crude Oil',ang:55,t:'pipe'},{n:'Bauxite',ang:-48,t:'train'},{n:'Nitrogen Gas',ang:-18,t:'train'},
+  {n:'Uranium',ang:30,t:'train'},{n:'SAM Ore',ang:108,t:'train'} ];
+BM_RES.forEach(r=>{ const a=r.ang*Math.PI/180; r.x=Math.round(BM_CTR.x+400*Math.cos(a)); r.y=Math.round(BM_CTR.y+345*Math.sin(a)); });
+const bmTCol={belt:'#2dd4bf',pipe:'#5aa9ff',train:'#ff9e3d'};
+const BM_SEQ=[
+ {node:null,phase:0,t:'Phase 0 · Foundation + first power',d:'Pick a flat desert shelf for the ★ Project Assembly + ▲ Space Elevator. ⚡ Start on Biomass Burners. Scout your nearest Iron, Copper, Limestone & Coal.'},
+ {node:'A',phase:1,t:'① Build the IRONWORKS district',d:'📍 Near IRON + limestone. Smelt iron → plates, rods, screws, RIP, rotors, modular frames, concrete. This shared mini-base feeds almost everything.'},
+ {node:'PA',phase:1,t:'① Project Assembly · add Smart Plating',d:'By the elevator: one Smart Plating station (RIP + Rotor from Ironworks). ▶ deliver 50 → unlocks Steel + Coal Power.'},
+ {node:'B',phase:2,t:'② Build the COPPERWORKS district',d:'📍 Near COPPER + caterium. Wire, cable, copper sheet, quickwire — build this BEFORE Steelworks (Stators need its wire).'},
+ {node:'C',phase:2,t:'② Build the STEELWORKS district',d:'📍 Near IRON + COAL. Steel → beams, pipes, stators (need Wire←B), motors, encased beams. ⚡ switch to Coal Generators by water.'},
+ {node:'PA',phase:2,t:'② Project Assembly · +Versatile Framework, +Automated Wiring',d:'Add two stations: Versatile Framework (Frame←A + Beam←C) and Automated Wiring (Stator←C + Cable←B). Deliver Phase 2 → Oil, Manufacturer, Trains.'},
+ {node:'D',phase:3,t:'③ Build the OIL & ELECTRONICS district',d:'📍 On CRUDE OIL. Plastic, rubber, circuit boards, computers, heavy frames, supercomputers. ⚡ Fuel Generators.'},
+ {node:'PA',phase:3,t:'③ Project Assembly · +Modular Engine, +Adaptive Control Unit',d:'Add Modular Engine (Motor←C + Rubber←D) and ACU (Auto-Wiring + Circuit Board←D + Heavy Frame←D + Computer←D). Deliver Phase 3 → Aluminium, Nuclear.'},
+ {node:'E',phase:4,t:'④ Build the ALUMINIUM & COOLING district',d:'📍🚆 By BAUXITE + water + nitrogen. Aluminium, heat sinks, cooling systems, turbo motors, fused frames.'},
+ {node:'F',phase:4,t:'④ Build the NUCLEAR & PARTICLE district',d:'📍🚆 By URANIUM + water + a copper feed. ⚡ Nuclear power. Copper powder, diamonds, pressure cubes, and Nuclear Pasta (delivered).'},
+ {node:'PA',phase:4,t:'④ Project Assembly · +ADS, +Magnetic Field Generator, +Thermal Propulsion Rocket',d:'Add three stations fed by districts A–F. Deliver Phase 4 → Tier 9.'},
+ {node:'G',phase:5,t:'⑤ Build the QUANTUM & SAM district',d:'📍🚆 SAM + quartz. Reanimated SAM, dark matter (residue→crystal), ficsite, time crystals, EPM, neural-quantum processors, oscillators, singularity cells.'},
+ {node:'PA',phase:5,t:'⑤ Project Assembly · +Biochemical Sculptor, +AI Expansion Server, +Ballistic Warp Drive',d:'Add the final three stations. Deliver Phase 5 → run the launch → 🚀 DONE!'},
+];
+const BM_SEQI={}; DISTRICTS.forEach(d=>{ const f=BM_SEQ.findIndex(s=>s.node===d.id); BM_SEQI[d.id]=f<0?99:f; });
+let bmView=null, bmZoom={k:1,tx:0,ty:0};
+let bmStep=0, bmTimer=null, bmBuilt=false;
+function svgEl(tag,attrs){ const e=document.createElementNS(SVGNS,tag); for(const k in attrs) e.setAttribute(k,attrs[k]); return e; }
+function bmClamp(v,a,b){ return Math.max(a,Math.min(b,v)); }
+function bmArrowDefs(svg){
+  const defs=svgEl('defs',{});
+  [['arrTeal','#2dd4bf'],['arrPurple','#b692ff']].forEach(([id,c])=>{
+    const mk=svgEl('marker',{id:id,viewBox:'0 0 10 10',refX:'9',refY:'5',markerWidth:'5.5',markerHeight:'5.5',orient:'auto-start-reverse'});
+    mk.appendChild(svgEl('path',{d:'M0,0 L10,5 L0,10 z',fill:c})); defs.appendChild(mk);
+  });
+  svg.appendChild(defs);
+}
+const BMW=2440, BMH=1560, BM_C={x:BMW/2,y:BMH/2};
+const BM_FINALS=new Set(['Smart Plating','Versatile Framework','Automated Wiring','Modular Engine','Adaptive Control Unit','Assembly Director System','Magnetic Field Generator','Thermal Propulsion Rocket','Nuclear Pasta','Biochemical Sculptor','AI Expansion Server','Ballistic Warp Drive']);
+function bmPanel(d){ const banks=districtBanks(d); const {st}=bankStage(banks); const maxStage=Math.max(0,...st);
+  const cols=[]; for(let c=0;c<=maxStage;c++) cols[c]=[]; banks.forEach((b,i)=>cols[st[i]].push(i));
+  const aw=104, ah=62, gx=64, gy=16, padX=14, padTop=46, padBot=14;
+  const w=padX*2+(maxStage+1)*aw+maxStage*gx;
+  const h=padTop+Math.max(ah,...cols.map(c=>c.length*(ah+gy)-gy))+padBot;
+  return {banks,cols,aw,ah,gx,gy,padX,padTop,w,h}; }
+function buildBuildMap(){
+  const svg=document.getElementById('bmap'); if(!svg) return; svg.innerHTML=''; svg.setAttribute('viewBox','0 0 '+BMW+' '+BMH); bmBuilt=true;
+  bmArrowDefs(svg);
+  const view=svgEl('g',{}); svg.appendChild(view); bmView=view;
+  const P={}; DISTRICTS.forEach(d=>P[d.id]=bmPanel(d));
+  // initial compass placement, then push apart so panels never overlap
+  DISTRICTS.forEach(d=>{ if(d.id==='PA'){ d.px=BM_C.x; d.py=BM_C.y; } else { const a=d.ang*Math.PI/180; d.px=BM_C.x+780*Math.cos(a); d.py=BM_C.y+600*Math.sin(a); } });
+  for(let pass=0;pass<300;pass++){ let moved=false;
+    for(let i=0;i<DISTRICTS.length;i++) for(let j=i+1;j<DISTRICTS.length;j++){ const a=DISTRICTS[i],b=DISTRICTS[j],pa=P[a.id],pb=P[b.id];
+      const mx=(pa.w+pb.w)/2+110, my=(pa.h+pb.h)/2+120, dx=b.px-a.px, dy=b.py-a.py, ox=mx-Math.abs(dx), oy=my-Math.abs(dy);
+      if(ox>0&&oy>0){ moved=true; if(ox<oy){ const s=((dx<0?-1:1)*ox)/2||ox/2; a.px-=s; b.px+=s; } else { const s=((dy<0?-1:1)*oy)/2||oy/2; a.py-=s; b.py+=s; } } }
+    if(!moved) break; }
+  let minx=1e9,miny=1e9,maxx=-1e9,maxy=-1e9; DISTRICTS.forEach(d=>{const p=P[d.id]; minx=Math.min(minx,d.px-p.w/2);miny=Math.min(miny,d.py-p.h/2);maxx=Math.max(maxx,d.px+p.w/2);maxy=Math.max(maxy,d.py+p.h/2);});
+  const ofx=(BMW-(maxx-minx))/2-minx, ofy=(BMH-(maxy-miny))/2-miny;
+  DISTRICTS.forEach(d=>{ d.px=Math.round(d.px+ofx); d.py=Math.round(d.py+ofy); d.x=d.px; d.y=d.py; });
+  // ---- cross-district connections: BELT (teal) vs TRAIN (orange, far districts) ----
+  const itemDist={}; DISTRICTS.forEach(d=>d.t.forEach(tid=>{ if(T[tid]) itemDist[T[tid].out[0]]=d.id; }));
+  const pairItems={}; DISTRICTS.forEach(d=>d.t.forEach(tid=>{ const t=T[tid]; if(!t)return; t.in.forEach(([item])=>{ const src=itemDist[item]; if(src&&src!==d.id){ const k=src+'>'+d.id; (pairItems[k]=pairItems[k]||[]).push(item); } }); }));
+  Object.keys(pairItems).forEach(k=>{ const [src,dst]=k.split('>'), a=DMAP[src], b=DMAP[dst];
+    const train=/train/.test(a.near)||/train/.test(b.near), col=train?'#ff9e3d':'#2dd4bf';
+    const items=[...new Set(pairItems[k])];
+    const ln=svgEl('line',{x1:a.px,y1:a.py,x2:b.px,y2:b.py,stroke:col,'stroke-width':train?2.6:2,opacity:.8}); if(!train) ln.setAttribute('marker-end','url(#arrTeal)'); if(train) ln.setAttribute('stroke-dasharray','10 6');
+    ln.dataset.seq=Math.max(BM_SEQI[src],BM_SEQI[dst]); ln.classList.add('bmedge'); ln.appendChild(svgEl('title',{})).textContent=(train?'🚆 TRAIN ':'belt ')+src+' → '+dst+': '+items.join(', '); view.appendChild(ln);
+    const lt=svgEl('text',{x:Math.round((a.px+b.px)/2),y:Math.round((a.py+b.py)/2)-4,fill:col,'font-size':13,'font-weight':'700','text-anchor':'middle'}); lt.classList.add('bmedge'); lt.dataset.seq=ln.dataset.seq; lt.textContent=(train?'🚆 ':'')+items.slice(0,2).join(', ')+(items.length>2?'…':''); view.appendChild(lt); });
+  DISTRICTS.forEach(d=>{ if(d.id==='PA')return; if(d.t.some(tid=>T[tid]&&BM_FINALS.has(T[tid].out[0]))){ const pa=DMAP['PA']; const train=/train/.test(d.near);
+    const ln=svgEl('line',{x1:d.px,y1:d.py,x2:pa.px,y2:pa.py,stroke:'#b692ff','stroke-width':1.6,opacity:.45,'marker-end':'url(#arrPurple)'}); if(train) ln.setAttribute('stroke-dasharray','10 6'); ln.dataset.seq=BM_SEQI[d.id]; ln.classList.add('bmedge'); view.appendChild(ln); } });
+  // ---- district PANELS with their area blocks nested inside ----
+  DISTRICTS.forEach(d=>{ const p=P[d.id], x0=d.px-p.w/2, y0=d.py-p.h/2, isPA=d.id==='PA';
+    const g=svgEl('g',{class:'bmnode bmmod'}); g.dataset.seq=BM_SEQI[d.id]; g.dataset.mod=d.id; g.style.cursor='pointer';
+    g.appendChild(svgEl('rect',{x:x0,y:y0,width:p.w,height:p.h,rx:11,fill:'rgba(18,24,31,.94)',stroke:d.col,'stroke-width':isPA?3:2}));
+    g.appendChild(svgEl('text',{x:x0+11,y:y0+23,fill:d.col,'font-size':15,'font-weight':'700'})).textContent=(isPA?'★ ':'')+d.id+' · '+d.name;
+    g.appendChild(svgEl('text',{x:x0+p.w-9,y:y0+21,fill:'#7e8b97','font-size':11,'text-anchor':'end'})).textContent=(/train/.test(d.near)?'🚆 ':'📍 ')+d.near;
+    // raw resource nodes mined/piped INTO this district (above the panel)
+    const raws=[...new Set(p.banks.flatMap(b=>b.inputs.map(x=>x[0])).filter(it=>itemDist[it]===undefined))];
+    if(raws.length){ const sp=Math.min(150,(p.w-30)/raws.length); raws.forEach((rn,k)=>{ const fluid=isFluidItem(rn), rx=Math.round(x0+24+k*sp+sp/2-sp/2), ry=y0-30, bc=fluid?'#5aa9ff':'#2dd4bf';
+      const ln=svgEl('line',{x1:rx,y1:ry+6,x2:rx,y2:y0,stroke:bc,'stroke-width':1.6,opacity:.55}); if(fluid) ln.setAttribute('stroke-dasharray','3 3'); g.appendChild(ln);
+      g.appendChild(svgEl('circle',{cx:rx,cy:ry,r:5,fill:fluid?'#5aa9ff':'#8b97a3',stroke:'#0a0d12','stroke-width':1.5}));
+      g.appendChild(svgEl('text',{x:rx+8,y:ry+4,fill:'#9aa7b4','font-size':10})).textContent=(fluid?'🛢 ':'⛏ ')+rn; }); }
+    // intra-district belts: connect each area to the areas it feeds (drawn under the blocks)
+    const apos={}; p.cols.forEach((c,ci)=>c.forEach((bi,ri)=>{ apos[bi]={x:x0+p.padX+ci*(p.aw+p.gx),y:y0+p.padTop+ri*(p.ah+p.gy)}; }));
+    const item2bi={}; p.banks.forEach((b,j)=>item2bi[b.outItem]=j);
+    const lblBoxes=[]; // placed label rects so overlapping belt labels stagger instead of garbling
+    p.banks.forEach((bk,bi)=>bk.inputs.forEach(([item])=>{ const src=item2bi[item]; if(src===undefined||src===bi) return; const a=apos[src],b=apos[bi]; if(!a||!b) return;
+      const x1=a.x+p.aw,y1=a.y+p.ah/2,x2=b.x,y2=b.y+p.ah/2,mx=x1<x2?(x1+x2)/2:x1+12,fluid=isFluidItem(item),bc=fluid?'#5aa9ff':'#2dd4bf';
+      g.appendChild(svgEl('path',{d:'M'+x1+','+y1+' H'+mx+' V'+y2+' H'+x2,fill:'none',stroke:bc,'stroke-width':1.6,opacity:.7,'stroke-dasharray':fluid?'4 3':'none'}));
+      g.appendChild(svgEl('polygon',{points:x2+','+y2+' '+(x2-6)+','+(y2-3)+' '+(x2-6)+','+(y2+3),fill:bc}));
+      const lab=item.length>16?item.slice(0,15)+'…':item, lw=lab.length*5.4;
+      // keep the label inside the panel horizontally, and nudge it up off any label it would collide with
+      let lx=mx, ly=(y1<y2?y1:y2)-3; const left=x0+4+lw/2, right=x0+p.w-4-lw/2;
+      if(lx<left) lx=left; if(lx>right) lx=Math.max(left,right);
+      let guard=0; while(guard++<10 && lblBoxes.some(B=>Math.abs(B.x-lx)<(B.w+lw)/2 && Math.abs(B.y-ly)<11)) ly-=11;
+      lblBoxes.push({x:lx,y:ly,w:lw});
+      const tx=svgEl('text',{x:lx,y:ly,fill:bc,'font-size':10,'text-anchor':'middle'}); tx.textContent=lab; g.appendChild(tx); }));
+    p.cols.forEach((c,ci)=>c.forEach((bi,ri)=>{ const bk=p.banks[bi], ax=x0+p.padX+ci*(p.aw+p.gx), ay=y0+p.padTop+ri*(p.ah+p.gy);
+      const col=BCOL[bk.b]||'#8b97a3', ab=ABBR[bk.b]||'?', done=!!state['bp:'+d.id+':'+bi];
+      const ag=svgEl('g',{class:'bpsect'}); ag.dataset.works=d.id; ag.dataset.i=bi; ag.style.cursor='pointer';
+      ag.appendChild(svgEl('rect',{x:ax,y:ay,width:p.aw,height:p.ah,rx:4,fill:col,opacity:done?.5:.96}));
+      for(let gx2=ax+9;gx2<ax+p.aw-1;gx2+=9) ag.appendChild(svgEl('line',{x1:gx2,y1:ay,x2:gx2,y2:ay+p.ah,stroke:'rgba(0,0,0,.16)','stroke-width':.5}));
+      for(let gy2=ay+9;gy2<ay+p.ah-1;gy2+=9) ag.appendChild(svgEl('line',{x1:ax,y1:gy2,x2:ax+p.aw,y2:gy2,stroke:'rgba(0,0,0,.16)','stroke-width':.5}));
+      ag.appendChild(svgEl('text',{x:ax+4,y:ay+13,fill:'#0a0d12','font-size':9.5,'font-weight':'700'})).textContent='§'+(bi+1)+' '+ab+'×'+(function(){const nn=bankNowCount(d,bk);return bk.n>nn?nn+'→'+bk.n:bk.n;})();
+      ag.appendChild(svgEl('text',{x:ax+4,y:ay+26,fill:'#0c1620','font-size':8})).textContent=(bk.r.length>14?bk.r.slice(0,13)+'…':bk.r);
+      ag.appendChild(svgEl('text',{x:ax+4,y:ay+38,fill:'#10202a','font-size':7.5})).textContent=bk.outRate+'/min';
+      ag.appendChild(svgEl('title',{})).textContent=bk.r+': '+bk.n+'× '+bk.b+' → '+bk.outRate+'/min (click for belt web)';
+      ag.addEventListener('click',e=>{ e.stopPropagation(); bpMod=d.id; bpHi=bi; const b=document.querySelector('nav button[data-tab="blueprints"]'); if(b) b.click(); renderBlueprints(); });
+      g.appendChild(ag);
+    }));
+    g.addEventListener('click',()=>showDistrict(d.id));
+    view.appendChild(g);
+  });
+  bmZoom={k:1,tx:0,ty:0}; bmApplyView(); bmSetupZoom(svg); bmApply();
+}
+function showDistrict(id){ const d=DMAP[id]; if(!d) return; const makes=d.t.map(tid=>T[tid]?T[tid].out[0]:tid);
+  const cap=document.getElementById('bmCaption'); if(cap) cap.innerHTML='<b style="color:var(--txt)">'+(id==='PA'?'★ Project Assembly':d.id+' · '+d.name)+'</b> — 📍 '+d.near+'  <button class="pbtn" onclick="enterDistrictMap(\''+id+'\')">🔍 Zoom in: placement &amp; conveyors →</button><br><b>Makes:</b> '+makes.join(', ')+(id==='PA'?'  <span style="color:#9aa7b4">(the 12 final elevator parts)</span>':'');
+  document.querySelectorAll('#bmap .bmmod').forEach(n=>{ const r=n.querySelector('rect'); if(r){ const on=n.dataset.mod===id; r.setAttribute('stroke',on?'#fff':'#0a0d12'); r.setAttribute('stroke-width',on?4:2); } }); }
+/* unified drill-down: zoom the Build Map INTO a district's internal placement */
+function enterDistrictMap(id){ const d=DMAP[id]; if(!d) return; const banks=districtBanks(d);
+  const svg=(bpLayout==='grid'?districtGridSvg:districtFlowSvg)(d,banks,-1);
+  const inside=document.getElementById('bmInside'); if(!inside) return;
+  inside.innerHTML='<div class="controls"><button class="pbtn" id="bmBack">← All districts</button> <span class="lbl">Inside <b>'+(id==='PA'?'★ Project Assembly':d.id+' · '+d.name)+'</b> — click an area for its belt web · 🔍 zoom set in Blueprints</span></div>'+svg;
+  inside.style.display='block';
+  const map=document.getElementById('bmap'); if(map) map.style.display='none';
+  document.querySelectorAll('#tab-buildmap .legend').forEach(l=>l.style.display='none');
+  const bk=inside.querySelector('#bmBack'); if(bk) bk.onclick=exitDistrictMap;
+  inside.querySelectorAll('.bpsect').forEach(g=>g.onclick=()=>{ bpMod=id; bpHi=+g.dataset.i; const b=document.querySelector('nav button[data-tab="blueprints"]'); if(b) b.click(); renderBlueprints(); });
+}
+function exitDistrictMap(){ const inside=document.getElementById('bmInside'); if(inside){ inside.style.display='none'; inside.innerHTML=''; }
+  const map=document.getElementById('bmap'); if(map) map.style.display='';
+  document.querySelectorAll('#tab-buildmap .legend').forEach(l=>l.style.display=''); }
+function bmApplyView(){ if(bmView) bmView.setAttribute('transform','translate('+bmZoom.tx+','+bmZoom.ty+') scale('+bmZoom.k+')'); }
+function bmSetupZoom(svg){
+  if(svg._zoomReady) return; svg._zoomReady=true;
+  const pt=e=>{ const r=svg.getBoundingClientRect(); return {x:(e.clientX-r.left)/r.width*BMW, y:(e.clientY-r.top)/r.height*BMH}; };
+  svg.addEventListener('wheel',e=>{ e.preventDefault(); const p=pt(e), f=e.deltaY<0?1.15:1/1.15, nk=Math.max(0.5,Math.min(6,bmZoom.k*f));
+    const wx=(p.x-bmZoom.tx)/bmZoom.k, wy=(p.y-bmZoom.ty)/bmZoom.k; bmZoom.k=nk; bmZoom.tx=p.x-wx*nk; bmZoom.ty=p.y-wy*nk; bmApplyView(); },{passive:false});
+  let drag=false,lx=0,ly=0;
+  svg.addEventListener('pointerdown',e=>{ drag=true; lx=e.clientX; ly=e.clientY; svg.style.cursor='grabbing'; });
+  window.addEventListener('pointermove',e=>{ if(!drag) return; const r=svg.getBoundingClientRect(); bmZoom.tx+=(e.clientX-lx)/r.width*BMW; bmZoom.ty+=(e.clientY-ly)/r.height*BMH; lx=e.clientX; ly=e.clientY; bmApplyView(); });
+  window.addEventListener('pointerup',()=>{ drag=false; svg.style.cursor='grab'; });
+  svg.addEventListener('dblclick',()=>{ bmZoom={k:1,tx:0,ty:0}; bmApplyView(); });
+  svg.style.cursor='grab';
+}
+function bpResolve(id){ if(DMAP[id]) return id; if(typeof WORKS2DIST!=='undefined'&&WORKS2DIST[id]) return WORKS2DIST[id];
+  if(T[id]){ const d=DISTRICTS.find(x=>x.t.includes(id)); if(d) return d.id; }
+  const d2=DISTRICTS.find(x=>x.t.some(tid=>T[tid]&&T[tid].out[0]===id)); if(d2) return d2.id; return 'A'; }
+function gotoBlueprint(id){ bpMod=bpResolve(id); bpHi=-1; const b=document.querySelector('nav button[data-tab="blueprints"]'); if(b) b.click(); renderBlueprints(); }
+function drawBmCompass(svg,cx,cy){
+  const g=svgEl('g',{});
+  g.appendChild(svgEl('circle',{cx:cx,cy:cy,r:31,fill:'rgba(22,27,34,.75)',stroke:'#2a323d'}));
+  g.appendChild(svgEl('line',{x1:cx,y1:cy+13,x2:cx,y2:cy-13,stroke:'#ff9e3d','stroke-width':2}));
+  [['N',0,-20],['E',21,1],['S',0,23],['W',-21,1]].forEach(([d,dx,dy])=>{
+    const t=svgEl('text',{x:cx+dx,y:cy+dy+4,fill:d==='N'?'#ff9e3d':'#9aa7b4','font-size':12,'font-weight':'700','text-anchor':'middle'}); t.textContent=d; g.appendChild(t);
+  });
+  svg.appendChild(g);
+}
+function bmApply(){
+  const hi=BM_SEQ[bmStep].node;
+  document.querySelectorAll('#bmap .bmnode').forEach(n=>{ const s=+n.dataset.seq; n.style.transition='opacity .4s';
+    n.style.opacity = s<=bmStep ? 1 : 0.11;
+    if(n.classList.contains('bmmod')){ const r=n.querySelector('rect'); const on=(n.dataset.mod===hi);
+      if(r){ r.setAttribute('stroke', on?'#ffffff':'#0a0d12'); r.setAttribute('stroke-width', on?4:2); } }
+  });
+  document.querySelectorAll('#bmap .bmedge').forEach(e=>{ const s=+e.dataset.seq, res=e.dataset.res==='1'; e.style.transition='opacity .4s'; e.style.opacity = s<=bmStep?(res?0.2:0.55):0.04; });
+  const sl=document.getElementById('bmSlider'); if(sl){ sl.max=BM_SEQ.length-1; sl.value=bmStep; }
+  const lbl=document.getElementById('bmStepLbl'); if(lbl) lbl.textContent='Step '+bmStep+' / '+(BM_SEQ.length-1);
+  const cap=document.getElementById('bmCaption'); if(cap) cap.innerHTML='<b style="color:var(--txt)">'+BM_SEQ[bmStep].t+'</b><br>'+BM_SEQ[bmStep].d;
+}
+function bmSet(v){ bmStep=bmClamp(v,0,BM_SEQ.length-1); bmApply(); }
+function bmStop(){ if(bmTimer){ clearInterval(bmTimer); bmTimer=null; const b=document.getElementById('bmPlay'); if(b) b.textContent='▶ Play'; } }
+document.getElementById('bmPrev').onclick=()=>{ bmStop(); bmSet(bmStep-1); };
+document.getElementById('bmNext').onclick=()=>{ bmStop(); bmSet(bmStep+1); };
+function bmZoomBy(f){ const cx=600,cy=380; const wx=(cx-bmZoom.tx)/bmZoom.k, wy=(cy-bmZoom.ty)/bmZoom.k;
+  bmZoom.k=Math.max(0.5,Math.min(6,bmZoom.k*f)); bmZoom.tx=cx-wx*bmZoom.k; bmZoom.ty=cy-wy*bmZoom.k; bmApplyView(); }
+document.getElementById('bmZoomIn').onclick=()=>bmZoomBy(1.3);
+document.getElementById('bmZoomOut').onclick=()=>bmZoomBy(1/1.3);
+document.getElementById('bmZoomReset').onclick=()=>{ bmZoom={k:1,tx:0,ty:0}; bmApplyView(); };
+document.getElementById('bmSlider').oninput=e=>{ bmStop(); bmSet(+e.target.value); };
+document.getElementById('bmPlay').onclick=()=>{
+  if(bmTimer){ bmStop(); return; }
+  if(bmStep>=BM_SEQ.length-1) bmSet(0);
+  document.getElementById('bmPlay').textContent='⏸ Pause';
+  bmTimer=setInterval(()=>{ if(bmStep>=BM_SEQ.length-1) bmStop(); else bmSet(bmStep+1); }, 1700);
+};
+
+/* ============================ BLUEPRINTS (fixed 2D grid, single level) ============================ */
+const WORKS={M1:'Smart Plating Works',M2:'Versatile Framework Works',M3:'Wiring Works',F1:'Oil Refinery',F2:'Computer Works',M4:'Engine Works',M5:'Control-Unit Works',M6:'Director-System Works',M7:'Field-Generator Works',M8:'Rocket Works',M9:'Nuclear-Pasta Works',M10:'Sculptor Works',M11:'AI-Server Works',M12:'Warp-Drive Works'};
+const SECT={'Iron Ingot':'Ironworks · smelting','Copper Ingot':'Copperworks · smelting','Caterium Ingot':'Caterium smelting','Steel Ingot':'Steelworks · foundry','Aluminum Ingot':'Aluminium works','Aluminum Scrap':'Aluminium scrap','Alumina Solution':'Alumina refinery','Aluminum Casing':'Casing shop','Alclad Aluminum Sheet':'Alclad sheet shop','Concrete':'Concrete works','Screw':'Screw farm','Iron Rod':'Rod shop','Iron Plate':'Plate shop','Wire':'Wire shop','Cable':'Cable shop','Copper Sheet':'Sheet shop','Steel Beam':'Beam shop','Steel Pipe':'Pipe shop','Quickwire':'Quickwire shop','Copper Powder':'Powder mill','Silica':'Silica shop','Quartz Crystal':'Quartz shop'};
+const ABBR={Smelter:'Sm',Foundry:'Fo',Constructor:'Co',Assembler:'As',Manufacturer:'Mf',Refinery:'Rf',Blender:'Bl','Particle Accelerator':'PA',Converter:'Cv','Quantum Encoder':'QE'};
+const BCOL={Smelter:'#5ab0e6',Foundry:'#e6915a',Constructor:'#6fcf97',Assembler:'#b692ff',Manufacturer:'#ffce8a',Refinery:'#5aa9ff',Blender:'#2dd4bf','Particle Accelerator':'#ff6b9d',Converter:'#9aa7b4','Quantum Encoder':'#ffadc4'};
+function sName(b){ return SECT[b.r]||(b.r+' bank'); }
+function beltMk(rate){ rate=+rate; if(!rate) return ''; const c=[[60,'Mk.1'],[120,'Mk.2'],[270,'Mk.3'],[480,'Mk.4'],[780,'Mk.5'],[1200,'Mk.6']];
+  for(const [cap,mk] of c) if(rate<=cap+0.01) return mk;
+  return 'Mk.6 ×'+Math.ceil(rate/1200); }
+function pipeMk(rate){ rate=+rate; if(!rate) return 'Mk.1'; if(rate<=300) return 'Mk.1'; if(rate<=600) return 'Mk.2'; return 'Mk.2 ×'+Math.ceil(rate/600); }
+/* belt for solids, pipe for fluids — returns {carrier, mk} */
+function carrierOf(item,rate){ return (typeof isFluidItem==='function'&&isFluidItem(item)) ? {carrier:'pipe',mk:pipeMk(rate)} : {carrier:'belt',mk:beltMk(rate)||'Mk.1'}; }
+/* belt/pipe Mk you actually HAVE by each phase (tier-gated):
+   belts Mk2→Mk6 unlock at P1,P2,P3,P4,P5; pipes Mk1@P2, Mk2@P3+. */
+function beltCapAtPhase(p){ return [0,120,270,480,780,1200][Math.max(1,Math.min(5,p))]; }
+function pipeCapAtPhase(p){ return p>=3?600:(p>=2?300:300); }
+function carrierName(cap){ return ({120:'Mk.2',270:'Mk.3',480:'Mk.4',780:'Mk.5',1200:'Mk.6',300:'Pipe Mk.1',600:'Pipe Mk.2'})[cap]||'Mk.1'; }
+/* the belt-upgrade PATH for an item as its rate grows phase by phase, using only
+   the belt you have at each phase: e.g. "Mk.2 → Mk.4 (P3) → 2× Mk.6 (P5)". */
+function beltUpgradePath(item,builtPhase){ const fluid=isFluidItem(item); const tiers=fluid?[300,600]:[120,270,480,780,1200];
+  const out=[]; let prev='';
+  for(let p=builtPhase;p<=5;p++){ const rate=(solveDemandPhase(p,bpScale)[item]||0); if(rate<=0) continue;
+    const cap=fluid?pipeCapAtPhase(p):beltCapAtPhase(p); const avail=tiers.filter(c=>c<=cap+0.01); if(!avail.length) continue;
+    let pick=avail.find(c=>c>=rate-0.01), lanes=1; if(!pick){ pick=avail[avail.length-1]; lanes=Math.ceil(rate/pick); }
+    const lbl=(lanes>1?lanes+'× ':'')+carrierName(pick);
+    if(lbl!==prev){ out.push((out.length?'→ ':'')+lbl+(out.length?' (P'+p+')':'')); prev=lbl; } }
+  return out.join(' ')||'Mk.1'; }
+/* belt/pipe label for a rate using only what you have at phase p (with lanes). */
+function carrierAtPhase(item,rate,p){ const fluid=isFluidItem(item); const tiers=fluid?[300,600]:[120,270,480,780,1200];
+  const cap=fluid?pipeCapAtPhase(p):beltCapAtPhase(p); const avail=tiers.filter(c=>c<=cap+0.01);
+  let pick=avail.find(c=>c>=rate-0.01), lanes=1; if(!pick){ pick=avail[avail.length-1]||tiers[0]; lanes=Math.ceil(rate/pick); }
+  return {label:(lanes>1?lanes+'× ':'')+carrierName(pick), carrier:fluid?'pipe':'belt', lanes}; }
+/* widest efficient row: how many machines one belt/pipe lane can serve (the
+   binding stream — output or any input), so you build long rows and add lanes. */
+function machinesPerLane(t){ const eff=bpMax?MAXFACTOR:1; let mn=Infinity;
+  const streams=[[t.out[0],t.out[1]],...t.in]; streams.forEach(([it,r])=>{ if(!r) return; const cap=isFluidItem(it)?600:1200; mn=Math.min(mn,Math.max(1,Math.floor(cap/(r*eff)))); });
+  return isFinite(mn)?mn:8; }
+/* ---- DISTRICT-BASED TOP-DOWN FLOOR PLANS ----
+   Each district's banks are sized to TOTAL project demand (sum of every
+   module that uses each template — "made once, shared"). The floor plan is a
+   real top-down build sketch: input belt bus (teal) → splitters → rows of
+   machines → merger → output belt bus (purple), on a foundation grid. */
+const ITEM2DIST={}, ITEM2SECT={};
+DISTRICTS.forEach(d=>d.t.forEach((tid,i)=>{ const t=T[tid]; if(t){ ITEM2DIST[t.out[0]]=d.id; ITEM2SECT[t.out[0]]=i; } }));
+let bpMod='A', bpHi=-1, bpScale=1, bpMax=true, bpZoom=1;
+/* MAX mode: every production machine runs at 250% (3 Power Shards) AND holds a
+   Somersloop (2× output) → 5× throughput each, so you build ~1/5 the machines.
+   The user is collecting enough slugs/sloops to do this everywhere. */
+const MAXFACTOR=5;
+/* Design throughput of each of the 12 FINAL parts (parts/min). Everything else
+   is sized by propagating these back through the recipe graph, so every bank is
+   built to meet its true total demand (no starving feeds, no orphan banks). */
+const FINAL_RATES={'Smart Plating':10,'Versatile Framework':20,'Automated Wiring':5,
+ 'Modular Engine':5,'Adaptive Control Unit':2,'Assembly Director System':5,
+ 'Magnetic Field Generator':5,'Thermal Propulsion Rocket':2.5,'Nuclear Pasta':2.5,
+ 'Biochemical Sculptor':8,'AI Expansion Server':2,'Ballistic Warp Drive':1.5};
+let _demandCache={};
+function solveDemand(scale){ scale=scale||1; const key=''+scale; if(_demandCache[key]) return _demandCache[key];
+  const producible=new Set(), prod={};
+  DISTRICTS.forEach(d=>d.t.forEach(tid=>{ const it=T[tid].out[0]; producible.add(it); prod[it]=tid; }));
+  let demand={};
+  for(let iter=0;iter<80;iter++){ const nd={};
+    for(const k in FINAL_RATES) nd[k]=(nd[k]||0)+FINAL_RATES[k]*scale;
+    producible.forEach(item=>{ const D=demand[item]||0; if(D<=0) return; const t=T[prod[item]], mf=D/t.out[1];
+      t.in.forEach(([inp,r])=>{ if(producible.has(inp)) nd[inp]=(nd[inp]||0)+mf*r; }); });
+    demand=nd;
+  }
+  _demandCache[key]={demand,prod,producible}; return _demandCache[key];
+}
+function fpDims(fp){ const m=String(fp).match(/(\d+)×(\d+)/); return m?{w:+m[1],h:+m[2]}:{w:2,h:2}; }
+function districtBanks(d,scale){ scale=scale||bpScale||1; const eff=bpMax?MAXFACTOR:1;
+  const {demand}=solveDemand(scale);
+  return d.t.map(tid=>{ const t=T[tid], item=t.out[0];
+    const D=(demand[item]!=null&&demand[item]>0)?demand[item]:t.out[1];
+    const mFull=D/t.out[1];                       // machines at 100% to meet demand
+    const baseN=Math.max(1,Math.ceil(mFull));
+    const n=Math.max(1,Math.ceil(mFull/eff));     // machines at MAX (5×)
+    const inputs=t.in.map(([it,r])=>[it,+(mFull*r).toFixed(1)]); // true input flow needed
+    return {tid,b:t.b,r:t.r,n,baseN,outItem:item,outRate:+D.toFixed(1),inputs,fp:t.fp};
+  });
+}
+function districtFootprint(banks){ let a=0,cnt=0; banks.forEach(b=>{ const d=fpDims(b.fp); a+=d.w*d.h*b.n; cnt+=b.n; });
+  const pad=Math.ceil(a*1.7), side=Math.max(8,Math.ceil(Math.sqrt(pad))); return {machines:cnt,side,m:side*8}; }
+function isFluidItem(it){ return FLUID.includes(it); }
+function srcLabel(item,did){ const sd=ITEM2DIST[item];
+  if(!sd) return isFluidItem(item)?'pump & pipe in':'mine & belt in';
+  if(sd===did) return 'from §'+(ITEM2SECT[item]+1)+' (here)';
+  const dd=DMAP[sd]; return 'from '+dd.id+'·'+dd.name+(/train/.test(dd.near)?' 🚆 rail':' belt'); }
+function destLabel(d,i,banks){ if(i<banks.length-1) return '§'+(i+2)+' here';
+  return d.id==='PA'?'▲ Space Elevator':'out to consumer districts'; }
+const BPMAXC=9, BPMX=205, BPIBX=176, BPBW=40, BPBH=28, BPGX=14, BPGY=16, BPPX=BPBW+BPGX, BPPY=BPBH+BPGY, BPW=790;
+function floorPlanSvg(d, banks, hiIdx){
+  const W=BPW, rowH=62, gap=10, boxX=300, boxW=210, boxH=42;
+  const totalH=14+banks.length*(rowH+gap)+8;
+  let s=`<svg viewBox="0 0 ${W} ${totalH}" style="width:${Math.round(100*bpZoom)}%;height:auto;background:#0a0d12;border:1px solid var(--line);border-radius:10px">`;
+  for(let gx=0;gx<=W;gx+=24) s+=`<line x1="${gx}" y1="0" x2="${gx}" y2="${totalH}" stroke="#10171e"/>`;
+  for(let gy=0;gy<=totalH;gy+=24) s+=`<line x1="0" y1="${gy}" x2="${W}" y2="${gy}" stroke="#10171e"/>`;
+  let y=14;
+  banks.forEach((bk,i)=>{ const done=!!state['bp:'+d.id+':'+i], hi=(i===hiIdx);
+    const col=BCOL[bk.b]||'#8b97a3', ab=ABBR[bk.b]||'?';
+    const secFill=done?'rgba(93,212,122,.07)':(hi?'rgba(255,158,61,.10)':'rgba(20,27,34,.5)');
+    const secStroke=done?'#2f7a45':(hi?'#ff9e3d':'#222b34');
+    const cy=y+rowH/2, by=cy-boxH/2;
+    s+=`<g class="bpsect" data-works="${d.id}" data-i="${i}" style="cursor:pointer">`;
+    s+=`<rect x="4" y="${y}" width="${W-8}" height="${rowH}" rx="8" fill="${secFill}" stroke="${secStroke}" stroke-width="${hi?2:1}"/>`;
+    // input belts (left) feeding the bank box
+    const ins=bk.inputs.length?bk.inputs:[['⚡ power only (no input)',0]];
+    const nin=ins.length;
+    ins.forEach((inp,k)=>{ const yy=cy-(nin-1)*7+k*14, fluid=isFluidItem(inp[0]), bc=fluid?'#5aa9ff':'#2dd4bf';
+      if(inp[1]){ s+=`<line x1="14" y1="${yy}" x2="${boxX}" y2="${yy}" stroke="${bc}" stroke-width="2"${fluid?' stroke-dasharray="3 3"':''}/>`;
+        s+=`<polygon points="${boxX},${yy} ${boxX-6},${yy-3} ${boxX-6},${yy+3}" fill="${bc}"/>`; }
+      const cc=inp[1]?carrierOf(inp[0],inp[1]):null;
+      const lab=inp[1]?`${inp[0]} ${inp[1]} ${cc.mk} ${cc.carrier}`:inp[0];
+      s+=`<text x="16" y="${yy-3}" fill="#9aa7b4" font-size="9">▸ ${lab}${inp[1]?' · '+srcLabel(inp[0],d.id):''}</text>`; });
+    // compact bank box — ONE box, ×count (drill in for the machine-by-machine belt web)
+    s+=`<rect x="${boxX}" y="${by}" width="${boxW}" height="${boxH}" rx="5" fill="${col}" opacity="${done?.5:.95}" stroke="${hi?'#fff':'#0a0d12'}" stroke-width="${hi?2:1}"><title>${bk.n}× ${bk.b} · ${bk.r} · footprint ${bk.fp} each</title></rect>`;
+    s+=`<text x="${boxX+10}" y="${by+17}" fill="#0a0d12" font-size="12" font-weight="700">§${i+1} · ${bk.r}${done?' ✓':''}</text>`;
+    s+=`<text x="${boxX+10}" y="${by+34}" fill="#0c1620" font-size="11" font-weight="700">${ab} ${bk.b} <tspan font-size="14">×${(()=>{const nn=bankNowCount(d,bk);return bk.n>nn?nn+'→'+bk.n:bk.n;})()}</tspan></text>`;
+    // output belt (right) to its destination
+    const oc=carrierOf(bk.outItem,bk.outRate), omk=oc.mk;
+    s+=`<line x1="${boxX+boxW}" y1="${cy}" x2="${W-12}" y2="${cy}" stroke="#b692ff" stroke-width="2.5"${oc.carrier==='pipe'?' stroke-dasharray="5 3"':''}/>`;
+    s+=`<polygon points="${W-12},${cy} ${W-20},${cy-4} ${W-20},${cy+4}" fill="#b692ff"/>`;
+    s+=`<text x="${W-14}" y="${cy-5}" fill="#c9b6ff" font-size="9.5" text-anchor="end">${bk.outItem} ${bk.outRate}/min · ${omk} ${oc.carrier}</text>`;
+    s+=`<text x="${W-14}" y="${cy+13}" fill="#7e8b97" font-size="8.5" text-anchor="end">→ ${destLabel(d,i,banks)}</text>`;
+    s+=`<text x="${boxX+boxW/2}" y="${y+rowH-5}" fill="#5b6b78" font-size="8" text-anchor="middle">▾ click for belt web</text>`;
+    s+=`</g>`; y+=rowH+gap;
+  });
+  return s+'</svg>';
+}
+/* DISTRICT FLOW LAYOUT — physical placement of each area (sized by footprint),
+   arranged by processing stage, with the conveyors/pipes that connect them. */
+function bankStage(banks){ const idx={}; banks.forEach((b,i)=>idx[b.outItem]=i); const st=banks.map(()=>0);
+  for(let pass=0;pass<banks.length;pass++) banks.forEach((b,i)=>{ let mx=-1; b.inputs.forEach(([it])=>{ if(idx[it]!==undefined) mx=Math.max(mx,st[idx[it]]); }); st[i]=mx+1; });
+  return {st,idx}; }
+function bankSide(bk){ const fd=fpDims(bk.fp); const cells=fd.w*fd.h*bk.n; return Math.max(2,Math.ceil(Math.sqrt(cells*1.6))); }
+function districtFlowSvg(d, banks, hiIdx){
+  const {st,idx}=bankStage(banks); const maxStage=Math.max(0,...st);
+  const cols=[]; for(let c=0;c<=maxStage;c++) cols[c]=[]; banks.forEach((b,i)=>cols[st[i]].push(i));
+  const colW=212, boxH=56, vGap=30, topPad=70, leftPad=96;
+  const maxH=Math.max(boxH,...cols.map(c=>c.length*(boxH+vGap)-vGap));
+  const W=Math.max(620, leftPad+(maxStage+1)*colW+110), H=topPad+maxH+44;
+  const pos={};
+  cols.forEach((c,ci)=>{ const totH=c.length*(boxH+vGap)-vGap, y0=topPad+(maxH-totH)/2;
+    c.forEach((bi,ri)=>{ const bw=Math.min(192,Math.max(126,92+bankSide(banks[bi])*3.2)); pos[bi]={x:leftPad+ci*colW,y:y0+ri*(boxH+vGap),w:bw}; }); });
+  let s=`<svg viewBox="0 0 ${W} ${H}" style="width:${Math.round(100*bpZoom)}%;height:auto;background:#0a0d12;border:1px solid var(--line);border-radius:10px">`;
+  for(let gx=0;gx<=W;gx+=24) s+=`<line x1="${gx}" y1="0" x2="${gx}" y2="${H}" stroke="#10171e"/>`;
+  for(let gy=0;gy<=H;gy+=24) s+=`<line x1="0" y1="${gy}" x2="${W}" y2="${gy}" stroke="#10171e"/>`;
+  s+=`<text x="14" y="22" fill="#e6edf3" font-size="14" font-weight="700">${d.id==='PA'?'★ ':''}${d.id} · ${d.name} — placement &amp; conveyors</text>`;
+  s+=`<text x="14" y="40" fill="#9aa7b4" font-size="10">Each block = one area (sized ≈ to its footprint). Arrows = the belts/pipes between areas. Flow runs left → right. Click a block for its belt web.</text>`;
+  s+=`<text x="14" y="55" fill="#6b7785" font-size="9">left edge ◀ imported parts &amp; raw ore/fluids · right edge ▶ output to 🗄 storage buffer → ${d.id==='PA'?'▲ Space Elevator':'other districts / ★'}</text>`;
+  // conveyors between intra-district areas (drawn under boxes)
+  banks.forEach((bk,i)=>{ bk.inputs.forEach(([it,rate])=>{ if(idx[it]!==undefined){ const a=pos[idx[it]], b=pos[i]; if(!a||!b) return;
+    const x1=a.x+a.w, y1=a.y+boxH/2, x2=b.x, y2=b.y+boxH/2, mx=(x1+x2)/2, fluid=isFluidItem(it), bc=fluid?'#5aa9ff':'#2dd4bf';
+    s+=`<path d="M${x1},${y1} H${mx} V${y2} H${x2}" fill="none" stroke="${bc}" stroke-width="1.7" opacity=".75"${fluid?' stroke-dasharray="4 3"':''}/>`;
+    s+=`<polygon points="${x2},${y2} ${x2-7},${y2-3.5} ${x2-7},${y2+3.5}" fill="${bc}"/>`;
+    s+=`<text x="${mx+3}" y="${(y1+y2)/2-2}" fill="#7e8b97" font-size="8">${it} ${rate} · ${(()=>{const c=carrierOf(it,rate),L=Math.ceil(rate/(fluid?600:1200));return (L>1?L+'× ':'')+c.mk;})()}</text>`; } }); });
+  // boxes
+  banks.forEach((bk,i)=>{ const p=pos[i], done=!!state['bp:'+d.id+':'+i], hi=(i===hiIdx);
+    const col=BCOL[bk.b]||'#8b97a3', ab=ABBR[bk.b]||'?', side=bankSide(bk);
+    s+=`<g class="bpsect" data-works="${d.id}" data-i="${i}" style="cursor:pointer">`;
+    s+=`<rect x="${p.x}" y="${p.y}" width="${p.w}" height="${boxH}" rx="6" fill="${col}" opacity="${done?.5:.95}" stroke="${hi?'#fff':'#0a0d12'}" stroke-width="${hi?2.5:1}"><title>${bk.n}× ${bk.b} · ${bk.r} · ~${side}×${side} foundations</title></rect>`;
+    s+=`<text x="${p.x+9}" y="${p.y+17}" fill="#0a0d12" font-size="11.5" font-weight="700">§${i+1} · ${bk.r}${done?' ✓':''}</text>`;
+    s+=`<text x="${p.x+9}" y="${p.y+33}" fill="#0c1620" font-size="10.5" font-weight="700">${ab} ${bk.b} ×${(()=>{const nn=bankNowCount(d,bk);return bk.n>nn?nn+'→'+bk.n:bk.n;})()}</text>`;
+    s+=`<text x="${p.x+9}" y="${p.y+48}" fill="#10202a" font-size="9">area ~${side}×${side} · out ${bk.outRate}/min</text>`;
+    // external imports listed at the left edge of the box
+    const ext=bk.inputs.filter(([it])=>idx[it]===undefined);
+    if(ext.length){ const ey=p.y-3; s+=`<text x="${p.x}" y="${ey}" fill="#6b7785" font-size="8">◀ ${ext.map(e=>e[0]).join(', ')}</text>`; }
+    s+=`</g>`; });
+  // outputs → storage → out, for banks whose output leaves the district (final or cross-district)
+  const consumedElsewhere=it=>DISTRICTS.some(o=>o.id!==d.id&&o.t.some(tid=>T[tid]&&T[tid].in.some(z=>z[0]===it)));
+  const FIN=new Set(['Smart Plating','Versatile Framework','Automated Wiring','Modular Engine','Adaptive Control Unit','Assembly Director System','Magnetic Field Generator','Thermal Propulsion Rocket','Nuclear Pasta','Biochemical Sculptor','AI Expansion Server','Ballistic Warp Drive']);
+  const outX=W-92;
+  banks.forEach((bk,i)=>{ const p=pos[i]; if(p.x+p.w<outX-10 && !(consumedElsewhere(bk.outItem)||FIN.has(bk.outItem))) return;
+    if(!(consumedElsewhere(bk.outItem)||FIN.has(bk.outItem))) return;
+    const y=p.y+boxH/2, oc=carrierOf(bk.outItem,bk.outRate), bc='#b692ff';
+    s+=`<path d="M${p.x+p.w},${y} H${outX-6}" fill="none" stroke="${bc}" stroke-width="1.6" opacity=".6"${oc.carrier==='pipe'?' stroke-dasharray="4 3"':''}/>`; });
+  // storage buffer column + elevator/out
+  s+=`<rect x="${outX}" y="${topPad-6}" width="34" height="${maxH+12}" rx="6" fill="#161b22" stroke="#3a4654"/>`;
+  s+=`<text x="${outX+17}" y="${topPad+ (maxH+12)/2}" fill="#9aa7b4" font-size="10" font-weight="700" text-anchor="middle" transform="rotate(90 ${outX+17} ${topPad+(maxH+12)/2})">🗄 STORAGE BUFFER</text>`;
+  s+=`<line x1="${outX+34}" y1="${topPad+ (maxH+12)/2}" x2="${W-8}" y2="${topPad+(maxH+12)/2}" stroke="#b692ff" stroke-width="2.5"/>`;
+  s+=`<polygon points="${W-8},${topPad+(maxH+12)/2} ${W-16},${topPad+(maxH+12)/2-4} ${W-16},${topPad+(maxH+12)/2+4}" fill="#b692ff"/>`;
+  s+=`<text x="${W-8}" y="${topPad+(maxH+12)/2-7}" fill="#c9b6ff" font-size="9" text-anchor="end">${d.id==='PA'?'▲ Elevator':'→ ★ / districts'}</text>`;
+  return s+'</svg>';
+}
+/* EXACT FOUNDATION-GRID layout — each area drawn at its true footprint (1 cell =
+   1 foundation = 8 m), snapped to the grid, by processing stage, with conveyors. */
+function districtGridSvg(d, banks, hiIdx){
+  const cell=9, head=58, {st,idx}=bankStage(banks), maxStage=Math.max(0,...st);
+  const cols=[]; for(let c=0;c<=maxStage;c++) cols[c]=[]; banks.forEach((b,i)=>cols[st[i]].push(i));
+  const colW=cols.map(c=>Math.max(4,...c.map(i=>bankSide(banks[i])))+5);  // +aisle for belts
+  const xoff=[2]; for(let c=1;c<=maxStage;c++) xoff[c]=xoff[c-1]+colW[c-1];
+  const pos={}; cols.forEach((c,ci)=>{ let yc=3; c.forEach(i=>{ const sd=bankSide(banks[i]); pos[i]={cx:xoff[ci],cy:yc,s:sd}; yc+=sd+3; }); });
+  const gridCW=xoff[maxStage]+colW[maxStage]+2, gridCH=Math.max(10,...cols.map(c=>c.reduce((s,i)=>s+bankSide(banks[i])+3,3)));
+  const W=gridCW*cell, H=head+gridCH*cell+10;
+  const X=cx=>cx*cell, Y=cy=>head+cy*cell;
+  let s=`<svg viewBox="0 0 ${W} ${H}" style="width:${Math.round(100*bpZoom)}%;height:auto;background:#0a0d12;border:1px solid var(--line);border-radius:10px">`;
+  // header
+  s+=`<text x="12" y="20" fill="#e6edf3" font-size="13" font-weight="700">${d.id==='PA'?'★ ':''}${d.id} · ${d.name} — exact foundation grid</text>`;
+  s+=`<text x="12" y="37" fill="#9aa7b4" font-size="10">1 square = 1 foundation (8 m). Blocks are each area's real footprint; columns = processing stage; lines = belts/pipes. Click a block for its belt web.</text>`;
+  s+=`<text x="12" y="51" fill="#6b7785" font-size="9">leave the empty lanes between blocks for your belt/pipe manifolds &amp; 🗄 storage.</text>`;
+  // foundation grid
+  for(let gx=0;gx<=gridCW;gx++) s+=`<line x1="${X(gx)}" y1="${head}" x2="${X(gx)}" y2="${H-6}" stroke="${gx%8===0?'#1b2530':'#121922'}"/>`;
+  for(let gy=0;gy<=gridCH;gy++) s+=`<line x1="0" y1="${Y(gy)}" x2="${W}" y2="${Y(gy)}" stroke="${gy%8===0?'#1b2530':'#121922'}"/>`;
+  // conveyors between areas
+  banks.forEach((bk,i)=>{ bk.inputs.forEach(([it,rate])=>{ if(idx[it]!==undefined){ const a=pos[idx[it]],b=pos[i]; if(!a||!b)return;
+    const x1=X(a.cx+a.s),y1=Y(a.cy+a.s/2),x2=X(b.cx),y2=Y(b.cy+b.s/2),mx=(x1+x2)/2,fluid=isFluidItem(it),bc=fluid?'#5aa9ff':'#2dd4bf';
+    s+=`<path d="M${x1},${y1} H${mx} V${y2} H${x2}" fill="none" stroke="${bc}" stroke-width="1.5" opacity=".75"${fluid?' stroke-dasharray="4 3"':''}/>`;
+    s+=`<polygon points="${x2},${y2} ${x2-6},${y2-3} ${x2-6},${y2+3}" fill="${bc}"/>`; } }); });
+  // area blocks (true footprint)
+  banks.forEach((bk,i)=>{ const p=pos[i], done=!!state['bp:'+d.id+':'+i], hi=(i===hiIdx);
+    const col=BCOL[bk.b]||'#8b97a3', ab=ABBR[bk.b]||'?', x=X(p.cx), y=Y(p.cy), w=p.s*cell;
+    s+=`<g class="bpsect" data-works="${d.id}" data-i="${i}" style="cursor:pointer">`;
+    s+=`<rect x="${x}" y="${y}" width="${w}" height="${w}" rx="2" fill="${col}" opacity="${done?.5:.92}" stroke="${hi?'#fff':'#0a0d12'}" stroke-width="${hi?2.5:1}"><title>${bk.r}: ${bk.n}× ${bk.b} · ~${p.s}×${p.s} foundations</title></rect>`;
+    s+=`<text x="${x+4}" y="${y+13}" fill="#0a0d12" font-size="10" font-weight="700">§${i+1}</text>`;
+    if(w>52){ s+=`<text x="${x+4}" y="${y+25}" fill="#0c1620" font-size="9" font-weight="700">${bk.r}</text>`;
+      s+=`<text x="${x+4}" y="${y+37}" fill="#10202a" font-size="8.5">${ab}×${(()=>{const nn=bankNowCount(d,bk);return bk.n>nn?nn+'→'+bk.n:bk.n;})()} · ${p.s}×${p.s}</text>`; }
+    else { s+=`<text x="${x+4}" y="${y+24}" fill="#0c1620" font-size="8">${ab}×${(()=>{const nn=bankNowCount(d,bk);return bk.n>nn?nn+'→'+bk.n:bk.n;})()}</text>`; }
+    s+=`</g>`; });
+  return s+'</svg>';
+}
+let bpLayout='flow';
+function renderBlueprints(){ renderBpPicker(); renderBpStage(); renderBpSteps(); }
+function renderBpPicker(){
+  const c=document.getElementById('bpControls'); if(!c) return; c.innerHTML='<span class="lbl">Pick a district:</span> ';
+  const allb=document.createElement('button'); allb.className='pbtn'+(bpMod==='ALL'?' active':''); allb.textContent='▦ All districts (appendix)'; allb.onclick=()=>{ bpMod='ALL'; bpHi=-1; renderBlueprints(); }; c.appendChild(allb);
+  DISTRICTS.forEach(d=>{ const b=document.createElement('button'); b.className='pbtn'+(d.id===bpMod?' active':'');
+    b.innerHTML=`<span class="chip p${d.phase}" style="margin-right:5px">P${d.phase}</span>${d.id==='PA'?'★ ':''}${d.id} · ${d.name}`;
+    b.onclick=()=>{ bpMod=d.id; bpHi=-1; renderBlueprints(); }; c.appendChild(b); });
+  const tune=document.createElement('div'); tune.style.cssText='display:flex;gap:6px;align-items:center;flex-wrap:wrap;margin-top:9px;width:100%';
+  const mx=document.createElement('button'); mx.className='pbtn'+(bpMax?' active':''); mx.style.fontWeight='700';
+  mx.textContent=bpMax?'⚡ MAX output: ON (250% + Somersloop)':'⚡ MAX output: OFF (100%)';
+  mx.onclick=()=>{ bpMax=!bpMax; renderBlueprints(); }; tune.appendChild(mx);
+  const ll=document.createElement('span'); ll.className='lbl'; ll.style.marginLeft='8px'; ll.textContent='layout:'; tune.appendChild(ll);
+  [['flow','Flow'],['grid','Grid']].forEach(([v,lab])=>{ const b=document.createElement('button'); b.className='pbtn'+(bpLayout===v?' active':''); b.textContent=lab; b.onclick=()=>{ bpLayout=v; renderBpStage(); }; tune.appendChild(b); });
+  const zl=document.createElement('span'); zl.className='lbl'; zl.style.marginLeft='8px'; zl.textContent='🔍 zoom:'; tune.appendChild(zl);
+  const zout=document.createElement('button'); zout.className='pbtn'; zout.textContent='−'; zout.onclick=()=>{ bpZoom=Math.max(1,+(bpZoom-0.5).toFixed(1)); renderBpStage(); }; tune.appendChild(zout);
+  const zin=document.createElement('button'); zin.className='pbtn'; zin.textContent='+'; zin.onclick=()=>{ bpZoom=Math.min(4,+(bpZoom+0.5).toFixed(1)); renderBpStage(); }; tune.appendChild(zin);
+  const zrst=document.createElement('button'); zrst.className='pbtn'; zrst.textContent='⟲'; zrst.onclick=()=>{ bpZoom=1; renderBpStage(); }; tune.appendChild(zrst);
+  const lbl=document.createElement('span'); lbl.className='lbl'; lbl.style.marginLeft='8px'; lbl.textContent='×scale:'; tune.appendChild(lbl);
+  [0.5,1,1.5,2].forEach(s=>{ const b=document.createElement('button'); b.className='pbtn'+(bpScale===s?' active':''); b.textContent='×'+s; b.onclick=()=>{ bpScale=s; renderBlueprints(); }; tune.appendChild(b); });
+  const note=document.createElement('span'); note.className='hint'; note.style.margin='0 0 0 8px';
+  note.innerHTML=bpMax
+    ? 'Each machine = <b>250% overclock (3 Power Shards) + 1 Somersloop (2×)</b> = 5× output, so counts are ~⅕. Sized to <b>total demand</b>, made once. Tune exact ratios in the <a href="https://www.satisfactorytools.com/" target="_blank">planner</a>.'
+    : 'Counts at 100% clock, sized to <b>total project demand</b> (made once, shared). Turn on ⚡ MAX to overclock + sloop and shrink the build.';
+  tune.appendChild(note); c.appendChild(tune);
+}
+const BP_LEGEND='<span style="color:#2dd4bf">━ teal</span> = belt in / manifold · <span style="color:#5aa9ff">┅ blue</span> = pipe (fluid) · small squares = splitter/merger · coloured boxes = machines (hover for footprint) · <span style="color:#b692ff">━ purple</span> = output belt out.';
+function renderBpStage(){
+  const stage=document.getElementById('bpStage');
+  if(bpMod==='ALL'){
+    let html=`<div class="meta" style="margin-bottom:6px"><b style="color:var(--txt);font-size:15px">All districts — every floor plan (the appendix)</b>. ${BP_LEGEND} Click any line to open that district.</div>`;
+    DISTRICTS.forEach(d=>{ const banks=districtBanks(d); const f=districtFootprint(banks);
+      html+=`<div class="meta" style="margin:18px 0 4px"><b style="color:var(--txt);font-size:14px"><span class="chip p${d.phase}">P${d.phase}</span> ${d.id==='PA'?'★ ':''}${d.id} · ${d.name}</b> <span style="color:var(--muted)">— ${f.machines} machines · ~${f.side}×${f.side} pad · 📍 ${d.near}</span> <span class="u" onclick="gotoBlueprint('${d.id}')">open →</span></div>`+floorPlanSvg(d,banks,-1);
+    });
+    stage.innerHTML=html;
+    stage.querySelectorAll('.bpsect').forEach(g=>g.onclick=()=>{ bpMod=g.dataset.works; bpHi=+g.dataset.i; renderBlueprints(); });
+    return;
+  }
+  const d=DMAP[bpMod]; if(!d){ bpMod='A'; return renderBpStage(); }
+  const banks=districtBanks(d), f=districtFootprint(banks);
+  const sc=bpScale!==1?` · ×${bpScale}`:'';
+  stage.style.overflowX='auto';
+  const focus=(bpHi>=0 && banks[bpHi]) ? `<div class="meta" style="margin:10px 0 4px"><b style="color:var(--orange);font-size:14px">🔍 §${bpHi+1} ${banks[bpHi].r} — belt web</b> (the conveyance between machines inside this area):</div>`+beltWebCaptionHTML(d,banks[bpHi])+focusBankSvg(d,banks[bpHi]) : '';
+  const layoutSvg=(bpLayout==='grid'?districtGridSvg:districtFlowSvg)(d,banks,bpHi);
+  stage.innerHTML=`<div class="meta" style="margin-bottom:6px"><b style="color:var(--txt);font-size:15px">${d.id==='PA'?'★ ':''}${d.id} · ${d.name}${sc}</b> — 📍 ${d.near} · ${f.machines} machines · lay a flat <b>~${f.side}×${f.side}</b> platform (above ground, one level). <br>${BP_LEGEND} <b>Click any area block</b> to open its belt web below. Toggle <b>Flow</b> (connections) / <b>Grid</b> (exact footprints).</div>`+layoutSvg+focus;
+  stage.querySelectorAll('.bpsect').forEach(g=>g.onclick=()=>{ bpHi=+g.dataset.i; renderBpStage(); renderBpSteps(); });
+}
+function bankStepHTML(d,banks,bk,i){
+  const now=bankNowCount(d,bk), total=bk.n, bp=bankBuiltPhase(d,bk), perLane=machinesPerLane(T[bk.tid]);
+  const shape = total>perLane ? `${perLane}-wide rows (one belt each), ${Math.ceil(total/perLane)} rows for ${total}` : `one ${total}-wide row`;
+  const placeStr = total>now ? `${now}× ${bk.b} now at a row head — lay it out as ${shape}; leave room for <b>${total}× total</b>` : `${total}× ${bk.b} as ${shape}`;
+  const feed=bk.inputs.length
+    ? bk.inputs.map(x=>{ const nr=total>0?+((now/total)*x[1]).toFixed(1):x[1], c=carrierAtPhase(x[0],nr,bp); return c.carrier==='pipe'
+        ? `pipe <b>${x[0]} ${nr}/min</b> (${srcLabel(x[0],d.id)}) in via <b>${c.label} pipe</b> to each ${bk.b}`
+        : `run a <b>${c.label}</b> belt of <b>${x[0]} ${nr}/min</b> (${srcLabel(x[0],d.id)}) into a splitter, manifold down the row`; }).join('; ')
+    : `no material input — this <b>${bk.b}</b> runs on power alone`;
+  const oc=carrierOf(bk.outItem,bk.outRate), path=beltUpgradePath(bk.outItem,bp);
+  const ocb = bpMax ? ` <span class="tag qty">⚡ 250% + Somersloop on each (≈⅕ of the ${bk.baseN}× at 100%)</span>`:'';
+  const collect = oc.carrier==='pipe' ? `pipe the outputs together` : `merge the outputs along the row`;
+  const upg = ` <span class="tag qty">${oc.carrier} upgrade: ${path}</span>`;
+  const tb=T[bk.tid].by; let by='';
+  if(tb){ const mFull=bk.outRate/T[bk.tid].out[1], byr=+(mFull*tb[1]).toFixed(1);
+    by=` <span class="tag qty">⚠ byproduct: ${tb[0]} ${byr}/min — pipe it out (→ Residual Fuel, or AWESOME Sink) or the refineries clog</span>`; }
+  return `<div class="nm"><span class="tag module">§${i+1}</span> Place <b>${placeStr}</b> (${bk.r}).${ocb}</div>
+    <div class="nt"><b>Feed (start, Phase ${bp}):</b> ${feed}.<br><b>Collect:</b> ${collect} → <b>${bk.outItem} ${bk.outRate}/min total</b> → ${destLabel(d,i,banks)}.${upg}${by}</div>`;
+}
+/* per-phase demand: how big each bank needs to be by the END of phase p (so you
+   build a small block now and expand it as later consumers come online). */
+const FINAL_PHASE={'Smart Plating':1,'Versatile Framework':2,'Automated Wiring':2,'Modular Engine':3,'Adaptive Control Unit':3,'Assembly Director System':4,'Magnetic Field Generator':4,'Thermal Propulsion Rocket':4,'Nuclear Pasta':4,'Biochemical Sculptor':5,'AI Expansion Server':5,'Ballistic Warp Drive':5};
+let _demP={};
+function solveDemandPhase(p,scale){ scale=scale||1; const key=p+'|'+scale; if(_demP[key]) return _demP[key];
+  const producible=new Set(),prod={}; DISTRICTS.forEach(d=>d.t.forEach(tid=>{const it=T[tid].out[0];producible.add(it);prod[it]=tid;}));
+  let demand={};
+  for(let iter=0;iter<80;iter++){ const nd={};
+    for(const k in FINAL_RATES){ if((FINAL_PHASE[k]||1)<=p) nd[k]=(nd[k]||0)+FINAL_RATES[k]*scale; }
+    producible.forEach(item=>{ const D=demand[item]||0; if(D<=0)return; const t=T[prod[item]],mf=D/t.out[1]; t.in.forEach(([inp,r])=>{ if(producible.has(inp)) nd[inp]=(nd[inp]||0)+mf*r; }); });
+    demand=nd; }
+  _demP[key]=demand; return demand; }
+function bankCountAt(tid,p){ const t=T[tid],eff=bpMax?MAXFACTOR:1, D=solveDemandPhase(p,bpScale)[t.out[0]]||0; return Math.max(0,Math.ceil(D/t.out[1]/eff)); }
+const BELTCAP=1200; // Mk.6 /min — split a trunk into lanes above this
+/* drill-down: realistic belt WEB for one bank — double-sided manifold, multiple
+   belt lanes when the rate tops a belt, and build-now (solid) vs expand-later (grey). */
+/* NOTE: SVG <text> must contain NO html tags (<b> breaks out of <svg> in the
+   HTML parser and eats the rest of the drawing). Rich caption is HTML, above. */
+function beltWebCaptionHTML(d,bk){ const t=T[bk.tid], np=bankBuiltPhase(d,bk);
+  const total=bk.n, now=Math.max(1,Math.min(total,bankCountAt(bk.tid,np))), pl=machinesPerLane(t), rows=Math.ceil(total/pl), path=beltUpgradePath(bk.outItem,np);
+  const rec=(t.in.length?t.in.map(x=>x[0]+' '+x[1]).join(' + '):'no input — runs on power')+' → '+t.out[0]+' '+t.out[1]+(t.by?' + '+t.by[0]+' '+t.by[1]+' byproduct':'');
+  return `<div class="nt" style="margin:2px 0 7px;line-height:1.55">This is <b>one manifold row</b> — the repeating unit. <b>One belt enters</b>, a splitter (▫) taps off to each machine; their outputs <b>merge back onto one belt</b>. One row holds about <b>${pl} machine${pl>1?'s':''}</b> (what fills a Mk.6 belt).<br>Build <b style="color:#8fe6a8">${now}× now</b> (Phase ${np})${total>now?` → grows to <b>${total}×</b> by P5 (dashed = add later)`:''}: fill this row, then <b>stack ${rows} identical row${rows>1?'s':''}</b> for all ${total} and merge their output belts.<br>Belt grows <b>${path}</b> · each machine @100%: ${rec}/min${bpMax?' <span class="tag qty">×5 at MAX</span>':''}.</div>`; }
+function focusBankSvg(d,bk){
+  const t=T[bk.tid], np=bankBuiltPhase(d,bk), eff=bpMax?MAXFACTOR:1;
+  const total=bk.n, now=Math.max(1,Math.min(total,bankCountAt(bk.tid,np)));
+  const ins=(t.in&&t.in.length)?t.in:[['power only',0]];
+  const perLane=machinesPerLane(t), totalRows=Math.ceil(total/perLane);
+  const cols=Math.max(1,Math.min(perLane,8)), nowInRow=Math.max(1,Math.min(now,cols));
+  const col=BCOL[bk.b]||'#8b97a3', ab=ABBR[bk.b]||'?', nIn=ins.length;
+  const MW=58, MH=50, GX=26, PITCH=MW+GX, ML=205;
+  const inTop=46, inGap=17, mY=inTop+nIn*inGap+12, outY=mY+MH+38;
+  const colX=c=>ML+c*PITCH, cx=c=>colX(c)+MW/2, xEnd=cx(cols-1);
+  const W=Math.max(660,ML+cols*PITCH+120), H=outY+52;
+  let s=`<svg viewBox="0 0 ${W} ${H}" style="width:100%;min-width:600px;height:auto;background:#0a0d12;border:1px solid var(--line);border-radius:8px;margin-bottom:8px">`;
+  for(let gx=0;gx<=W;gx+=28) s+=`<line x1="${gx}" y1="0" x2="${gx}" y2="${H}" stroke="#0f161d"/>`;
+  s+=`<text x="14" y="24" fill="#e6edf3" font-size="15" font-weight="700">${bk.r} — one manifold row</text>`;
+  s+=`<text x="${W-14}" y="24" fill="#9aa7b4" font-size="12" text-anchor="end">${cols} per belt · stack ×${totalRows} = ${total} total</text>`;
+  ins.forEach((inp,k)=>{ const ty=inTop+k*inGap, fluid=isFluidItem(inp[0]), bc=fluid?'#5aa9ff':'#2dd4bf';
+    const perRow=+(cols*inp[1]*eff).toFixed(0), mk=inp[1]?carrierOf(inp[0],perRow).mk:'';
+    s+=`<line x1="${ML-48}" y1="${ty}" x2="${xEnd}" y2="${ty}" stroke="${bc}" stroke-width="3"${fluid?' stroke-dasharray="5 3"':''}/>`;
+    s+=`<polygon points="${ML-48},${ty} ${ML-58},${ty-5} ${ML-58},${ty+5}" fill="${bc}"/>`;
+    s+=`<text x="${ML-62}" y="${ty+4}" fill="#cdd6df" font-size="11" text-anchor="end">${inp[0]}${inp[1]?' '+perRow+'/min · '+mk:''}</text>`;
+    for(let c=0;c<cols;c++){ const x=cx(c)+(k-(nIn-1)/2)*7; s+=`<line x1="${x}" y1="${ty}" x2="${x}" y2="${mY}" stroke="${bc}" stroke-width="1.5" opacity=".55"/>`; s+=`<rect x="${x-4}" y="${ty-4}" width="8" height="8" fill="#15202a" stroke="${bc}"><title>splitter</title></rect>`; } });
+  s+=`<text x="${ML}" y="${mY-7}" fill="#8fe6a8" font-size="11">build ${Math.min(now,cols)} now${totalRows>1?` · add ${totalRows-1} more identical row${totalRows-1>1?'s':''} below`:''}</text>`;
+  for(let c=0;c<cols;c++){ const x=colX(c), on=c<nowInRow;
+    if(on){ s+=`<rect x="${x}" y="${mY}" width="${MW}" height="${MH}" rx="5" fill="${col}"><title>${bk.b} · ${bk.r} — build now</title></rect>`;
+      s+=`<text x="${x+MW/2}" y="${mY+MH/2+5}" fill="#0a0d12" font-size="15" font-weight="700" text-anchor="middle">${ab}</text>`; }
+    else { s+=`<rect x="${x}" y="${mY}" width="${MW}" height="${MH}" rx="5" fill="none" stroke="${col}" stroke-width="1.8" stroke-dasharray="5 3" opacity=".6"><title>${bk.b} · ${bk.r} — fill the row as you grow</title></rect>`;
+      s+=`<text x="${x+MW/2}" y="${mY+MH/2+5}" fill="${col}" font-size="13" text-anchor="middle" opacity=".6">${ab}</text>`; } }
+  const oc=carrierOf(bk.outItem,bk.outRate), perRowOut=+(cols*t.out[1]*eff).toFixed(0), omk=carrierOf(bk.outItem,perRowOut).mk;
+  for(let c=0;c<cols;c++){ const x=cx(c); s+=`<line x1="${x}" y1="${mY+MH}" x2="${x}" y2="${outY}" stroke="#b692ff" stroke-width="1.5" opacity=".55"/>`; s+=`<rect x="${x-4}" y="${outY-4}" width="8" height="8" fill="#1a1426" stroke="#b692ff"><title>merger</title></rect>`; }
+  s+=`<line x1="${ML-48}" y1="${outY}" x2="${W-16}" y2="${outY}" stroke="#b692ff" stroke-width="3"${oc.carrier==='pipe'?' stroke-dasharray="5 3"':''}/>`;
+  s+=`<polygon points="${W-16},${outY} ${W-26},${outY-5} ${W-26},${outY+5}" fill="#b692ff"/>`;
+  s+=`<text x="${W-14}" y="${outY+18}" fill="#c9b6ff" font-size="11" text-anchor="end">${bk.outItem} ${perRowOut}/min per row · ${omk} → merge ${totalRows} rows → ${bk.outRate}/min total</text>`;
+  return s+'</svg>';
+}
+function renderBpSteps(){
+  if(bpMod==='ALL'){ document.getElementById('bpSteps').innerHTML='<div class="meta">The appendix shows every district floor plan. Pick a single district (or click a line above) for its turn-by-turn build list with check-offs.</div>'; return; }
+  const d=DMAP[bpMod]; if(!d){ document.getElementById('bpSteps').innerHTML=''; return; }
+  const banks=districtBanks(d), f=districtFootprint(banks), total=banks.length+1;
+  const done=(state['bp:'+d.id+':pad']?1:0)+banks.filter((b,i)=>state['bp:'+d.id+':'+i]).length;
+  const pct=Math.round(done/total*100), padDone=!!state['bp:'+d.id+':pad'];
+  const isRail=/train/.test(d.near);
+  let h='';
+  h+=`<div class="meta"><b style="color:var(--txt)">Build steps — ${d.id} · ${d.name}</b><br>Build it all <b>above ground</b> on a raised platform (you'll be flying), flat &amp; wide on one level, near <b>${d.near}</b>. Each line is one production bank; tick it as you place &amp; wire it.${bpMax?' ⚡ <b>MAX mode</b>: overclock every machine to 250% (3 Power Shards) and slot a Somersloop (2×).':''}</div>`;
+  h+=`<div class="prog" style="max-width:none;margin:4px 0 4px"><i style="width:${pct}%"></i></div><div class="pct" style="text-align:left;margin-bottom:10px">${done}/${total} steps · ${pct}%</div>`;
+  // pre-flight KIT: bring all this before you fly out
+  const kit={}; banks.forEach(b=>kit[b.b]=(kit[b.b]||0)+b.n);
+  const trunks=banks.reduce((s,b)=>s+(b.inputs.length||1)+1,0);
+  const taps=banks.reduce((s,b)=>s+b.n*2,0);
+  const shards=bpMax?banks.reduce((s,b)=>s+b.n*3,0):0, sloops=bpMax?banks.reduce((s,b)=>s+b.n*(SLOOP_SLOTS[b.b]||1),0):0;
+  h+=`<div class="invrow" style="border:1px solid var(--orange);border-radius:7px;margin-bottom:6px;background:rgba(255,158,61,.05)"><div class="it"><div class="nm"><span class="tag qty">🎒 KIT</span> Bring before you fly out:</div><div class="nt">${Object.entries(kit).map(([k,v])=>`<b>${v}×</b> ${k}`).join(' · ')} · ~<b>${f.side*f.side}</b> foundations · ~<b>${trunks}</b> trunk belts/pipes + ~<b>${taps}</b> splitters/mergers · power poles${bpMax?` · <b>${shards}</b> Power Shards + <b>${sloops}</b> Somersloops`:''}.</div></div></div>`;
+  const across=Math.ceil(Math.sqrt(banks.length)), deep=Math.ceil(banks.length/across);
+  h+=`<div class="invrow${padDone?' done':''}" style="border:1px solid var(--line);border-radius:7px;margin-bottom:6px"><input type="checkbox" data-k="pad" ${padDone?'checked':''}><div class="it"><div class="nm"><span class="tag milestone">pad</span> Lay a flat raised <b>~${f.side}×${f.side}</b> platform near ${d.near} (above ground).</div><div class="nt"><b>Build it area-by-area as you go — not all at once.</b> Do the §steps below in order (each area only when its inputs are flowing). Efficient shape: arrange the ${banks.length} areas roughly <b>${across} across × ${deep} deep</b>, flowing left→right, with belt/pipe lanes between rows and room on one side to expand in later phases.</div></div></div>`;
+  if(isRail){ const rd=!!state['bp:'+d.id+':rail'];
+    h+=`<div class="invrow${rd?' done':''}" data-rail="1" style="border:1px solid var(--line);border-radius:7px;margin-bottom:6px"><input type="checkbox" data-k="rail" ${rd?'checked':''}><div class="it"><div class="nm"><span class="tag milestone">🚆 rail</span> This district is <b>far</b>. Build a <b>train station + freight platform</b> here loading its finished outputs, a locomotive, and rail back to a <b>receiving station beside your core / ★</b>. Ship refined parts, never raw ore. <span class="tag qty">see train-network.md</span></div></div></div>`;
+  }
+  // ⚠ utilities & byproducts (water pumps, Heavy Oil Residue, nuclear waste)
+  const water=banks.reduce((s,b)=>{ const w=b.inputs.find(x=>x[0]==='Water'); return s+(w?w[1]:0); },0);
+  const hor=banks.reduce((s,b)=>{ const tb=T[b.tid].by; return s+(tb&&tb[0]==='Heavy Oil Residue'? (b.outRate/T[b.tid].out[1])*tb[1] :0); },0);
+  const util=[];
+  if(water>0) util.push(`💧 <b>Water:</b> pump ~<b>${Math.round(water)}/min</b> from the nearest lake (watch head-lift — add extra pumps per 20–30 m climb) and pipe it in.`);
+  if(hor>0){ const refs=Math.ceil(hor/60), fuel=Math.round(hor*2/3), gens=Math.floor(fuel/20);
+    util.push(`🛢 <b>Heavy Oil Residue ~${Math.round(hor)}/min:</b> route to <b>~${refs}× Residual Fuel refinery</b> (60 HOR→40 Fuel) → ~<b>${fuel} Fuel/min</b> ≈ <b>${gens} fuel generators</b> (free power). Or AWESOME-Sink it. If it backs up, Plastic/Rubber stops.`); }
+  if(d.id==='F') util.push(`☢️ <b>Nuclear Waste:</b> running nuclear power makes Uranium Waste — belt it into <b>Industrial Storage Containers</b> (or process via the plutonium chain). Backed-up waste stalls the plant.`);
+  if(util.length){ const ud=!!state['bp:'+d.id+':util'];
+    h+=`<div class="invrow${ud?' done':''}" style="border:1px solid #b6792e;border-radius:7px;margin-bottom:6px;background:rgba(255,158,61,.05)"><input type="checkbox" data-k="util" ${ud?'checked':''}><div class="it"><div class="nm"><span class="tag qty">⚠ utilities</span> Don't forget the support lines:</div><div class="nt">${util.join('<br>')}</div></div></div>`;
+  }
+  banks.forEach((bk,i)=>{ const dn=!!state['bp:'+d.id+':'+i];
+    h+=`<div class="invrow${dn?' done':''}" data-i="${i}" style="border:1px solid ${i===bpHi?'var(--orange)':'var(--line)'};border-radius:7px;margin-bottom:6px">
+      <input type="checkbox" data-k="${i}" ${dn?'checked':''}>
+      <div class="it" style="cursor:pointer">${bankStepHTML(d,banks,bk,i)}</div></div>`;
+  });
+  const sp=document.getElementById('bpSteps'); sp.innerHTML=h;
+  sp.querySelectorAll('input[type=checkbox]').forEach(cb=>cb.onchange=e=>{ const key='bp:'+d.id+':'+cb.dataset.k; if(e.target.checked) state[key]=true; else delete state[key];
+    saveState(state); renderBpStage(); renderBpSteps(); });
+  sp.querySelectorAll('.invrow[data-i]').forEach(row=>{ const it=row.querySelector('.it'); if(it) it.onclick=()=>{ bpHi=+row.dataset.i; renderBpStage(); renderBpSteps(); }; });
+}
+
+/* ============================ LIVE MAP node guide ============================ */
+/* ============================ INIT ============================ */
+buildBuildMap();
+renderCards(); renderTemplates(); renderShopping(); renderInventory();
+renderBlueprints();
+</script>
+</body>
+</html>
