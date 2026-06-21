@@ -28,8 +28,9 @@ Ember Key.
 
 ## Hero (pre-gen) — drop straight in
 **Ash**, a level-1 tomb-scout. **STR +2, DEX +2, CON +1, INT +1, WIS +0, CHA +0.**
-**HP 12/12 · AC 14.** *Quick Hands:* advantage on the first DEX check each scene.
-Carries a shortsword (1d6), two torches, a coil of rope.
+**HP 12/12 · AC 14.** Shortsword: **+4 to hit, 1d6+2**. *Quick Hands:* advantage on the
+first DEX check of the run *(treat the whole crypt as one "scene")*.
+Carries a shortsword, two torches, a coil of rope.
 
 ---
 
@@ -43,7 +44,8 @@ flooding tunnel, water already at the ankle and rising.
 An **ash-hound** dozes by a brazier, between Ash and the inner door.
 - **Sneak past** — DEX (Stealth) **DC 13** *(Quick Hands → advantage if it's the first DEX
   check)*. **Success:** slip through → NODE 3. **Fail:** it wakes → short fight.
-- **Fight** — Ash-hound: **HP 7, AC 12**, bite **+3, 1d6**. One or two rounds, then → NODE 3.
+- **Fight** — Ash acts first (the hound is dozing — no initiative roll). Ash-hound: **HP 7,
+  AC 12**, bite **+3, 1d6**; Ash strikes at **+4, 1d6+2**. Drop it (~2 rounds) → NODE 3.
 - *Fail-forward:* losing the sneak just costs a little HP; you always reach NODE 3.
 
 ## NODE 2B — The Wet Tunnel
@@ -67,6 +69,8 @@ The key rests on a pressure plate; a sealed exit door stands beyond.
   fail branch, so the test proves a negative path too)*.
 
 **Win condition:** exit holding the Ember Key (Perfect / Good / Scraped all count).
+*On a win, add `Ember Key` (Uncommon) to the hero's `items`; PERFECT also adds `Ember Charm`
+(Uncommon — once/day relight any flame).*
 
 ---
 

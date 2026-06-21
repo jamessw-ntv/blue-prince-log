@@ -5,6 +5,25 @@ first. See `./SELF-IMPROVEMENT.md` for the loop. Mark items **Done** when folded
 
 ---
 
+## 2026-06-21 — Autoplay iteration 1 (The Ember Key · 3 dispositions)
+Three independent Lead-Player agents (Cautious / Reckless / Cunning) self-played the
+micro-test. **The engine branches:** three different paths, two distinct endings (PERFECT ×2,
+GOOD ×1); checks resolved; fail-forward intact. Avg rubric — Runnable 4.3, Coherent 5,
+Branching 2.7, Fair 4.3, Onboardable 4.3.
+
+### [content] DONE — model goal items, state Ash's attack line, define "scene"
+Folded into `the-crossroads-test.md` this iteration (the loop closing): Ash's shortsword now
+prints `+4, 1d6+2`; Node 2A states Ash acts first; "scene" = the whole crypt; the Ember
+Key/Charm are added to `items` on a win.
+### [design] LOW — signature ability disjoint from the optimal ending
+Quick Hands (first DEX check) never fires on the Perfect line (lever → study INT). Fine for a
+micro-test; for real heroes, ensure signature abilities get a natural moment on the best path.
+### [design] NOTE — branching is a "diamond" by design
+2A/2B both funnel into Node 3; only Node 3 yields distinct endings. Expected for a smoke-test;
+real campaigns need wider divergence (Gate 2 in `GOAL-STATE.md`).
+
+---
+
 ## 2026-06-21 — Initial QA sweep (4 review agents, pre-play)
 A deep self-improvement pass run by review agents over the engine + the *Smoke Over
 Bramblewick* one-shot, before first play. Backlog below, highest-leverage first.
