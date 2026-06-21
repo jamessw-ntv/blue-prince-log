@@ -29,6 +29,7 @@
     {
       "name": "Doss", "class": "War-priest", "title": "Cleric", "level": 3, "role": "companion",
       "hp": 24, "hpMax": 24, "mp": 10, "mpMax": 10,
+      "approval": { "tier": "Warm", "substep": 0 },
       "status": [],
       "abilities": [
         { "name": "Channel Divinity", "desc": "Turn the Risen (WIS DC 13 each), 1/rest." },
@@ -40,6 +41,7 @@
     {
       "name": "Sable", "class": "Hedge-mage", "title": "Wizard/Bard", "level": 3, "role": "companion",
       "hp": 18, "hpMax": 18, "mp": 12, "mpMax": 12,
+      "approval": { "tier": "Warm", "substep": 0 },
       "status": [],
       "abilities": [
         { "name": "Misty Step", "desc": "MP 2: blink 10 ft." },
@@ -57,5 +59,21 @@
     "The horns. Sarn Vael, the Unbeaten, is at the gates.",
     "Mira: \"Hold this breach or Emberfall's ash by dawn.\"",
     "A warhorn sounds thrice — the town's own dead begin to stand."
-  ]
+  ],
+  "story": {
+    "freedom": "Guided",
+    "spine": [
+      { "id": "b1", "beat": "Inciting", "title": "Hold the breach", "state": "active" },
+      { "id": "b2", "beat": "Midpoint", "title": "The approach (Walls / Shadows / Parley)", "state": "pending" },
+      { "id": "b3", "beat": "Midpoint", "title": "The pact revealed", "state": "pending" },
+      { "id": "b4", "beat": "Climax", "title": "Unmake the Ember Heart", "state": "pending" },
+      { "id": "b5", "beat": "Resolution", "title": "Dawn over Emberfall", "state": "pending" }
+    ],
+    "map": { "current": "n0 — The Breach" },
+    "threads": [
+      "Why can't Sarn Vael be killed?",
+      "The town's own dead are rising",
+      "Reach Sarn's command tent past the gate"
+    ]
+  }
 }
