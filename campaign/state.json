@@ -1,64 +1,61 @@
 {
-  "campaign": { "name": "Smoke Over Bramblewick", "location": "The Flooded Mine", "floor": "Entry Shaft" },
-  "currency": { "name": "Gold", "amount": 40 },
+  "campaign": { "name": "Emberfall", "location": "The East Breach", "floor": "Night — the siege" },
+  "currency": { "name": "Gold", "amount": 0 },
   "map": {
-    "note": "Act 2 — green haze, dripping timbers. A spore-thrall shambles up the shaft. Black water rising to the south.",
-    "legend": { "@": "Party", "E": "Spore-Thrall", "+": "Door", "~": "Black water", ">": "Deeper", "$": "Cache" },
+    "note": "The east wall is breached — conscripts pour through the gap. Behind you, the town's own dead are starting to stand.",
+    "legend": { "@": "Party", "E": "Conscript", "+": "Breach", ">": "Sally-port → Sarn" },
     "grid": [
-      "#########",
-      "#@..+..E#",
-      "#.#####.#",
-      "#..~~...#",
-      "#.>...$.#",
-      "#########"
+      "#E..E..E#",
+      "#..E.E..#",
+      "####+####",
+      "#...@...#",
+      "#..>....#"
     ]
   },
   "party": [
     {
-      "name": "Bran Holt", "class": "Fighter", "title": "Bramblewick's Hope", "level": 2, "role": "leader",
-      "hp": 13, "hpMax": 16, "mp": 0, "mpMax": 0,
-      "status": [ { "name": "Bruised", "desc": "Took a claw on the ladder." } ],
-      "abilities": [
-        { "name": "Second Wind", "desc": "Bonus action: recover some HP, once per rest." },
-        { "name": "Action Surge", "desc": "One extra action, once per rest." }
-      ],
-      "items": [
-        { "name": "Longsword", "rarity": "Common", "qty": 1, "desc": "1d8 slashing." },
-        { "name": "Shield", "rarity": "Common", "qty": 1, "desc": "+2 AC (already counted)." },
-        { "name": "Torch", "rarity": "Common", "qty": 3, "desc": "Light; the haze hates fire." }
-      ]
-    },
-    {
-      "name": "Corwin", "class": "Ranger", "title": "", "level": 2, "role": "companion",
-      "hp": 12, "hpMax": 13, "mp": 0, "mpMax": 0,
+      "name": "Bran", "class": "Fighter", "title": "at the breach", "level": 3, "role": "leader",
+      "hp": 28, "hpMax": 28, "mp": 0, "mpMax": 0,
       "status": [],
-      "abilities": [ { "name": "Hunter's Volley", "desc": "A flurry of arrows at the front rank." } ],
+      "abilities": [
+        { "name": "Second Wind", "desc": "Bonus action: regain 1d10+3 HP, 1/rest." },
+        { "name": "Action Surge", "desc": "Take one extra action, 1/rest." }
+      ],
       "items": [
-        { "name": "Longbow", "rarity": "Common", "qty": 1, "desc": "1d8 piercing, ranged." },
-        { "name": "Hunting Knife", "rarity": "Common", "qty": 1, "desc": "1d4." }
+        { "name": "Longsword", "rarity": "Common", "qty": 1, "desc": "+5 to hit, 1d8+3." },
+        { "name": "Shield & mail", "rarity": "Common", "qty": 1, "desc": "AC 18." }
       ]
     },
     {
-      "name": "Lysa", "class": "Bard", "title": "", "level": 2, "role": "companion",
-      "hp": 10, "hpMax": 11, "mp": 6, "mpMax": 8,
-      "status": [ { "name": "Inspired", "desc": "Next check has +1d4." } ],
+      "name": "Doss", "class": "War-priest", "title": "Cleric", "level": 3, "role": "companion",
+      "hp": 24, "hpMax": 24, "mp": 10, "mpMax": 10,
+      "status": [],
       "abilities": [
-        { "name": "Bardic Inspiration", "desc": "Grant an ally +1d4 on a roll." },
-        { "name": "Healing Word", "desc": "Bonus action: heal at range." }
+        { "name": "Channel Divinity", "desc": "Turn the Risen (WIS DC 13 each), 1/rest." },
+        { "name": "Cure Wounds", "desc": "MP 2: heal 1d8+3." },
+        { "name": "Guiding Bolt", "desc": "MP 3: +5, 4d6 radiant + advantage on the next hit." }
       ],
-      "items": [
-        { "name": "Lute", "rarity": "Common", "qty": 1, "desc": "Spellcasting focus." },
-        { "name": "Healer's Kit", "rarity": "Common", "qty": 1, "desc": "Stabilise the downed." }
-      ]
+      "items": [ { "name": "Mace", "rarity": "Common", "qty": 1, "desc": "+4, 1d6+2." } ]
+    },
+    {
+      "name": "Sable", "class": "Hedge-mage", "title": "Wizard/Bard", "level": 3, "role": "companion",
+      "hp": 18, "hpMax": 18, "mp": 12, "mpMax": 12,
+      "status": [],
+      "abilities": [
+        { "name": "Misty Step", "desc": "MP 2: blink 10 ft." },
+        { "name": "Dispel-ward", "desc": "MP 4: Arcana vs the ward's DC." },
+        { "name": "Vicious Mockery", "desc": "WIS DC 14 or 1d6 psychic + disadvantage on its next attack." }
+      ],
+      "items": [ { "name": "Staff", "rarity": "Common", "qty": 1, "desc": "+2, 1d6; focus." } ]
     }
   ],
   "quests": {
-    "active": [ "Find Miller Coll in the mine", "Stop the green smoke at its source" ],
-    "completed": [ "Investigate Bramblewick (Act 1)" ]
+    "active": [ "Hold the breach", "Reach Sarn — whatever lets him win is with him", "Why can't Sarn Vael be killed?" ],
+    "completed": []
   },
   "log": [
-    "[ QUEST ] Smoke Over Bramblewick — descended into the flooded mine.",
-    "A spore-thrall shambles up the entry shaft. Roll initiative!",
-    "[ SYSTEM ] STATUS  Bran Holt · Fighter · Lv 2  ·  HP 13/16"
+    "The horns. Sarn Vael, the Unbeaten, is at the gates.",
+    "Mira: \"Hold this breach or Emberfall's ash by dawn.\"",
+    "A warhorn sounds thrice — the town's own dead begin to stand."
   ]
 }

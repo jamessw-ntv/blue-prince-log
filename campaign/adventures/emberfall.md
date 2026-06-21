@@ -71,9 +71,19 @@ Pre-statted so any hero class is supported. **Level 3, prof +2.**
 | **Thorn** | Ranger | STR+1 DEX+4 CON+1 INT+0 WIS+3 CHA+0 | 24/16 | Favoured Quarry, Hunter's Volley · **finds the cliff path, marks Sarn** |
 | **Liri** | Bard | STR+0 DEX+2 CON+1 INT+1 WIS+1 CHA+4 | 22/14 | Inspiration, Vicious Mockery · **turns Vey, breaks Sarn's pride** |
 
+**Caster resources & skills (print on the sheet at Session Zero):** casters use an **MP pool** like
+the companions — full casters (Wizard/Cleric) **MP 12**, half-casters **MP 8** — plus an at-will
+**cantrip** (e.g. Firebolt **d20 + casting + prof, 1d10**); *Shield* and *Misty Step* cost **MP 2**.
+Spell DC = 8 + prof + casting mod. Each hero is proficient in **3–4 class skills** (+prof); Rogue
+and Bard take **Expertise** (double prof) in one.
+
 > **Class-spotlight rule:** each route below *guarantees* a beat for two classes, and the Ember
 > Heart finale has a hook for all six. Whoever the hero is, hand them their moment; let companions
 > shine on the rest. Spotlights are listed inline as **[★ Class]**.
+> **Cross-route guarantees (so no class is branch-locked):** **[★ Fighter]** a champion — Hark if he
+> lives, else his second — bars the **Ember Circle** on *any* route, so the duel is always available.
+> **[★ Ranger]** *Favoured Quarry:* a Ranger may **mark Sarn** on any route for a tracked-target edge
+> (advantage to find/reach him; +2 to hit him).
 
 ---
 
@@ -150,6 +160,7 @@ the ward). The party must **drop the ward → unmake the Heart**, surviving Sarn
 
 ### Dropping the ward — many keys (class spotlights)
 - **[★ Wizard]** *Unweave it.* Arcana/Dispel **DC 15** (2 successes, or one with Misty Step inside).
+  A *failed* unweave bites — 2d6 fire, or Sarn gets a free strike (parity with the Rogue's risk).
 - **[★ Cleric]** *Consecrate it.* Channel Divinity, **3 rounds** of holding ground — a clock that
   makes the fight matter.
 - **[★ Bard]** *Turn his own men.* If Vey defected (Route C), the conscripts refuse to feed it; the
@@ -169,13 +180,19 @@ I ask so little — only the ones you'd have lost anyway."* The moral fork (matu
   or make a true last stand. Costly: the longer the fight ran, the more of the town/Mira is at risk.
 - **Take the bargain** *(dark)* — claim the Heart. The siege breaks instantly — because *you* are
   Unbeaten now. Emberfall is saved, and the party is its new shadow. A genuine, playable dark ending.
-- **Turn the pact** *(clever)* — feed the Heart **Sarn's own victories/name** (set up via Bard/Vey
-  or Wizard's reading): it consumes its maker. He dies *unmade*, the Heart goes cold, no party cost
-  — the hard-to-reach best ending.
+- **Turn the pact** *(clever)* — feed the Heart **Sarn's own victories/name**: it consumes its
+  maker. He dies *unmade*, the Heart goes cold, no party cost — the hard-to-reach best ending.
+  *Key (any route):* a caster or face who knows Sarn's name + streak — **Hark's warning, Sarn's
+  confession, or a Wizard's reading all suffice** — makes a **CHA or Arcana check, DC 15**
+  (advantage if set up over the fight). Sarn, weary, rarely contests it.
 
 ### Sarn Vael in the climax
 While the Heart beats he has **advantage on everything and returns at half-HP** the round after he
-drops. The instant the Heart is unmade, strip both — he's just a tired, deadly man (and may yield).
+drops — *strikes against him close like water* (give the party that tell, so they stop trying to
+out-fight him and solve the puzzle). **He fights to a rhythm, not a kill:** he duels the
+front-liner, **ignores the downed, never delivers a coup-de-grâce** — his weariness showing. This
+keeps a ward-clock (e.g. the Cleric's 3-round consecrate) survivable even without a tank. The
+instant the Heart is unmade, strip the Boon — he's just a tired, deadly man, and may yield.
 
 ---
 

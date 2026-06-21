@@ -5,6 +5,25 @@ first. See `./SELF-IMPROVEMENT.md` for the loop. Mark items **Done** when folded
 
 ---
 
+## 2026-06-21 — Gate 3 CLEARED ✅ (flagship Emberfall · 3 routes · 3 classes)
+Three full autoplays — **Fighter/Walls, Bard/Parley, Wizard/Shadows** — each scored **≥4 on all
+six axes and Class-spotlight 5**; three distinct routes to satisfying endings; every hero class got
+a load-bearing moment (Fighter's Action-Surge nat-20 duel + tank-the-clock; Bard's social play *was*
+the win condition; Wizard's read→Misty-Step→unweave unlocked the best ending). **Bar met.**
+
+### [DONE] folded fixes (corroborated across runs)
+- Pre-gens now print **MP + cantrip + skills/Expertise** (caster economy gap, flagged by 2 runs).
+- **Fighter** un-branch-locked — a champion bars the **Ember Circle** on any route; **Ranger** gets
+  *mark Sarn* cross-route (both were independently named weakest-served).
+- **Sarn's climax behaviour printed** (fights to a rhythm, ignores the downed) so the ward-clock is
+  fair without an invented tank fiction; added a "blows close like water" tell.
+- **Turn-the-pact** now has an explicit **route-agnostic key (CHA/Arcana DC 15)**.
+- Wizard unweave gains a **failure cost** (parity with the Rogue path).
+
+*Next → Jae plays one session to **BLESS** the flagship (the goal's single human touchpoint).*
+
+---
+
 ## 2026-06-21 — Gate 2 CLEARED ✅ (run 3 post-fix + verdict)
 Run 3 (cautious-tactical, the Bram-guide / bell-first branch) scored **Runnable 5, Coherent 5,
 Branching 5, Fair 4, Alive 5, Onboardable 5** — a *third distinct branch*, with Pip's path left
