@@ -93,7 +93,7 @@ wants to be fed. Won't you feed it?"*
 - **Cultist** — AC 12, HP 9 (2d8). Scimitar **+3, 1d6+1**.
 - **Vorn Hule, Ghoul-Priest** *(SRD ghoul, augmented)* — AC 13, HP 36, Speed 30. **Multiattack:** bite
   **+6, 2d6+2**, and claws **+6, 2d4+2 + Con save DC 13 or paralyzed (1 min, save ends; a paralyzed
-  PC within 5 ft is **auto-crit**)**. **Round 1 he opens with Hold Person** on the front-liner to
+  PC within 5 ft is **auto-crit** from **round 2+**; a held/paralyzed target gets its end-of-turn save *before* Vorn's next melee, so a Cleric-less party isn't first-round-killed)**. **Round 1 he opens with Hold Person** on the front-liner to
   strip the tank — so the paralysis/death-save stakes actually bite. *Spellcasting
   (Wis, DC 13):* Cure Wounds (on himself), Inflict Wounds **+4, 3d10**, Hold Person. Undead — turnable.
 

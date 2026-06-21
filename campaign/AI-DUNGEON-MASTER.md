@@ -275,6 +275,8 @@ Dungeon Crawler Carl — capture the vibe, never copy its text, world, or charac
 - **Progression:** XP for kills, discoveries, quests, and — in game-show flavours —
   **showmanship** (entertaining the audience). Leveling grants attribute points, HP/MP, and
   a new skill / a System "choice" (pick one of N boons). Levelling is a printed plot event.
+  - **Per level:** +1 attribute point · **HP + (5 + CON mod)** · **MP +2** (full casters +3) ·
+    a new skill *or* a System "choice".
   - **XP curve:** L1→2 **100** · L2→3 **300** · L3→4 **600** · L4→5 **1000** · then +500/level.
   - **XP awards:** trash **15** · elite/pack **30** · mini-boss **60** · floor boss **100** ·
     discovery/secret **15** · quest **25–50** · **showmanship beat +10–25**.
@@ -284,7 +286,7 @@ Dungeon Crawler Carl — capture the vibe, never copy its text, world, or charac
   - **Luck:** add **Luck** to loot-rarity rolls; **Luck ≥ 5 = "high"** → crit range widens to
     **19–20**; the System may spend Luck for lucky breaks.
   - **Loot rarity (d20 + Luck):** ≤7 Common · 8–12 Uncommon · 13–17 Rare · 18–22 Epic ·
-    23–27 Legendary · 28+ Mythic (+5% per Sponsor tier above Low).
+    23–27 Legendary · 28+ Mythic (**+1 to the roll** per Sponsor tier above Low).
 - **Skills & abilities:** gained by use, loot/grants, or class; **ranks** Novice → Apprentice
   → Adept → Expert → Master; active (MP/cooldown) or passive.
 - **Classes:** chosen or **granted in-world** (sometimes ironically). Build originals.

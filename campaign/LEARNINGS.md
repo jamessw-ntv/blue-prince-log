@@ -5,6 +5,21 @@ first. See `./SELF-IMPROVEMENT.md` for the loop. Mark items **Done** when folded
 
 ---
 
+## 2026-06-21 — Gate 4: starters RE-VALIDATED (both pass) + final folds
+**LitRPG re-run: Runnable 3→5** — the new §9 economy resolved everything; **no invented numbers**
+(quoted a clean `d20+Luck=14→RARE` and a 175-XP level-up). **5e re-run: Fair 4→5, fidelity 4→5** —
+paralysis + death saves now **fire** (Hold Person → paralyzed → auto-crit → Brael to 0 → a failed
+death save → clutch Turn Undead + Cure Wounds). Tense, not punishing; Thieves'-Tools fallback worked.
+
+### [DONE] final folds
+- **§9:** print **per-level gain** (HP +5+CON, MP +2/+3); sponsor bonus = **+1 to the loot roll** per tier.
+- **Sunless Shrine:** **gated Vorn's opener** — auto-crit only from round 2+ (held target saves before
+  his melee) so a Cleric-less party isn't first-round-killed.
+
+*Both starters now clear the bar (all 3 systems validated). Next: the royalty-free complete campaign.*
+
+---
+
 ## 2026-06-21 — Gate 4 breadth: LitRPG + 5e starters autoplayed + folded
 **Going Live (LitRPG):** System-flavour/fun **5** — host, showmanship, sponsored choices, ironic
 class all sing. But Runnable **3**: §9/§13 printed the *shapes* but no tables, so the DM invented the
