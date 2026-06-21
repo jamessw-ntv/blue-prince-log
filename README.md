@@ -1,38 +1,156 @@
 # jamessw-ntv.github.io — personal projects hub
 
 A little home for the small things I build: logs, trackers, timelines, and other
-experiments. One menu, one consistent look, each project self-contained in its
-own folder. Lives at **<https://jamessw-ntv.github.io/>**.
+experiments. **One menu, one consistent look, each project self-contained in its
+own folder.** Lives at **<https://jamessw-ntv.github.io/>**.
+
+This README is the map of the whole place: the philosophy, how things get added,
+and a catalogue of every module with links to its own docs.
 
 > Nothing here is connected to the `NTV-PROD` repo — this is a separate, personal
-> space on purpose.
+> space on purpose. `NTV-PROD` is never linked, merged, or referenced here.
 
-## Layout
+---
+
+## Design philosophy (the short version)
+
+Full version in **[`docs/DESIGN.md`](./docs/DESIGN.md)**. In a nutshell:
+
+1. **One product, many corners.** Every project is independent but shares a single
+   visual language (`assets/hub.css`) so the site never feels like a pile of
+   unrelated pages.
+2. **Boring tech on purpose.** Plain static HTML/CSS/vanilla JS. No build step, no
+   bundler, no framework, no dependencies. If it can't be opened with a
+   double-click, it's too complicated.
+3. **Self-contained.** A project is one folder that owns everything it needs. Delete
+   the folder and nothing else breaks.
+4. **Data separated from presentation.** Anything that changes often lives in a
+   `data.json`; the page renders it. Editing content never means editing code.
+5. **Relative links, always.** Never a leading `/`. This is what let the repo be
+   renamed and still work at any path.
+6. **Content first, chrome second.** Dark, calm, legible.
+
+The one rule that matters: **link `assets/hub.css` and use its tokens; never
+hard-code colours or redefine `:root`.** Every page also starts with the standard
+`.hubbar` back-link.
+
+---
+
+## The projects
+
+| Project | Lives at | Status | What it is |
+|---|---|---|---|
+| 🏛️ **Blue Prince — Room & Item Log** | [`/blue-prince/`](./blue-prince/) | active | Spoiler-free notepad of rooms, items, codes and puzzles |
+| 🎲 **AI Dungeon Master** | [`/campaign/`](./campaign/) | wip | Live second-screen dashboard for a chat-run D&D / LitRPG game |
+| 🏆 **Multi-Sport Dashboard** | [`/sports/`](./sports/) | active | World Cup 2026 + AFL + NRL at a glance |
+| 🖖 **Trek & Wars — Comics + Books Timeline** | [`/trek-wars/`](./trek-wars/) | active | Publication timeline of Trek & Wars comics and novels |
+
+Status meanings: **active** = working and maintained · **wip** = built but not
+finished/tested · **planned** = a card with no page yet.
+
+### 🏛️ Blue Prince — Room & Item Log
+A **spoiler-free** notepad for the game *Blue Prince*: rooms, items, codes, puzzles
+and dated notes, logged from my own play. The read-only viewer renders
+`blue-prince/data.json`; it starts empty on purpose and is filled from a logging
+chat (it never pre-fills facts from a wiki). This is the **reference implementation**
+of the hub's data-driven pattern.
+- **How it works:** `index.html` fetches `data.json` (raw-GitHub URL first,
+  same-origin fallback) and renders tabs for rooms / items / puzzles / notes / tips.
+- **History:** the hub's first resident — the repo began life as the standalone
+  *blue-prince-log* repo and was then generalised into this hub (see the migration
+  runbook below).
+- **Docs:** [`README.md`](./blue-prince/README.md) (schema) ·
+  [`CLAUDE.md`](./blue-prince/CLAUDE.md) (spoiler-free logging rules) ·
+  [`LOGGING.md`](./blue-prince/LOGGING.md) (how to log from a normal chat).
+
+### 🎲 AI Dungeon Master
+A **live "second screen"** for a chat-run, single-player D&D / LitRPG campaign:
+party HP / abilities / items, an ASCII dungeon map, quests and a System log, all
+auto-refreshing from `campaign/state.json` that the AI Game Master overwrites each
+turn. Three rule systems (Rules-Light, Authentic 5e, LitRPG), AI companions, and
+saves kept in Notion.
+- **How it works:** `campaign/index.html` polls `campaign/state.json` every few
+  seconds and repaints; the GM commits a new `state.json` per turn.
+- **Status:** the design is complete and the dashboard works, but it has **not been
+  playtested or balanced** yet.
+- **Docs:** [`AI-DUNGEON-MASTER.md`](./campaign/AI-DUNGEON-MASTER.md) (the complete
+  self-contained bootstrap + rules) ·
+  [`GM-INSTRUCTIONS.md`](./campaign/GM-INSTRUCTIONS.md) ·
+  [`PROJECT-HANDOFF.md`](./campaign/PROJECT-HANDOFF.md) ·
+  [`LEARNINGS.md`](./campaign/LEARNINGS.md) ·
+  [`SELF-IMPROVEMENT.md`](./campaign/SELF-IMPROVEMENT.md).
+
+### 🏆 Multi-Sport Dashboard
+One glanceable view of three competitions at once: **FIFA World Cup 2026**
+(Socceroos), **AFL** (Carlton), and **NRL** (Melbourne Storm + State of Origin,
+backing Queensland) — each with a "path to glory" gate sequence.
+- **How it works:** data-driven from `sports/data.json` (groups, ladders, fixtures,
+  odds, bracket, paths). Results are **verified against dependent facts** before
+  being asserted — a score must reproduce the standings it feeds.
+- **Docs:** [`CLAUDE.md`](./sports/CLAUDE.md) (data shape + update protocol).
+
+### 🖖 Trek & Wars — Comics + Books Timeline
+A **visual publication timeline** of every Star Trek and Star Wars comic and novel
+from 1967 to present, in four swimlanes (Trek/Wars × Comics/Novels). Each series is
+a horizontal bar spanning its years on a shared decade axis; tap a row for the
+detail panel (publisher, counts, blurb, where-to-read links). Responsive from one
+markup — label beside the bar on desktop, stacked above it on mobile.
+- **How it works:** data-driven from `trek-wars/data.json` (one entry per series).
+- **History:** ported in from a handoff doc as an interactive pan/zoom **"star
+  map"**, which read as mostly-empty space; it was replaced with this simpler,
+  denser timeline.
+- **Docs:** [`CLAUDE.md`](./trek-wars/CLAUDE.md) (data shape + routing).
+
+---
+
+## Repo layout
 
 ```
-index.html        the menu (edit the PROJECTS array to add a card)
-assets/hub.css    the shared design system — every page links this
-_template/         starter skeleton for a new project
+index.html        the menu — a PROJECTS array rendered as cards
+assets/hub.css    the shared design system (tokens + components)
+_template/        starter skeleton for a new project
 docs/
-  DESIGN.md        the design system + conventions
-  PORTING.md       how to bring a project in from another chat (one paste)
-blue-prince/       Blue Prince room & item log (its own README/CLAUDE.md inside)
-CLAUDE.md         instructions for the maintaining chat
+  DESIGN.md       design philosophy + system rules
+  PORTING.md      how to bring a project in from another chat (one paste)
+  MIGRATION.md    one-time setup/rename runbook (now complete)
+blue-prince/      Blue Prince log        (own README + CLAUDE.md + LOGGING.md)
+campaign/         AI Dungeon Master       (own AI-DUNGEON-MASTER.md + others)
+sports/           Multi-Sport Dashboard   (own CLAUDE.md)
+trek-wars/        Trek & Wars timeline    (own CLAUDE.md)
+CLAUDE.md         hub-wide instructions for the maintaining chat
+.github/workflows/pages.yml   deploys the whole repo root to Pages
 ```
 
 Each project is one folder (`<slug>/`) with its own `index.html`, optional
-`data.json` and `images/`, and may carry its own `CLAUDE.md`/`README.md`.
+`data.json` and `images/`, and may carry its own `CLAUDE.md`/`README.md` with
+project-specific rules.
 
 ## Adding a project
 
 The easy path is in **[`docs/PORTING.md`](./docs/PORTING.md)**: paste an export
 prompt into the chat that already has the project, then paste the result here and
-say "port this in." Or by hand: copy `_template/` to `<slug>/`, build it against
-[`docs/DESIGN.md`](./docs/DESIGN.md), and add a card to `index.html`.
+say *"port this into the hub."* A new `/<slug>/` folder appears, restyled to the
+design system, and a card is added to `index.html`.
+
+By hand: copy `_template/` to `<slug>/`, build against
+[`docs/DESIGN.md`](./docs/DESIGN.md), and add a card to the `PROJECTS` array in the
+root `index.html`:
+
+```js
+{ ico:"🎯", title:"My project", href:"my-project/", status:"active",
+  desc:"One line about it." },
+```
 
 ## How it's served
 
-The repo is named `jamessw-ntv.github.io`, so GitHub Pages publishes it at the
-root automatically. A push to `main` deploys via
-[`.github/workflows/pages.yml`](.github/workflows/pages.yml). Links are all
-relative, so projects work at any path.
+The repo is named `jamessw-ntv.github.io`, so GitHub Pages publishes it at the root
+automatically. A push to `main` redeploys the whole repo via
+[`.github/workflows/pages.yml`](.github/workflows/pages.yml) (≈30–60s). Because every
+link is relative, projects work at any path.
+
+## Rules of the house
+
+- **`NTV-PROD` is off-limits** — never linked, merged, or referenced here.
+- Commit project content and menu changes straight to `main`; don't open PRs unless
+  asked. A push to `main` redeploys the site.
+- Keep files valid — there's no build step to catch errors for you.
