@@ -121,7 +121,10 @@ Punch out through the sally and cut a path. Brutal, loud, fast.
 - **Hark bars the gate.** Sarn's champion: *"One of you. Blade to blade. Win and the gate's yours."*
   **[★ Fighter]** a real duel (Hark stats below) — Action Surge/Second Wind shine. Any class may
   duel, ally, or refuse (refusing = Hark and two Risen, harder). Beating Hark earns the gate **and**
-  his respect (he may warn you: *"He cannot be killed. I've watched it.")* → seeds **b3**.
+  his respect (he may warn you: *"He cannot be killed. I've watched it."*) → seeds **b3**. **A won,
+  honourable Hark turns:** he comes to the Ember Circle to *hold the lane* and stand the conscripts
+  down — advancing the climax. A duellist who hits 0 in a fair fight is **spared, not killed**
+  (Hark's honour), and a *second may tag in* — so a no-healer party never soft-locks on the duel.
 
 ### Route B — The Shadows (infiltration) **[★ Rogue, ★ Ranger]**
 The cliff goat-path Mira's scouts use; in through the camp's blind side.
@@ -162,16 +165,19 @@ the ward). The party must **drop the ward → unmake the Heart**, surviving Sarn
 - **[★ Wizard]** *Unweave it.* Arcana/Dispel **DC 15** (2 successes, or one with Misty Step inside).
   A *failed* unweave bites — 2d6 fire, or Sarn gets a free strike (parity with the Rogue's risk).
 - **[★ Cleric]** *Consecrate it.* Channel Divinity, **3 rounds** of holding ground — a clock that
-  makes the fight matter.
+  makes the fight matter. *Holding ground* = stay conscious and in the circle; Reactions and a
+  bonus-action Healing Word are fine, **not** the Attack action; the channel breaks only if she falls.
 - **[★ Bard]** *Turn his own men.* If Vey defected (Route C), the conscripts refuse to feed it; the
   ward **starves** and gutters in 2 rounds. Or Vicious Mockery + a public truth shames Sarn into
   *dropping his guard* (CHA contest).
 - **[★ Rogue]** *Steal the keystone.* A focus-gem socketed in the ward — Sleight of Hand **DC 16**
-  under fire pulls it.
+  under fire pulls it (*under fire* = the champion barring the circle gets one free strike on the thief).
 - **[★ Ranger]** *Sever the feed.* The Heart draws from corpse-cairns at the ring's edge; Hunter's
   Volley / fire on the cairns (DC 13 ×3) cuts its fuel.
-- **[★ Fighter]** *Brute the brazier.* The ward anchors to an iron brazier — Athletics **DC 15** to
-  topple it into the snow drops the ward by force.
+- **[★ Fighter]** *Sunder the anchor.* The ward is pinned to an iron stake through a fallen banner —
+  Athletics **DC 15** to wrench it free drops the ward **and staggers Sarn** (disadvantage 1 round) as
+  the binding recoils. A won, honourable **Hark** also turns up to hold the lane — so the Fighter's
+  beat *advances* the climax, it isn't a sidebar.
 
 ### Unmaking the Heart (b4) — once the ward is down
 The Heart, AC 15, HP 20, but it **speaks**, and it offers *the party* the bargain: *"Be unbeaten.
@@ -180,6 +186,9 @@ I ask so little — only the ones you'd have lost anyway."* The moral fork (matu
   or make a true last stand. Costly: the longer the fight ran, the more of the town/Mira is at risk.
 - **Take the bargain** *(dark)* — claim the Heart. The siege breaks instantly — because *you* are
   Unbeaten now. Emberfall is saved, and the party is its new shadow. A genuine, playable dark ending.
+  *Run it with weight:* a values-aligned companion (esp. the Cleric) objects on a **conviction-3 vote**
+  and, if overridden, may drift toward Estranged or leave by dawn (§10). **Sarn**, his burden passed to
+  a new bearer, lowers his blade — he walks free (a sequel hook) or kneels; he does not die here.
 - **Turn the pact** *(clever)* — feed the Heart **Sarn's own victories/name**: it consumes its
   maker. He dies *unmade*, the Heart goes cold, no party cost — the hard-to-reach best ending.
   *Key (any route):* a caster or face who knows Sarn's name + streak — **Hark's warning, Sarn's
@@ -189,7 +198,7 @@ I ask so little — only the ones you'd have lost anyway."* The moral fork (matu
 ### Sarn Vael in the climax
 While the Heart beats he has **advantage on everything and returns at half-HP** the round after he
 drops — *strikes against him close like water* (give the party that tell, so they stop trying to
-out-fight him and solve the puzzle). **He fights to a rhythm, not a kill:** he duels the
+out-fight him and solve the puzzle — a **companion should say it out loud**: *"Steel won't bite him — buy the clock!"*). **He fights to a rhythm, not a kill:** he duels the
 front-liner, **ignores the downed, never delivers a coup-de-grâce** — his weariness showing. This
 keeps a ward-clock (e.g. the Cleric's 3-round consecrate) survivable even without a tank. The
 instant the Heart is unmade, strip the Boon — he's just a tired, deadly man, and may yield.

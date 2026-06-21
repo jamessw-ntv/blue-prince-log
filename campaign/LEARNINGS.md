@@ -5,6 +5,26 @@ first. See `./SELF-IMPROVEMENT.md` for the loop. Mark items **Done** when folded
 
 ---
 
+## 2026-06-21 — Gate 3 hardening: 3 more Emberfall tests (Rogue/Cleric/Ranger) + fold
+Three more independent autoplays — **Rogue/Shadows→dark**, **Cleric/Walls→destroy**, **Ranger/Parley
+(no-tank, no-Cleric)→turn-the-pact** — all ≥4 on every axis (Class-spotlight 5/5/4). Validated: the
+**dark ending is playable** (party split, Cleric estranged); the **no-tank consecrate clock survives**
+on the "Sarn ignores the downed" rule; the **cross-route Ranger 'mark Sarn' + champion-at-the-circle
+fixes fire**. Six total flagship runs now pass the bar.
+
+### [DONE] hardening fixes folded
+- **Fighter** finally un-weakened (asked for by ~6 runs): a won, honourable **Hark turns** and aids at
+  the climax (a plot lever), and *Sunder the anchor* now **staggers Sarn** — the Fighter beat now
+  *advances* the climax instead of being a skippable duel.
+- **"Under fire"** (Rogue keystone) and **"holding ground"** (Cleric consecrate) now defined.
+- **No-heal duel out** printed (Hark spares / a second tags in) so a no-Cleric party can't soft-lock.
+- **Dark ending** given weight (conviction-3 objection + Sarn's post-bargain fate).
+- A **companion cue** now surfaces the "steel won't bite him" tell to the party.
+
+*Next: autoplay the LitRPG starter (Going Live); then the Authentic 5e starter (Gate 4 breadth).*
+
+---
+
 ## 2026-06-21 — Gate 3 CLEARED ✅ (flagship Emberfall · 3 routes · 3 classes)
 Three full autoplays — **Fighter/Walls, Bard/Parley, Wizard/Shadows** — each scored **≥4 on all
 six axes and Class-spotlight 5**; three distinct routes to satisfying endings; every hero class got
