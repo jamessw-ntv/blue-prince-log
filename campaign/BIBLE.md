@@ -19,6 +19,30 @@ like — it's **one engine**, many games.
 
 *No file uploads needed — the Notion hub has an **AGENT — START HERE** block that boots it.*
 
+## What you can do — actions & ways to play
+**Ways to play:** load it from the PKM in any chat (no upload) or just say *"be my DM"* — one hero
++ 2–3 AI companions, in **Rules-Light**, **Authentic 5e**, or **LitRPG** (royalty-free modules next).
+Optional **live dashboard** on a second screen; **save to Notion** and resume in any future chat. Set
+**tone + content lines** and a **Freedom dial** (Linear → Guided → Open → Sandbox) per campaign.
+
+**In a scene you can:**
+- **Go anywhere, try anything** — open prompts, not menus; the GM reads your intent and the **Living
+  Map** records everywhere you go (no path is forgotten).
+- **Skill checks** — d20 + modifier vs a difficulty across every skill (Athletics, Stealth, Insight,
+  Arcana, Persuasion…); advantage/disadvantage, help, and **fail-forward** (failure complicates, rarely dead-ends).
+- **Combat** — initiative, attack, cast spells, use class abilities, move, bonus actions, reactions,
+  conditions, **downed/death saves**, short/long **rests**.
+- **Social play** — persuade, deceive, intimidate, read people; **turn NPCs and whole factions**.
+- **Companions** — distinct personalities that **advise and vote** at forks (you decide; overriding
+  shifts **approval**); high approval unlocks loyalty/personal beats; mistreat them and they leave.
+- **Story choices** — a locked **spine** of main beats with open space between; **branching paths**
+  and **real moral forks** with distinct endings (e.g. *destroy it / take the bargain / turn the pact*).
+- **LitRPG extras** — level-ups as printed events, **loot boxes by rarity** (Luck-weighted),
+  **showmanship** for bonus loot, sponsored choices, ironic **class grants**, achievements/titles, a System shop.
+
+**Commands:** `main menu` · `save` · `give me my state block` · `dial it back` / `fade to black` ·
+`continue` · `apply learnings`.
+
 ## The engine, at a glance — one engine, four layers
 Only the middle two change per game:
 
