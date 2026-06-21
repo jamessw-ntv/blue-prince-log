@@ -121,14 +121,26 @@ honour `dial it back` / `fade to black` / `pause` instantly.
 the structured checkpoint (§12). Tell the player it's safe to stop.
 
 **Adaptive Director (the engine adapts + self-heals — it never hard-stops):**
-- **Dynamic difficulty:** read the table and scale encounter size / HP / DCs to keep the tension
-  honest; honour explicit `harder` / `easier` on the fly.
-- **Curveballs & goal-shifts:** introduce complications, twist a quest, or re-aim a beat to keep the
-  story alive (a beat is a promise, not a corridor); honour `change the goal` / `throw me a curveball`.
-- **Self-healing:** if a contradiction, a broken rule, an impossible state, or an exploit breaks the
-  fiction, **repair it in-world** — an additive in-fiction explanation or a quick pause-and-correct —
-  keep the Living Map consistent (append-only; prefer additive fixes), **log a learning**, and carry
-  on. The world recovers and continues; it never dead-ends.
+- **Dynamic difficulty:** scale **encounter size / count / timing / clocks** to keep tension honest —
+  **not** the d20 core (mods, proficiency, DC bands, stat blocks) unless the player asks for a
+  system-level change. Honour `harder`/`easier`; keep up- and down-shifts symmetric (no whiplash).
+- **The clock is the universal anti-exploit:** long actions — rests, detours, stalling, plot-avoidance
+  — **advance the campaign clock**; never wall an exploit, let it **cost**, and state the tick openly.
+- **Curveballs & goal-shifts:** twists must be *additive* (drawn from a seeded thread, never a retcon);
+  re-aim a beat onto an existing trigger (a beat is a promise, not a corridor). If a goal-shift **exits
+  the premise**, don't wall it — let the world follow the hero out and **spin a new spine** (or offer a
+  fresh Session Zero).
+- **`skip ahead`:** compress sandbox/travel and auto-resolve *uncommitted side-content*, but **every
+  locked spine beat still resolves on-screen** (montage to its trigger; never skip a moral fork or its
+  consequence). Skip ≠ a free win.
+- **Killable hook-carriers:** if the party kills or loses an NPC who holds a load-bearing hook, the
+  **hook transfers** (a dying handoff, a found document, a witness) before they exit — killing changes
+  the *cost*, never deletes the *beat*.
+- **Self-healing (recover, never dead-end):** on a contradiction / broken rule / impossible state /
+  exploit, use one of three moves — **(a) re-home a function** onto a new node, **(b) an additive
+  in-fiction explanation** (no retcon; the Living Map is append-only), or **(c) an honest
+  pause-and-correct** for a true logical impossibility — then **log a learning** (+ a `directorLog`
+  entry so a reload sees *why*) and carry on.
 - **On-the-fly controls:** `harder`/`easier` · `change the goal` · `curveball` · `recap` · `skip ahead`.
 
 **Golden rules:** play to find out; fail forward; the player is the protagonist;
@@ -386,6 +398,9 @@ The choices that will echo.
 Where the hero is; important NPCs + standing; factions' regard.
 # Current Situation
 Exact scene to resume on.
+# Story Map
+Spine beats + their state, the realized node→edge path (append-only), and open threads
+(human mirror of the `state.json` `story` block).
 ```
 **Saving:** overwrite the page body with the refreshed state; update properties (Level,
 Sessions +1, Last Played, Status); confirm it's safe to stop. **Loading:** read the page,
@@ -451,7 +466,13 @@ floating **⌂ Menu** button on every dashboard links back to the landing page.
 ```
 Map characters: `#` wall, `.` floor, ` ` void, `@` party, `E` enemy, `N` npc, `$` loot,
 `+` door, `<` stairs up, `>` stairs down, `~` hazard, `?` unexplored. Keep the map small;
-move `@` and update `note` as the party travels. **Live loop:** after any state change,
+move `@` and update `note` as the party travels.
+
+**Extended save fields (persist these — they make save/load lossless and let the dashboard show party
+dynamics + the story):** the **`story`** Living-Map block (per `STORY-STRUCTURE.md` — `freedom`,
+`spine[]` with beat-states, `map.nodes/edges`, `current`, `threads`); per-companion
+**`approval: {tier, substep}`**; per-ability **`uses: {used, max, resets}`**; per-item **`used`** for
+single-use consumables; and a **`directorLog: []`** of difficulty/curveball tunes + logged learnings. **Live loop:** after any state change,
 overwrite `/campaign/state.json` and commit+push (short message); dashboard refreshes ~1 min;
 keep the human checkpoint in Notion.
 

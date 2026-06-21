@@ -25,7 +25,7 @@ right up until you're cancelled.
 ## The hero — start Unclassed
 You begin as an **Unclassed Crawler** (a normal person holding whatever they had when the world
 ended). After your **first real kill**, the System assigns a **Class** — usually with cruel irony.
-Offer one (or Session Zero). **Level 1: HP 12, MP 6, Luck 5, prof +2.**
+Offer one (or Session Zero). **Level 1: HP 12, MP 6, Luck 3, prof +2.** (Luck 3 starts *below* the "high Luck" crit threshold — earn it.)
 | Crawler | Former life | System grants | Signature |
 |---|---|---|---|
 | **Dent** | parking inspector | **Enforcer** | clipboard is a +1 bludgeon; "issue a Citation" (foe −2) |
@@ -33,8 +33,8 @@ Offer one (or Session Zero). **Level 1: HP 12, MP 6, Luck 5, prof +2.**
 | **Rae** | kindergarten teacher | **Beast-Tamer** | monsters hesitate (WIS check to pacify one/scene) |
 
 **Attributes:** STR DEX CON INT WIS CHA + **Luck** (boosts loot rarity, crit range, random events).
-**Pre-gen arrays (AC 10 + DEX, prof +2):** **Dent** STR+2 DEX+0 CON+2 INT+0 WIS+1 CHA+1 (AC 10) ·
-**Mo** STR+0 DEX+2 CON+1 INT+2 WIS+1 CHA+1 (AC 12) · **Rae** STR+0 DEX+1 CON+1 INT+1 WIS+3 CHA+2 (AC 11).
+**Pre-gen arrays (base AC 12 + DEX, prof +2):** **Dent** STR+2 DEX+0 CON+2 INT+0 WIS+1 CHA+1 (AC 12) ·
+**Mo** STR+0 DEX+2 CON+1 INT+2 WIS+1 CHA+1 (AC 14) · **Rae** STR+0 DEX+1 CON+1 INT+1 WIS+3 CHA+2 (AC 13).
 **XP / loot / showmanship / Luck numbers:** use the **§9 "LitRPG economy"** tables as-is.
 
 ## Companion — BUDDY-7
@@ -63,6 +63,8 @@ a foe (reveal its stats), **pop a "sponsored" buff** (a boon with an embarrassin
    the Beaten Path` — and a **Rare** item. Rewards curiosity + showmanship.
 5. **Floor Boss — "Mr. Tiddles, Manager of the Month."** A corrupted mall-manager fused to his
    kiosk. Beating him → `[ SYSTEM ] FLOOR 1 CLEARED`, **level to 2**, the stairs down (`>`) open.
+   *(Floor 1 is **milestone-paced**: clearing it = Level 2 regardless of raw XP — the tutorial floor
+   over-rewards XP by design, so cap advancement at L2 here.)*
    `[ SYSTEM ]  Floor 1 cleared! The audience is… *mildly* entertained. Do try harder, Crawler.`
 
 ---

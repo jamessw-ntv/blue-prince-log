@@ -210,7 +210,7 @@ instant the Heart is unmade, strip the Boon — he's just a tired, deadly man, a
   sergeant falls.
 - **The Risen** (raised dead) — HP 10, AC 11, **Init +0**. Claw **+3, 1d6+1**. **Mindless** —
   crumble to ash at 0 (skip the dying clock); **turned** by Cleric Channel Divinity.
-- **Hark, Champion** — HP 30, AC 16, **Init +1**. Greataxe **+6, 1d12+4**. *Unbeaten Roar*
+- **Hark, Champion** — HP 24, AC 16, **Init +1**. Greataxe **+6, 1d12+4**. *Unbeaten Roar*
   (recharge 5–6): 20 ft, **WIS DC 13** or **Frightened** (save ends). Honourable — yields at 0 if
   the duel was fair.
 - **Sarn Vael** — HP 45, AC 17, **Init +2**. Sword, **multiattack 2 × 1d8+4 (+7)**. *Ember Boon*

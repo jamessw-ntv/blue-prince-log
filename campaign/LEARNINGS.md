@@ -5,6 +5,32 @@ first. See `./SELF-IMPROVEMENT.md` for the loop. Mark items **Done** when folded
 
 ---
 
+## 2026-06-21 — Comprehensive batch (5 agents) COMPLETE + big fold
+The everything-at-once batch landed: **Full-stack E2E 4.8/5** (all systems fed each other; the
+dashboard mirrored the fiction), **Adaptive Director 4.6/5** (live difficulty/goal-shift/curveballs
+stayed coherent), **Adversarial + self-healing 4.2/5** (no invisible walls, never dead-ended;
+append-only Living Map is the MVP), **Save/Load 4.0/5** (perfect for documented fields), and a
+**balance/probability audit**. New dimensions paid off — each found real gaps the play-to-win runs never did.
+
+### [DONE] folded
+- **§6 Adaptive Director hardened:** `skip ahead` resolves locked beats on-screen (skip ≠ free win);
+  the **clock is the universal anti-exploit** (rests/stalling cost, never wall); **hook-transfer** on
+  killed quest-givers; **out-of-premise goal-shift** spins a new spine; named **self-heal recipes**
+  (re-home / additive explanation / pause-correct) + a `directorLog`; difficulty scales **shape, not
+  core math** (symmetric, no whiplash).
+- **Save schema (§14/§12):** persist the **`story` Living-Map block**, per-companion
+  **`approval:{tier,substep}`**, per-ability **`uses`**, consumable **`used`**, and a `directorLog`.
+- **Balance:** Hark HP 30→24 (un-slog the solo duel); Going Live PC **AC base 12** (was 10) + **Luck 3**
+  (was 5, so "high Luck" is earned) + **Floor 1 milestone-paced** (cap the XP over-reward).
+
+### [open — optional polish]
+- The dashboard doesn't yet *render* approval or the story-map graph (data is there; UI is a code change).
+- Bardic-Inspiration declare-after-roll: clarify a held die may ride a later roll.
+
+*Comprehensive batch closed. The engine held under the realest stress; what's left is the human blessing + the dashboard-render polish.*
+
+---
+
 ## 2026-06-21 — Adaptive Director added + comprehensive end-to-end batch launched
 Added an **Adaptive Director** to §6 (the "AI engine constantly adapting"): **dynamic difficulty**,
 **curveballs / goal-shifts**, and crucially **self-healing** — if something breaks mid-game (a
