@@ -5,15 +5,17 @@
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
 <title>Satisfactory 1.0 — Modular Factory Plan</title>
 <!-- Fully self-contained: no external libraries, works 100% offline. -->
-<!-- Hub design system: provides the :root tokens and the .hubbar back-link.
-     The app's own palette below is scoped to `body` so it never redefines the
-     hub :root (per docs/DESIGN.md). -->
-<link rel="stylesheet" href="../assets/hub.css"/>
 <style>
-  body{--bg:#0e1116;--panel:#161b22;--panel2:#1c232d;--line:#2a323d;--txt:#e6edf3;
+  :root{--bg:#0e1116;--panel:#161b22;--panel2:#1c232d;--line:#2a323d;--txt:#e6edf3;
     --muted:#9aa7b4;--orange:#ff9e3d;--teal:#2dd4bf;--blue:#5aa9ff;--purple:#b692ff;
     --green:#5dd47a;--grey:#8b97a3;--red:#ff6b6b;}
   *{box-sizing:border-box}
+  /* Hub back-link bar — self-contained, styled with this app's own tokens so it
+     matches and never depends on (or collides with) the shared hub.css. */
+  .hubbar{display:flex;align-items:center;gap:12px;padding:8px 22px;border-bottom:1px solid var(--line);background:var(--panel)}
+  .hubbar a.backlink{display:inline-flex;align-items:center;gap:6px;text-decoration:none;color:var(--muted);background:var(--panel2);border:1px solid var(--line);padding:5px 12px;border-radius:999px;font-size:13px}
+  .hubbar a.backlink:hover{color:var(--txt)}
+  .hubbar .crumb{color:var(--muted);font-size:13px}.hubbar .crumb b{color:var(--txt)}
   body{margin:0;font-family:-apple-system,Segoe UI,Roboto,Helvetica,Arial,sans-serif;
        background:var(--bg);color:var(--txt);font-size:15px;line-height:1.5}
   header{padding:14px 22px;border-bottom:1px solid var(--line);background:linear-gradient(90deg,#16202b,#161b22)}
@@ -77,7 +79,7 @@
   .raw{display:inline-block;background:#222b36;border:1px solid var(--line);border-radius:6px;padding:2px 9px;margin:2px 4px 0 0;font-size:13px}
   .raw b{color:var(--orange)}
   @media print{
-    nav,.toolbar,.controls,#bpControls,header p,.prog{display:none!important}
+    nav,.toolbar,.controls,#bpControls,header p,.prog,.hubbar{display:none!important}
     body,header,main{background:#fff!important;color:#000!important}
     .tab:not(.active){display:none!important}
     .invphase{border:1px solid #bbb!important;break-inside:avoid;margin-bottom:8px}

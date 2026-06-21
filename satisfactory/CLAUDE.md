@@ -24,11 +24,14 @@ to a finished Project Assembly (Space Elevator Phase 5). Renders at
 
 ## House rules
 
-- This was **ported in from a portable bundle**. It keeps its own rich internal
-  styling on purpose (re-skinning the whole app is out of scope). It still
-  conforms structurally: it links `../assets/hub.css`, carries the standard
-  `.hubbar` back-link, and scopes its own palette to `body` so it never
-  redefines the hub `:root`. Use **relative links only**.
+- This was **ported in from a portable bundle** and is intentionally
+  **fully self-contained** — it does *not* link `../assets/hub.css`. The app
+  ships its own complete design system, and several of its class names (e.g.
+  `.card`) collide with hub.css; linking it bled extra styles in and broke the
+  layout. So the app keeps its original CSS verbatim and carries a `.hubbar`
+  back-link styled with its *own* tokens instead. Use **relative links only**.
+  (If you ever want true hub-skin consistency, that means a real re-skin of the
+  whole app — renaming the colliding classes — not just adding the link.)
 - **No GitHub Pages workflow.** The original bundle shipped a workflow that
   publishes this folder as the *site root* — that would hijack the hub. The hub
   is served from the repo root already; this project is just a folder under it.
