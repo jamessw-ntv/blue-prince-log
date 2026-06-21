@@ -5,6 +5,15 @@ first. See `./SELF-IMPROVEMENT.md` for the loop. Mark items **Done** when folded
 
 ---
 
+## 2026-06-21 — Gate 2: folded story-structure + Rules-Light combat into canon
+Folded into `AI-DUNGEON-MASTER.md`: §7 gained **combat clarifications** (attack bonus,
+multiattack, recharge, "save ends", downed/dying with Mature-default lethality, surprise); §11
+Session Zero now sets the **Freedom dial + spine + Living Map** and gives companions a tunable
+**persona** that **votes** at forks. Unblocks runnable party play. **Done.**
+*Next:* autoplay the Bramblewick opening with companion voting → score vs rubric → iterate.
+
+---
+
 ## 2026-06-21 — Autoplay iteration 1 (The Ember Key · 3 dispositions)
 Three independent Lead-Player agents (Cautious / Reckless / Cunning) self-played the
 micro-test. **The engine branches:** three different paths, two distinct endings (PERFECT ×2,

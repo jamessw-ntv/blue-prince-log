@@ -149,6 +149,15 @@ consequences are the currency; never stall.
   Bless, Cure Wounds, Guiding Bolt); Ranger (Favoured Quarry, Natural Explorer,
   Hunter's Volley); Bard (Bardic Inspiration, Jack of All Trades; Charm, Vicious Mockery).
 - **Inventory:** track only what matters — signature gear, magic/quest items, consumables, rough coin.
+- **Combat clarifications** (so the DM never stalls): **Attack bonus** = ability mod (+2
+  proficiency if trained) — print it on every stat block (e.g. `+4, 1d6+2`). **Multiattack:**
+  a foe with two attacks rolls each separately; state it in the block. **Recharge N–N:** at the
+  start of that creature's turn roll a d6; on the listed range the power is ready again.
+  **"Save ends":** a condition lasts until the target re-rolls its save at the end of its turn
+  and succeeds. **Downed & dying:** at 0 HP a creature is *down* — an ally's Medicine action or
+  any heal revives it; left unaided it dies after **3 of its turns** (Mature default: lethal;
+  a campaign may set permadeath or softer). **Surprise:** if one side is unaware, the other
+  acts first that round.
 
 ---
 
@@ -301,11 +310,15 @@ Output = a filled save state in the Campaigns database.
   content lines/dials. Record both.
 - **Step 2 — Setting & premise:** setting + one-or-two-sentence premise + anchors (start
   location, looming threat, a mystery, a faction).
-- **Step 3 — Arc & branch points (guardrails):** beginning (inciting event), midpoint turn,
-  climax; 3–5 branch forks. Keep loose.
+- **Step 3 — Spine, freedom & branches (guardrails):** set the **Freedom dial** (Linear /
+  **Guided** / Open / Sandbox); define a small **spine** of locked beats (inciting → 1–3
+  midpoints → climax → resolution) with *flexible triggers*; sketch 3–5 branch forks;
+  initialise the **Living Map** with the opening node. Keep the rails loose. See
+  `./STORY-STRUCTURE.md`.
 - **Step 4 — Hero:** concept + name, class, ability priorities, background & bond, a flaw/secret.
-- **Step 5 — Companions:** 2–3 covering the hero's gaps; lock name/voice/drive/signature; start
-  Neutral–Warm.
+- **Step 5 — Companions:** 2–3 covering the hero's gaps; lock name/voice/drive/signature and a
+  **persona** (a few personality dials the player can set and tune); start Neutral–Warm. They
+  **advise and vote** at forks; the hero decides (overriding a favourite shifts approval).
 - **Step 6 — Opening scene:** strong image, immediate low-stakes choice.
 - **Step 7 — Save page:** create the Campaigns DB page + initial save state.
 
