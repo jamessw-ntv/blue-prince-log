@@ -27,6 +27,13 @@ override. Overriding a high-approval companion's strong vote costs approval and 
 personal beat; siding with one builds it. This is how "where do we go?" gets texture instead
 of a silent pick — and it's logged so the loop can tune how loud/quiet the party should be.
 
+**Make the weight a number** (so a Critic can verify it): **conviction** (1 = light · 2 = firm ·
+3 = will fight for it) × **approval tier** (Estranged 1 · Cool 2 · Neutral 3 · Warm 4 · Devoted
+5). Following a companion's **firm+** vote nudges approval **+1 sub-step**; overriding a firm+
+vote **−1**; **5 sub-steps = one tier**; conviction-1 votes cost nothing when overridden. At
+non-binary forks a companion may name a 2nd choice; ties break toward the higher-approval
+companion, else the Lead Player's call.
+
 ## The loop
 1. **Play** a full session (or scene) with the roles above; the DM keeps `state.json` live.
 2. **Grade** — the Critic scores the run on the rubric and writes the AAR → `LEARNINGS.md`.

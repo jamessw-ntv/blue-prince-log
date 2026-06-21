@@ -62,7 +62,8 @@ really locked in stone"* = **Guided, ~4–5 beats** — the recommended default.
 ## The Living Map (the "map it out completely" engine)
 A persistent **story graph** in the save, **appended every turn, never rewritten** (no
 retcons):
-- **Nodes** — scenes / locations / decision points / NPCs / discoveries. Each has an id,
+- **Nodes** — scenes / locations / decision points / NPCs / discoveries (the `type` list is
+  open — `encounter`, `hazard`, etc. are fine). Each has an id,
   title, type, summary, state (`known` / `visited` / `resolved`), and tags (`beat`,
   `branch`, `sidequest`).
 - **Edges** — the choices/transitions between nodes, each with the **consequence** that

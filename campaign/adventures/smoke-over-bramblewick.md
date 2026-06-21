@@ -43,12 +43,26 @@ Dusk. The hero arrives as the **reeve, Old Hessa**, lights the last good lantern
 - **Lysa** — Bard-healer. *Warm, sardonic, curious.* Drive: a song worth singing. Signature:
   **Bardic Inspiration** (+1d4). Flaw: reckless curiosity opens the wrong doors.
 
+**Companion stat blocks (Level 2, prof +2):**
+- **Corwin** — Ranger. HP 13, AC 15. STR+1 DEX+3 CON+1 INT+0 WIS+3 CHA+0. Longbow **+5, 1d8+2**;
+  knife +3, 1d4+1. *Hunter's Volley* (signature, 1/rest): one ranged attack against up to 3 foes
+  within reach of each other, **1d8+2** each.
+- **Lysa** — Bard. HP 11, AC 13, MP 8. STR+0 DEX+2 CON+1 INT+1 WIS+1 CHA+3. Rapier **+3, 1d6+1**;
+  spell save DC 13. *Bardic Inspiration* (signature, 3/rest): bonus action, grant an ally
+  **+1d4** on a roll. *Healing Word* (MP 2): bonus action, heal **1d4+3** at range.
+
 ## Pre-gen heroes (offer, or run full Session Zero)
 | Hero | Class | Key mods | HP / AC | Signature |
 |---|---|---|---|---|
 | **Bran Holt** | Fighter | STR +3, CON +2 | 13 / 16 | Second Wind, Action Surge |
 | **Wisp** | Rogue | DEX +3, INT +1 | 10 / 14 | Sneak Attack, Cunning Action |
 | **Sister Yew** | Cleric | WIS +3, CHA +1 | 11 / 15 | Healing Word, Guiding Bolt, Bless |
+
+*Full arrays (prof +2):* **Bran** STR+3 DEX+1 CON+2 INT+0 WIS+1 CHA+0 — longsword **+5, 1d8+3**;
+skills Athletics, Intimidation, Perception. **Wisp** STR+0 DEX+3 CON+1 INT+1 WIS+1 CHA+1 —
+short blade **+5, 1d6+3** (+Sneak 2d6); skills Stealth, Acrobatics, Investigation, Deception.
+**Sister Yew** STR+1 DEX+0 CON+1 INT+0 WIS+3 CHA+1 — mace **+3, 1d6+1**, spell save DC 13;
+skills Medicine, Insight, Persuasion.
 
 ---
 

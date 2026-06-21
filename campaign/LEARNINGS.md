@@ -5,6 +5,45 @@ first. See `./SELF-IMPROVEMENT.md` for the loop. Mark items **Done** when folded
 
 ---
 
+## 2026-06-21 — Gate 2 autoplay: party + voting (run 2, consensus lead) + folded fixes
+A consensus-seeker lead self-played the same opening; **also ≥4 on all axes** (Runnable 4,
+Coherent 5, Branching 4, Fair 4, Alive 5, Onboardable 5). Confirmed the vote-weighting cleanly
+broke a 3-option fork (Corwin's bond > Lysa's curiosity) and that a companion voting *against
+his own flaw* is great texture. **Biggest gap (both runs):** companions + pre-gens lacked
+printed stat blocks, forcing the DM to invent modifiers — capping Runnable/Fair at 4.
+
+### [DONE] folded into canon (the loop's fix step)
+- **§7:** "meets AC = hit"; mindless/construct foes skip the dying clock; forewarned-vs-hunting surprise default.
+- **§10:** companion sheet now requires a **stat block** (mods · AC · HP · attack bonus) + signature definition + persona; **approval moves in sub-steps** (5 = one tier).
+- **AUTOPLAY:** votes are now a **number** (conviction 1–3 × approval tier 1–5; ±1 sub-step; 2nd-choice + tie-break).
+- **Bramblewick:** full **ability arrays** for the 3 pre-gens; **stat blocks + signature defs** for Corwin & Lysa.
+- **STORY-STRUCTURE:** node `type` list noted as open.
+
+*Next: run 3 (post-fix, fresh disposition) to confirm Gate 2's ≥3-consecutive-runs bar — expect Runnable/Fair → 5.*
+
+---
+
+## 2026-06-21 — Gate 2 autoplay: party + voting (run 1, headstrong lead)
+A headstrong Lead Player self-played *Smoke Over Bramblewick* Act 1 → the Act 2 entry-shaft
+fight, with companion **voting** at forks. **Scored ≥4 on all six axes** (Runnable 5,
+Coherent 5, Branching 4, Fair 4, Alive 5, Onboardable 4). Combat ran clean on the new §7
+clarifications — **nothing stalled**. The override→cost→repair approval loop was the most alive
+part; Corwin & Lysa stayed clearly distinct. The Living-Map `story` schema held (the agent even
+added `beatCount` and encoded vote outcomes on edges).
+
+### [open] to fold AFTER the consensus run (keep canon stable mid-validation)
+- **§7:** state explicitly that a total **meeting** AC hits; add the *forewarned-but-not-hidden
+  vs. a hunting foe = no surprise* default.
+- **AUTOPLAY:** give votes a **number** — conviction (1 light / 2 firm / 3 will-fight-for-it) ×
+  approval tier (Estranged 1 → Devoted 5); follow/override of a firm+ vote = ±1 sub-step;
+  5 sub-steps = one tier; conviction-1 costs nothing; 2nd-choice + tie-break at non-binary forks.
+- **§10:** define approval **step size** (sub-tier nudges, not whole-tier jumps).
+
+*Run 2 (consensus-seeker) in flight; then fold these and run a 3rd to confirm Gate 2's
+≥3-consecutive-runs bar.*
+
+---
+
 ## 2026-06-21 — Gate 2: folded story-structure + Rules-Light combat into canon
 Folded into `AI-DUNGEON-MASTER.md`: §7 gained **combat clarifications** (attack bonus,
 multiattack, recharge, "save ends", downed/dying with Mature-default lethality, surprise); §11

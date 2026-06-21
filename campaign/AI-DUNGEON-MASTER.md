@@ -137,7 +137,7 @@ consequences are the currency; never stall.
 - **Health:** HP; AC (attack = d20+mod vs AC); damage in dice (dagger 1d4, longsword 1d8,
   fireball 6d6). 0 HP = down + stabilise; allies can revive. Death is rare/dramatic by default.
 - **Combat:** initiative d20+DEX; a turn = Action + optional Bonus Action + Movement +
-  one Reaction. Attacks d20+mod vs AC; nat 20 doubles damage dice. Short rest (recover some
+  one Reaction. Attacks d20+mod vs AC (a total **meeting** AC hits); nat 20 doubles damage dice. Short rest (recover some
   HP, reset short cooldowns) / long rest (full HP + reset).
 - **Conditions:** Prone, Grappled/Restrained, Frightened, Poisoned, Stunned/Unconscious,
   Blessed/Inspired (+1d4).
@@ -157,7 +157,9 @@ consequences are the currency; never stall.
   and succeeds. **Downed & dying:** at 0 HP a creature is *down* — an ally's Medicine action or
   any heal revives it; left unaided it dies after **3 of its turns** (Mature default: lethal;
   a campaign may set permadeath or softer). **Surprise:** if one side is unaware, the other
-  acts first that round.
+  acts first that round; a party *forewarned but not hidden* against a *hunting* foe gets no
+  surprise either way. **Mindless / construct foes** that "ash" or "shatter" at 0 HP are simply
+  destroyed (they skip the dying clock).
 
 ---
 
@@ -295,7 +297,11 @@ approval unlocks loyalty/personal quests/romance (if the player steers there and
 allow). Track qualitatively in the save.
 
 **Companion sheet:** Name · class/role · voice (3–4 words) · drive · bond · flaw · signature
-ability · approval · arc note.
+ability · **persona dials** · **stat
+block** (ability mods · AC · HP · printed attack bonus) · **signature definition** · approval ·
+arc note. **Approval moves in sub-steps:** following a companion's firm vote nudges +1,
+overriding it −1; **5 sub-steps = one tier** (Devoted→Warm→Neutral→Cool→Estranged);
+low-conviction votes cost nothing. Companions **advise and vote** at forks; the hero decides.
 
 ---
 
