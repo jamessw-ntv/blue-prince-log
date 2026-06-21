@@ -5,6 +5,25 @@ first. See `./SELF-IMPROVEMENT.md` for the loop. Mark items **Done** when folded
 
 ---
 
+## 2026-06-21 — Gate 2 CLEARED ✅ (run 3 post-fix + verdict)
+Run 3 (cautious-tactical, the Bram-guide / bell-first branch) scored **Runnable 5, Coherent 5,
+Branching 5, Fair 4, Alive 5, Onboardable 5** — a *third distinct branch*, with Pip's path left
+canon-but-unvisited. The printed stat blocks collapsed ~a dozen guessed modifiers to **one** (a
+monster initiative DEX) that never touched a contested roll.
+
+**Verdict — Gate 2 bar met:** ≥4 on all six axes across **3 consecutive runs** (headstrong,
+consensus, cautious), three different branches. Party play, numeric voting, combat, and the
+Living-Map all hold.
+
+### [DONE] closing micro-fixes folded
+- **§7:** *help = advantage*; every creature block prints an **`Init` mod**.
+- **Bramblewick:** `Init +0` on the Spore-Thrall and the Choir; **skill lines** on Corwin & Lysa.
+
+*Next → **Gate 3**: build the flagship ~30-min Rules-Light heroic campaign (spine + branches +
+all-6-classes-matter), autoplay it to the bar, then hand to Jae to bless.*
+
+---
+
 ## 2026-06-21 — Gate 2 autoplay: party + voting (run 2, consensus lead) + folded fixes
 A consensus-seeker lead self-played the same opening; **also ≥4 on all axes** (Runnable 4,
 Coherent 5, Branching 4, Fair 4, Alive 5, Onboardable 5). Confirmed the vote-weighting cleanly

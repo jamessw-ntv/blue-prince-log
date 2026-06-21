@@ -159,7 +159,9 @@ consequences are the currency; never stall.
   a campaign may set permadeath or softer). **Surprise:** if one side is unaware, the other
   acts first that round; a party *forewarned but not hidden* against a *hunting* foe gets no
   surprise either way. **Mindless / construct foes** that "ash" or "shatter" at 0 HP are simply
-  destroyed (they skip the dying clock).
+  destroyed (they skip the dying clock). **Help:** an ally positioned to assist grants **advantage** on a
+  check. **Every creature block prints an `Init` mod** — roll d20 + it for initiative (default
+  +0 for mindless foes).
 
 ---
 

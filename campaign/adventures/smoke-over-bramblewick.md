@@ -44,10 +44,10 @@ Dusk. The hero arrives as the **reeve, Old Hessa**, lights the last good lantern
   **Bardic Inspiration** (+1d4). Flaw: reckless curiosity opens the wrong doors.
 
 **Companion stat blocks (Level 2, prof +2):**
-- **Corwin** — Ranger. HP 13, AC 15. STR+1 DEX+3 CON+1 INT+0 WIS+3 CHA+0. Longbow **+5, 1d8+2**;
+- **Corwin** — Ranger. HP 13, AC 15. STR+1 DEX+3 CON+1 INT+0 WIS+3 CHA+0; skills Perception, Survival, Stealth, Animal Handling. Longbow **+5, 1d8+2**;
   knife +3, 1d4+1. *Hunter's Volley* (signature, 1/rest): one ranged attack against up to 3 foes
   within reach of each other, **1d8+2** each.
-- **Lysa** — Bard. HP 11, AC 13, MP 8. STR+0 DEX+2 CON+1 INT+1 WIS+1 CHA+3. Rapier **+3, 1d6+1**;
+- **Lysa** — Bard. HP 11, AC 13, MP 8. STR+0 DEX+2 CON+1 INT+1 WIS+1 CHA+3; skills Persuasion, Deception, Insight, Performance. Rapier **+3, 1d6+1**;
   spell save DC 13. *Bardic Inspiration* (signature, 3/rest): bonus action, grant an ally
   **+1d4** on a roll. *Healing Word* (MP 2): bonus action, heal **1d4+3** at range.
 
@@ -97,7 +97,7 @@ Capped shaft → ladder down into cold green haze. Keep the map small; move `@` 
 5. **The Bell Chamber.** A cracked bronze bell half-sunk in spore-flesh. The way to the Heart.
 
 ### Encounter stats (Rules-Light)
-- **Spore-Thrall** — HP **9**, AC **12**, Speed 20. *Spore claw* **+3**, **1d6+1**; on a hit,
+- **Spore-Thrall** — HP **9**, AC **12**, Speed 20, **Init +0**. *Spore claw* **+3**, **1d6+1**; on a hit,
   target makes **CON DC 12** or **Poisoned** until end of next turn. Drops to ash at 0 HP.
 - **Drowning hazard** — recurring; **DC 13** STR or DEX (player's framing), fail = swept + 1d4.
 
@@ -106,7 +106,7 @@ The bell tolls without a hand. Behind it, **The Choir** unfolds: a spore-mass we
 bell like a crown, voiced by the campaign's chosen register (mournful, not cruel).
 
 ### Boss — The Choir
-- HP **38**, AC **13**, Speed 10 (rooted; reaches the whole chamber).
+- HP **38**, AC **13**, Speed 10 (rooted; reaches the whole chamber), **Init +0**.
 - **Spore Lash** **+5**, **1d8+2** (two per round).
 - **Resonant Toll** *(recharge 5–6)*: everyone within 20 ft — **CON DC 13** or **Frightened**
   (save ends) **+2d6 psychic**. Pip's whistle / *Bless* / *Bardic Inspiration* shine here.
