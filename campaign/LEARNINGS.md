@@ -5,6 +5,18 @@ first. See `./SELF-IMPROVEMENT.md` for the loop. Mark items **Done** when folded
 
 ---
 
+## 2026-06-21 — Adaptive Director added + comprehensive end-to-end batch launched
+Added an **Adaptive Director** to §6 (the "AI engine constantly adapting"): **dynamic difficulty**,
+**curveballs / goal-shifts**, and crucially **self-healing** — if something breaks mid-game (a
+contradiction, a bad rule, an exploit) the GM repairs it in-world, logs a learning, and continues; the
+game never dead-ends. Plus on-the-fly controls (`harder`/`easier`, `change the goal`, `curveball`).
+Launched a **5-agent comprehensive batch** stressing many systems at once: full-stack end-to-end
+(party dynamics + voting/approval + inventory/loot + abilities/leveling + quests + combat + dashboard
+state), multi-session save→cold-reload→resume, adversarial/spine-breaker (+ self-healing), the
+Adaptive Director (live difficulty/goal/curveball), and a balance/probability math audit.
+
+---
+
 ## 2026-06-21 — Module-conversion POC VALIDATED (Conversion-fidelity 4.5)
 The converted one-page dungeon ("Toad-King's Cistern") **played as a real campaign** start→finish:
 all 5 beats fired, the Living-Map edges resolved, and the **Wish-Tithe moral fork** (accept a wish →
