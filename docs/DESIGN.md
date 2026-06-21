@@ -3,6 +3,26 @@
 Every page on this site should feel like part of one product. That consistency
 comes from a few simple, enforced rules — not a framework.
 
+## Philosophy
+
+The hub is built on a handful of principles. New projects should hold to them.
+
+1. **One product, many corners.** Each project is independent, but they share a
+   single visual language so the site never feels like a pile of unrelated pages.
+2. **Boring tech on purpose.** Plain HTML, CSS and vanilla JS that runs straight
+   from a static file. No build step, no bundler, no framework, no dependencies.
+   If it can't be opened with a double-click, it's too complicated.
+3. **Self-contained.** A project is one folder that owns everything it needs
+   (markup, data, images). You can delete a folder and nothing else breaks.
+4. **Data and presentation separated.** Anything that changes often lives in a
+   `data.json`; the page renders it. Editing content never means editing code.
+5. **Relative links, always.** Never a leading `/`. This is what lets the whole
+   site survive being renamed or served from any path.
+6. **Content first, chrome second.** Dark, calm, legible. The design gets out of
+   the way of the thing you're actually looking at.
+7. **Readable over clever.** Match the surrounding code; favour the obvious
+   solution. These are personal tools, not a portfolio of techniques.
+
 ## The one rule that matters
 
 **Link `assets/hub.css` and use its tokens. Never hard-code colours or redefine
