@@ -1,0 +1,11 @@
+{
+  "campaign": { "name": "New Campaign", "location": "Floor 1", "floor": "" },
+  "currency": { "name": "Gold", "amount": 0 },
+  "map": { "note": "Session Zero — no map yet.",
+    "legend": { "@": "Party", "E": "Enemy", "$": "Loot", ">": "Stairs down" },
+    "grid": ["#####", "#.@.#", "#####"] },
+  "party": [ { "name": "TBD", "class": "TBD", "level": 1, "role": "leader",
+      "hp": 10, "hpMax": 10, "mp": 0, "mpMax": 0, "status": [], "abilities": [], "items": [] } ],
+  "quests": { "active": ["Create my character."], "completed": [] },
+  "log": ["Dashboard connected. Awaiting Session Zero."]
+}
