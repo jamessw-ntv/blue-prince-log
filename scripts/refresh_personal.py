@@ -15,6 +15,7 @@ Sources:
 import json
 import sys
 import os
+import time
 import urllib.request
 import urllib.parse
 import datetime
@@ -111,9 +112,16 @@ BROWSER_UA = "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Ge
 
 
 def _yahoo_quote(sym):
-    """Latest price + day-on-day % from Yahoo's v8 chart endpoint."""
+    """Latest price + day-on-day % from Yahoo's v8 chart endpoint.
+
+    Yahoo rate-limits GitHub's shared runner IPs (HTTP 429), but the throttle
+    windows are short, so we retry across both hosts with a backoff. keep-last-
+    good holds the prior price on the runs that don't get through.
+    """
     last_err = None
-    for host in ("query1", "query2"):
+    for host, delay in (("query1", 0.0), ("query2", 1.0), ("query1", 2.0), ("query2", 3.0)):
+        if delay:
+            time.sleep(delay)
         url = (f"https://{host}.finance.yahoo.com/v8/finance/chart/"
                + urllib.parse.quote(sym) + "?range=5d&interval=1d")
         try:
@@ -129,7 +137,7 @@ def _yahoo_quote(sym):
             price = float(price)
             pct = round((price - float(prev)) / float(prev) * 100, 2) if prev else None
             return round(price, 2), pct
-        except Exception as e:  # noqa: BLE001 - try the next host before giving up
+        except Exception as e:  # noqa: BLE001 - back off and try the next host
             last_err = e
     raise ValueError(f"yahoo failed for {sym}: {last_err}")
 
