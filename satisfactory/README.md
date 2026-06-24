@@ -64,9 +64,8 @@ devices; **🖨️ Print manual** prints the numbered checklist.
 |------|------------|
 | **factory-network.html** | The interactive app (above). Open this. |
 | **README.md** (this) | The overview — read first. |
-| **architecture.md** | Why districts, and the build/expand order. |
-| **build-guide.md** | Prose step-by-step companion. |
-| **templates.md** | The reusable building blocks. |
+| **architecture.md** | Why districts, the build/expand order, and the per-district build procedure. |
+| **templates.md** | What a reusable cell/template is (exact specs live in the app + VERIFICATION.md). |
 | **train-network.md** | Rail plan + **drones** + signalling. |
 | **power.md** | When to switch biomass → coal → fuel → nuclear, and how much. |
 | **VERIFICATION.md** | Every recipe cross-checked vs the wiki/SCIM, with corrections logged. |

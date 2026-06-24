@@ -27,10 +27,10 @@ ore. Arrows show the few parts that cross between districts (the "back and forth
 | **A** | **Ironworks** | iron + limestone (+coal) | Iron Ingot, **Iron Plate, Iron Rod, Screw, Reinforced Iron Plate, Rotor, Modular Frame**, Concrete | — |
 | **B** | **Copperworks** | copper + caterium | Copper Ingot, **Wire, Cable, Copper Sheet, Quickwire**, AI Limiter | — |
 | **C** | **Steelworks** | iron + coal (big pair) | Steel Ingot, **Steel Beam, Steel Pipe, Encased Beam, Stator, Motor** | Wire ← B, Rotor ← A |
-| **D** | **Oil & Electronics** | crude oil | **Plastic, Rubber, Circuit Board, Computer, Heavy Modular Frame**, Supercomputer, Radio Control Unit | Copper Sheet ← B, Frames ← A/C |
-| **E** | **Aluminium & Cooling** | bauxite + water + nitrogen *(train)* | Aluminium Ingot/Casing/Sheet, Heat Sink, **Cooling System**, Fused Modular Frame, Turbo Motor | Heavy Frame ← D, Rubber ← D |
-| **F** | **Nuclear & Particle** | uranium + water + lots of copper *(train)* | Nuclear **power**, Copper Powder, Diamonds, Dark Matter, **Nuclear Pasta**, Pressure Conversion Cube | Copper Ingot ← B |
-| **G** | **Quantum & SAM** | SAM + quartz *(train/endgame)* | Reanimated SAM, Ficsite, Time Crystal, Excited Photonic Matter, Neural-Quantum Processor, Superposition Oscillator, Singularity Cell | Dark Matter ← F, Aluminium ← E |
+| **D** | **Oil & Electronics** | crude oil | **Plastic, Rubber, Circuit Board, Computer, Heavy Modular Frame**, Supercomputer, Silica, Quartz Crystal, Crystal Oscillator | Copper Sheet ← B, Frames ← A/C |
+| **E** | **Aluminium & Cooling** | bauxite + water + nitrogen *(train)* | Aluminium Ingot/Casing/Sheet, Heat Sink, **Cooling System**, Fused Modular Frame, **Radio Control Unit**, Turbo Motor, EM Control Rod | Heavy Frame ← D, Rubber ← D, Crystal Osc ← D |
+| **F** | **Nuclear & Particle** | uranium + water + lots of copper *(train)* | Nuclear **power**, Copper Powder, Diamonds, **Nuclear Pasta**, Pressure Conversion Cube | Copper Ingot ← B |
+| **G** | **Quantum & SAM** | SAM + quartz *(train/endgame)* | Reanimated SAM, Ficsite, Time Crystal, **Dark Matter** (residue→crystal), Excited Photonic Matter, Neural-Quantum Processor, Superposition Oscillator, Singularity Cell | Diamonds ← F, Aluminium ← E |
 | **★** | **PROJECT ASSEMBLY** | **at the Space Elevator** | The **12 final elevator parts only** (Smart Plating, Versatile Framework, Automated Wiring, Modular Engine, ACU, ADS, MFG, TPR, Nuclear Pasta delivery, Biochemical Sculptor, AI Expansion Server, Ballistic Warp Drive) | everything, on belts/trains |
 
 So **6 production districts + 1 assembly zone** — mini-bases, not a monolith, not
@@ -58,6 +58,31 @@ online. Each phase bolts onto the last:
   Power: **nuclear**.
 - **Phase 5** — Add **Quantum & SAM (G)**. ★ gains **Biochemical Sculptor, AI
   Expansion Server, Ballistic Warp Drive**. Deliver → launch. 🚀
+
+---
+
+## Building one district (the procedure)
+
+The **✅ Do Next** tab in the app is the live, numbered version of this; the
+steps below are the shape of it:
+
+1. **Lay the platform** above ground near the right ore, sized with room to grow —
+   you don't build the whole district at once.
+2. **Build it area-by-area** in the order the app lists (raw/ingot end first,
+   finished end last), each area only once its inputs are flowing.
+3. **Manifold each bank** — feed and collect from both sides; split a trunk into
+   parallel belts when its rate tops one belt (the **exact-placement** drill-down
+   shows every splitter, merger, belt and buffer). Fluids on pipes.
+4. **Expand it each phase** as later consumers come online (the app's *Expand …*
+   steps say how many machines to add).
+5. **MAX** — overclock every machine to 250% (3 Power Shards) + a Somersloop (2×),
+   ~⅕ the machines. Toggle ⚡ MAX off in Blueprints for a 100% plan.
+
+Don't forget the silent build-breakers: **power** (ramp biomass → coal → fuel →
+nuclear *ahead* of demand — see `power.md`), **utilities** (water; Heavy Oil
+Residue → Residual Fuel or sink; store/process Nuclear Waste), and **transport**
+(belts local, trains to E/F/G, drones for small high-value parcels — see
+`train-network.md`). The app flags these per district.
 
 ---
 
