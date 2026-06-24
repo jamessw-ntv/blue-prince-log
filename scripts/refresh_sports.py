@@ -65,9 +65,59 @@ def refresh_afl(data):
     return f"AFL ladder ({len(ladder)} teams)"
 
 
-# Register sources here. World Cup and NRL fetchers land next.
+# --- NRL via TheSportsDB (https://www.thesportsdb.com) ----------------------
+# Match on a distinctive token so we're robust to full-name variations
+# ("Manly-Warringah Sea Eagles", "Cronulla-Sutherland Sharks", etc.).
+NRL_TEAMS = {
+    "panthers": "Penrith Panthers", "warriors": "New Zealand Warriors", "dolphins": "Dolphins",
+    "roosters": "Sydney Roosters", "knights": "Newcastle Knights", "sea eagles": "Manly Sea Eagles",
+    "rabbitohs": "South Sydney Rabbitohs", "sharks": "Cronulla Sharks",
+    "cowboys": "North Queensland Cowboys", "tigers": "Wests Tigers", "storm": "Melbourne Storm",
+    "bulldogs": "Canterbury Bulldogs", "broncos": "Brisbane Broncos", "eels": "Parramatta Eels",
+    "raiders": "Canberra Raiders", "titans": "Gold Coast Titans",
+    "dragons": "St George Illawarra Dragons",
+}
+
+
+def nrl_name(s):
+    low = s.lower()
+    for token, disp in NRL_TEAMS.items():
+        if token in low:
+            return disp
+    return s
+
+
+def refresh_nrl(data):
+    url = f"https://www.thesportsdb.com/api/v1/json/3/lookuptable.php?l=4416&s={YEAR}"
+    tbl = get_json(url).get("table") or []
+    if not (16 <= len(tbl) <= 17):
+        raise ValueError(f"NRL table looked wrong ({len(tbl)} rows, expected 16-17)")
+    print("NRL table sample:", json.dumps(tbl[0], ensure_ascii=False))  # one-shot schema check
+    ladder = []
+    for r in tbl:
+        gd = r.get("intGoalDifference")
+        diff = int(gd) if gd not in (None, "") else int(r["intGoalsFor"]) - int(r["intGoalsAgainst"])
+        ladder.append([int(r["intRank"]), nrl_name(r.get("strTeam", "")), int(r["intPlayed"]),
+                       int(r["intWin"]), int(r["intLoss"]), int(r["intDraw"]), diff, int(r["intPoints"])])
+    # NRL points include bye points, so don't reconcile against 2*W+D. Validate shape instead.
+    if [row[0] for row in ladder] != list(range(1, len(ladder) + 1)):
+        raise ValueError("NRL ranks are not a clean 1..N")
+    pts = [row[7] for row in ladder]
+    if any(pts[i] < pts[i + 1] for i in range(len(pts) - 1)):
+        raise ValueError("NRL points are not sorted by rank")
+    data["nrl"]["ladder"] = ladder
+    storm = next((row for row in ladder if row[1] == "Melbourne Storm"), None)
+    if storm:
+        f = data["nrl"]["focus"]
+        f["pos"], f["pts"], f["diff"] = storm[0], storm[7], f"{storm[6]:+d}"
+        f["record"] = f"{storm[3]}–{storm[4]}" + (f"–{storm[5]}" if storm[5] else "")
+    return f"NRL ladder ({len(ladder)} teams)"
+
+
+# Register sources here. World Cup stays manual for now (bespoke group/bracket schema).
 SOURCES = [
     ("afl", refresh_afl),
+    ("nrl", refresh_nrl),
 ]
 
 
