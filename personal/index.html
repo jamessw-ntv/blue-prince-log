@@ -51,6 +51,7 @@
   .row .pct{font-variant-numeric:tabular-nums;font-weight:700;width:74px;text-align:right}
   .up{color:var(--green)} .down{color:var(--red)} .flat{color:var(--muted)}
   h3.grp{font-size:13px;text-transform:uppercase;letter-spacing:.06em;color:var(--muted);margin:0 0 4px}
+  .mk-empty{color:var(--muted);font-size:13px;padding:8px 0 2px;line-height:1.5}
 
   .rel{display:flex;gap:12px;padding:11px 0;border-bottom:1px solid var(--line)}
   .rel:last-child{border-bottom:none}
@@ -139,8 +140,11 @@ function mkRows(list){
 }
 function renderMarkets(d){
   const m = d.markets||{};
+  const asxLive = (m.asx||[]).some(r => r.price != null);
+  const asxBody = asxLive ? mkRows(m.asx)
+    : `<div class="mk-empty">ASX prices aren't available from a keyless feed on the hosted runner yet — crypto below is live. (A free market-data key would switch these on.)</div>`;
   document.getElementById("mkBox").innerHTML = sample(d.meta)
-    + `<div class="card"><h3 class="grp">ASX</h3>${mkRows(m.asx)}</div>`
+    + `<div class="card"><h3 class="grp">ASX</h3>${asxBody}</div>`
     + `<div class="card"><h3 class="grp">Crypto (AUD)</h3>${mkRows(m.crypto)}</div>`;
 }
 
