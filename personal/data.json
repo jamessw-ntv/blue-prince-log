@@ -3,16 +3,16 @@
     "title": "Personal Dashboard",
     "place": "Ferntree Gully, VIC",
     "updated": "2026-06-24",
-    "fetched": "2026-06-24T08:27:07+00:00",
+    "fetched": "2026-06-24T11:50:43+00:00",
     "note": "Live. weather Open-Meteo · crypto CoinGecko · ASX Yahoo · dev GitHub · releases RSS."
   },
   "weather": {
     "place": "Ferntree Gully, VIC",
     "now": {
-      "temp": 11,
+      "temp": 9,
       "icon": "🌤️",
       "desc": "Mainly clear",
-      "wind": 1
+      "wind": 2
     },
     "days": [
       {
@@ -72,45 +72,45 @@
       {
         "code": "BTC",
         "name": "Bitcoin",
-        "price": 90785.0,
-        "pct": 1.61
+        "price": 91075.0,
+        "pct": 1.29
       },
       {
         "code": "ETH",
         "name": "Ethereum",
-        "price": 2419.6,
-        "pct": 2.29
+        "price": 2424.16,
+        "pct": 1.44
       }
     ]
   },
   "releases": [
     {
       "cat": "Film/TV",
-      "title": "Dieselpunk Animated Series ‘MechWest’ Lands Global Distribution Deal With Toonz (EXCLUSIVE)",
+      "title": "Jill Schlesinger Offers Frank Financial Talk in CBS News’ ‘Money Moves’ Podcast",
       "when": "24 Jun",
       "source": "Variety",
-      "url": "https://variety.com/2026/tv/markets-festivals/dieselpunk-animated-series-mechwest-global-deal-toonz-1236789010/"
+      "url": "https://variety.com/2026/tv/news/jill-schlesinger-cbs-news-money-moves-podcast-1236788790/"
     },
     {
       "cat": "Film/TV",
-      "title": "Annecy Winner Upamanyu Bhattacharyya’s ‘Heirloom’ Closes French Co-Production With Condor Films, Lands CNC Grant (EXCLUSIVE)",
+      "title": "Taylor Swift Sings ‘Love Story’ With Lainey Wilson in Surprise Performance at Travis Kelce’s Tight End University",
       "when": "24 Jun",
       "source": "Variety",
-      "url": "https://variety.com/2026/film/festivals/indian-animation-heirloom-condor-films-cnc-grant-1236789001/"
+      "url": "https://variety.com/2026/music/news/taylor-swift-sings-love-story-lainey-wilson-travis-kelce-1236789074/"
     },
     {
       "cat": "Film/TV",
-      "title": "Leslie Jones Says It Was ‘Frustrating’ That ‘SNL’ Writers Always Typecast Her as the ‘Girl That Was Angry and Beating Up People’",
+      "title": "Science Saru Studio’s ‘The Ghost in the Shell,’ Bound for Prime Video, Looks to Capture the Future Through Hand-Drawn Visions of the Past",
       "when": "24 Jun",
       "source": "Variety",
-      "url": "https://variety.com/2026/tv/news/leslie-jones-frustrating-snl-writers-typecast-angry-1236788981/"
+      "url": "https://variety.com/2026/tv/global/science-saru-the-ghost-in-the-shell-annecy-prime-video-1236789023/"
     },
     {
       "cat": "Film/TV",
-      "title": "Larry David on Barack Obama’s ‘Perfect’ Comedic Timing in New HBO Show and Donald Trump’s White House UFC Fight: ‘I Was Embarrassed to Be an American’",
+      "title": "’Batman: Knightfall,’ Starring Anson Mount and Michael Mando, Premieres to Thunderous Applause at Annecy",
       "when": "24 Jun",
       "source": "Variety",
-      "url": "https://variety.com/2026/tv/columns/larry-david-barack-obama-hbo-trumps-white-house-ufc-fight-1236788700/"
+      "url": "https://variety.com/2026/film/global/batman-knightfall-warner-bros-animation-dc-comics-1236789035/"
     },
     {
       "cat": "Trek/Wars",
@@ -173,7 +173,7 @@
     {
       "repo": "jamessw-ntv.github.io",
       "desc": "",
-      "pushed": "33m ago",
+      "pushed": "38m ago",
       "lang": "HTML",
       "commit": ""
     }
