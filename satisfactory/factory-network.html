@@ -1128,6 +1128,12 @@ function bankStage(banks){ const idx={}; banks.forEach((b,i)=>idx[b.outItem]=i);
 function bankSide(bk){ const fd=fpDims(bk.fp); const cells=fd.w*fd.h*bk.n; return Math.max(2,Math.ceil(Math.sqrt(cells*1.6))); }
 const bpEsc=s=>String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
 const bpFit=(s,maxPx,perCh)=>{ s=String(s); const max=Math.max(1,Math.floor(maxPx/perCh)); return s.length>max?s.slice(0,max-1)+'…':s; };
+/* clickable "is this built?" status toggle drawn on a placement card (sibling of the card group so its click doesn't open the drill-down) */
+function statusToggleSvg(works,i,done,cx,cy,r){ r=r||8;
+  return `<g class="bptoggle" data-works="${works}" data-i="${i}" style="cursor:pointer"><title>${done?'Built ✓ — click to unmark':'Click to mark as built (track what you’ve placed)'}</title>`
+    +`<circle cx="${cx}" cy="${cy}" r="${r}" fill="${done?'#2f7a45':'rgba(8,11,15,.6)'}" stroke="${done?'#5dd47a':'#8794a0'}" stroke-width="1.5"/>`
+    +(done?`<path d="M${cx-r*0.45},${cy+r*0.05} L${cx-r*0.1},${cy+r*0.42} L${cx+r*0.5},${cy-r*0.4}" fill="none" stroke="#e3fbe9" stroke-width="1.7" stroke-linecap="round"/>`:'')
+    +`</g>`; }
 function districtFlowSvg(d, banks, hiIdx){
   const {st,idx}=bankStage(banks); const maxStage=Math.max(0,...st);
   const cols=[]; for(let c=0;c<=maxStage;c++) cols[c]=[]; banks.forEach((b,i)=>cols[st[i]].push(i));
@@ -1149,7 +1155,7 @@ function districtFlowSvg(d, banks, hiIdx){
     if(ci<maxStage) s+=`<text x="${LEFT+ci*COLW+CW+GUT/2}" y="${TOP-37}" fill="#3f4a57" font-size="13" text-anchor="middle">▸</text>`; });
   // header
   s+=`<text x="14" y="24" fill="#e6edf3" font-size="15" font-weight="700">${d.id==='PA'?'★ ':''}${d.id} · ${bpEsc(d.name)} — placement &amp; conveyors</text>`;
-  s+=`<text x="14" y="42" fill="#9aa7b4" font-size="10.5">Each card = one production area. Belts (━ teal) &amp; pipes (┅ blue) flow left → right by stage. Click a card for its machine-level belt web.</text>`;
+  s+=`<text x="14" y="42" fill="#9aa7b4" font-size="10.5">Each card = one production area. Click a card for its machine-level placement · tap the ◯ (top-left) to mark it built — a running status of what you've placed.</text>`;
   s+=`<text x="14" y="58" fill="#6b7785" font-size="9.5">◀ above a card = parts/raw imported in · finals &amp; cross-district exports run right → 🗄 storage buffer → ${d.id==='PA'?'▲ Space Elevator':'consumer districts / ★'}</text>`;
   // intra-district conveyors (drawn under cards); labels parked in the gutter and de-collided vertically
   const placed=[];
@@ -1158,11 +1164,13 @@ function districtFlowSvg(d, banks, hiIdx){
     const gx=x1+Math.min(GUT/2, Math.max(16,(x2-x1)/2));
     s+=`<path d="M${x1},${y1} H${gx} V${y2} H${x2}" fill="none" stroke="${bc}" stroke-width="1.7" opacity=".7"${fluid?' stroke-dasharray="4 3"':''}/>`;
     s+=`<polygon points="${x2},${y2} ${x2-7},${y2-3.5} ${x2-7},${y2+3.5}" fill="${bc}"/>`;
-    const L=Math.ceil(rate/(fluid?600:1200)), lab=bpFit(it,GUT+22,5)+' '+rate+(L>1?' ·'+L+'×':''), lw=lab.length*4.5;
-    let lx=gx, ly=Math.min(y1,y2)+Math.abs(y1-y2)/2-3, guard=0;
-    while(guard++<16 && placed.some(P=>Math.abs(P.x-lx)<(P.w+lw)/2 && Math.abs(P.y-ly)<11)) ly-=11;
+    // compact gutter label — just the rate (+ lane count); full "item rate mk" lives in the hover title, so it never overruns a card
+    const L=Math.ceil(rate/(fluid?600:1200)), lab=Math.round(rate)+(L>1?' ×'+L:''), lw=lab.length*4.7;
+    let lx=gx, ly=Math.min(y1,y2)+Math.abs(y1-y2)/2-2, guard=0;
+    while(guard++<18 && placed.some(P=>Math.abs(P.x-lx)<(P.w+lw)/2+2 && Math.abs(P.y-ly)<11)) ly-=11;
     placed.push({x:lx,y:ly,w:lw});
-    s+=`<text x="${lx}" y="${ly}" fill="#8694a2" font-size="8.5" text-anchor="middle">${bpEsc(lab)}</text>`; }); });
+    s+=`<rect x="${(lx-lw/2-2).toFixed(1)}" y="${ly-9}" width="${(lw+4).toFixed(1)}" height="11" rx="2" fill="#0a0d12" opacity=".72"/>`;
+    s+=`<text x="${lx}" y="${ly}" fill="#9aa9b6" font-size="8.5" text-anchor="middle"><title>${bpEsc(it+' '+Math.round(rate)+'/min · '+carrierOf(it,rate).mk+(L>1?' ('+L+' lanes)':''))}</title>${bpEsc(lab)}</text>`; }); });
   // cards
   banks.forEach((bk,i)=>{ const p=pos[i], done=!!state['bp:'+d.id+':'+i], hi=(i===hiIdx);
     const col=BCOL[bk.b]||'#8b97a3', ab=ABBR[bk.b]||'?', side=bankSide(bk), oc=carrierOf(bk.outItem,bk.outRate);
@@ -1173,11 +1181,12 @@ function districtFlowSvg(d, banks, hiIdx){
       s+=`<text x="${p.x+2}" y="${p.y-6}" fill="#6f7c8a" font-size="8.5">${bpEsc(bpFit(full,CW-4,4.4))}<title>${bpEsc(full.slice(2))}</title></text>`; }
     s+=`<g class="bpsect" data-works="${d.id}" data-i="${i}" style="cursor:pointer">`;
     s+=`<rect x="${p.x}" y="${p.y}" width="${CW}" height="${CH}" rx="8" fill="${col}" opacity="${done?.5:.97}" stroke="${hi?'#fff':'rgba(0,0,0,.32)'}" stroke-width="${hi?2.5:1}"><title>${bpEsc(bk.r)} — ${bk.n}× ${bk.b} · ~${side}×${side} foundations · out ${bk.outRate}/min</title></rect>`;
-    s+=`<text x="${p.x+10}" y="${p.y+17}" fill="#0a0d12" font-size="10" font-weight="700">§${i+1} · ${ab} ×${cnt}${done?' ✓':''}</text>`;
+    s+=`<text x="${p.x+28}" y="${p.y+17}" fill="#0a0d12" font-size="10" font-weight="700">§${i+1} · ${ab} ×${cnt}</text>`;
     s+=phaseChipSvg(p.x+CW-32,p.y+5,bankBuiltPhase(d,bk));
     s+=`<text x="${p.x+10}" y="${p.y+38}" fill="#0a0d12" font-size="12.5" font-weight="700">${bpEsc(bpFit(bk.r,CW-18,6.6))}</text>`;
     s+=`<text x="${p.x+10}" y="${p.y+55}" fill="#11212c" font-size="9.5">▸ ${bk.outRate}/min · ${oc.mk} ${oc.carrier} · ~${side}×${side}</text>`;
-    s+=`</g>`; });
+    s+=`</g>`;
+    s+=statusToggleSvg(d.id,i,done,p.x+13,p.y+13,8); });
   // exports/finals → storage buffer column on the right
   const consumedElsewhere=it=>DISTRICTS.some(o=>o.id!==d.id&&o.t.some(tid=>T[tid]&&T[tid].in.some(z=>z[0]===it)));
   const FIN=new Set(['Smart Plating','Versatile Framework','Automated Wiring','Modular Engine','Adaptive Control Unit','Assembly Director System','Magnetic Field Generator','Thermal Propulsion Rocket','Nuclear Pasta','Biochemical Sculptor','AI Expansion Server','Ballistic Warp Drive']);
@@ -1224,7 +1233,8 @@ function districtGridSvg(d, banks, hiIdx){
     if(w>52){ s+=`<text x="${x+4}" y="${y+25}" fill="#0c1620" font-size="9" font-weight="700">${bpEsc(bpFit(bk.r,w-8,5))}</text>`;
       s+=`<text x="${x+4}" y="${y+37}" fill="#10202a" font-size="8.5">${bpEsc(bpFit(ab+'×'+(()=>{const nn=bankNowCount(d,bk);return bk.n>nn?nn+'→'+bk.n:bk.n;})()+' · '+p.s+'×'+p.s,w-8,4.6))}</text>`; }
     else { s+=`<text x="${x+4}" y="${y+24}" fill="#0c1620" font-size="8">${ab}×${(()=>{const nn=bankNowCount(d,bk);return bk.n>nn?nn+'→'+bk.n:bk.n;})()}</text>`; }
-    s+=`</g>`; });
+    s+=`</g>`;
+    if(w>=22) s+=statusToggleSvg(d.id,i,done,x+w-7,y+7,5); });
   return s+'</svg>';
 }
 let bpLayout='flow';
@@ -1259,6 +1269,11 @@ function buildingLegendHTML(builds){ const list=(builds&&builds.length)?builds:O
   return list.map(b=>`<span style="white-space:nowrap;margin-right:9px"><span style="display:inline-block;width:9px;height:9px;border-radius:2px;background:${BCOL[b]||'#8b97a3'};vertical-align:0;margin-right:3px"></span><b>${ABBR[b]}</b> = ${b}</span>`).join(''); }
 function placementLegendHTML(banks){ const builds=banks?[...new Set(banks.map(b=>b.b))]:null;
   return `<div class="meta" style="background:#11161d;border:1px solid var(--line);border-radius:8px;padding:7px 11px;margin:6px 0;font-size:11.5px;line-height:1.7">🔑 <b style="color:var(--txt)">Key.</b> ${SYMBOL_LEGEND}<details style="margin-top:2px"><summary style="cursor:pointer;color:var(--teal);font-size:11px;list-style:none">▾ buildings${builds?' in this district':''}</summary><div style="margin-top:4px">${buildingLegendHTML(builds)}</div></details></div>`; }
+/* keep the Build Map's area blocks greyed/lit in sync with built status without a full rebuild (no zoom reset) */
+function syncBuiltOnMap(){ document.querySelectorAll('#bmap .bpsect').forEach(g=>{ const r=g.querySelector('rect'); if(r) r.setAttribute('opacity', state['bp:'+g.dataset.works+':'+g.dataset.i]?0.5:0.96); }); }
+function bpToggleBuilt(works,i){ const k='bp:'+works+':'+i; if(state[k]) delete state[k]; else state[k]=true; saveState(state);
+  renderBlueprints(); if(typeof renderInventory==='function') renderInventory(); syncBuiltOnMap(); }
+function wireToggles(root){ root.querySelectorAll('.bptoggle').forEach(g=>g.onclick=e=>{ e.stopPropagation(); bpToggleBuilt(g.dataset.works,+g.dataset.i); }); }
 function renderBpStage(){
   const stage=document.getElementById('bpStage');
   if(bpMod==='ALL'){
@@ -1278,6 +1293,7 @@ function renderBpStage(){
   const layoutSvg=(bpLayout==='grid'?districtGridSvg:districtFlowSvg)(d,banks,bpHi);
   stage.innerHTML=`<div class="meta" style="margin-bottom:6px"><b style="color:var(--txt);font-size:15px">${d.id==='PA'?'★ ':''}${d.id} · ${d.name}${sc}</b> — 📍 ${d.near} · ${f.machines} machines · lay a flat <b>~${f.side}×${f.side}</b> platform (above ground, one level).${d.role?`<br><span style="color:#9fb0c0">🧭 ${d.role}</span>`:''}<br><b>Click any area block</b> to open its <b>exact placement</b> (every machine, splitter, merger, belt &amp; buffer) below. Toggle <b>Flow</b> (connections) / <b>Grid</b> (exact footprints).</div>`+placementLegendHTML(banks)+layoutSvg+focus;
   stage.querySelectorAll('.bpsect').forEach(g=>g.onclick=()=>{ bpHi=+g.dataset.i; renderBpStage(); renderBpSteps(); });
+  wireToggles(stage);
 }
 function bankStepHTML(d,banks,bk,i){
   const now=bankNowCount(d,bk), total=bk.n, bp=bankBuiltPhase(d,bk), perLane=machinesPerLane(T[bk.tid]);
@@ -1496,15 +1512,15 @@ function renderFlowOverview(){
 function _a11yMark(el){ if(el.getAttribute&&!el.hasAttribute('tabindex')){ el.setAttribute('tabindex','0'); el.setAttribute('role','button');
   if(!el.getAttribute('aria-label')){ const t=el.querySelector&&el.querySelector('title'); const lbl=(t&&t.textContent)||el.textContent||''; if(lbl) el.setAttribute('aria-label',lbl.trim().slice(0,90)); } } }
 new MutationObserver(ms=>ms.forEach(m=>m.addedNodes.forEach(n=>{ if(n.nodeType!==1) return;
-  if(n.matches&&n.matches('.u,.tlink,.bpsect,.bmmod')) _a11yMark(n);
-  if(n.querySelectorAll) n.querySelectorAll('.u,.tlink,.bpsect,.bmmod').forEach(_a11yMark); }))).observe(document.body,{childList:true,subtree:true});
+  if(n.matches&&n.matches('.u,.tlink,.bpsect,.bmmod,.bptoggle')) _a11yMark(n);
+  if(n.querySelectorAll) n.querySelectorAll('.u,.tlink,.bpsect,.bmmod,.bptoggle').forEach(_a11yMark); }))).observe(document.body,{childList:true,subtree:true});
 document.addEventListener('keydown',e=>{ if(e.key!=='Enter'&&e.key!==' ') return; const el=document.activeElement;
-  if(el&&el.matches&&el.matches('.u,.tlink,.bpsect,.bmmod')){ e.preventDefault(); el.dispatchEvent(new MouseEvent('click',{bubbles:true})); } });
+  if(el&&el.matches&&el.matches('.u,.tlink,.bpsect,.bmmod,.bptoggle')){ e.preventDefault(); el.dispatchEvent(new MouseEvent('click',{bubbles:true})); } });
 /* ============================ INIT ============================ */
 buildBuildMap();
 renderCards(); renderTemplates(); renderShopping(); renderInventory();
 renderBlueprints(); renderFlowOverview();
-document.querySelectorAll('.u,.tlink,.bpsect,.bmmod').forEach(_a11yMark);
+document.querySelectorAll('.u,.tlink,.bpsect,.bmmod,.bptoggle').forEach(_a11yMark);
 </script>
 </body>
 </html>
