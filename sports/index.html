@@ -33,21 +33,6 @@
   .hero-meta{display:flex;flex-wrap:wrap;gap:18px;margin-top:16px;font-size:13px;color:var(--muted)}
   .hero-meta b{color:var(--text);font-weight:700}
 
-  /* next-up strip */
-  .nextup{margin-top:18px;background:var(--panel);border:1px solid var(--line);border-radius:var(--radius);padding:14px 16px}
-  .nextup .lbl{font-size:10px;letter-spacing:.18em;text-transform:uppercase;color:var(--yellow);font-weight:700;
-    margin-bottom:10px;display:flex;align-items:center;gap:8px}
-  .nextup .dot{width:7px;height:7px;border-radius:50%;background:var(--red);animation:pulse 1.8s infinite}
-  @keyframes pulse{0%{box-shadow:0 0 0 0 rgba(239,68,68,.5)}70%{box-shadow:0 0 0 8px rgba(239,68,68,0)}100%{box-shadow:0 0 0 0 rgba(239,68,68,0)}}
-  .nextup .games{display:flex;gap:10px;overflow-x:auto;padding-bottom:2px}
-  .nu-card{background:var(--panel2);border:1px solid var(--line);border-radius:9px;padding:10px 13px;min-width:172px;flex-shrink:0}
-  .nu-card .mu{font-weight:700;font-size:13px;margin-bottom:3px}
-  .nu-card .when{font-size:11px;color:var(--muted)}
-  .nu-card .when b{color:var(--yellow);font-weight:700}
-  .nu-card .od{margin-top:7px;display:flex;gap:5px;font-size:10px;font-variant-numeric:tabular-nums}
-  .nu-card .od span{background:rgba(255,255,255,.05);border-radius:4px;padding:2px 6px;flex:1;text-align:center}
-  .nu-card .od span b{display:block;color:var(--muted);font-size:8.5px;font-weight:600;letter-spacing:.05em}
-
   /* tabs */
   nav.tabs{position:sticky;top:44px;z-index:50;background:var(--panel);border-bottom:1px solid var(--line)}
   nav.tabs .sp-wrap{display:flex;gap:4px;overflow-x:auto}
@@ -334,7 +319,6 @@
         <div>11 Jun → <b>19 Jul</b></div>
         <div>Final · <b>New York / New Jersey</b></div>
       </div>
-      <div class="nextup" id="nextup"></div>
     </div>
   </header>
   <nav class="tabs">
@@ -561,19 +545,6 @@ function renderWC(wc){
   ranked.forEach((o,i)=>{
     og.innerHTML += `<div class="odd ${i<5?'fav':''}"><span class="rk">${i+1}</span><span class="nm">${o[0]}</span><span class="val">${o[1]}</span></div>`;
   });
-
-  /* next-up strip (first day of upcoming) */
-  const nu = document.getElementById('nextup');
-  const nuDay = wc.upcoming[0];
-  const nuCards = nuDay[1].map(m=>{
-    const oddsArr = [["1",m[5]],["X",m[6]],["2",m[7]]];
-    return `<div class="nu-card">
-      <div class="mu">${m[1]} v ${m[2]}</div>
-      <div class="when"><b>${m[3]}</b> · ${m[4]}</div>
-      <div class="od">${oddsArr.map(o=>`<span>$${o[1]}<b>${o[0]}</b></span>`).join('')}</div>
-    </div>`;
-  }).join('');
-  nu.innerHTML = `<div class="lbl"><span class="dot"></span>Next up · ${nuDay[0]}</div><div class="games">${nuCards}</div>`;
 
   /* upcoming odds */
   const ul = document.getElementById('upcomingList');
