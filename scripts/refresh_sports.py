@@ -121,7 +121,9 @@ def refresh_nrl(data):
 # Register sources here. World Cup stays manual for now (bespoke group/bracket schema).
 SOURCES = [
     ("afl", refresh_afl),
-    ("nrl", refresh_nrl),
+    # ("nrl", refresh_nrl),  # disabled: TheSportsDB free tier returns non-JSON for NRL 2026.
+    #   refresh_nrl works against the documented schema (dry-run verified); re-enable once a
+    #   confirmed source is wired (a working endpoint, or an API key stored as a repo secret).
 ]
 
 
