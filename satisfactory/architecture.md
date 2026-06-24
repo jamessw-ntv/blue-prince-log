@@ -86,7 +86,11 @@ Residue → Residual Fuel or sink; store/process Nuclear Waste), and **transport
 
 ---
 
-## Placement (top-right desert)
+## Placement (top-right Dune Desert plateau)
+
+Build the whole thing in the **top-right Dune Desert plateau** — flat, open, and
+above ground. Core ores (iron, copper, coal, limestone, quartz) are close; the
+far resources (bauxite, uranium, nitrogen, SAM) are railed in.
 
 - **A, B, C** are your core local districts — cluster them a short belt-run from
   each other and from the **★ Project Assembly** pad (which sits next to the

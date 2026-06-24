@@ -34,7 +34,7 @@ by the elevator. Cross-district flows are few and one-directional (belts between
 the core districts; **trains** to/from the far ones; **drones** for small dribbles
 of expensive parts).
 
-You're in the **top-right desert**, building everything **above ground** (fly
+You're in the **top-right Dune Desert plateau** (flat &amp; open), building everything **above ground** (fly
 mod), and **overclocking to MAX** (250% + Somersloop ≈ 5× per machine) — so you
 build roughly ⅕ the machines. The app's ⚡ MAX toggle and ×scale let you change
 this.
