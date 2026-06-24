@@ -10,8 +10,9 @@ to a finished Project Assembly (Space Elevator Phase 5). Renders at
   libraries, works offline). This is where all the logic and data live.
 - `index.html` — a tiny redirect to `factory-network.html`.
 - `README.md` — read this first; the overview and master timeline.
-- `architecture.md`, `build-guide.md`, `templates.md`, `train-network.md`,
-  `power.md`, `VERIFICATION.md`, `inventory.csv` — companion docs.
+- `architecture.md`, `templates.md`, `train-network.md`, `power.md`,
+  `VERIFICATION.md`, `inventory.csv` — companion docs. (The old `build-guide.md`
+  was folded into `architecture.md` + the app's ✅ Do Next tab.)
 
 ## Intent routing
 

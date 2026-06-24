@@ -183,15 +183,17 @@
   </section>
 
   <section id="tab-guide" class="tab">
+    <h2>The big picture</h2>
+    <p class="hint" style="margin-top:0">Raw resources → the <b>7 production districts</b> → the <b>12 final parts</b> assembled at <b>★ Project Assembly</b> → delivered to the <b>▲ Space Elevator</b>. (The spatial layout and exact cross-district feeds live in the 🗺️ <b>Build Map</b>; this is just the shape of it.)</p>
+    <div id="flowOverview" style="overflow-x:auto"></div>
     <h2>How to use this</h2>
     <ol>
       <li><b><code>README.md</code></b> — philosophy, map/node/transport strategy, master timeline.</li>
-      <li><b><code>build-guide.md</code></b> — step-by-step, exact bills per module.</li>
-      <li><b><code>templates.md</code></b> — reusable building blocks.</li>
+      <li><b><code>architecture.md</code></b> — the district model (7 material mini-bases + ★ Project Assembly), why it's grouped this way, and the build/expand order + per-district build procedure.</li>
+      <li><b><code>templates.md</code></b> — what a reusable cell/template is (the per-machine specs live in the 🧩 Templates tab + VERIFICATION.md, not duplicated).</li>
       <li><b><code>train-network.md</code></b> — end-game rail plan.</li>
       <li><b><code>power.md</code></b> — power plan: when to switch biomass → coal → fuel → nuclear.</li>
       <li><b><code>VERIFICATION.md</code></b> — every recipe/quantity cross-checked, with sources.</li>
-      <li><b><code>architecture.md</code></b> — the district model (6 material mini-bases + 1 Project Assembly), why it's grouped this way, and the build/expand order.</li>
       <li><b>This app</b> — the <b>✅ Do Next</b> spine walks you HUB → launch one tick-off step at a time; the <b>🗺️ Build Map</b> shows the districts; the <b>📐 Blueprints</b> tab is the per-district top-down floor plan + turn-by-turn build steps (with the <b>▦ All districts</b> appendix); plus Templates, Items We Need, and your saved inventory.</li>
     </ol>
     <h3>Just want to follow it? Do this:</h3>
@@ -213,6 +215,22 @@
       </tbody>
     </table>
     <p class="hint">If a trunk needs more than your best belt can carry, <b>split it across two belts</b> until the next Mk unlocks. Fluids (oil, water, alumina, nitrogen, heavy oil residue) always go on <b>pipes</b>, never belts.</p>
+    <h3>Glossary — the words this plan uses</h3>
+    <table>
+      <thead><tr><th>Term</th><th>What it means</th></tr></thead>
+      <tbody>
+        <tr><td><b>District</b></td><td>A self-contained mini-base grouped around one material family (Ironworks, Copperworks…). Each base material is made <b>once</b>, sized to total demand, and shared. 7 production districts + ★ Project Assembly.</td></tr>
+        <tr><td><b>Bank / area (§N)</b></td><td>One production cell inside a district: <b>N copies of the same machine</b> making one item (e.g. §3 · Screw farm = several Constructors making screws).</td></tr>
+        <tr><td><b>Processing stage</b></td><td>How far down the chain a bank sits. The <b>placement view</b> lays stages out left → right, so raw-ish parts are on the left and finished parts on the right.</td></tr>
+        <tr><td><b>Manifold row</b></td><td>One input belt feeding a row of machines through <b>splitters</b>, their outputs <b>merging</b> back onto one belt. It's the repeating unit you blueprint once and <b>stack</b>.</td></tr>
+        <tr><td><b>Belt web / exact placement</b></td><td>The machine-level drill-down: every machine, <b>splitter (▫)</b>, <b>merger (◇)</b>, belt segment and <b>storage buffer (🗄)</b> for one bank. Click any area block to open it.</td></tr>
+        <tr><td><b>Splitter / merger</b></td><td>The logistics piece that taps a belt off to a machine (splitter) or combines machine outputs back onto one belt (merger).</td></tr>
+        <tr><td><b>Storage buffer (🗄)</b></td><td>A container between stages that evens out flow so a line never starves or backs up.</td></tr>
+        <tr><td><b>Overclock + Somersloop</b></td><td>Running a machine at <b>250%</b> (3 Power Shards) and slotting a <b>Somersloop</b> (2× output) = <b>5× per machine</b>, so you build ~⅕ the machines. That's the ⚡ <b>MAX</b> toggle; turn it off for 100% counts.</td></tr>
+        <tr><td><b>Trunk / lane</b></td><td>The main belt of a flow. When its rate tops a belt's throughput, you split it into parallel <b>lanes</b> (e.g. "2× Mk.6") and feed the manifold from both sides.</td></tr>
+        <tr><td><b>Phase</b></td><td>A Space Elevator delivery milestone (1–5). Each completed phase unlocks the next tech tier and the next districts.</td></tr>
+      </tbody>
+    </table>
     <h3>The order, in one breath</h3>
     <p>Tier 0 → Assembler → <b>Ironworks</b> + <b>★ Smart Plating</b> → Phase 1 → <b>Steelworks</b> + <b>Copperworks</b> + <b>★ Versatile Framework/Automated Wiring</b> → Phase 2 → <b>Oil & Electronics</b> + <b>★ Modular Engine/ACU</b> → Phase 3 → <b>trains</b> + <b>Aluminium</b>/<b>Nuclear</b> + <b>★ ADS/MFG/TPR/Nuclear Pasta</b> → Phase 4 → <b>Quantum & SAM</b> + <b>★ Sculptor/AI Server/Warp Drive</b> → Phase 5 → <b>launch 🚀</b>.</p>
     <h3>Tune the late game</h3>
@@ -471,6 +489,7 @@ function renderCards(){
     const card=document.createElement('div'); card.className='card'; card.id='card_'+d.id;
     card.innerHTML=`<h3><span class="chip p${d.phase}">P${d.phase}</span> ${d.id==='PA'?'★ ':''}${d.id} · ${d.name}<span class="tgt">${f.machines} machines${bpMax?' (MAX)':''}</span></h3>
       <div class="body">
+        ${d.role?`<div class="approx" style="background:#15202c;border-color:#2a3a4a;color:#cdd9e5">🧭 <b>Role:</b> ${d.role}</div>`:''}
         <div class="meta">📍 <b>${d.near}</b> · lay a <b>~${f.side}×${f.side}</b> pad · ${banks.length} production banks<br>
         <b>Makes:</b> ${makes}<br>
         <b>Imports from other districts:</b> ${impHTML}<br>
@@ -711,14 +730,14 @@ document.getElementById('loadcode').onclick=()=>{ const code=prompt('Paste a pro
 const SVGNS='http://www.w3.org/2000/svg';
 /* the modular mini-base DISTRICTS (see architecture.md). ang = compass placement; PA = centre. */
 const DISTRICTS=[
- {id:'A',name:'Ironworks',near:'iron + limestone',ang:200,phase:1,col:'#6fcf97',t:['T-IRON','T-PLATE','T-ROD','T-SCREW','T-RIP','T-ROTOR','T-FRAME','T-CONCRETE']},
- {id:'B',name:'Copperworks',near:'copper + caterium',ang:340,phase:2,col:'#5ab0e6',t:['T-COPPER','T-CATERIUM','T-WIRE','T-CABLE','T-COPSHEET','T-QUICKWIRE','T-AILIMITER']},
- {id:'C',name:'Steelworks',near:'iron + coal',ang:158,phase:2,col:'#e6915a',t:['T-STEEL','T-BEAM','T-PIPE','T-EIBEAM','T-STATOR','T-MOTOR']},
- {id:'D',name:'Oil & Electronics',near:'crude oil',ang:55,phase:3,col:'#b692ff',t:['T-PLASTIC','T-RUBBER','T-QUARTZX','T-SILICA','T-CIRCUIT','T-COMPUTER','T-HSCONN','T-HMFRAME','T-CRYSTALOSC','T-SUPERCOMP']},
- {id:'E',name:'Aluminium & Cooling',near:'bauxite (train)',ang:-48,phase:4,col:'#cbb27a',t:['T-ALUMINA','T-ALSCRAP','T-ALINGOT','T-ALCASING','T-ALCLAD','T-HEATSINK','T-COOLING','T-FUSEDFRAME','T-RCU','T-TURBOMOTOR','T-EMROD']},
- {id:'F',name:'Nuclear & Particle',near:'uranium (train)',ang:28,phase:4,col:'#ff6b9d',t:['T-COPPERPOWDER','T-PCC','T-PASTA','T-DIAMONDS']},
- {id:'G',name:'Quantum & SAM',near:'SAM (train)',ang:108,phase:5,col:'#ffadc4',t:['T-REANSAM','T-DMRESIDUE','T-FICINGOT','T-FICTRIGON','T-TIMECRYSTAL','T-DMCRYSTAL','T-EPM','T-NQP','T-SUPEROSC','T-SINGCELL']},
- {id:'PA',name:'Project Assembly',near:'by the Space Elevator',ang:null,phase:1,col:'#ff9e3d',t:['T-SMARTPLATE','T-VERSFRAME','T-AUTOWIRE','T-MODENGINE','T-ACU','T-ADS','T-MFG','T-TPR','T-SCULPTOR','T-AISERVER','T-WARP']},
+ {id:'A',name:'Ironworks',near:'iron + limestone',ang:200,phase:1,col:'#6fcf97',role:'The backbone — smelts iron and makes the plates, rods, screws, RIP, rotors & frames almost everything else is built from.',t:['T-IRON','T-PLATE','T-ROD','T-SCREW','T-RIP','T-ROTOR','T-FRAME','T-CONCRETE']},
+ {id:'B',name:'Copperworks',near:'copper + caterium',ang:340,phase:2,col:'#5ab0e6',role:'All things copper & caterium — wire, cable, copper sheet, quickwire and AI limiters that feed the electronics chains.',t:['T-COPPER','T-CATERIUM','T-WIRE','T-CABLE','T-COPSHEET','T-QUICKWIRE','T-AILIMITER']},
+ {id:'C',name:'Steelworks',near:'iron + coal',ang:158,phase:2,col:'#e6915a',role:'Iron + coal → steel, then the beams, pipes, stators and motors the heavier machinery needs.',t:['T-STEEL','T-BEAM','T-PIPE','T-EIBEAM','T-STATOR','T-MOTOR']},
+ {id:'D',name:'Oil & Electronics',near:'crude oil',ang:55,phase:3,col:'#b692ff',role:'Refines oil into plastic & rubber, then builds circuit boards, computers, heavy frames, crystal oscillators & supercomputers.',t:['T-PLASTIC','T-RUBBER','T-QUARTZX','T-SILICA','T-CIRCUIT','T-COMPUTER','T-HSCONN','T-HMFRAME','T-CRYSTALOSC','T-SUPERCOMP']},
+ {id:'E',name:'Aluminium & Cooling',near:'bauxite (train)',ang:-48,phase:4,col:'#cbb27a',role:'Railed-in bauxite → the aluminium chain, heat sinks, cooling systems, radio control units, fused frames & turbo motors.',t:['T-ALUMINA','T-ALSCRAP','T-ALINGOT','T-ALCASING','T-ALCLAD','T-HEATSINK','T-COOLING','T-FUSEDFRAME','T-RCU','T-TURBOMOTOR','T-EMROD']},
+ {id:'F',name:'Nuclear & Particle',near:'uranium (train)',ang:28,phase:4,col:'#ff6b9d',role:'Nuclear power + a copper firehose → copper powder, diamonds, pressure cubes and Nuclear Pasta.',t:['T-COPPERPOWDER','T-PCC','T-PASTA','T-DIAMONDS']},
+ {id:'G',name:'Quantum & SAM',near:'SAM (train)',ang:108,phase:5,col:'#ffadc4',role:'The endgame lab — SAM → ficsite, dark matter, time crystals, EPM and the quantum processors/oscillators/cells.',t:['T-REANSAM','T-DMRESIDUE','T-FICINGOT','T-FICTRIGON','T-TIMECRYSTAL','T-DMCRYSTAL','T-EPM','T-NQP','T-SUPEROSC','T-SINGCELL']},
+ {id:'PA',name:'Project Assembly',near:'by the Space Elevator',ang:null,phase:1,col:'#ff9e3d',role:'By the elevator — assembles the 12 final parts from everything the districts ship in, and launches them.',t:['T-SMARTPLATE','T-VERSFRAME','T-AUTOWIRE','T-MODENGINE','T-ACU','T-ADS','T-MFG','T-TPR','T-SCULPTOR','T-AISERVER','T-WARP']},
 ];
 const DMAP={}; DISTRICTS.forEach(d=>DMAP[d.id]=d);
 const WORKS2DIST={M1:'PA',M2:'PA',M3:'PA',M4:'PA',M5:'PA',M6:'PA',M7:'PA',M8:'PA',M9:'F',M10:'PA',M11:'PA',M12:'PA',F1:'D',F2:'D'};
@@ -866,7 +885,7 @@ function bmUpdateEdges(){ if(!bmView) return;
     else { el.setAttribute('x1',a.px); el.setAttribute('y1',a.py); el.setAttribute('x2',b.px); el.setAttribute('y2',b.py); } });
 }
 function showDistrict(id){ const d=DMAP[id]; if(!d) return; const makes=d.t.map(tid=>T[tid]?T[tid].out[0]:tid);
-  const cap=document.getElementById('bmCaption'); if(cap) cap.innerHTML='<b style="color:var(--txt)">'+(id==='PA'?'★ Project Assembly':d.id+' · '+d.name)+'</b> — 📍 '+d.near+'  <button class="pbtn" onclick="enterDistrictMap(\''+id+'\')">🔍 Zoom in: placement &amp; conveyors →</button><br><b>Makes:</b> '+makes.join(', ')+(id==='PA'?'  <span style="color:#9aa7b4">(the 12 final elevator parts)</span>':'');
+  const cap=document.getElementById('bmCaption'); if(cap) cap.innerHTML='<b style="color:var(--txt)">'+(id==='PA'?'★ Project Assembly':d.id+' · '+d.name)+'</b> — 📍 '+d.near+'  <button class="pbtn" onclick="enterDistrictMap(\''+id+'\')">🔍 Zoom in: placement &amp; conveyors →</button>'+(d.role?'<br><span style="color:#9fb0c0">🧭 '+d.role+'</span>':'')+'<br><b>Makes:</b> '+makes.join(', ')+(id==='PA'?'  <span style="color:#9aa7b4">(the 12 final elevator parts)</span>':'');
   document.querySelectorAll('#bmap .bmmod').forEach(n=>{ const r=n.querySelector('rect'); if(r){ const on=n.dataset.mod===id; r.setAttribute('stroke',on?'#fff':'#0a0d12'); r.setAttribute('stroke-width',on?4:2); } }); }
 /* unified drill-down: zoom the Build Map INTO a district's internal placement */
 function enterDistrictMap(id){ const d=DMAP[id]; if(!d) return; const banks=districtBanks(d);
@@ -1193,10 +1212,13 @@ function renderBpPicker(){
   tune.appendChild(note); c.appendChild(tune);
 }
 const BP_LEGEND='<span style="color:#2dd4bf">━ teal</span> = belt in / manifold · <span style="color:#5aa9ff">┅ blue</span> = pipe (fluid) · small squares = splitter/merger · coloured boxes = machines (hover for footprint) · <span style="color:#b692ff">━ purple</span> = output belt out.';
+const SYMBOL_LEGEND='<span style="color:#2dd4bf">━ belt</span> · <span style="color:#5aa9ff">┅ pipe (fluid)</span> · <span style="color:#ff9e3d">┄ 🚆 train</span> · <b>▫</b> splitter · <b>◇</b> merger · <b>🗄</b> storage buffer · <span style="color:#b692ff">━ output / finals</span>';
+function buildingLegendHTML(){ return '<b style="color:var(--txt)">Buildings:</b> '+Object.keys(ABBR).map(b=>`<span style="white-space:nowrap;margin-right:9px"><span style="display:inline-block;width:9px;height:9px;border-radius:2px;background:${BCOL[b]||'#8b97a3'};vertical-align:0;margin-right:3px"></span><b>${ABBR[b]}</b> = ${b}</span>`).join(''); }
+function placementLegendHTML(){ return `<div class="meta" style="background:#11161d;border:1px solid var(--line);border-radius:8px;padding:7px 11px;margin:6px 0;font-size:11.5px;line-height:1.8">🔑 <b style="color:var(--txt)">Key.</b> ${SYMBOL_LEGEND}<br>${buildingLegendHTML()}</div>`; }
 function renderBpStage(){
   const stage=document.getElementById('bpStage');
   if(bpMod==='ALL'){
-    let html=`<div class="meta" style="margin-bottom:6px"><b style="color:var(--txt);font-size:15px">All districts — every floor plan (the appendix)</b>. ${BP_LEGEND} Click any line to open that district.</div>`;
+    let html=`<div class="meta" style="margin-bottom:6px"><b style="color:var(--txt);font-size:15px">All districts — every floor plan (the appendix)</b>. Click any line to open that district.</div>`+placementLegendHTML();
     DISTRICTS.forEach(d=>{ const banks=districtBanks(d); const f=districtFootprint(banks);
       html+=`<div class="meta" style="margin:18px 0 4px"><b style="color:var(--txt);font-size:14px"><span class="chip p${d.phase}">P${d.phase}</span> ${d.id==='PA'?'★ ':''}${d.id} · ${d.name}</b> <span style="color:var(--muted)">— ${f.machines} machines · ~${f.side}×${f.side} pad · 📍 ${d.near}</span> <span class="u" onclick="gotoBlueprint('${d.id}')">open →</span></div>`+floorPlanSvg(d,banks,-1);
     });
@@ -1208,9 +1230,9 @@ function renderBpStage(){
   const banks=districtBanks(d), f=districtFootprint(banks);
   const sc=bpScale!==1?` · ×${bpScale}`:'';
   stage.style.overflowX='auto';
-  const focus=(bpHi>=0 && banks[bpHi]) ? `<div class="meta" style="margin:10px 0 4px"><b style="color:var(--orange);font-size:14px">🔍 §${bpHi+1} ${banks[bpHi].r} — belt web</b> (the conveyance between machines inside this area):</div>`+beltWebCaptionHTML(d,banks[bpHi])+focusBankSvg(d,banks[bpHi]) : '';
+  const focus=(bpHi>=0 && banks[bpHi]) ? `<div class="meta" style="margin:10px 0 4px"><b style="color:var(--orange);font-size:14px">🔍 §${bpHi+1} ${banks[bpHi].r} — exact placement</b> (every machine, splitter, merger, belt &amp; storage buffer for this area):</div>`+beltWebCaptionHTML(d,banks[bpHi])+focusBankSvg(d,banks[bpHi]) : '';
   const layoutSvg=(bpLayout==='grid'?districtGridSvg:districtFlowSvg)(d,banks,bpHi);
-  stage.innerHTML=`<div class="meta" style="margin-bottom:6px"><b style="color:var(--txt);font-size:15px">${d.id==='PA'?'★ ':''}${d.id} · ${d.name}${sc}</b> — 📍 ${d.near} · ${f.machines} machines · lay a flat <b>~${f.side}×${f.side}</b> platform (above ground, one level). <br>${BP_LEGEND} <b>Click any area block</b> to open its belt web below. Toggle <b>Flow</b> (connections) / <b>Grid</b> (exact footprints).</div>`+layoutSvg+focus;
+  stage.innerHTML=`<div class="meta" style="margin-bottom:6px"><b style="color:var(--txt);font-size:15px">${d.id==='PA'?'★ ':''}${d.id} · ${d.name}${sc}</b> — 📍 ${d.near} · ${f.machines} machines · lay a flat <b>~${f.side}×${f.side}</b> platform (above ground, one level).${d.role?`<br><span style="color:#9fb0c0">🧭 ${d.role}</span>`:''}<br><b>Click any area block</b> to open its <b>exact placement</b> (every machine, splitter, merger, belt &amp; buffer) below. Toggle <b>Flow</b> (connections) / <b>Grid</b> (exact footprints).</div>`+placementLegendHTML()+layoutSvg+focus;
   stage.querySelectorAll('.bpsect').forEach(g=>g.onclick=()=>{ bpHi=+g.dataset.i; renderBpStage(); renderBpSteps(); });
 }
 function bankStepHTML(d,banks,bk,i){
@@ -1258,34 +1280,57 @@ function focusBankSvg(d,bk){
   const t=T[bk.tid], np=bankBuiltPhase(d,bk), eff=bpMax?MAXFACTOR:1;
   const total=bk.n, now=Math.max(1,Math.min(total,bankCountAt(bk.tid,np)));
   const ins=(t.in&&t.in.length)?t.in:[['power only',0]];
+  const nIn=ins.length;
   const perLane=machinesPerLane(t), totalRows=Math.ceil(total/perLane);
-  const cols=Math.max(1,Math.min(perLane,8)), nowInRow=Math.max(1,Math.min(now,cols));
-  const col=BCOL[bk.b]||'#8b97a3', ab=ABBR[bk.b]||'?', nIn=ins.length;
-  const MW=58, MH=50, GX=26, PITCH=MW+GX, ML=205;
-  const inTop=46, inGap=17, mY=inTop+nIn*inGap+12, outY=mY+MH+38;
+  const cols=Math.max(1,Math.min(perLane,8));     // machines drawn per belt-row (the repeating unit)
+  const rowsDrawn=Math.min(totalRows,4);
+  const col=BCOL[bk.b]||'#8b97a3', ab=ABBR[bk.b]||'?';
+  const MW=54, MH=44, GX=24, PITCH=MW+GX, ML=210, BUF=56;
+  const inGap=15, headH=56, inBlock=nIn*inGap, rowPitch=inBlock+MH+46;
   const colX=c=>ML+c*PITCH, cx=c=>colX(c)+MW/2, xEnd=cx(cols-1);
-  const W=Math.max(660,ML+cols*PITCH+120), H=outY+52;
-  let s=`<svg viewBox="0 0 ${W} ${H}" style="width:100%;min-width:600px;height:auto;background:#0a0d12;border:1px solid var(--line);border-radius:8px;margin-bottom:8px">`;
-  for(let gx=0;gx<=W;gx+=28) s+=`<line x1="${gx}" y1="0" x2="${gx}" y2="${H}" stroke="#0f161d"/>`;
-  s+=`<text x="14" y="24" fill="#e6edf3" font-size="15" font-weight="700">${bk.r} — one manifold row</text>`;
-  s+=`<text x="${W-14}" y="24" fill="#9aa7b4" font-size="12" text-anchor="end">${cols} per belt · stack ×${totalRows} = ${total} total</text>`;
-  ins.forEach((inp,k)=>{ const ty=inTop+k*inGap, fluid=isFluidItem(inp[0]), bc=fluid?'#5aa9ff':'#2dd4bf';
-    const perRow=+(cols*inp[1]*eff).toFixed(0), mk=inp[1]?carrierOf(inp[0],perRow).mk:'';
-    s+=`<line x1="${ML-48}" y1="${ty}" x2="${xEnd}" y2="${ty}" stroke="${bc}" stroke-width="3"${fluid?' stroke-dasharray="5 3"':''}/>`;
-    s+=`<polygon points="${ML-48},${ty} ${ML-58},${ty-5} ${ML-58},${ty+5}" fill="${bc}"/>`;
-    s+=`<text x="${ML-62}" y="${ty+4}" fill="#cdd6df" font-size="11" text-anchor="end">${inp[0]}${inp[1]?' '+perRow+'/min · '+mk:''}</text>`;
-    for(let c=0;c<cols;c++){ const x=cx(c)+(k-(nIn-1)/2)*7; s+=`<line x1="${x}" y1="${ty}" x2="${x}" y2="${mY}" stroke="${bc}" stroke-width="1.5" opacity=".55"/>`; s+=`<rect x="${x-4}" y="${ty-4}" width="8" height="8" fill="#15202a" stroke="${bc}"><title>splitter</title></rect>`; } });
-  s+=`<text x="${ML}" y="${mY-7}" fill="#8fe6a8" font-size="11">build ${Math.min(now,cols)} now${totalRows>1?` · add ${totalRows-1} more identical row${totalRows-1>1?'s':''} below`:''}</text>`;
-  for(let c=0;c<cols;c++){ const x=colX(c), on=c<nowInRow;
-    if(on){ s+=`<rect x="${x}" y="${mY}" width="${MW}" height="${MH}" rx="5" fill="${col}"><title>${bk.b} · ${bk.r} — build now</title></rect>`;
-      s+=`<text x="${x+MW/2}" y="${mY+MH/2+5}" fill="#0a0d12" font-size="15" font-weight="700" text-anchor="middle">${ab}</text>`; }
-    else { s+=`<rect x="${x}" y="${mY}" width="${MW}" height="${MH}" rx="5" fill="none" stroke="${col}" stroke-width="1.8" stroke-dasharray="5 3" opacity=".6"><title>${bk.b} · ${bk.r} — fill the row as you grow</title></rect>`;
-      s+=`<text x="${x+MW/2}" y="${mY+MH/2+5}" fill="${col}" font-size="13" text-anchor="middle" opacity=".6">${ab}</text>`; } }
-  const oc=carrierOf(bk.outItem,bk.outRate), perRowOut=+(cols*t.out[1]*eff).toFixed(0), omk=carrierOf(bk.outItem,perRowOut).mk;
-  for(let c=0;c<cols;c++){ const x=cx(c); s+=`<line x1="${x}" y1="${mY+MH}" x2="${x}" y2="${outY}" stroke="#b692ff" stroke-width="1.5" opacity=".55"/>`; s+=`<rect x="${x-4}" y="${outY-4}" width="8" height="8" fill="#1a1426" stroke="#b692ff"><title>merger</title></rect>`; }
-  s+=`<line x1="${ML-48}" y1="${outY}" x2="${W-16}" y2="${outY}" stroke="#b692ff" stroke-width="3"${oc.carrier==='pipe'?' stroke-dasharray="5 3"':''}/>`;
-  s+=`<polygon points="${W-16},${outY} ${W-26},${outY-5} ${W-26},${outY+5}" fill="#b692ff"/>`;
-  s+=`<text x="${W-14}" y="${outY+18}" fill="#c9b6ff" font-size="11" text-anchor="end">${bk.outItem} ${perRowOut}/min per row · ${omk} → merge ${totalRows} rows → ${bk.outRate}/min total</text>`;
+  const gridRight=colX(cols-1)+MW, outBufX=gridRight+30;
+  const W=Math.max(680,outBufX+BUF+118), H=headH+rowsDrawn*rowPitch+18;
+  const rowTop=r=>headH+12+r*rowPitch, inY=(r,k)=>rowTop(r)+k*inGap, mY=r=>rowTop(r)+inBlock+8, oY=r=>mY(r)+MH+20;
+  const oc=carrierOf(bk.outItem,bk.outRate);
+  let s=`<svg viewBox="0 0 ${W} ${H}" style="width:100%;min-width:640px;height:auto;background:#0a0d12;border:1px solid var(--line);border-radius:8px;margin-bottom:8px">`;
+  for(let gx=0;gx<=W;gx+=24) s+=`<line x1="${gx}" y1="0" x2="${gx}" y2="${H}" stroke="#0f161d"/>`;
+  for(let gy=0;gy<=H;gy+=24) s+=`<line x1="0" y1="${gy}" x2="${W}" y2="${gy}" stroke="#0f161d"/>`;
+  s+=`<text x="14" y="22" fill="#e6edf3" font-size="14.5" font-weight="700">${bpEsc(bk.r)} — exact placement</text>`;
+  s+=`<text x="${W-14}" y="22" fill="#9aa7b4" font-size="11" text-anchor="end">${cols}/belt · ${totalRows} row${totalRows>1?'s':''} = ${total} total · ${now} now</text>`;
+  s+=`<text x="14" y="39" fill="#6b7785" font-size="9.5">▫ splitter · ◇ merger · 🗄 storage buffer · solid = build now (Phase ${np}), dashed = add as you scale${eff>1?'. Each machine @250%+Somersloop (×5)':''}.</text>`;
+  // OUTPUT storage buffer (right), spanning the rows, then out to the next stage / elevator
+  const obTop=mY(0)-8, obBot=oY(rowsDrawn-1)+8, obH=Math.max(26,obBot-obTop), oMidY=(obTop+obBot)/2;
+  s+=`<rect x="${outBufX}" y="${obTop}" width="${BUF}" height="${obH}" rx="6" fill="#181426" stroke="#7a6aa8"><title>storage buffer — ${bpEsc(bk.outItem)} out (${bk.outRate}/min)</title></rect>`;
+  s+=`<text x="${outBufX+BUF/2}" y="${oMidY}" fill="#c9b6ff" font-size="9" font-weight="700" text-anchor="middle" transform="rotate(90 ${outBufX+BUF/2} ${oMidY})">🗄 ${bpEsc(bpFit(bk.outItem,obH-14,5))}</text>`;
+  s+=`<line x1="${outBufX+BUF}" y1="${oMidY}" x2="${W-14}" y2="${oMidY}" stroke="#b692ff" stroke-width="2.6"${oc.carrier==='pipe'?' stroke-dasharray="5 3"':''}/>`;
+  s+=`<polygon points="${W-14},${oMidY} ${W-22},${oMidY-4} ${W-22},${oMidY+4}" fill="#b692ff"/>`;
+  s+=`<text x="${W-14}" y="${oMidY-6}" fill="#c9b6ff" font-size="9" text-anchor="end">${bk.outRate}/min · ${oc.mk}</text>`;
+  s+=`<text x="${W-14}" y="${oMidY+15}" fill="#7e8b97" font-size="8.5" text-anchor="end">→ ${d.id==='PA'?'▲ Elevator':'next stage / ★'}</text>`;
+  // INPUT storage buffers (top-left), one per material input
+  ins.map((inp,k)=>[inp,k]).filter(([inp])=>inp[1]>0).forEach(([inp],bi)=>{ const by=headH+6+bi*27, fluid=isFluidItem(inp[0]), bc=fluid?'#5aa9ff':'#2dd4bf';
+    s+=`<rect x="8" y="${by}" width="${BUF}" height="20" rx="4" fill="#0f1c24" stroke="${bc}"><title>${fluid?'fluid buffer / valve':'storage buffer'} — ${bpEsc(inp[0])} in (${bpEsc(srcLabel(inp[0],d.id))})</title></rect>`;
+    s+=`<text x="${8+BUF/2}" y="${by+13}" fill="#9fb6c4" font-size="8" text-anchor="middle">🗄 ${bpEsc(bpFit(inp[0],BUF-8,4.6))}</text>`; });
+  // per-row manifolds: input trunk(s) + splitters → machines → mergers + output trunk
+  for(let r=0;r<rowsDrawn;r++){ const baseIdx=r*cols, nowHere=Math.max(0,Math.min(cols,now-baseIdx));
+    ins.forEach((inp,k)=>{ const ty=inY(r,k), fluid=isFluidItem(inp[0]), bc=fluid?'#5aa9ff':'#2dd4bf', has=inp[1]>0;
+      if(has){ const perRow=+(cols*inp[1]*eff).toFixed(0), mk=carrierOf(inp[0],perRow).mk, lanes=Math.ceil(perRow/(fluid?600:1200));
+        s+=`<line x1="${ML-56}" y1="${ty}" x2="${xEnd}" y2="${ty}" stroke="${bc}" stroke-width="2.6"${fluid?' stroke-dasharray="5 3"':''}/>`;
+        s+=`<polygon points="${ML-56},${ty} ${ML-64},${ty-4} ${ML-64},${ty+4}" fill="${bc}"/>`;
+        s+=`<text x="${ML-68}" y="${ty+3}" fill="#cdd6df" font-size="9" text-anchor="end">${bpEsc(bpFit(inp[0]+' '+perRow+' '+mk+(lanes>1?' ×'+lanes:''),ML-74,4.6))}</text>`;
+        for(let c=0;c<cols;c++){ const x=cx(c)+(k-(nIn-1)/2)*6; s+=`<line x1="${x}" y1="${ty}" x2="${x}" y2="${mY(r)}" stroke="${bc}" stroke-width="1.3" opacity=".5"/>`; s+=`<rect x="${x-3.5}" y="${ty-3.5}" width="7" height="7" fill="#15202a" stroke="${bc}"><title>splitter</title></rect>`; }
+      } else s+=`<text x="${ML-68}" y="${ty+3}" fill="#6f7c8a" font-size="9" text-anchor="end">power only</text>`; });
+    for(let c=0;c<cols;c++){ const x=colX(c), on=c<nowHere, y=mY(r);
+      if(on){ s+=`<rect x="${x}" y="${y}" width="${MW}" height="${MH}" rx="5" fill="${col}"><title>${bk.b} · ${bk.r} — build now</title></rect>`;
+        s+=`<text x="${x+MW/2}" y="${y+MH/2+5}" fill="#0a0d12" font-size="13" font-weight="700" text-anchor="middle">${ab}</text>`; }
+      else { s+=`<rect x="${x}" y="${y}" width="${MW}" height="${MH}" rx="5" fill="none" stroke="${col}" stroke-width="1.5" stroke-dasharray="5 3" opacity=".55"><title>${bk.b} · ${bk.r} — add as you scale</title></rect>`;
+        s+=`<text x="${x+MW/2}" y="${y+MH/2+5}" fill="${col}" font-size="12" text-anchor="middle" opacity=".55">${ab}</text>`; } }
+    const oy=oY(r), perRowOut=+(cols*t.out[1]*eff).toFixed(0), omk=carrierOf(bk.outItem,perRowOut).mk, olanes=Math.ceil(perRowOut/(oc.carrier==='pipe'?600:1200));
+    for(let c=0;c<cols;c++){ const x=cx(c); s+=`<line x1="${x}" y1="${mY(r)+MH}" x2="${x}" y2="${oy}" stroke="#b692ff" stroke-width="1.3" opacity=".5"/>`; s+=`<rect x="${x-3.5}" y="${oy-3.5}" width="7" height="7" fill="#1a1426" stroke="#b692ff"><title>merger</title></rect>`; }
+    s+=`<line x1="${ML-56}" y1="${oy}" x2="${outBufX}" y2="${oy}" stroke="#b692ff" stroke-width="2.6"${oc.carrier==='pipe'?' stroke-dasharray="5 3"':''}/>`;
+    s+=`<polygon points="${outBufX},${oy} ${outBufX-8},${oy-4} ${outBufX-8},${oy+4}" fill="#b692ff"/>`;
+    s+=`<text x="${ML-56}" y="${oy-5}" fill="#9c8fc4" font-size="8.5">row ${r+1} out ${perRowOut}/min · ${omk}${olanes>1?' ×'+olanes:''}</text>`; }
+  const notes=[]; if(totalRows>rowsDrawn) notes.push('+ '+(totalRows-rowsDrawn)+' more identical row'+(totalRows-rowsDrawn>1?'s':'')+' for the full '+total); if(perLane>cols) notes.push(perLane+' machines fill one belt; '+cols+' drawn');
+  if(notes.length) s+=`<text x="${ML}" y="${H-6}" fill="#7e8b97" font-size="9">${bpEsc(notes.join(' · '))}.</text>`;
   return s+'</svg>';
 }
 function renderBpSteps(){
@@ -1331,11 +1376,56 @@ function renderBpSteps(){
   sp.querySelectorAll('.invrow[data-i]').forEach(row=>{ const it=row.querySelector('.it'); if(it) it.onclick=()=>{ bpHi=+row.dataset.i; renderBpStage(); renderBpSteps(); }; });
 }
 
-/* ============================ LIVE MAP node guide ============================ */
+/* ============================ BIG-PICTURE FLOW OVERVIEW ============================ */
+/* one-screen logical flow: raw inputs → the 7 districts → the 12 finals (★ PA) → ▲ elevator */
+function renderFlowOverview(){
+  const host=document.getElementById('flowOverview'); if(!host) return;
+  const dl=DISTRICTS.filter(d=>d.id!=='PA');
+  const dBoxH=54, dGap=12, startY=86, dx=180, dw=300;
+  const lastBot=startY+dl.length*(dBoxH+dGap)-dGap, busX=162;
+  const paX=566, paW=300, elX=936, elW=150, W=1104, H=lastBot+44, paH=lastBot-startY, midY=startY+paH/2;
+  let s=`<svg viewBox="0 0 ${W} ${H}" style="width:100%;min-width:880px;height:auto;background:#0a0d12;border:1px solid var(--line);border-radius:10px">`;
+  for(let gx=0;gx<=W;gx+=24) s+=`<line x1="${gx}" y1="0" x2="${gx}" y2="${H}" stroke="#0e151c"/>`;
+  s+=`<text x="84" y="32" fill="#9aa7b4" font-size="12" font-weight="700" text-anchor="middle">RAW INPUTS</text>`;
+  s+=`<text x="${dx+dw/2}" y="32" fill="#9aa7b4" font-size="12" font-weight="700" text-anchor="middle">PRODUCTION DISTRICTS</text>`;
+  s+=`<text x="${paX+paW/2}" y="32" fill="#ffce8a" font-size="12" font-weight="700" text-anchor="middle">★ PROJECT ASSEMBLY</text>`;
+  s+=`<text x="${elX+elW/2}" y="32" fill="#c9b6ff" font-size="12" font-weight="700" text-anchor="middle">▲ ELEVATOR</text>`;
+  // raw zone (grouped by transport)
+  let ry=startY+8; [['⛏ mined (belts)','Iron · Copper · Coal · Limestone · Caterium · Quartz'],['🛢 pumped (pipes)','Crude Oil · Water'],['🚆 railed in','Bauxite · Uranium · Nitrogen · SAM']].forEach(([h,items])=>{
+    s+=`<text x="8" y="${ry}" fill="#cdd6df" font-size="10" font-weight="700">${h}</text>`;
+    let line='',yy=ry+13; items.split(' · ').forEach(w=>{ if((line+' · '+w).length>20){ s+=`<text x="8" y="${yy}" fill="#8694a2" font-size="9">${bpEsc(line)}</text>`; line=w; yy+=12; } else line=line?line+' · '+w:w; });
+    if(line) s+=`<text x="8" y="${yy}" fill="#8694a2" font-size="9">${bpEsc(line)}</text>`; ry=yy+20; });
+  s+=`<line x1="${busX}" y1="${startY+10}" x2="${busX}" y2="${lastBot-10}" stroke="#3a4654" stroke-width="2"/>`;
+  // districts
+  dl.forEach((d,i)=>{ const y=startY+i*(dBoxH+dGap), my=y+dBoxH/2;
+    s+=`<line x1="${busX}" y1="${my}" x2="${dx}" y2="${my}" stroke="#2dd4bf" stroke-width="1.4" opacity=".5"/>`;
+    s+=`<polygon points="${dx},${my} ${dx-7},${my-3.5} ${dx-7},${my+3.5}" fill="#2dd4bf" opacity=".75"/>`;
+    s+=`<rect x="${dx}" y="${y}" width="${dw}" height="${dBoxH}" rx="8" fill="rgba(18,24,31,.92)" stroke="${d.col}" stroke-width="1.6"/>`;
+    s+=`<text x="${dx+12}" y="${y+20}" fill="${d.col}" font-size="12.5" font-weight="700">${d.id} · ${bpEsc(d.name)}</text>`;
+    const makes=d.t.map(tid=>T[tid]&&T[tid].out[0]).filter(Boolean);
+    s+=`<text x="${dx+12}" y="${y+38}" fill="#9aa7b4" font-size="9.5">${bpEsc(bpFit(makes.join(' · '),dw-26,4.6))}</text>`;
+    s+=`<text x="${dx+dw-10}" y="${y+20}" fill="#7e8b97" font-size="9" text-anchor="end">${/train/.test(d.near)?'🚆 ':'📍 '}P${d.phase}</text>`;
+    s+=`<line x1="${dx+dw}" y1="${my}" x2="${paX}" y2="${midY}" stroke="#b692ff" stroke-width="1" opacity=".26"/>`; });
+  s+=`<polygon points="${paX},${midY} ${paX-7},${midY-3.5} ${paX-7},${midY+3.5}" fill="#b692ff" opacity=".6"/>`;
+  // PA box with the 12 finals
+  s+=`<rect x="${paX}" y="${startY}" width="${paW}" height="${paH}" rx="10" fill="rgba(40,28,8,.5)" stroke="#ff9e3d" stroke-width="2"/>`;
+  s+=`<text x="${paX+12}" y="${startY+20}" fill="#ffce8a" font-size="12" font-weight="700">The 12 final parts → ★</text>`;
+  const finals=Object.keys(FINAL_RATES).sort((a,b)=>(FINAL_PHASE[a]||9)-(FINAL_PHASE[b]||9)||a.localeCompare(b));
+  finals.forEach((f,i)=>{ const yy=startY+40+i*((paH-50)/Math.max(1,finals.length-1)); s+=`<text x="${paX+14}" y="${yy}" fill="#e6edf3" font-size="10"><tspan fill="#ffce8a">P${FINAL_PHASE[f]||'?'}</tspan> · ${bpEsc(f)}</text>`; });
+  // PA → elevator
+  s+=`<line x1="${paX+paW}" y1="${midY}" x2="${elX}" y2="${midY}" stroke="#b692ff" stroke-width="2.6"/>`;
+  s+=`<polygon points="${elX},${midY} ${elX-9},${midY-5} ${elX-9},${midY+5}" fill="#b692ff"/>`;
+  // elevator with phase ladder
+  s+=`<rect x="${elX}" y="${startY}" width="${elW}" height="${paH}" rx="10" fill="#11161d" stroke="#7a6aa8" stroke-width="1.6"/>`;
+  s+=`<text x="${elX+elW/2}" y="${startY+22}" fill="#c9b6ff" font-size="12" font-weight="700" text-anchor="middle">▲ Space Elevator</text>`;
+  ['Phase 1','Phase 2','Phase 3','Phase 4','Phase 5 🚀'].forEach((p,i)=>{ s+=`<text x="${elX+elW/2}" y="${startY+50+i*((paH-60)/4)}" fill="#cdd6df" font-size="10.5" text-anchor="middle">${p}</text>`; });
+  s+=`<text x="${dx}" y="${H-9}" fill="#6b7785" font-size="9">Districts also feed each other (belts &amp; 🚆 trains) — see the 🗺️ Build Map for the exact cross-feeds &amp; spatial layout.</text>`;
+  host.innerHTML=s+'</svg>';
+}
 /* ============================ INIT ============================ */
 buildBuildMap();
 renderCards(); renderTemplates(); renderShopping(); renderInventory();
-renderBlueprints();
+renderBlueprints(); renderFlowOverview();
 </script>
 </body>
 </html>

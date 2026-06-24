@@ -61,6 +61,31 @@ online. Each phase bolts onto the last:
 
 ---
 
+## Building one district (the procedure)
+
+The **✅ Do Next** tab in the app is the live, numbered version of this; the
+steps below are the shape of it:
+
+1. **Lay the platform** above ground near the right ore, sized with room to grow —
+   you don't build the whole district at once.
+2. **Build it area-by-area** in the order the app lists (raw/ingot end first,
+   finished end last), each area only once its inputs are flowing.
+3. **Manifold each bank** — feed and collect from both sides; split a trunk into
+   parallel belts when its rate tops one belt (the **exact-placement** drill-down
+   shows every splitter, merger, belt and buffer). Fluids on pipes.
+4. **Expand it each phase** as later consumers come online (the app's *Expand …*
+   steps say how many machines to add).
+5. **MAX** — overclock every machine to 250% (3 Power Shards) + a Somersloop (2×),
+   ~⅕ the machines. Toggle ⚡ MAX off in Blueprints for a 100% plan.
+
+Don't forget the silent build-breakers: **power** (ramp biomass → coal → fuel →
+nuclear *ahead* of demand — see `power.md`), **utilities** (water; Heavy Oil
+Residue → Residual Fuel or sink; store/process Nuclear Waste), and **transport**
+(belts local, trains to E/F/G, drones for small high-value parcels — see
+`train-network.md`). The app flags these per district.
+
+---
+
 ## Placement (top-right desert)
 
 - **A, B, C** are your core local districts — cluster them a short belt-run from
