@@ -89,6 +89,7 @@
   .raw{display:inline-block;background:#222b36;border:1px solid var(--line);border-radius:6px;padding:2px 9px;margin:2px 4px 0 0;font-size:13px}
   .raw b{color:var(--orange)}
   /* phone: tighten the chrome so big system text doesn't dominate, and let text wrap */
+  .bpmobnote{display:none;background:#15202c;border:1px solid #2a3a4a;color:#cdd9e5;border-radius:8px;padding:9px 12px;margin:6px 0;font-size:12.5px;line-height:1.5}
   @media (max-width:640px){
     header{padding:8px 12px} header h1{font-size:15px} header p{font-size:10.5px;margin-top:2px}
     nav{padding:6px 7px 0;gap:2px} nav button{padding:7px 8px;font-size:12px}
@@ -97,6 +98,8 @@
     .pbtn,.toolbar button{font-size:12px;padding:5px 9px}
     .invrow{padding:8px 10px} .invrow .it .nm{font-size:13px} .invrow .it .nt{font-size:11.5px}
     table,th,td{font-size:12px} h2{font-size:18px} h3{font-size:15px}
+    /* the wide SVG diagrams don't reflow / don't follow the OS text-size — hide them on phones and lead with the text build list */
+    .bpdiagram{display:none} .bpmobnote{display:block}
   }
   @media print{
     nav,.toolbar,.controls,#bpControls,header p,.prog,.hubbar{display:none!important}
@@ -1321,7 +1324,9 @@ function renderBpStage(){
   const focus=(bpHi>=0 && banks[bpHi]) ? `<div class="meta" style="margin:10px 0 4px"><b style="color:var(--orange);font-size:14px">🔍 §${bpHi+1} ${banks[bpHi].r} — exact placement</b> (every machine, splitter, merger, belt &amp; storage buffer for this area):</div>`+beltWebCaptionHTML(d,banks[bpHi])+focusBankSvg(d,banks[bpHi]) : '';
   const layoutSvg=(bpLayout==='grid'?districtGridSvg:districtFlowSvg)(d,banks,bpHi);
   const crumb=`<div class="meta" style="margin:0 0 5px;font-size:12px"><span class="u" onclick="gotoMapStep('${d.id}')">🗺️ Build Map</span> <span style="color:#5b6b78">›</span> <b style="color:var(--txt)">${d.id==='PA'?'★ ':''}${d.id} · ${d.name}</b> <span style="color:#6b7785">(exact placement)</span>${(bpHi>=0&&banks[bpHi])?` <span style="color:#5b6b78">›</span> <span style="color:var(--orange)">§${bpHi+1} ${bpEsc(banks[bpHi].r)}</span>`:''}</div>`;
-  stage.innerHTML=crumb+`<div class="meta" style="margin-bottom:6px"><b style="color:var(--txt);font-size:15px">${d.id==='PA'?'★ ':''}${d.id} · ${d.name}${sc}</b> — 📍 ${d.near} · ${f.machines} machines · lay a flat <b>~${f.side}×${f.side}</b> platform (above ground, one level).${d.role?`<br><span style="color:#9fb0c0">🧭 ${d.role}</span>`:''}<br><b>Click any area block</b> to open its <b>exact placement</b> (every machine, splitter, merger, belt &amp; buffer) below. Toggle <b>Flow</b> (connections) / <b>Grid</b> (exact footprints).</div>`+placementLegendHTML(banks)+layoutSvg+focus;
+  stage.innerHTML=crumb+`<div class="meta" style="margin-bottom:6px"><b style="color:var(--txt);font-size:15px">${d.id==='PA'?'★ ':''}${d.id} · ${d.name}${sc}</b> — 📍 ${d.near} · ${f.machines} machines · lay a flat <b>~${f.side}×${f.side}</b> platform (above ground, one level).${d.role?`<br><span style="color:#9fb0c0">🧭 ${d.role}</span>`:''}<br><b>Click any area block</b> to open its <b>exact placement</b> (every machine, splitter, merger, belt &amp; buffer) below. Toggle <b>Flow</b> (connections) / <b>Grid</b> (exact footprints).</div>`
+    +`<div class="bpmobnote">📱 <b>Phone view.</b> The wide top-down diagrams are desktop-only (they can't follow your phone's text-size). Your <b>full build list for ${d.id} · ${d.name}</b> — every area with machines, belts &amp; “✅ done when” — is right below; tap a checkbox to track what you've placed.</div>`
+    +`<div class="bpdiagram">`+placementLegendHTML(banks)+layoutSvg+focus+`</div>`;
   stage.querySelectorAll('.bpsect').forEach(g=>g.onclick=()=>{ bpHi=+g.dataset.i; renderBpStage(); renderBpSteps(); });
   wireToggles(stage);
 }
