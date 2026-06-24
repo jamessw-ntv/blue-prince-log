@@ -16,8 +16,9 @@
   .hubbar a.backlink{display:inline-flex;align-items:center;gap:6px;text-decoration:none;color:var(--muted);background:var(--panel2);border:1px solid var(--line);padding:5px 12px;border-radius:999px;font-size:13px}
   .hubbar a.backlink:hover{color:var(--txt)}
   .hubbar .crumb{color:var(--muted);font-size:13px}.hubbar .crumb b{color:var(--txt)}
+  html{-webkit-text-size-adjust:100%;-moz-text-size-adjust:100%;text-size-adjust:100%}
   body{margin:0;font-family:-apple-system,Segoe UI,Roboto,Helvetica,Arial,sans-serif;
-       background:var(--bg);color:var(--txt);font-size:15px;line-height:1.5}
+       background:var(--bg);color:var(--txt);font-size:15px;line-height:1.5;overflow-x:hidden}
   header{padding:14px 22px;border-bottom:1px solid var(--line);background:linear-gradient(90deg,#16202b,#161b22)}
   header h1{margin:0;font-size:19px}header h1 span{color:var(--orange)}
   header p{margin:3px 0 0;color:var(--muted);font-size:13px}
@@ -1163,7 +1164,7 @@ function districtFlowSvg(d, banks, hiIdx){
   cols.forEach((c,ci)=>{ const totH=c.length*(CH+VGAP)-VGAP, y0=TOP+(maxH-totH)/2;
     c.forEach((bi,ri)=>{ pos[bi]={x:LEFT+ci*COLW, y:y0+ri*(CH+VGAP)}; }); });
   const cardR=p=>p.x+CW, midY=p=>p.y+CH/2, outX=W-104, outMid=TOP+maxH/2+6;
-  let s=`<svg viewBox="0 0 ${W} ${H}" style="width:${Math.round(100*bpZoom)}%;height:auto;background:#0a0d12;border:1px solid var(--line);border-radius:10px">`;
+  let s=`<svg viewBox="0 0 ${W} ${H}" style="width:${Math.round(100*bpZoom)}%;min-width:640px;height:auto;background:#0a0d12;border:1px solid var(--line);border-radius:10px">`;
   for(let gx=0;gx<=W;gx+=24) s+=`<line x1="${gx}" y1="0" x2="${gx}" y2="${H}" stroke="#0e151c"/>`;
   for(let gy=0;gy<=H;gy+=24) s+=`<line x1="0" y1="${gy}" x2="${W}" y2="${gy}" stroke="#0e151c"/>`;
   // stage lanes (alternating band) + headers — make the left→right stages read at a glance
@@ -1229,7 +1230,7 @@ function districtGridSvg(d, banks, hiIdx){
   const gridCW=xoff[maxStage]+colW[maxStage]+2, gridCH=Math.max(10,...cols.map(c=>c.reduce((s,i)=>s+bankSide(banks[i])+3,3)));
   const W=gridCW*cell, H=head+gridCH*cell+10;
   const X=cx=>cx*cell, Y=cy=>head+cy*cell;
-  let s=`<svg viewBox="0 0 ${W} ${H}" style="width:${Math.round(100*bpZoom)}%;height:auto;background:#0a0d12;border:1px solid var(--line);border-radius:10px">`;
+  let s=`<svg viewBox="0 0 ${W} ${H}" style="width:${Math.round(100*bpZoom)}%;min-width:640px;height:auto;background:#0a0d12;border:1px solid var(--line);border-radius:10px">`;
   // header
   s+=`<text x="12" y="20" fill="#e6edf3" font-size="13" font-weight="700">${d.id==='PA'?'★ ':''}${d.id} · ${d.name} — exact foundation grid</text>`;
   s+=`<text x="12" y="37" fill="#9aa7b4" font-size="10">1 square = 1 foundation (8 m). Blocks are each area's real footprint; columns = processing stage; lines = belts/pipes. Click a block for its belt web.</text>`;
