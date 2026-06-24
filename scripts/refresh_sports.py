@@ -44,7 +44,6 @@ def refresh_afl(data):
     st = get_json(f"https://api.squiggle.com.au/?q=standings;year={YEAR}").get("standings") or []
     if len(st) < 18:
         raise ValueError(f"AFL standings looked wrong ({len(st)} rows, expected 18)")
-    print("AFL standings sample:", json.dumps(st[0], ensure_ascii=False))  # one-shot schema check
     ladder = []
     for r in st:
         name = AFL_NAME.get(r["name"], r["name"])
