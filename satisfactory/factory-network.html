@@ -56,6 +56,10 @@
   /* keyboard focus ring for every interactive element (incl. the clickable SVG area groups) */
   :focus-visible{outline:2px solid var(--orange);outline-offset:2px;border-radius:4px}
   .bpsect:focus-visible,.bmmod:focus-visible{outline:2.5px solid #fff}
+  /* Build Map level-of-detail: zoomed out → big district cards only; zoomed in → the inner area blocks */
+  #bmap.bm-overview .bmdetail{display:none}
+  #bmap:not(.bm-overview) .bmoverview{display:none}
+  @media (prefers-reduced-motion: reduce){ *{transition:none!important;animation:none!important;scroll-behavior:auto!important} }
   .approx{background:#2a2412;border:1px solid #4a3d12;color:#ffd98a;padding:8px 12px;border-radius:8px;font-size:13px;margin-bottom:10px}
   .verified{background:#13261a;border:1px solid #1f4a2c;color:#8fe6a8;padding:7px 12px;border-radius:8px;font-size:12px;margin-bottom:10px}
   .tpl{background:var(--panel);border:1px solid var(--line);border-radius:10px;margin-bottom:10px;padding:13px 16px}
@@ -682,7 +686,8 @@ function renderInventory(){
   const next=ms.find(s=>!state[s.key]); const nextNo=next?STEPNO.get(next):ms.length;
   const nb=document.createElement('div'); nb.className='invphase'; nb.style.borderColor='var(--orange)';
   if(next){ let links='';
-    if(next.district) links=` <button class="pbtn" onclick="gotoBlueprint('${next.district}')">📐 Blueprint</button> <button class="pbtn" onclick="gotoMapStep('${next.district}')">🗺️ On map</button>`;
+    if(next.district){ const nai=(String(next.key).match(/^bp:[^:]+:(\d+)$/)||[])[1];
+      links=` <button class="pbtn" onclick="gotoBlueprint('${next.district}'${nai!=null?','+nai:''})">📐 Blueprint</button> <button class="pbtn" onclick="gotoMapStep('${next.district}')">🗺️ On map</button>`; }
     nb.innerHTML=`<h3 style="background:#2a1c08"><span class="chip p${next.phase}">Phase ${next.phase}</span> ▶ DO THIS NOW <span class="pct" style="margin-left:auto">Step ${nextNo} of ${ms.length}</span></h3>
       <div style="padding:12px 16px"><div style="font-size:16px;font-weight:700;color:var(--orange)">Step ${nextNo} — ${next.label}</div>
         <div class="nt" style="margin:5px 0 11px">${next.detail||''}</div>
@@ -714,7 +719,8 @@ function renderInventory(){
       const row=document.createElement('div'); row.className='invrow'+(ch?' done':'');
       if(isNext){ row.style.borderLeft='3px solid var(--orange)'; row.style.background='rgba(255,158,61,0.06)'; }
       const tag=s.district?`<span class="tag module">${s.district==='PA'?'★ PA':s.district}</span> `:(s.cat?`<span class="tag ${s.cat}">${s.cat}</span> `:'');
-      const links=s.district?` <span class="u" onclick="event.stopPropagation();gotoBlueprint('${s.district}')">📐</span> <span class="u" onclick="event.stopPropagation();gotoMapStep('${s.district}')">🗺️</span>`:(s.deliv?` <span class="u" onclick="event.stopPropagation();gotoMapStep('PA')">🗺️</span>`:'');
+      const _sai=(String(s.key).match(/^bp:[^:]+:(\d+)$/)||[])[1];
+      const links=s.district?` <span class="u" onclick="event.stopPropagation();gotoBlueprint('${s.district}'${_sai!=null?','+_sai:''})">📐</span> <span class="u" onclick="event.stopPropagation();gotoMapStep('${s.district}')">🗺️</span>`:(s.deliv?` <span class="u" onclick="event.stopPropagation();gotoMapStep('PA')">🗺️</span>`:'');
       row.innerHTML=`<input type="checkbox" ${ch?'checked':''}><div class="it"><div class="nm">${isNext?'▶ ':''}<b style="color:#8b97a3">Step ${no}</b> — ${tag}${s.label}${links}</div><div class="nt">${s.detail||''}</div></div>`;
       row.querySelector('input').onchange=e=>{ if(e.target.checked) state[s.key]=true; else delete state[s.key]; saveState(state); renderInventory(); if(typeof renderBlueprints==='function') renderBlueprints(); };
       sec.appendChild(row);
@@ -844,27 +850,34 @@ function buildBuildMap(){
     g.appendChild(svgEl('text',{x:x0+23,y:y0+21,fill:'#10161d','font-size':10,'font-weight':'700','text-anchor':'middle'})).textContent='P'+d.phase;
     g.appendChild(svgEl('text',{x:x0+42,y:y0+23,fill:d.col,'font-size':15,'font-weight':'700'})).textContent=bpFit((isPA?'★ ':'')+d.id+' · '+d.name,Math.max(60,p.w-nearW-52),7);
     g.appendChild(svgEl('text',{x:x0+p.w-9,y:y0+21,fill:'#7e8b97','font-size':11,'text-anchor':'end'})).textContent=nearTxt;
+    // overview label — shown when the map is zoomed out (detail hidden then) so each district stays legible
+    const go=svgEl('g',{class:'bmoverview'}); go.setAttribute('pointer-events','none');
+    const _mach=p.banks.reduce((s,b)=>s+b.n,0);
+    go.appendChild(svgEl('text',{x:x0+p.w/2,y:y0+p.h/2-8,fill:d.col,'font-size':40,'font-weight':'800','text-anchor':'middle','dominant-baseline':'central'})).textContent=bpFit((isPA?'★ ':'')+d.id+' · '+d.name,p.w-44,22);
+    go.appendChild(svgEl('text',{x:x0+p.w/2,y:y0+p.h/2+32,fill:'#9aa7b4','font-size':22,'text-anchor':'middle'})).textContent='Phase '+d.phase+' · '+_mach+' machines · '+(/train/.test(d.near)?'🚆 railed':'belts');
+    g.appendChild(go);
+    const gd=svgEl('g',{class:'bmdetail'});
     // raw resource nodes mined/piped INTO this district (above the panel)
     const raws=[...new Set(p.banks.flatMap(b=>b.inputs.map(x=>x[0])).filter(it=>itemDist[it]===undefined))];
     if(raws.length){ const sp=Math.min(150,(p.w-30)/raws.length); raws.forEach((rn,k)=>{ const fluid=isFluidItem(rn), rx=Math.round(x0+24+k*sp+sp/2-sp/2), ry=y0-30, bc=fluid?'#5aa9ff':'#2dd4bf';
-      const ln=svgEl('line',{x1:rx,y1:ry+6,x2:rx,y2:y0,stroke:bc,'stroke-width':1.6,opacity:.55}); if(fluid) ln.setAttribute('stroke-dasharray','3 3'); g.appendChild(ln);
-      g.appendChild(svgEl('circle',{cx:rx,cy:ry,r:5,fill:fluid?'#5aa9ff':'#8b97a3',stroke:'#0a0d12','stroke-width':1.5}));
-      g.appendChild(svgEl('text',{x:rx+8,y:ry+4-(k%2?12:0),fill:'#9aa7b4','font-size':10})).textContent=(fluid?'🛢 ':'⛏ ')+bpFit(rn,sp-14,5); }); }
+      const ln=svgEl('line',{x1:rx,y1:ry+6,x2:rx,y2:y0,stroke:bc,'stroke-width':1.6,opacity:.55}); if(fluid) ln.setAttribute('stroke-dasharray','3 3'); gd.appendChild(ln);
+      gd.appendChild(svgEl('circle',{cx:rx,cy:ry,r:5,fill:fluid?'#5aa9ff':'#8b97a3',stroke:'#0a0d12','stroke-width':1.5}));
+      gd.appendChild(svgEl('text',{x:rx+8,y:ry+4-(k%2?12:0),fill:'#9aa7b4','font-size':10})).textContent=(fluid?'🛢 ':'⛏ ')+bpFit(rn,sp-14,5); }); }
     // intra-district belts: connect each area to the areas it feeds (drawn under the blocks)
     const apos={}; p.cols.forEach((c,ci)=>c.forEach((bi,ri)=>{ apos[bi]={x:x0+p.padX+ci*(p.aw+p.gx),y:y0+p.padTop+ri*(p.ah+p.gy)}; }));
     const item2bi={}; p.banks.forEach((b,j)=>item2bi[b.outItem]=j);
     const lblBoxes=[]; // placed label rects so overlapping belt labels stagger instead of garbling
     p.banks.forEach((bk,bi)=>bk.inputs.forEach(([item])=>{ const src=item2bi[item]; if(src===undefined||src===bi) return; const a=apos[src],b=apos[bi]; if(!a||!b) return;
       const x1=a.x+p.aw,y1=a.y+p.ah/2,x2=b.x,y2=b.y+p.ah/2,mx=x1<x2?(x1+x2)/2:x1+12,fluid=isFluidItem(item),bc=fluid?'#5aa9ff':'#2dd4bf';
-      g.appendChild(svgEl('path',{d:'M'+x1+','+y1+' H'+mx+' V'+y2+' H'+x2,fill:'none',stroke:bc,'stroke-width':1.6,opacity:.7,'stroke-dasharray':fluid?'4 3':'none'}));
-      g.appendChild(svgEl('polygon',{points:x2+','+y2+' '+(x2-6)+','+(y2-3)+' '+(x2-6)+','+(y2+3),fill:bc}));
+      gd.appendChild(svgEl('path',{d:'M'+x1+','+y1+' H'+mx+' V'+y2+' H'+x2,fill:'none',stroke:bc,'stroke-width':1.6,opacity:.7,'stroke-dasharray':fluid?'4 3':'none'}));
+      gd.appendChild(svgEl('polygon',{points:x2+','+y2+' '+(x2-6)+','+(y2-3)+' '+(x2-6)+','+(y2+3),fill:bc}));
       const lab=item.length>16?item.slice(0,15)+'…':item, lw=lab.length*5.4;
       // keep the label inside the panel horizontally, and nudge it up off any label it would collide with
       let lx=mx, ly=(y1<y2?y1:y2)-3; const left=x0+4+lw/2, right=x0+p.w-4-lw/2;
       if(lx<left) lx=left; if(lx>right) lx=Math.max(left,right);
       let guard=0; while(guard++<10 && lblBoxes.some(B=>Math.abs(B.x-lx)<(B.w+lw)/2 && Math.abs(B.y-ly)<11)) ly-=11;
       lblBoxes.push({x:lx,y:ly,w:lw});
-      const tx=svgEl('text',{x:lx,y:ly,fill:bc,'font-size':10,'text-anchor':'middle'}); tx.textContent=lab; g.appendChild(tx); }));
+      const tx=svgEl('text',{x:lx,y:ly,fill:bc,'font-size':10,'text-anchor':'middle'}); tx.textContent=lab; gd.appendChild(tx); }));
     p.cols.forEach((c,ci)=>c.forEach((bi,ri)=>{ const bk=p.banks[bi], ax=x0+p.padX+ci*(p.aw+p.gx), ay=y0+p.padTop+ri*(p.ah+p.gy);
       const col=BCOL[bk.b]||'#8b97a3', ab=ABBR[bk.b]||'?', done=!!state['bp:'+d.id+':'+bi];
       const ag=svgEl('g',{class:'bpsect'}); ag.dataset.works=d.id; ag.dataset.i=bi; ag.style.cursor='pointer';
@@ -876,8 +889,9 @@ function buildBuildMap(){
       ag.appendChild(svgEl('text',{x:ax+4,y:ay+38,fill:'#10202a','font-size':7.5})).textContent=bk.outRate+'/min';
       ag.appendChild(svgEl('title',{})).textContent=bk.r+': '+bk.n+'× '+bk.b+' → '+bk.outRate+'/min (click for belt web)';
       ag.addEventListener('click',e=>{ e.stopPropagation(); bpMod=d.id; bpHi=bi; const b=document.querySelector('nav button[data-tab="blueprints"]'); if(b) b.click(); renderBlueprints(); });
-      g.appendChild(ag);
+      gd.appendChild(ag);
     }));
+    g.appendChild(gd);
     // --- drag to rearrange this panel (saved); clicking the body still opens the district summary ---
     g.dataset.bx=d.px; g.dataset.by=d.py;
     let dragStart=null, movedFar=false;
@@ -943,11 +957,14 @@ function enterDistrictMap(id){ const d=DMAP[id]; if(!d) return; const banks=dist
 function exitDistrictMap(){ const inside=document.getElementById('bmInside'); if(inside){ inside.style.display='none'; inside.innerHTML=''; }
   const map=document.getElementById('bmap'); if(map) map.style.display='';
   document.querySelectorAll('#tab-buildmap .legend').forEach(l=>l.style.display=''); }
-function bmApplyView(){ if(bmView) bmView.setAttribute('transform','translate('+bmZoom.tx+','+bmZoom.ty+') scale('+bmZoom.k+')'); }
+function bmApplyView(){ if(bmView) bmView.setAttribute('transform','translate('+bmZoom.tx+','+bmZoom.ty+') scale('+bmZoom.k+')'); bmSetLOD(); }
+function bmSetLOD(){ const svg=document.getElementById('bmap'); if(!svg||!bmFitZoom.k) return; svg.classList.toggle('bm-overview', bmZoom.k < bmFitZoom.k*1.8); }
 function bmSetupZoom(svg){
   if(svg._zoomReady) return; svg._zoomReady=true;
   const pt=e=>{ const r=svg.getBoundingClientRect(); return {x:(e.clientX-r.left)/r.width*BMW, y:(e.clientY-r.top)/r.height*BMH}; };
-  svg.addEventListener('wheel',e=>{ e.preventDefault(); const p=pt(e), f=e.deltaY<0?1.15:1/1.15, nk=Math.max(0.5,Math.min(6,bmZoom.k*f));
+  const finePointer=()=>window.matchMedia&&window.matchMedia('(pointer:fine)').matches;
+  svg.addEventListener('wheel',e=>{ if(!e.ctrlKey && !finePointer()) return; // touch/coarse pointer: let the page scroll, don't trap it
+    e.preventDefault(); const p=pt(e), f=e.deltaY<0?1.15:1/1.15, nk=Math.max(0.5,Math.min(6,bmZoom.k*f));
     const wx=(p.x-bmZoom.tx)/bmZoom.k, wy=(p.y-bmZoom.ty)/bmZoom.k; bmZoom.k=nk; bmZoom.tx=p.x-wx*nk; bmZoom.ty=p.y-wy*nk; bmApplyView(); },{passive:false});
   let drag=false,lx=0,ly=0;
   svg.addEventListener('pointerdown',e=>{ drag=true; lx=e.clientX; ly=e.clientY; svg.style.cursor='grabbing'; });
@@ -959,7 +976,8 @@ function bmSetupZoom(svg){
 function bpResolve(id){ if(DMAP[id]) return id; if(typeof WORKS2DIST!=='undefined'&&WORKS2DIST[id]) return WORKS2DIST[id];
   if(T[id]){ const d=DISTRICTS.find(x=>x.t.includes(id)); if(d) return d.id; }
   const d2=DISTRICTS.find(x=>x.t.some(tid=>T[tid]&&T[tid].out[0]===id)); if(d2) return d2.id; return 'A'; }
-function gotoBlueprint(id){ bpMod=bpResolve(id); bpHi=-1; const b=document.querySelector('nav button[data-tab="blueprints"]'); if(b) b.click(); renderBlueprints(); }
+function gotoBlueprint(id, ai){ bpMod=bpResolve(id); bpHi=(ai!=null&&+ai>=0)?+ai:-1; const b=document.querySelector('nav button[data-tab="blueprints"]'); if(b) b.click(); renderBlueprints();
+  if(bpHi>=0) setTimeout(()=>{ const ss=document.querySelectorAll('#bpStage svg'); const el=ss[ss.length-1]; if(el&&el.scrollIntoView) el.scrollIntoView({behavior:'smooth',block:'center'}); },70); }
 function bmApply(){
   const hi=BM_SEQ[bmStep].node;
   document.querySelectorAll('#bmap .bmnode').forEach(n=>{ const s=+n.dataset.seq; n.style.transition='opacity .4s';
@@ -1353,7 +1371,7 @@ function focusBankSvg(d,bk){
   const rowPitch=inBlock+10+mh+oTrunk+byTrunk+rowGap;
   const colX=c=>ML+c*PITCH, cx=c=>colX(c)+mw/2, xEnd=cx(cols-1);
   const gridRight=colX(cols-1)+mw, outBufX=gridRight+34;
-  const W=Math.max(720,outBufX+BUF+160), H=headH+rowsDrawn*rowPitch+(by?34:16);
+  const W=Math.max(720,outBufX+BUF+160), H=headH+rowsDrawn*rowPitch+(by?44:30);
   const rowTop=r=>headH+8+r*rowPitch, inY=(r,k)=>rowTop(r)+k*inGap, mY=r=>rowTop(r)+inBlock+8, oY=r=>mY(r)+mh+oTrunk, byYr=r=>oY(r)+byTrunk;
   const oc=carrierOf(bk.outItem,bk.outRate);
   let s=`<svg viewBox="0 0 ${W} ${H}" style="width:100%;min-width:680px;height:auto;background:#0a0d12;border:1px solid var(--line);border-radius:8px;margin-bottom:8px">`;
@@ -1415,6 +1433,7 @@ function focusBankSvg(d,bk){
   const notes=[]; if(totalRows>rowsDrawn) notes.push((totalRows-rowsDrawn)+' more identical row'+(totalRows-rowsDrawn>1?'s':'')+' for the full '+total);
   if(perLane>cols) notes.push(perLane+' fit one belt, '+cols+' drawn'); notes.push('~'+(fp.w*fp.h*total)+' machine-foundations + belt aisles');
   s+=`<text x="${ML}" y="${H-6}" fill="#7e8b97" font-size="9">${bpEsc(notes.join(' · '))}.</text>`;
+  if(!powerOnly && cols>=perLane && cols>1) s+=`<text x="${ML}" y="${H-18}" fill="#e0a050" font-size="9">⚠ a full row sits right on the belt's limit — feed the manifold from BOTH ends (or drop 1 machine) so the last machine never starves.</text>`;
   return s+'</svg>';
 }
 function renderBpSteps(){
