@@ -159,7 +159,7 @@
       <span class="k"><span class="ln" style="border-color:var(--purple)"></span>Finished part → ★</span>
       <span class="k">♻ <b style="color:#8fe6a8">Build-once — districts only grow.</b></span>
     </div>
-    <p class="hint">🔍 <b>Scroll to zoom, drag empty space to pan, double-click to reset the view.</b> ✋ <b>Drag any district panel to rearrange the map</b> — your layout is saved; <b>⤢ Reset layout</b> restores the auto compass placement. Each district is a panel containing its <b>area blocks</b> (§N · building ×count) — <b>zoom in</b> to read them, <b>click an area</b> for its belt web. Lines are the real cross-district feeds: <b style="color:#2dd4bf">teal belts</b> between core districts, <b style="color:#ff9e3d">dashed orange 🚆 trains</b> to/from the far districts (Aluminium / Nuclear / Quantum), <b style="color:#b692ff">purple</b> = finished parts to ★. ▶ <b>Play</b> / the slider builds it out and darkens what's not built yet. Click a district header for its summary + a focused placement view.</p>
+    <p class="hint">🔭 <b>Zoomed out = the whole base at a glance</b> (big district cards); <b>zoom in</b> and each panel reveals its <b>area blocks</b> (§N · building ×count) — <b>click an area</b> to drill into its exact placement. 🔍 <b>Scroll/pinch to zoom, drag empty space to pan, double-click to reset.</b> ✋ <b>Drag any district panel to rearrange the map</b> — your layout is saved; <b>⤢ Reset layout</b> restores the auto compass placement. Lines are the real cross-district feeds: <b style="color:#2dd4bf">teal belts</b> between core districts, <b style="color:#ff9e3d">dashed orange 🚆 trains</b> to/from the far districts (Aluminium / Nuclear / Quantum), <b style="color:#b692ff">purple</b> = finished parts to ★. ▶ <b>Play</b> / the slider builds it out and darkens what's not built yet. Click a district header for its summary + a focused placement view.</p>
   </section>
 
   <!-- BLUEPRINTS — fixed grid floor-plans, zoom over→module, per-step check-off -->
@@ -173,7 +173,7 @@
 
   <!-- DISTRICTS overview -->
   <section id="tab-modules" class="tab">
-    <p class="hint">The <b>6 production districts + ★ Project Assembly</b>. Each is a self-contained mini-base making one material family, sized to total demand. Click a card to see what it makes, what it imports, and its raw feed; jump to its floor plan or the map.</p>
+    <p class="hint">The <b>index</b> of all <b>7 production districts + ★ Project Assembly</b> — each a self-contained mini-base making one material family, sized to total demand. This tab is the <b>reference list</b>; 🗺️ <b>Build Map</b> is the spatial view (overview → zoom in for detail) and 📐 <b>Blueprints</b> is the exact placement. Click a card for what it makes, what it imports, and its raw feed; jump to its floor plan or the map.</p>
     <div id="cards"></div>
   </section>
 
@@ -1309,7 +1309,8 @@ function renderBpStage(){
   stage.style.overflowX='auto';
   const focus=(bpHi>=0 && banks[bpHi]) ? `<div class="meta" style="margin:10px 0 4px"><b style="color:var(--orange);font-size:14px">🔍 §${bpHi+1} ${banks[bpHi].r} — exact placement</b> (every machine, splitter, merger, belt &amp; storage buffer for this area):</div>`+beltWebCaptionHTML(d,banks[bpHi])+focusBankSvg(d,banks[bpHi]) : '';
   const layoutSvg=(bpLayout==='grid'?districtGridSvg:districtFlowSvg)(d,banks,bpHi);
-  stage.innerHTML=`<div class="meta" style="margin-bottom:6px"><b style="color:var(--txt);font-size:15px">${d.id==='PA'?'★ ':''}${d.id} · ${d.name}${sc}</b> — 📍 ${d.near} · ${f.machines} machines · lay a flat <b>~${f.side}×${f.side}</b> platform (above ground, one level).${d.role?`<br><span style="color:#9fb0c0">🧭 ${d.role}</span>`:''}<br><b>Click any area block</b> to open its <b>exact placement</b> (every machine, splitter, merger, belt &amp; buffer) below. Toggle <b>Flow</b> (connections) / <b>Grid</b> (exact footprints).</div>`+placementLegendHTML(banks)+layoutSvg+focus;
+  const crumb=`<div class="meta" style="margin:0 0 5px;font-size:12px"><span class="u" onclick="gotoMapStep('${d.id}')">🗺️ Build Map</span> <span style="color:#5b6b78">›</span> <b style="color:var(--txt)">${d.id==='PA'?'★ ':''}${d.id} · ${d.name}</b> <span style="color:#6b7785">(exact placement)</span>${(bpHi>=0&&banks[bpHi])?` <span style="color:#5b6b78">›</span> <span style="color:var(--orange)">§${bpHi+1} ${bpEsc(banks[bpHi].r)}</span>`:''}</div>`;
+  stage.innerHTML=crumb+`<div class="meta" style="margin-bottom:6px"><b style="color:var(--txt);font-size:15px">${d.id==='PA'?'★ ':''}${d.id} · ${d.name}${sc}</b> — 📍 ${d.near} · ${f.machines} machines · lay a flat <b>~${f.side}×${f.side}</b> platform (above ground, one level).${d.role?`<br><span style="color:#9fb0c0">🧭 ${d.role}</span>`:''}<br><b>Click any area block</b> to open its <b>exact placement</b> (every machine, splitter, merger, belt &amp; buffer) below. Toggle <b>Flow</b> (connections) / <b>Grid</b> (exact footprints).</div>`+placementLegendHTML(banks)+layoutSvg+focus;
   stage.querySelectorAll('.bpsect').forEach(g=>g.onclick=()=>{ bpHi=+g.dataset.i; renderBpStage(); renderBpSteps(); });
   wireToggles(stage);
 }
@@ -1432,6 +1433,7 @@ function focusBankSvg(d,bk){
     s+=`<text x="${outBufX+BUF/2-2}" y="${syY+13}" fill="#e0a050" font-size="8" text-anchor="middle">⚠ ${bpEsc(bpFit(by[0],BUF,4.4))} → sink</text>`; }
   const notes=[]; if(totalRows>rowsDrawn) notes.push((totalRows-rowsDrawn)+' more identical row'+(totalRows-rowsDrawn>1?'s':'')+' for the full '+total);
   if(perLane>cols) notes.push(perLane+' fit one belt, '+cols+' drawn'); notes.push('~'+(fp.w*fp.h*total)+' machine-foundations + belt aisles');
+  const fluidIns=ins.filter(x=>isFluidItem(x[0])); if(fluidIns.length>=2) notes.push(fluidIns.length+' fluid inputs — a SEPARATE pipe manifold per fluid (never merge different fluids)');
   s+=`<text x="${ML}" y="${H-6}" fill="#7e8b97" font-size="9">${bpEsc(notes.join(' · '))}.</text>`;
   if(!powerOnly && cols>=perLane && cols>1) s+=`<text x="${ML}" y="${H-18}" fill="#e0a050" font-size="9">⚠ a full row sits right on the belt's limit — feed the manifold from BOTH ends (or drop 1 machine) so the last machine never starves.</text>`;
   return s+'</svg>';
@@ -1455,7 +1457,10 @@ function renderBpSteps(){
   const across=Math.ceil(Math.sqrt(banks.length)), deep=Math.ceil(banks.length/across);
   h+=`<div class="invrow${padDone?' done':''}" style="border:1px solid var(--line);border-radius:7px;margin-bottom:6px"><input type="checkbox" data-k="pad" ${padDone?'checked':''}><div class="it"><div class="nm"><span class="tag milestone">pad</span> Lay a flat raised <b>~${f.side}×${f.side}</b> platform near ${d.near} (above ground).</div><div class="nt"><b>Build it area-by-area as you go — not all at once.</b> Do the §steps below in order (each area only when its inputs are flowing). Efficient shape: arrange the ${banks.length} areas roughly <b>${across} across × ${deep} deep</b>, flowing left→right, with belt/pipe lanes between rows and room on one side to expand in later phases.</div></div></div>`;
   if(isRail){ const rd=!!state['bp:'+d.id+':rail'];
-    h+=`<div class="invrow${rd?' done':''}" data-rail="1" style="border:1px solid var(--line);border-radius:7px;margin-bottom:6px"><input type="checkbox" data-k="rail" ${rd?'checked':''}><div class="it"><div class="nm"><span class="tag milestone">🚆 rail</span> This district is <b>far</b>. Build a <b>train station + freight platform</b> here loading its finished outputs, a locomotive, and rail back to a <b>receiving station beside your core / ★</b>. Ship refined parts, never raw ore. <span class="tag qty">see train-network.md</span></div></div></div>`;
+    const exps=banks.filter(bk=>BM_FINALS.has(bk.outItem)||DISTRICTS.some(o=>o.id!==d.id&&o.t.some(tid=>T[tid]&&T[tid].in.some(z=>z[0]===bk.outItem))));
+    const expRate=Math.round(exps.reduce((s,bk)=>s+bk.outRate,0)), platforms=Math.max(1,exps.reduce((s,bk)=>s+Math.ceil(bk.outRate/780),0)), cars=Math.max(1,Math.ceil(expRate/1560));
+    const drone=expRate>0&&expRate<=90;
+    h+=`<div class="invrow${rd?' done':''}" data-rail="1" style="border:1px solid var(--line);border-radius:7px;margin-bottom:6px"><input type="checkbox" data-k="rail" ${rd?'checked':''}><div class="it"><div class="nm"><span class="tag milestone">🚆 rail</span> This district is <b>far</b> — ship its <b>refined output</b> in (never raw ore). Exports ~<b>${expRate}/min</b> across <b>${exps.length}</b> item${exps.length===1?'':'s'}.</div><div class="nt">Build a <b>train station</b> here with ~<b>${platforms} freight platform${platforms>1?'s':''}</b> (≈ one per output belt), a <b>locomotive + ~${cars} freight car${cars>1?'s':''}</b>, and a matching <b>receiving station beside your core / ★</b> that unloads onto belts. Power both stations.${drone?` <span class="tag qty">low rate — a <b>drone port</b> each end + a battery line is simpler than a train here</span>`:` <span class="tag qty">add <b>drones</b> for any small, high-value dribble (port each end + batteries)</span>`} <span class="tag qty">full plan: train-network.md</span></div></div></div>`;
   }
   // ⚠ utilities & byproducts (water pumps, Heavy Oil Residue, nuclear waste)
   const water=banks.reduce((s,b)=>{ const w=b.inputs.find(x=>x[0]==='Water'); return s+(w?w[1]:0); },0);
@@ -1503,18 +1508,21 @@ function renderFlowOverview(){
   dl.forEach((d,i)=>{ const y=startY+i*(dBoxH+dGap), my=y+dBoxH/2;
     s+=`<line x1="${busX}" y1="${my}" x2="${dx}" y2="${my}" stroke="#2dd4bf" stroke-width="1.4" opacity=".5"/>`;
     s+=`<polygon points="${dx},${my} ${dx-7},${my-3.5} ${dx-7},${my+3.5}" fill="#2dd4bf" opacity=".75"/>`;
+    s+=`<g class="foDist" data-id="${d.id}" style="cursor:pointer"><title>Open ${d.id} · ${bpEsc(d.name)} on the Build Map</title>`;
     s+=`<rect x="${dx}" y="${y}" width="${dw}" height="${dBoxH}" rx="8" fill="rgba(18,24,31,.92)" stroke="${d.col}" stroke-width="1.6"/>`;
     s+=`<text x="${dx+12}" y="${y+20}" fill="${d.col}" font-size="12.5" font-weight="700">${d.id} · ${bpEsc(d.name)}</text>`;
     const makes=d.t.map(tid=>T[tid]&&T[tid].out[0]).filter(Boolean);
     s+=`<text x="${dx+12}" y="${y+38}" fill="#9aa7b4" font-size="9.5">${bpEsc(bpFit(makes.join(' · '),dw-26,4.6))}</text>`;
-    s+=`<text x="${dx+dw-10}" y="${y+20}" fill="#7e8b97" font-size="9" text-anchor="end">${/train/.test(d.near)?'🚆 ':'📍 '}P${d.phase}</text>`;
+    s+=`<text x="${dx+dw-10}" y="${y+20}" fill="#7e8b97" font-size="9" text-anchor="end">${/train/.test(d.near)?'🚆 ':'📍 '}P${d.phase}</text></g>`;
     s+=`<line x1="${dx+dw}" y1="${my}" x2="${paX}" y2="${midY}" stroke="#b692ff" stroke-width="1" opacity=".26"/>`; });
   s+=`<polygon points="${paX},${midY} ${paX-7},${midY-3.5} ${paX-7},${midY+3.5}" fill="#b692ff" opacity=".6"/>`;
   // PA box with the 12 finals
+  s+=`<g class="foDist" data-id="PA" style="cursor:pointer"><title>Open ★ Project Assembly on the Build Map</title>`;
   s+=`<rect x="${paX}" y="${startY}" width="${paW}" height="${paH}" rx="10" fill="rgba(40,28,8,.5)" stroke="#ff9e3d" stroke-width="2"/>`;
   s+=`<text x="${paX+12}" y="${startY+20}" fill="#ffce8a" font-size="12" font-weight="700">The 12 final parts → ★</text>`;
   const finals=Object.keys(FINAL_RATES).sort((a,b)=>(FINAL_PHASE[a]||9)-(FINAL_PHASE[b]||9)||a.localeCompare(b));
   finals.forEach((f,i)=>{ const yy=startY+40+i*((paH-50)/Math.max(1,finals.length-1)); s+=`<text x="${paX+14}" y="${yy}" fill="#e6edf3" font-size="10"><tspan fill="#ffce8a">P${FINAL_PHASE[f]||'?'}</tspan> · ${bpEsc(f)}</text>`; });
+  s+=`</g>`;
   // PA → elevator
   s+=`<line x1="${paX+paW}" y1="${midY}" x2="${elX}" y2="${midY}" stroke="#b692ff" stroke-width="2.6"/>`;
   s+=`<polygon points="${elX},${midY} ${elX-9},${midY-5} ${elX-9},${midY+5}" fill="#b692ff"/>`;
@@ -1522,8 +1530,9 @@ function renderFlowOverview(){
   s+=`<rect x="${elX}" y="${startY}" width="${elW}" height="${paH}" rx="10" fill="#11161d" stroke="#7a6aa8" stroke-width="1.6"/>`;
   s+=`<text x="${elX+elW/2}" y="${startY+22}" fill="#c9b6ff" font-size="12" font-weight="700" text-anchor="middle">▲ Space Elevator</text>`;
   ['Phase 1','Phase 2','Phase 3','Phase 4','Phase 5 🚀'].forEach((p,i)=>{ s+=`<text x="${elX+elW/2}" y="${startY+50+i*((paH-60)/4)}" fill="#cdd6df" font-size="10.5" text-anchor="middle">${p}</text>`; });
-  s+=`<text x="${dx}" y="${H-9}" fill="#6b7785" font-size="9">Districts also feed each other (belts &amp; 🚆 trains) — see the 🗺️ Build Map for the exact cross-feeds &amp; spatial layout.</text>`;
+  s+=`<text x="${dx}" y="${H-9}" fill="#6b7785" font-size="9">Click a district to open it on the 🗺️ Build Map. Districts also feed each other (belts &amp; 🚆 trains) — the map shows the exact cross-feeds &amp; spatial layout.</text>`;
   host.innerHTML=s+'</svg>';
+  host.querySelectorAll('.foDist').forEach(g=>g.onclick=()=>gotoMapStep(g.dataset.id));
 }
 /* ============================ A11Y: keyboard operability ============================ */
 /* Clickable spans (.u/.tlink) and the clickable SVG area/district groups (.bpsect/.bmmod)
@@ -1531,15 +1540,15 @@ function renderFlowOverview(){
 function _a11yMark(el){ if(el.getAttribute&&!el.hasAttribute('tabindex')){ el.setAttribute('tabindex','0'); el.setAttribute('role','button');
   if(!el.getAttribute('aria-label')){ const t=el.querySelector&&el.querySelector('title'); const lbl=(t&&t.textContent)||el.textContent||''; if(lbl) el.setAttribute('aria-label',lbl.trim().slice(0,90)); } } }
 new MutationObserver(ms=>ms.forEach(m=>m.addedNodes.forEach(n=>{ if(n.nodeType!==1) return;
-  if(n.matches&&n.matches('.u,.tlink,.bpsect,.bmmod,.bptoggle')) _a11yMark(n);
-  if(n.querySelectorAll) n.querySelectorAll('.u,.tlink,.bpsect,.bmmod,.bptoggle').forEach(_a11yMark); }))).observe(document.body,{childList:true,subtree:true});
+  if(n.matches&&n.matches('.u,.tlink,.bpsect,.bmmod,.bptoggle,.foDist')) _a11yMark(n);
+  if(n.querySelectorAll) n.querySelectorAll('.u,.tlink,.bpsect,.bmmod,.bptoggle,.foDist').forEach(_a11yMark); }))).observe(document.body,{childList:true,subtree:true});
 document.addEventListener('keydown',e=>{ if(e.key!=='Enter'&&e.key!==' ') return; const el=document.activeElement;
-  if(el&&el.matches&&el.matches('.u,.tlink,.bpsect,.bmmod,.bptoggle')){ e.preventDefault(); el.dispatchEvent(new MouseEvent('click',{bubbles:true})); } });
+  if(el&&el.matches&&el.matches('.u,.tlink,.bpsect,.bmmod,.bptoggle,.foDist')){ e.preventDefault(); el.dispatchEvent(new MouseEvent('click',{bubbles:true})); } });
 /* ============================ INIT ============================ */
 buildBuildMap();
 renderCards(); renderTemplates(); renderShopping(); renderInventory();
 renderBlueprints(); renderFlowOverview();
-document.querySelectorAll('.u,.tlink,.bpsect,.bmmod,.bptoggle').forEach(_a11yMark);
+document.querySelectorAll('.u,.tlink,.bpsect,.bmmod,.bptoggle,.foDist').forEach(_a11yMark);
 </script>
 </body>
 </html>
