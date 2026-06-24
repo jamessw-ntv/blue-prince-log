@@ -14,10 +14,10 @@ corrected late-game recipes (all values **per minute, 1 machine, 100%**):
 | **Heavy Modular Frame** | **40 Steel Pipe, 240 Screw** (+10 Modular Frame, 10 Encased Beam → 2) | |
 | **Ficsite Ingot** | **40 Reanimated SAM + 240 Iron Ingot → 10** | inputs had been 10× too low (critical SAM/Iron under-supply) |
 | **Biochemical Sculptor** | **0.5 ADS + 40 Ficsite Trigon + 10 Water → 2** | Blender 120 s; values had been the per-craft amounts (2×) |
+| **Crystal Oscillator** | **18 Quartz Crystal + 14 Cable + 2.5 RIP → 1** | Manufacturer 120 s makes 2; values had been the per-craft amounts (36/28/5, i.e. 2×) |
 | **FLUID set** | Plastic & Rubber are **solids (belts)**, removed from fluids | they were wrongly piped |
 
-Re-verified **correct** (no change): Crystal Oscillator (36 Quartz + 28 Cable +
-5 RIP → 1), Diamonds (600 Coal → 30), Dark Matter Crystal (30 Diamonds + 150
+Re-verified **correct** (no change): Diamonds (600 Coal → 30), Dark Matter Crystal (30 Diamonds + 150
 Residue → 30), Singularity Cell (1 Pasta + 20 DM Crystal + 100 Iron Plate + 200
 Concrete → 10), Supercomputer (7.5 Computer + 3.75 AI Limiter + 5.625 HSC + 52.5
 Plastic → 1.875), High-Speed Connector (210 Quickwire + 37.5 Cable + 3.75 CB →
@@ -123,12 +123,12 @@ Smelter/Constructor = Tier 0 · Assembler = Tier 2 · Foundry = Tier 3 · Refine
 | Circuit Board | Assembler | 15 Copper Sheet + 30 Plastic | 7.5 |
 | Computer | Manufacturer | 10 Circuit Board + 20 Cable + 40 Plastic | 2.5 |
 | Encased Industrial Beam | Assembler | 18 Steel Beam + 36 Concrete | 6 |
-| Heavy Modular Frame | Manufacturer | 10 Modular Frame + 20 Steel Pipe + 10 Encased Industrial Beam + 120 Screw | 2 |
+| Heavy Modular Frame | Manufacturer | 10 Modular Frame + 40 Steel Pipe + 10 Encased Industrial Beam + 240 Screw | 2 |
 | AI Limiter | Assembler | 25 Copper Sheet + 100 Quickwire | 5 |
 | High-Speed Connector | Manufacturer | 210 Quickwire + 37.5 Cable + 3.75 Circuit Board | 3.75 |
 | Supercomputer | Manufacturer | 7.5 Computer + 3.75 AI Limiter + 5.625 High-Speed Connector + 52.5 Plastic | 1.875 |
 | Electromagnetic Control Rod | Assembler | 6 Stator + 4 AI Limiter | 4 |
-| Crystal Oscillator | Manufacturer | 36 Quartz Crystal + 28 Cable + 5 RIP | 1 *(approx)* |
+| Crystal Oscillator | Manufacturer | 18 Quartz Crystal + 14 Cable + 2.5 RIP | 1 |
 
 ### Phase-3 finals
 | Item | Building | Inputs/min | Out/min |
@@ -174,7 +174,7 @@ Smelter/Constructor = Tier 0 · Assembler = Tier 2 · Foundry = Tier 3 · Refine
 | Time Crystal | Converter | 12 Diamonds | 6 |
 | Diamonds | Particle Accelerator | 600 Coal | 30 |
 | Ficsite Trigon | Constructor | 30 Ficsite Ingot | 90 |
-| Ficsite Ingot | Converter | 4 Reanimated SAM + 24 Iron Ingot | 10 |
+| Ficsite Ingot | Converter | 40 Reanimated SAM + 240 Iron Ingot | 10 |
 | Reanimated SAM | Constructor | 120 SAM Ore | 30 |
 
 **Building corrections caught during verification (vs. common older guides):**

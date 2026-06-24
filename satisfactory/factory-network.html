@@ -124,6 +124,7 @@
       <button class="pbtn" id="bmZoomOut" title="Zoom out">−</button>
       <button class="pbtn" id="bmZoomIn" title="Zoom in">+</button>
       <button class="pbtn" id="bmZoomReset" title="Reset view">⟲</button>
+      <button class="pbtn" id="bmResetLayout" title="Restore the auto compass layout" style="margin-left:6px">⤢ Reset layout</button>
     </div>
     <div id="bmCaption" class="hint" style="min-height:40px;background:var(--panel);border:1px solid var(--line);border-radius:8px;padding:9px 13px;color:var(--txt)"></div>
     <svg id="bmap" viewBox="0 0 1200 760" style="width:100%;height:auto;background:#0a0d12;border:1px solid var(--line);border-radius:10px;margin-top:8px"></svg>
@@ -136,7 +137,7 @@
       <span class="k"><span class="ln" style="border-color:var(--purple)"></span>Finished part → ★</span>
       <span class="k">♻ <b style="color:#8fe6a8">Build-once — districts only grow.</b></span>
     </div>
-    <p class="hint">🔍 <b>Scroll to zoom right in, drag to pan, double-click to reset.</b> Each district is a panel containing its <b>area blocks</b> (§N · building ×count) — <b>zoom in</b> to read them, <b>click an area</b> for its belt web. Lines are the real cross-district feeds: <b style="color:#2dd4bf">teal belts</b> between core districts, <b style="color:#ff9e3d">dashed orange 🚆 trains</b> to/from the far districts (Aluminium / Nuclear / Quantum), <b style="color:#b692ff">purple</b> = finished parts to ★. ▶ <b>Play</b> / the slider builds it out and darkens what's not built yet. Click a district header for its summary + a focused placement view.</p>
+    <p class="hint">🔍 <b>Scroll to zoom, drag empty space to pan, double-click to reset the view.</b> ✋ <b>Drag any district panel to rearrange the map</b> — your layout is saved; <b>⤢ Reset layout</b> restores the auto compass placement. Each district is a panel containing its <b>area blocks</b> (§N · building ×count) — <b>zoom in</b> to read them, <b>click an area</b> for its belt web. Lines are the real cross-district feeds: <b style="color:#2dd4bf">teal belts</b> between core districts, <b style="color:#ff9e3d">dashed orange 🚆 trains</b> to/from the far districts (Aluminium / Nuclear / Quantum), <b style="color:#b692ff">purple</b> = finished parts to ★. ▶ <b>Play</b> / the slider builds it out and darkens what's not built yet. Click a district header for its summary + a focused placement view.</p>
   </section>
 
   <!-- BLUEPRINTS — fixed grid floor-plans, zoom over→module, per-step check-off -->
@@ -182,15 +183,17 @@
   </section>
 
   <section id="tab-guide" class="tab">
+    <h2>The big picture</h2>
+    <p class="hint" style="margin-top:0">Raw resources → the <b>7 production districts</b> → the <b>12 final parts</b> assembled at <b>★ Project Assembly</b> → delivered to the <b>▲ Space Elevator</b>. (The spatial layout and exact cross-district feeds live in the 🗺️ <b>Build Map</b>; this is just the shape of it.)</p>
+    <div id="flowOverview" style="overflow-x:auto"></div>
     <h2>How to use this</h2>
     <ol>
       <li><b><code>README.md</code></b> — philosophy, map/node/transport strategy, master timeline.</li>
-      <li><b><code>build-guide.md</code></b> — step-by-step, exact bills per module.</li>
-      <li><b><code>templates.md</code></b> — reusable building blocks.</li>
+      <li><b><code>architecture.md</code></b> — the district model (7 material mini-bases + ★ Project Assembly), why it's grouped this way, and the build/expand order + per-district build procedure.</li>
+      <li><b><code>templates.md</code></b> — what a reusable cell/template is (the per-machine specs live in the 🧩 Templates tab + VERIFICATION.md, not duplicated).</li>
       <li><b><code>train-network.md</code></b> — end-game rail plan.</li>
       <li><b><code>power.md</code></b> — power plan: when to switch biomass → coal → fuel → nuclear.</li>
       <li><b><code>VERIFICATION.md</code></b> — every recipe/quantity cross-checked, with sources.</li>
-      <li><b><code>architecture.md</code></b> — the district model (6 material mini-bases + 1 Project Assembly), why it's grouped this way, and the build/expand order.</li>
       <li><b>This app</b> — the <b>✅ Do Next</b> spine walks you HUB → launch one tick-off step at a time; the <b>🗺️ Build Map</b> shows the districts; the <b>📐 Blueprints</b> tab is the per-district top-down floor plan + turn-by-turn build steps (with the <b>▦ All districts</b> appendix); plus Templates, Items We Need, and your saved inventory.</li>
     </ol>
     <h3>Just want to follow it? Do this:</h3>
@@ -212,6 +215,22 @@
       </tbody>
     </table>
     <p class="hint">If a trunk needs more than your best belt can carry, <b>split it across two belts</b> until the next Mk unlocks. Fluids (oil, water, alumina, nitrogen, heavy oil residue) always go on <b>pipes</b>, never belts.</p>
+    <h3>Glossary — the words this plan uses</h3>
+    <table>
+      <thead><tr><th>Term</th><th>What it means</th></tr></thead>
+      <tbody>
+        <tr><td><b>District</b></td><td>A self-contained mini-base grouped around one material family (Ironworks, Copperworks…). Each base material is made <b>once</b>, sized to total demand, and shared. 7 production districts + ★ Project Assembly.</td></tr>
+        <tr><td><b>Bank / area (§N)</b></td><td>One production cell inside a district: <b>N copies of the same machine</b> making one item (e.g. §3 · Screw farm = several Constructors making screws).</td></tr>
+        <tr><td><b>Processing stage</b></td><td>How far down the chain a bank sits. The <b>placement view</b> lays stages out left → right, so raw-ish parts are on the left and finished parts on the right.</td></tr>
+        <tr><td><b>Manifold row</b></td><td>One input belt feeding a row of machines through <b>splitters</b>, their outputs <b>merging</b> back onto one belt. It's the repeating unit you blueprint once and <b>stack</b>.</td></tr>
+        <tr><td><b>Belt web / exact placement</b></td><td>The machine-level drill-down: every machine, <b>splitter (▫)</b>, <b>merger (◇)</b>, belt segment and <b>storage buffer (🗄)</b> for one bank. Click any area block to open it.</td></tr>
+        <tr><td><b>Splitter / merger</b></td><td>The logistics piece that taps a belt off to a machine (splitter) or combines machine outputs back onto one belt (merger).</td></tr>
+        <tr><td><b>Storage buffer (🗄)</b></td><td>A container between stages that evens out flow so a line never starves or backs up.</td></tr>
+        <tr><td><b>Overclock + Somersloop</b></td><td>Running a machine at <b>250%</b> (3 Power Shards) and slotting a <b>Somersloop</b> (2× output) = <b>5× per machine</b>, so you build ~⅕ the machines. That's the ⚡ <b>MAX</b> toggle; turn it off for 100% counts.</td></tr>
+        <tr><td><b>Trunk / lane</b></td><td>The main belt of a flow. When its rate tops a belt's throughput, you split it into parallel <b>lanes</b> (e.g. "2× Mk.6") and feed the manifold from both sides.</td></tr>
+        <tr><td><b>Phase</b></td><td>A Space Elevator delivery milestone (1–5). Each completed phase unlocks the next tech tier and the next districts.</td></tr>
+      </tbody>
+    </table>
     <h3>The order, in one breath</h3>
     <p>Tier 0 → Assembler → <b>Ironworks</b> + <b>★ Smart Plating</b> → Phase 1 → <b>Steelworks</b> + <b>Copperworks</b> + <b>★ Versatile Framework/Automated Wiring</b> → Phase 2 → <b>Oil & Electronics</b> + <b>★ Modular Engine/ACU</b> → Phase 3 → <b>trains</b> + <b>Aluminium</b>/<b>Nuclear</b> + <b>★ ADS/MFG/TPR/Nuclear Pasta</b> → Phase 4 → <b>Quantum & SAM</b> + <b>★ Sculptor/AI Server/Warp Drive</b> → Phase 5 → <b>launch 🚀</b>.</p>
     <h3>Tune the late game</h3>
@@ -283,7 +302,7 @@ const T = {
  'T-COPPERPOWDER':{name:'Copper Powder cell',b:'Constructor',r:'Copper Powder', in:[['Copper Ingot',300]],            out:['Copper Powder',50], fp:'1×2', ph:4},
  'T-FUSEDFRAME':{name:'Fused Modular Frame cell', b:'Blender', r:'Fused Modular Frame', in:[['Heavy Modular Frame',1.5],['Aluminum Casing',75],['Nitrogen Gas',37.5]], out:['Fused Modular Frame',1.5], fp:'3×4', ph:4},
  'T-PCC':      {name:'Pressure Conversion Cube cell', b:'Assembler', r:'Pressure Conversion Cube', in:[['Fused Modular Frame',1],['Radio Control Unit',2]], out:['Pressure Conversion Cube',1], fp:'2×3', ph:4},
- 'T-CRYSTALOSC':{name:'Crystal Oscillator cell', b:'Manufacturer', r:'Crystal Oscillator', in:[['Quartz Crystal',36],['Cable',28],['Reinforced Iron Plate',5]], out:['Crystal Oscillator',1], fp:'3×4', ph:4, approx:true},
+ 'T-CRYSTALOSC':{name:'Crystal Oscillator cell', b:'Manufacturer', r:'Crystal Oscillator', in:[['Quartz Crystal',18],['Cable',14],['Reinforced Iron Plate',2.5]], out:['Crystal Oscillator',1], fp:'3×4', ph:4},
  /* Aluminium chain (standard; ratios approx — spot-check) */
  'T-ALUMINA':  {name:'Alumina Solution line',b:'Refinery',  r:'Alumina Solution',in:[['Bauxite',120],['Water',180]], out:['Alumina Solution',120], fp:'2×4', ph:4, approx:true},
  'T-ALSCRAP':  {name:'Aluminum Scrap line', b:'Refinery',   r:'Aluminum Scrap', in:[['Alumina Solution',240],['Coal',120]], out:['Aluminum Scrap',360], fp:'2×4', ph:4, approx:true},
@@ -393,9 +412,7 @@ const DELIVERIES = {
   5:[['Nuclear Pasta',1000,'M9'],['Biochemical Sculptor',1000,'M10'],['AI Expansion Server',256,'M11'],['Ballistic Warp Drive',200,'M12']],
 };
 const PHASE_NAMES={0:'Bootstrap',1:'Distribution Platform',2:'Construction Dock',3:'Main Body',4:'Propulsion',5:'Project Assembly'};
-const FAR=['Bauxite','Uranium','Nitrogen Gas','Crude Oil','SAM Ore'];
 const FLUID=['Crude Oil','Water','Alumina Solution','Nitrogen Gas','Dark Matter Residue','Excited Photonic Matter','Heavy Oil Residue','Fuel','Sulfuric Acid','Nitric Acid'];
-const C={hub:'#ff9e3d',module:'#2dd4bf',feeder:'#5aa9ff',raw:'#8b97a3',phase:'#b692ff',machine:'#cfe6ff'};
 
 const INVENTORY = [
  {phase:0,category:'milestone',id:'P0-M1',item:'Complete all Tier 0 HUB upgrades (in order)',qty:'',note:'Unlocks Smelter/Constructor/Miner/Space Elevator'},
@@ -453,135 +470,12 @@ function moduleMachines(m){
       inputs:t.in.map(([it,rt])=>[it,+(rt*n*f).toFixed(1)])};
   });
 }
-function producedSet(m){ const s=new Set(); m.cells.forEach(([tid])=>s.add(T[tid].out[0])); return s; }
-function moduleRaw(m){ const made=producedSet(m); const raw=new Set();
-  m.cells.forEach(([tid])=>T[tid].in.forEach(([it])=>{ if(!made.has(it)) raw.add(it); })); return [...raw]; }
-function moduleRawRates(m){ const made=producedSet(m); const acc={};
-  m.cells.forEach(([tid,n,clock])=>{ const f=clockF(clock);
-    T[tid].in.forEach(([it,rt])=>{ if(!made.has(it)) acc[it]=(acc[it]||0)+rt*n*f; }); });
-  Object.keys(acc).forEach(k=>acc[k]=+acc[k].toFixed(1)); return acc; }
-function templateUsedBy(tid){ return MODULES.filter(m=>m.cells.some(c=>c[0]===tid)).map(m=>m.id); }
-function cellArea(tid){ const m=String(T[tid].fp).match(/^(\d+)×(\d+)/); return m?(+m[1]*+m[2]):4; }
-function moduleFootprint(m){ let a=0,cnt=0; m.cells.forEach(([tid,n])=>{ a+=cellArea(tid)*n; cnt+=n; });
-  const pad=Math.ceil(a*1.6), side=Math.ceil(Math.sqrt(pad)); return {machines:cnt,area:a,pad,side,m:side*8}; }
-function footprintHTML(m){ const f=moduleFootprint(m);
-  return `<span class="raw">🏗️ ${f.machines} machines · leave a <b>~${f.side}×${f.side}</b> pad (${f.pad} foundations, ~${f.m}×${f.m} m, belts+spacing included)</span>`; }
-const hasFG = false; // 3D view removed — everything is fixed 2D now
-
 /* ============================ TABS ============================ */
 document.querySelectorAll('nav button').forEach(b=>b.onclick=()=>{
   document.querySelectorAll('nav button').forEach(x=>x.classList.remove('active'));
   document.querySelectorAll('.tab').forEach(x=>x.classList.remove('active'));
   b.classList.add('active'); document.getElementById('tab-'+b.dataset.tab).classList.add('active');
 });
-
-/* ============================ 3D MAP ============================ */
-let Graph=null, maxPhase=5; const expanded=new Set();
-function baseGraph(){
-  const nodes=[], links=[]; const rawSeen=new Set();
-  nodes.push({id:'HUB',label:'CENTRAL HUB',kind:'hub',phase:0,color:C.hub,val:14});
-  for(let p=1;p<=maxPhase;p++) nodes.push({id:'SE'+p,label:'▲ PHASE '+p,kind:'phase',phase:p,color:C.phase,val:9});
-  MODULES.forEach(m=>{
-    if(m.id==='HUB'||m.phase>maxPhase) return;
-    nodes.push({id:m.id,label:m.id+' '+m.name,kind:m.type==='feeder'?'feeder':'module',mod:m.id,phase:m.phase,
-      color:m.type==='feeder'?C.feeder:C.module,val:8});
-    moduleRaw(m).forEach(r=>{
-      const rid='raw_'+r;
-      if(!rawSeen.has(rid)){ rawSeen.add(rid); nodes.push({id:rid,label:r,kind:'raw',phase:m.phase,color:C.raw,val:5}); }
-      links.push({source:rid,target:m.id,transport:FAR.includes(r)?'train':(FLUID.includes(r)?'pipe':'belt')});
-    });
-    if(m.type!=='feeder') links.push({source:m.id,target:'HUB',transport:FLUID.includes(m.out)?'pipe':'belt',label:m.out});
-    else links.push({source:m.id,target:'HUB',transport:'pipe'});
-  });
-  for(let p=1;p<=maxPhase;p++) links.push({source:'HUB',target:'SE'+p,transport:'deliver'});
-  return {nodes,links};
-}
-function withExpansions(g){
-  const nodes=g.nodes.slice(), links=g.links.slice();
-  expanded.forEach(mid=>{
-    const m=MODULES.find(x=>x.id===mid); if(!m||m.phase>maxPhase) return;
-    const mach=moduleMachines(m); const made={};
-    mach.forEach((x,i)=>{ const nid=mid+'::'+i;
-      nodes.push({id:nid,label:x.n+'× '+x.b+'\n'+x.r,kind:'machine',mod:mid,tid:x.tid,phase:m.phase,color:C.machine,val:4});
-      made[x.outItem]=nid; });
-    mach.forEach((x,i)=>{ const nid=mid+'::'+i;
-      x.inputs.forEach(([it])=>{ if(made[it]) links.push({source:made[it],target:nid,transport:'belt',internal:true}); });
-      if(x.outItem===m.out) links.push({source:nid,target:mid,transport:'belt',internal:true});
-    });
-  });
-  return {nodes,links};
-}
-const tColor={belt:'#2dd4bf',pipe:'#5aa9ff',train:'#ff9e3d',deliver:'#b692ff'};
-function renderGraph(){ if(!hasFG) return; Graph.graphData(withExpansions(baseGraph())); }
-function initGraph(){
-  if(!hasFG) return;
-  const el=document.getElementById('graph3d');
-  Graph=ForceGraph3D()(el)
-    .backgroundColor('#0a0d12')
-    .nodeLabel(n=>`<b>${n.label.replace(/\n/g,' · ')}</b>`)
-    .nodeColor(n=>n.color).nodeVal(n=>n.val||5).nodeOpacity(0.95)
-    .linkColor(l=>tColor[l.transport]||'#3f4956')
-    .linkWidth(l=>l.internal?0.6:1.2).linkOpacity(0.55)
-    .linkDirectionalArrowLength(3).linkDirectionalArrowRelPos(1)
-    .linkDirectionalParticles(l=>l.internal?0:2).linkDirectionalParticleWidth(1.4)
-    .onNodeClick(node=>onNode(node))
-    .width(document.getElementById('mapwrap').clientWidth).height(640);
-  if(typeof SpriteText!=='undefined'){
-    try{
-      Graph.nodeThreeObject(n=>{ try{ const s=new SpriteText(n.label.replace(/\n/g,'  ')); s.color=n.color;
-        s.textHeight=(n.kind==='hub'||n.kind==='phase')?7:(n.kind==='machine'?3.5:5);
-        s.backgroundColor='rgba(10,13,18,0.6)'; s.padding=2; s.borderRadius=3; return s; }catch(e){ return undefined; } });
-    }catch(e){ /* labels fall back to hover tooltips + default spheres */ }
-  }
-  try{ Graph.d3Force('charge').strength(-260); Graph.d3Force('link').distance(80); }catch(e){}
-  renderGraph();
-}
-function onNode(node){
-  if(node.kind==='module'||node.kind==='feeder'){
-    if(expanded.has(node.id)) expanded.delete(node.id); else expanded.add(node.id);
-    renderGraph(); showModulePanel(MODULES.find(m=>m.id===node.id));
-  } else if(node.kind==='machine'){ showTemplatePanel(node.tid); }
-  else if(node.kind==='hub'){ showHubPanel(); }
-  else if(node.kind==='phase'){ showPhasePanel(+node.id.slice(2)); }
-  else if(node.kind==='raw'){ showRawPanel(node.label); }
-}
-function openPanel(html){ document.getElementById('panelbody').innerHTML=html; document.getElementById('panel').classList.add('open'); }
-function closePanel(){ document.getElementById('panel').classList.remove('open'); }
-function billHTML(m){
-  const rows=moduleMachines(m).map(x=>`<tr><td class="n">${x.n}×</td><td>${x.b}</td><td>${x.r}</td><td>${x.clock}</td><td>${x.outRate}</td></tr>`).join('');
-  return `<table><thead><tr><th>#</th><th>Building</th><th>Recipe</th><th>Clock</th><th>Out/min</th></tr></thead><tbody>${rows}</tbody></table>`;
-}
-function showModulePanel(m){
-  const exp=expanded.has(m.id); const raw=moduleRawRates(m);
-  const rawHTML=Object.entries(raw).map(([k,v])=>`<span class="raw">${k} <b>${v}/min</b></span>`).join('')||'—';
-  openPanel(`<h3><span class="x" onclick="closePanel()">✕</span><span class="chip p${m.phase}">P${m.phase}</span> ${m.id} · ${m.name}</h3>
-    <div class="meta">${m.desc}</div>
-    ${m.approx?`<div class="approx">⚙️ ${m.note||'Sub-counts tune in the planner.'} <a href="https://www.satisfactorytools.com/" target="_blank">planner →</a></div>`:'<div class="verified">✔ Verified bill (standard recipes, 100% clock).</div>'}
-    <div class="meta"><b>Output:</b> ${m.out} (${m.target})<br><b>Raw feed:</b><br>${rawHTML}<br><b>Footprint:</b><br>${footprintHTML(m)}</div>
-    <button class="pbtn" onclick="toggleExpand('${m.id}')">${exp?'⟲ Collapse machines':'🔍 Expand machines in 3D'}</button>
-    <h4 style="margin:14px 0 4px">Bill of buildings</h4>${billHTML(m)}`);
-}
-function toggleExpand(id){ if(expanded.has(id)) expanded.delete(id); else expanded.add(id); renderGraph(); showModulePanel(MODULES.find(m=>m.id===id)); }
-function showTemplatePanel(tid){
-  const t=T[tid]; const used=templateUsedBy(tid);
-  openPanel(`<h3><span class="x" onclick="closePanel()">✕</span>${t.name}</h3>
-    <div class="meta"><span style="font-family:monospace;color:var(--teal)">${tid}</span> · ${t.b} · <b>${t.r}</b> ${t.approx?'<span class="tag qty">approx</span>':''}</div>
-    <div class="meta"><b>Per machine @100%:</b><br>In: ${t.in.map(i=>i[0]+' '+i[1]).join(', ')||'(none)'}<br>Out: ${t.out[0]} ${t.out[1]}/min<br>Footprint: ${t.fp}</div>
-    <div class="usedby">Used by: ${used.map(u=>`<span class="u" onclick="gotoModule('${u}')">${u}</span>`).join('')||'—'}</div>`);
-}
-function showHubPanel(){ openPanel(`<h3><span class="x" onclick="closePanel()">✕</span>Central Hub</h3>
-  <div class="meta">${MODULES[0].desc}</div>
-  <p class="hint">Every module's output belts/rails here; the Space Elevator and your mall live here all game.</p>`); }
-function showPhasePanel(p){ const d=DELIVERIES[p]||[];
-  openPanel(`<h3><span class="x" onclick="closePanel()">✕</span><span class="chip p${p}">Phase ${p}</span> ${PHASE_NAMES[p]}</h3>
-   <table><thead><tr><th>Deliver</th><th>Qty</th><th>From</th></tr></thead><tbody>${d.map(x=>`<tr><td>${x[0]}</td><td class="n">${x[1]}</td><td><span class="u" onclick="gotoModule('${x[2]}')">${x[2]}</span></td></tr>`).join('')}</tbody></table>`); }
-function showRawPanel(name){ const mods=MODULES.filter(m=>m.phase<=maxPhase && moduleRaw(m).includes(name));
-  openPanel(`<h3><span class="x" onclick="closePanel()">✕</span>${name}</h3>
-   <div class="meta">${FAR.includes(name)?'🚆 Far resource — rail it in (refine at source).':(FLUID.includes(name)?'🔵 Fluid — pipe it.':'🟢 Local resource — belt it.')}</div>
-   <p class="hint">Feeds: ${mods.map(m=>`<span class="u" onclick="gotoModule('${m.id}')">${m.id}</span>`).join('')||'—'}</p>`); }
-function gotoModule(id){ const did=(typeof bpResolve==='function')?bpResolve(id):id; document.querySelector('nav button[data-tab="modules"]').click();
-  const el=document.getElementById('card_'+did); if(el){ el.classList.add('open'); el.scrollIntoView({behavior:'smooth',block:'center'});
-    el.style.outline='2px solid var(--orange)'; setTimeout(()=>el.style.outline='',1600);} }
 
 /* ============================ MODULE CARDS ============================ */
 function renderCards(){
@@ -595,6 +489,7 @@ function renderCards(){
     const card=document.createElement('div'); card.className='card'; card.id='card_'+d.id;
     card.innerHTML=`<h3><span class="chip p${d.phase}">P${d.phase}</span> ${d.id==='PA'?'★ ':''}${d.id} · ${d.name}<span class="tgt">${f.machines} machines${bpMax?' (MAX)':''}</span></h3>
       <div class="body">
+        ${d.role?`<div class="approx" style="background:#15202c;border-color:#2a3a4a;color:#cdd9e5">🧭 <b>Role:</b> ${d.role}</div>`:''}
         <div class="meta">📍 <b>${d.near}</b> · lay a <b>~${f.side}×${f.side}</b> pad · ${banks.length} production banks<br>
         <b>Makes:</b> ${makes}<br>
         <b>Imports from other districts:</b> ${impHTML}<br>
@@ -725,10 +620,6 @@ let state=loadState(), hideDone=false;
 function gotoMapStep(id){ const b=document.querySelector('nav button[data-tab="buildmap"]'); if(b) b.click(); const did=(typeof WORKS2DIST!=='undefined'&&WORKS2DIST[id])||id; if(BM_SEQI[did]!==undefined){ bmStep=BM_SEQI[did]; bmApply(); if(typeof showDistrict==='function') showDistrict(did); } }
 function worksOutputRate(id){ const m=MODULES.find(x=>x.id===id); if(!m) return 0; const b=moduleMachines(m); const f=b.find(x=>x.outItem===m.out)||b[b.length-1]; return f?f.outRate:0; }
 function delivInfo(r){ const list=DELIVERIES[r.phase]||[]; const d=list.find(x=>x[0]===r.item&&x[1]===r.qty)||list.find(x=>x[0]===r.item); if(!d) return null; const rate=worksOutputRate(d[2]); return {module:d[2],rate,min:rate?Math.round(r.qty/rate):0}; }
-function worksSections(id){ const m=MODULES.find(x=>x.id===id); if(!m) return []; const banks=moduleMachines(m), f=moduleFootprint(m);
-  const arr=[{key:'bp:'+id+':pad',works:id,phase:m.phase,label:'Lay a ~'+f.side+'×'+f.side+' pad for '+(WORKS[id]||m.name),detail:'Flat &amp; wide, one level; leave a gap to the right for the next works.'}];
-  banks.forEach((bk,i)=>arr.push({key:'bp:'+id+':'+i,works:id,phase:m.phase,label:'§'+(i+1)+' '+sName(bk)+' — place '+bk.n+'× '+bk.b,detail:bk.r+(bk.clock&&bk.clock!=='100%'?' @'+bk.clock:'')+' · feed '+(bk.inputs.map(x=>x[0]).join(', ')||'raw ore')+' · output <b>'+bk.outItem+' '+bk.outRate+'/min</b> on a '+(beltMk(bk.outRate)||'Mk.1')+' belt'}));
-  return arr; }
 function stripTags(s){ return String(s).replace(/<[^>]+>/g,' ').replace(/\s+/g,' ').trim(); }
 function invStep(r){ let det=r.note||''; if(r.category==='deliverable'){ const di=delivInfo(r); if(di&&di.min) det+=' · ≈ <b>'+di.min+' min</b> at '+di.rate+'/min'; }
   return {key:r.id,phase:r.phase,label:(r.qty!==''?r.qty+'× ':'')+r.item,detail:det,cat:r.category,deliv:r.category==='deliverable',district:r.category==='deliverable'?'PA':null}; }
@@ -837,27 +728,19 @@ document.getElementById('loadcode').onclick=()=>{ const code=prompt('Paste a pro
 
 /* ============================ 2D BUILD MAP — material districts ============================ */
 const SVGNS='http://www.w3.org/2000/svg';
-const phaseCol={0:'#bcd0e0',1:'#ffce8a',2:'#8fe6ff',3:'#b7f0a0',4:'#d3b6ff',5:'#ffadc4'};
-const BM_CTR={x:600,y:400}; const BM_ELEV=BM_CTR;
 /* the modular mini-base DISTRICTS (see architecture.md). ang = compass placement; PA = centre. */
 const DISTRICTS=[
- {id:'A',name:'Ironworks',near:'iron + limestone',ang:200,phase:1,col:'#6fcf97',t:['T-IRON','T-PLATE','T-ROD','T-SCREW','T-RIP','T-ROTOR','T-FRAME','T-CONCRETE']},
- {id:'B',name:'Copperworks',near:'copper + caterium',ang:340,phase:2,col:'#5ab0e6',t:['T-COPPER','T-CATERIUM','T-WIRE','T-CABLE','T-COPSHEET','T-QUICKWIRE','T-AILIMITER']},
- {id:'C',name:'Steelworks',near:'iron + coal',ang:158,phase:2,col:'#e6915a',t:['T-STEEL','T-BEAM','T-PIPE','T-EIBEAM','T-STATOR','T-MOTOR']},
- {id:'D',name:'Oil & Electronics',near:'crude oil',ang:55,phase:3,col:'#b692ff',t:['T-PLASTIC','T-RUBBER','T-QUARTZX','T-SILICA','T-CIRCUIT','T-COMPUTER','T-HSCONN','T-HMFRAME','T-CRYSTALOSC','T-SUPERCOMP']},
- {id:'E',name:'Aluminium & Cooling',near:'bauxite (train)',ang:-48,phase:4,col:'#cbb27a',t:['T-ALUMINA','T-ALSCRAP','T-ALINGOT','T-ALCASING','T-ALCLAD','T-HEATSINK','T-COOLING','T-FUSEDFRAME','T-RCU','T-TURBOMOTOR','T-EMROD']},
- {id:'F',name:'Nuclear & Particle',near:'uranium (train)',ang:28,phase:4,col:'#ff6b9d',t:['T-COPPERPOWDER','T-PCC','T-PASTA','T-DIAMONDS']},
- {id:'G',name:'Quantum & SAM',near:'SAM (train)',ang:108,phase:5,col:'#ffadc4',t:['T-REANSAM','T-DMRESIDUE','T-FICINGOT','T-FICTRIGON','T-TIMECRYSTAL','T-DMCRYSTAL','T-EPM','T-NQP','T-SUPEROSC','T-SINGCELL']},
- {id:'PA',name:'Project Assembly',near:'by the Space Elevator',ang:null,phase:1,col:'#ff9e3d',t:['T-SMARTPLATE','T-VERSFRAME','T-AUTOWIRE','T-MODENGINE','T-ACU','T-ADS','T-MFG','T-TPR','T-SCULPTOR','T-AISERVER','T-WARP']},
+ {id:'A',name:'Ironworks',near:'iron + limestone',ang:200,phase:1,col:'#6fcf97',role:'The backbone — smelts iron and makes the plates, rods, screws, RIP, rotors & frames almost everything else is built from.',t:['T-IRON','T-PLATE','T-ROD','T-SCREW','T-RIP','T-ROTOR','T-FRAME','T-CONCRETE']},
+ {id:'B',name:'Copperworks',near:'copper + caterium',ang:340,phase:2,col:'#5ab0e6',role:'All things copper & caterium — wire, cable, copper sheet, quickwire and AI limiters that feed the electronics chains.',t:['T-COPPER','T-CATERIUM','T-WIRE','T-CABLE','T-COPSHEET','T-QUICKWIRE','T-AILIMITER']},
+ {id:'C',name:'Steelworks',near:'iron + coal',ang:158,phase:2,col:'#e6915a',role:'Iron + coal → steel, then the beams, pipes, stators and motors the heavier machinery needs.',t:['T-STEEL','T-BEAM','T-PIPE','T-EIBEAM','T-STATOR','T-MOTOR']},
+ {id:'D',name:'Oil & Electronics',near:'crude oil',ang:55,phase:3,col:'#b692ff',role:'Refines oil into plastic & rubber, then builds circuit boards, computers, heavy frames, crystal oscillators & supercomputers.',t:['T-PLASTIC','T-RUBBER','T-QUARTZX','T-SILICA','T-CIRCUIT','T-COMPUTER','T-HSCONN','T-HMFRAME','T-CRYSTALOSC','T-SUPERCOMP']},
+ {id:'E',name:'Aluminium & Cooling',near:'bauxite (train)',ang:-48,phase:4,col:'#cbb27a',role:'Railed-in bauxite → the aluminium chain, heat sinks, cooling systems, radio control units, fused frames & turbo motors.',t:['T-ALUMINA','T-ALSCRAP','T-ALINGOT','T-ALCASING','T-ALCLAD','T-HEATSINK','T-COOLING','T-FUSEDFRAME','T-RCU','T-TURBOMOTOR','T-EMROD']},
+ {id:'F',name:'Nuclear & Particle',near:'uranium (train)',ang:28,phase:4,col:'#ff6b9d',role:'Nuclear power + a copper firehose → copper powder, diamonds, pressure cubes and Nuclear Pasta.',t:['T-COPPERPOWDER','T-PCC','T-PASTA','T-DIAMONDS']},
+ {id:'G',name:'Quantum & SAM',near:'SAM (train)',ang:108,phase:5,col:'#ffadc4',role:'The endgame lab — SAM → ficsite, dark matter, time crystals, EPM and the quantum processors/oscillators/cells.',t:['T-REANSAM','T-DMRESIDUE','T-FICINGOT','T-FICTRIGON','T-TIMECRYSTAL','T-DMCRYSTAL','T-EPM','T-NQP','T-SUPEROSC','T-SINGCELL']},
+ {id:'PA',name:'Project Assembly',near:'by the Space Elevator',ang:null,phase:1,col:'#ff9e3d',role:'By the elevator — assembles the 12 final parts from everything the districts ship in, and launches them.',t:['T-SMARTPLATE','T-VERSFRAME','T-AUTOWIRE','T-MODENGINE','T-ACU','T-ADS','T-MFG','T-TPR','T-SCULPTOR','T-AISERVER','T-WARP']},
 ];
 const DMAP={}; DISTRICTS.forEach(d=>DMAP[d.id]=d);
 const WORKS2DIST={M1:'PA',M2:'PA',M3:'PA',M4:'PA',M5:'PA',M6:'PA',M7:'PA',M8:'PA',M9:'F',M10:'PA',M11:'PA',M12:'PA',F1:'D',F2:'D'};
-const BM_RES=[ {n:'Iron Ore',ang:185,t:'belt'},{n:'Coal',ang:215,t:'belt'},{n:'Limestone',ang:150,t:'belt'},
-  {n:'Caterium',ang:312,t:'belt'},{n:'Copper Ore',ang:340,t:'belt'},{n:'Quartz',ang:72,t:'belt'},
-  {n:'Crude Oil',ang:55,t:'pipe'},{n:'Bauxite',ang:-48,t:'train'},{n:'Nitrogen Gas',ang:-18,t:'train'},
-  {n:'Uranium',ang:30,t:'train'},{n:'SAM Ore',ang:108,t:'train'} ];
-BM_RES.forEach(r=>{ const a=r.ang*Math.PI/180; r.x=Math.round(BM_CTR.x+400*Math.cos(a)); r.y=Math.round(BM_CTR.y+345*Math.sin(a)); });
-const bmTCol={belt:'#2dd4bf',pipe:'#5aa9ff',train:'#ff9e3d'};
 const BM_SEQ=[
  {node:null,phase:0,t:'Phase 0 · Foundation + first power',d:'Pick a flat desert shelf for the ★ Project Assembly + ▲ Space Elevator. ⚡ Start on Biomass Burners. Scout your nearest Iron, Copper, Limestone & Coal.'},
  {node:'A',phase:1,t:'① Build the IRONWORKS district',d:'📍 Near IRON + limestone. Smelt iron → plates, rods, screws, RIP, rotors, modular frames, concrete. This shared mini-base feeds almost everything.'},
@@ -875,7 +758,11 @@ const BM_SEQ=[
 ];
 const BM_SEQI={}; DISTRICTS.forEach(d=>{ const f=BM_SEQ.findIndex(s=>s.node===d.id); BM_SEQI[d.id]=f<0?99:f; });
 let bmView=null, bmZoom={k:1,tx:0,ty:0};
-let bmStep=0, bmTimer=null, bmBuilt=false;
+let bmStep=0, bmTimer=null, bmBuilt=false, bmDragging=false;
+const BM_POS_LS='satis_bm_layout_v1';
+function bmLoadPos(){ try{ return JSON.parse(localStorage.getItem(BM_POS_LS))||{}; }catch(e){ return {}; } }
+function bmSavePos(){ const o={}; DISTRICTS.forEach(d=>{ if(d.moved) o[d.id]={x:d.px,y:d.py}; }); localStorage.setItem(BM_POS_LS,JSON.stringify(o)); }
+function bmResetLayout(){ localStorage.removeItem(BM_POS_LS); DISTRICTS.forEach(d=>{ delete d.moved; }); buildBuildMap(); bmApply(); }
 function svgEl(tag,attrs){ const e=document.createElementNS(SVGNS,tag); for(const k in attrs) e.setAttribute(k,attrs[k]); return e; }
 function bmClamp(v,a,b){ return Math.max(a,Math.min(b,v)); }
 function bmArrowDefs(svg){
@@ -909,6 +796,9 @@ function buildBuildMap(){
   let minx=1e9,miny=1e9,maxx=-1e9,maxy=-1e9; DISTRICTS.forEach(d=>{const p=P[d.id]; minx=Math.min(minx,d.px-p.w/2);miny=Math.min(miny,d.py-p.h/2);maxx=Math.max(maxx,d.px+p.w/2);maxy=Math.max(maxy,d.py+p.h/2);});
   const ofx=(BMW-(maxx-minx))/2-minx, ofy=(BMH-(maxy-miny))/2-miny;
   DISTRICTS.forEach(d=>{ d.px=Math.round(d.px+ofx); d.py=Math.round(d.py+ofy); d.x=d.px; d.y=d.py; });
+  // any panels the user dragged before override the auto compass placement
+  const savedPos=bmLoadPos();
+  DISTRICTS.forEach(d=>{ const sp=savedPos[d.id]; if(sp){ d.px=sp.x; d.py=sp.y; d.x=d.px; d.y=d.py; d.moved=true; } else delete d.moved; });
   // ---- cross-district connections: BELT (teal) vs TRAIN (orange, far districts) ----
   const itemDist={}; DISTRICTS.forEach(d=>d.t.forEach(tid=>{ if(T[tid]) itemDist[T[tid].out[0]]=d.id; }));
   const pairItems={}; DISTRICTS.forEach(d=>d.t.forEach(tid=>{ const t=T[tid]; if(!t)return; t.in.forEach(([item])=>{ const src=itemDist[item]; if(src&&src!==d.id){ const k=src+'>'+d.id; (pairItems[k]=pairItems[k]||[]).push(item); } }); }));
@@ -916,22 +806,23 @@ function buildBuildMap(){
     const train=/train/.test(a.near)||/train/.test(b.near), col=train?'#ff9e3d':'#2dd4bf';
     const items=[...new Set(pairItems[k])];
     const ln=svgEl('line',{x1:a.px,y1:a.py,x2:b.px,y2:b.py,stroke:col,'stroke-width':train?2.6:2,opacity:.8}); if(!train) ln.setAttribute('marker-end','url(#arrTeal)'); if(train) ln.setAttribute('stroke-dasharray','10 6');
-    ln.dataset.seq=Math.max(BM_SEQI[src],BM_SEQI[dst]); ln.classList.add('bmedge'); ln.appendChild(svgEl('title',{})).textContent=(train?'🚆 TRAIN ':'belt ')+src+' → '+dst+': '+items.join(', '); view.appendChild(ln);
-    const lt=svgEl('text',{x:Math.round((a.px+b.px)/2),y:Math.round((a.py+b.py)/2)-4,fill:col,'font-size':13,'font-weight':'700','text-anchor':'middle'}); lt.classList.add('bmedge'); lt.dataset.seq=ln.dataset.seq; lt.textContent=(train?'🚆 ':'')+items.slice(0,2).join(', ')+(items.length>2?'…':''); view.appendChild(lt); });
+    ln.dataset.seq=Math.max(BM_SEQI[src],BM_SEQI[dst]); ln.dataset.src=src; ln.dataset.dst=dst; ln.classList.add('bmedge'); ln.appendChild(svgEl('title',{})).textContent=(train?'🚆 TRAIN ':'belt ')+src+' → '+dst+': '+items.join(', '); view.appendChild(ln);
+    const lt=svgEl('text',{x:Math.round((a.px+b.px)/2),y:Math.round((a.py+b.py)/2)-4,fill:col,'font-size':13,'font-weight':'700','text-anchor':'middle'}); lt.classList.add('bmedge'); lt.dataset.seq=ln.dataset.seq; lt.dataset.src=src; lt.dataset.dst=dst; lt.dataset.kind='label'; lt.textContent=(train?'🚆 ':'')+items.slice(0,2).join(', ')+(items.length>2?'…':''); view.appendChild(lt); });
   DISTRICTS.forEach(d=>{ if(d.id==='PA')return; if(d.t.some(tid=>T[tid]&&BM_FINALS.has(T[tid].out[0]))){ const pa=DMAP['PA']; const train=/train/.test(d.near);
-    const ln=svgEl('line',{x1:d.px,y1:d.py,x2:pa.px,y2:pa.py,stroke:'#b692ff','stroke-width':1.6,opacity:.45,'marker-end':'url(#arrPurple)'}); if(train) ln.setAttribute('stroke-dasharray','10 6'); ln.dataset.seq=BM_SEQI[d.id]; ln.classList.add('bmedge'); view.appendChild(ln); } });
+    const ln=svgEl('line',{x1:d.px,y1:d.py,x2:pa.px,y2:pa.py,stroke:'#b692ff','stroke-width':1.6,opacity:.45,'marker-end':'url(#arrPurple)'}); if(train) ln.setAttribute('stroke-dasharray','10 6'); ln.dataset.seq=BM_SEQI[d.id]; ln.dataset.src=d.id; ln.dataset.dst='PA'; ln.classList.add('bmedge'); view.appendChild(ln); } });
   // ---- district PANELS with their area blocks nested inside ----
   DISTRICTS.forEach(d=>{ const p=P[d.id], x0=d.px-p.w/2, y0=d.py-p.h/2, isPA=d.id==='PA';
     const g=svgEl('g',{class:'bmnode bmmod'}); g.dataset.seq=BM_SEQI[d.id]; g.dataset.mod=d.id; g.style.cursor='pointer';
     g.appendChild(svgEl('rect',{x:x0,y:y0,width:p.w,height:p.h,rx:11,fill:'rgba(18,24,31,.94)',stroke:d.col,'stroke-width':isPA?3:2}));
-    g.appendChild(svgEl('text',{x:x0+11,y:y0+23,fill:d.col,'font-size':15,'font-weight':'700'})).textContent=(isPA?'★ ':'')+d.id+' · '+d.name;
-    g.appendChild(svgEl('text',{x:x0+p.w-9,y:y0+21,fill:'#7e8b97','font-size':11,'text-anchor':'end'})).textContent=(/train/.test(d.near)?'🚆 ':'📍 ')+d.near;
+    const nearTxt=(/train/.test(d.near)?'🚆 ':'📍 ')+d.near, nearW=nearTxt.length*5.4+10;
+    g.appendChild(svgEl('text',{x:x0+11,y:y0+23,fill:d.col,'font-size':15,'font-weight':'700'})).textContent=bpFit((isPA?'★ ':'')+d.id+' · '+d.name,Math.max(70,p.w-nearW-18),7);
+    g.appendChild(svgEl('text',{x:x0+p.w-9,y:y0+21,fill:'#7e8b97','font-size':11,'text-anchor':'end'})).textContent=nearTxt;
     // raw resource nodes mined/piped INTO this district (above the panel)
     const raws=[...new Set(p.banks.flatMap(b=>b.inputs.map(x=>x[0])).filter(it=>itemDist[it]===undefined))];
     if(raws.length){ const sp=Math.min(150,(p.w-30)/raws.length); raws.forEach((rn,k)=>{ const fluid=isFluidItem(rn), rx=Math.round(x0+24+k*sp+sp/2-sp/2), ry=y0-30, bc=fluid?'#5aa9ff':'#2dd4bf';
       const ln=svgEl('line',{x1:rx,y1:ry+6,x2:rx,y2:y0,stroke:bc,'stroke-width':1.6,opacity:.55}); if(fluid) ln.setAttribute('stroke-dasharray','3 3'); g.appendChild(ln);
       g.appendChild(svgEl('circle',{cx:rx,cy:ry,r:5,fill:fluid?'#5aa9ff':'#8b97a3',stroke:'#0a0d12','stroke-width':1.5}));
-      g.appendChild(svgEl('text',{x:rx+8,y:ry+4,fill:'#9aa7b4','font-size':10})).textContent=(fluid?'🛢 ':'⛏ ')+rn; }); }
+      g.appendChild(svgEl('text',{x:rx+8,y:ry+4-(k%2?12:0),fill:'#9aa7b4','font-size':10})).textContent=(fluid?'🛢 ':'⛏ ')+bpFit(rn,sp-14,5); }); }
     // intra-district belts: connect each area to the areas it feeds (drawn under the blocks)
     const apos={}; p.cols.forEach((c,ci)=>c.forEach((bi,ri)=>{ apos[bi]={x:x0+p.padX+ci*(p.aw+p.gx),y:y0+p.padTop+ri*(p.ah+p.gy)}; }));
     const item2bi={}; p.banks.forEach((b,j)=>item2bi[b.outItem]=j);
@@ -960,13 +851,41 @@ function buildBuildMap(){
       ag.addEventListener('click',e=>{ e.stopPropagation(); bpMod=d.id; bpHi=bi; const b=document.querySelector('nav button[data-tab="blueprints"]'); if(b) b.click(); renderBlueprints(); });
       g.appendChild(ag);
     }));
-    g.addEventListener('click',()=>showDistrict(d.id));
+    // --- drag to rearrange this panel (saved); clicking the body still opens the district summary ---
+    g.dataset.bx=d.px; g.dataset.by=d.py;
+    let dragStart=null, movedFar=false;
+    g.addEventListener('pointerdown',e=>{
+      if(e.target.closest && e.target.closest('.bpsect')) return;   // an area block → belt web, not a drag
+      e.stopPropagation();                                          // keep the SVG pan handler from grabbing it
+      bmDragging=true; movedFar=false;
+      const r=svg.getBoundingClientRect();
+      dragStart={cx:e.clientX,cy:e.clientY,px:d.px,py:d.py,rw:r.width,rh:r.height};
+      try{ g.setPointerCapture(e.pointerId); }catch(_){}
+    });
+    g.addEventListener('pointermove',e=>{ if(!dragStart) return;
+      const dx=(e.clientX-dragStart.cx)/dragStart.rw*BMW/bmZoom.k, dy=(e.clientY-dragStart.cy)/dragStart.rh*BMH/bmZoom.k;
+      if(Math.abs(e.clientX-dragStart.cx)+Math.abs(e.clientY-dragStart.cy)>4) movedFar=true;
+      d.px=Math.round(dragStart.px+dx); d.py=Math.round(dragStart.py+dy); d.x=d.px; d.y=d.py;
+      g.setAttribute('transform','translate('+(d.px-(+g.dataset.bx))+','+(d.py-(+g.dataset.by))+')');
+      bmUpdateEdges();
+    });
+    const endDrag=e=>{ if(!dragStart) return; dragStart=null; bmDragging=false; try{ g.releasePointerCapture(e.pointerId); }catch(_){}
+      if(movedFar){ d.moved=true; bmSavePos(); } };
+    g.addEventListener('pointerup',endDrag);
+    g.addEventListener('pointercancel',endDrag);
+    g.addEventListener('click',e=>{ if(movedFar){ e.stopPropagation(); movedFar=false; return; } showDistrict(d.id); });
     view.appendChild(g);
   });
   bmZoom={k:1,tx:0,ty:0}; bmApplyView(); bmSetupZoom(svg); bmApply();
 }
+/* reposition the cross-district edges (and their labels) to follow dragged panels */
+function bmUpdateEdges(){ if(!bmView) return;
+  bmView.querySelectorAll('.bmedge').forEach(el=>{ const a=DMAP[el.dataset.src], b=DMAP[el.dataset.dst]; if(!a||!b) return;
+    if(el.dataset.kind==='label'){ el.setAttribute('x',Math.round((a.px+b.px)/2)); el.setAttribute('y',Math.round((a.py+b.py)/2)-4); }
+    else { el.setAttribute('x1',a.px); el.setAttribute('y1',a.py); el.setAttribute('x2',b.px); el.setAttribute('y2',b.py); } });
+}
 function showDistrict(id){ const d=DMAP[id]; if(!d) return; const makes=d.t.map(tid=>T[tid]?T[tid].out[0]:tid);
-  const cap=document.getElementById('bmCaption'); if(cap) cap.innerHTML='<b style="color:var(--txt)">'+(id==='PA'?'★ Project Assembly':d.id+' · '+d.name)+'</b> — 📍 '+d.near+'  <button class="pbtn" onclick="enterDistrictMap(\''+id+'\')">🔍 Zoom in: placement &amp; conveyors →</button><br><b>Makes:</b> '+makes.join(', ')+(id==='PA'?'  <span style="color:#9aa7b4">(the 12 final elevator parts)</span>':'');
+  const cap=document.getElementById('bmCaption'); if(cap) cap.innerHTML='<b style="color:var(--txt)">'+(id==='PA'?'★ Project Assembly':d.id+' · '+d.name)+'</b> — 📍 '+d.near+'  <button class="pbtn" onclick="enterDistrictMap(\''+id+'\')">🔍 Zoom in: placement &amp; conveyors →</button>'+(d.role?'<br><span style="color:#9fb0c0">🧭 '+d.role+'</span>':'')+'<br><b>Makes:</b> '+makes.join(', ')+(id==='PA'?'  <span style="color:#9aa7b4">(the 12 final elevator parts)</span>':'');
   document.querySelectorAll('#bmap .bmmod').forEach(n=>{ const r=n.querySelector('rect'); if(r){ const on=n.dataset.mod===id; r.setAttribute('stroke',on?'#fff':'#0a0d12'); r.setAttribute('stroke-width',on?4:2); } }); }
 /* unified drill-down: zoom the Build Map INTO a district's internal placement */
 function enterDistrictMap(id){ const d=DMAP[id]; if(!d) return; const banks=districtBanks(d);
@@ -999,15 +918,6 @@ function bpResolve(id){ if(DMAP[id]) return id; if(typeof WORKS2DIST!=='undefine
   if(T[id]){ const d=DISTRICTS.find(x=>x.t.includes(id)); if(d) return d.id; }
   const d2=DISTRICTS.find(x=>x.t.some(tid=>T[tid]&&T[tid].out[0]===id)); if(d2) return d2.id; return 'A'; }
 function gotoBlueprint(id){ bpMod=bpResolve(id); bpHi=-1; const b=document.querySelector('nav button[data-tab="blueprints"]'); if(b) b.click(); renderBlueprints(); }
-function drawBmCompass(svg,cx,cy){
-  const g=svgEl('g',{});
-  g.appendChild(svgEl('circle',{cx:cx,cy:cy,r:31,fill:'rgba(22,27,34,.75)',stroke:'#2a323d'}));
-  g.appendChild(svgEl('line',{x1:cx,y1:cy+13,x2:cx,y2:cy-13,stroke:'#ff9e3d','stroke-width':2}));
-  [['N',0,-20],['E',21,1],['S',0,23],['W',-21,1]].forEach(([d,dx,dy])=>{
-    const t=svgEl('text',{x:cx+dx,y:cy+dy+4,fill:d==='N'?'#ff9e3d':'#9aa7b4','font-size':12,'font-weight':'700','text-anchor':'middle'}); t.textContent=d; g.appendChild(t);
-  });
-  svg.appendChild(g);
-}
 function bmApply(){
   const hi=BM_SEQ[bmStep].node;
   document.querySelectorAll('#bmap .bmnode').forEach(n=>{ const s=+n.dataset.seq; n.style.transition='opacity .4s';
@@ -1029,6 +939,7 @@ function bmZoomBy(f){ const cx=600,cy=380; const wx=(cx-bmZoom.tx)/bmZoom.k, wy=
 document.getElementById('bmZoomIn').onclick=()=>bmZoomBy(1.3);
 document.getElementById('bmZoomOut').onclick=()=>bmZoomBy(1/1.3);
 document.getElementById('bmZoomReset').onclick=()=>{ bmZoom={k:1,tx:0,ty:0}; bmApplyView(); };
+document.getElementById('bmResetLayout').onclick=()=>bmResetLayout();
 document.getElementById('bmSlider').oninput=e=>{ bmStop(); bmSet(+e.target.value); };
 document.getElementById('bmPlay').onclick=()=>{
   if(bmTimer){ bmStop(); return; }
@@ -1150,10 +1061,11 @@ function floorPlanSvg(d, banks, hiIdx){
         s+=`<polygon points="${boxX},${yy} ${boxX-6},${yy-3} ${boxX-6},${yy+3}" fill="${bc}"/>`; }
       const cc=inp[1]?carrierOf(inp[0],inp[1]):null;
       const lab=inp[1]?`${inp[0]} ${inp[1]} ${cc.mk} ${cc.carrier}`:inp[0];
-      s+=`<text x="16" y="${yy-3}" fill="#9aa7b4" font-size="9">▸ ${lab}${inp[1]?' · '+srcLabel(inp[0],d.id):''}</text>`; });
+      const full='▸ '+lab+(inp[1]?' · '+srcLabel(inp[0],d.id):'');
+      s+=`<text x="16" y="${yy-3}" fill="#9aa7b4" font-size="9">${bpEsc(bpFit(full,boxX-22,4.9))}<title>${bpEsc(full.slice(2))}</title></text>`; });
     // compact bank box — ONE box, ×count (drill in for the machine-by-machine belt web)
     s+=`<rect x="${boxX}" y="${by}" width="${boxW}" height="${boxH}" rx="5" fill="${col}" opacity="${done?.5:.95}" stroke="${hi?'#fff':'#0a0d12'}" stroke-width="${hi?2:1}"><title>${bk.n}× ${bk.b} · ${bk.r} · footprint ${bk.fp} each</title></rect>`;
-    s+=`<text x="${boxX+10}" y="${by+17}" fill="#0a0d12" font-size="12" font-weight="700">§${i+1} · ${bk.r}${done?' ✓':''}</text>`;
+    s+=`<text x="${boxX+10}" y="${by+17}" fill="#0a0d12" font-size="12" font-weight="700">§${i+1} · ${bpEsc(bpFit(bk.r,boxW-34,6.6))}${done?' ✓':''}</text>`;
     s+=`<text x="${boxX+10}" y="${by+34}" fill="#0c1620" font-size="11" font-weight="700">${ab} ${bk.b} <tspan font-size="14">×${(()=>{const nn=bankNowCount(d,bk);return bk.n>nn?nn+'→'+bk.n:bk.n;})()}</tspan></text>`;
     // output belt (right) to its destination
     const oc=carrierOf(bk.outItem,bk.outRate), omk=oc.mk;
@@ -1172,53 +1084,69 @@ function bankStage(banks){ const idx={}; banks.forEach((b,i)=>idx[b.outItem]=i);
   for(let pass=0;pass<banks.length;pass++) banks.forEach((b,i)=>{ let mx=-1; b.inputs.forEach(([it])=>{ if(idx[it]!==undefined) mx=Math.max(mx,st[idx[it]]); }); st[i]=mx+1; });
   return {st,idx}; }
 function bankSide(bk){ const fd=fpDims(bk.fp); const cells=fd.w*fd.h*bk.n; return Math.max(2,Math.ceil(Math.sqrt(cells*1.6))); }
+const bpEsc=s=>String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+const bpFit=(s,maxPx,perCh)=>{ s=String(s); const max=Math.max(1,Math.floor(maxPx/perCh)); return s.length>max?s.slice(0,max-1)+'…':s; };
 function districtFlowSvg(d, banks, hiIdx){
   const {st,idx}=bankStage(banks); const maxStage=Math.max(0,...st);
   const cols=[]; for(let c=0;c<=maxStage;c++) cols[c]=[]; banks.forEach((b,i)=>cols[st[i]].push(i));
-  const colW=212, boxH=56, vGap=30, topPad=70, leftPad=96;
-  const maxH=Math.max(boxH,...cols.map(c=>c.length*(boxH+vGap)-vGap));
-  const W=Math.max(620, leftPad+(maxStage+1)*colW+110), H=topPad+maxH+44;
+  // one clean card per area; uniform width so text never overflows; columns = processing stages
+  const CW=190, CH=64, GUT=62, COLW=CW+GUT, VGAP=30, TOP=106, LEFT=24, RIGHT=150;
+  const maxH=Math.max(CH,...cols.map(c=>c.length*(CH+VGAP)-VGAP));
+  const W=LEFT+(maxStage+1)*COLW+RIGHT, H=TOP+maxH+38;
   const pos={};
-  cols.forEach((c,ci)=>{ const totH=c.length*(boxH+vGap)-vGap, y0=topPad+(maxH-totH)/2;
-    c.forEach((bi,ri)=>{ const bw=Math.min(192,Math.max(126,92+bankSide(banks[bi])*3.2)); pos[bi]={x:leftPad+ci*colW,y:y0+ri*(boxH+vGap),w:bw}; }); });
+  cols.forEach((c,ci)=>{ const totH=c.length*(CH+VGAP)-VGAP, y0=TOP+(maxH-totH)/2;
+    c.forEach((bi,ri)=>{ pos[bi]={x:LEFT+ci*COLW, y:y0+ri*(CH+VGAP)}; }); });
+  const cardR=p=>p.x+CW, midY=p=>p.y+CH/2, outX=W-104, outMid=TOP+maxH/2+6;
   let s=`<svg viewBox="0 0 ${W} ${H}" style="width:${Math.round(100*bpZoom)}%;height:auto;background:#0a0d12;border:1px solid var(--line);border-radius:10px">`;
-  for(let gx=0;gx<=W;gx+=24) s+=`<line x1="${gx}" y1="0" x2="${gx}" y2="${H}" stroke="#10171e"/>`;
-  for(let gy=0;gy<=H;gy+=24) s+=`<line x1="0" y1="${gy}" x2="${W}" y2="${gy}" stroke="#10171e"/>`;
-  s+=`<text x="14" y="22" fill="#e6edf3" font-size="14" font-weight="700">${d.id==='PA'?'★ ':''}${d.id} · ${d.name} — placement &amp; conveyors</text>`;
-  s+=`<text x="14" y="40" fill="#9aa7b4" font-size="10">Each block = one area (sized ≈ to its footprint). Arrows = the belts/pipes between areas. Flow runs left → right. Click a block for its belt web.</text>`;
-  s+=`<text x="14" y="55" fill="#6b7785" font-size="9">left edge ◀ imported parts &amp; raw ore/fluids · right edge ▶ output to 🗄 storage buffer → ${d.id==='PA'?'▲ Space Elevator':'other districts / ★'}</text>`;
-  // conveyors between intra-district areas (drawn under boxes)
-  banks.forEach((bk,i)=>{ bk.inputs.forEach(([it,rate])=>{ if(idx[it]!==undefined){ const a=pos[idx[it]], b=pos[i]; if(!a||!b) return;
-    const x1=a.x+a.w, y1=a.y+boxH/2, x2=b.x, y2=b.y+boxH/2, mx=(x1+x2)/2, fluid=isFluidItem(it), bc=fluid?'#5aa9ff':'#2dd4bf';
-    s+=`<path d="M${x1},${y1} H${mx} V${y2} H${x2}" fill="none" stroke="${bc}" stroke-width="1.7" opacity=".75"${fluid?' stroke-dasharray="4 3"':''}/>`;
+  for(let gx=0;gx<=W;gx+=24) s+=`<line x1="${gx}" y1="0" x2="${gx}" y2="${H}" stroke="#0e151c"/>`;
+  for(let gy=0;gy<=H;gy+=24) s+=`<line x1="0" y1="${gy}" x2="${W}" y2="${gy}" stroke="#0e151c"/>`;
+  // stage lanes (alternating band) + headers — make the left→right stages read at a glance
+  cols.forEach((c,ci)=>{ const lx=LEFT+ci*COLW-12;
+    if(ci%2) s+=`<rect x="${lx}" y="${TOP-28}" width="${CW+24}" height="${maxH+38}" rx="12" fill="rgba(120,170,255,.045)"/>`;
+    s+=`<text x="${LEFT+ci*COLW+CW/2}" y="${TOP-38}" fill="#5f6c7a" font-size="10" font-weight="700" text-anchor="middle" letter-spacing="1.5">STAGE ${ci+1}</text>`;
+    if(ci<maxStage) s+=`<text x="${LEFT+ci*COLW+CW+GUT/2}" y="${TOP-37}" fill="#3f4a57" font-size="13" text-anchor="middle">▸</text>`; });
+  // header
+  s+=`<text x="14" y="24" fill="#e6edf3" font-size="15" font-weight="700">${d.id==='PA'?'★ ':''}${d.id} · ${bpEsc(d.name)} — placement &amp; conveyors</text>`;
+  s+=`<text x="14" y="42" fill="#9aa7b4" font-size="10.5">Each card = one production area. Belts (━ teal) &amp; pipes (┅ blue) flow left → right by stage. Click a card for its machine-level belt web.</text>`;
+  s+=`<text x="14" y="58" fill="#6b7785" font-size="9.5">◀ above a card = parts/raw imported in · finals &amp; cross-district exports run right → 🗄 storage buffer → ${d.id==='PA'?'▲ Space Elevator':'consumer districts / ★'}</text>`;
+  // intra-district conveyors (drawn under cards); labels parked in the gutter and de-collided vertically
+  const placed=[];
+  banks.forEach((bk,i)=>{ bk.inputs.forEach(([it,rate])=>{ if(idx[it]===undefined) return; const a=pos[idx[it]], b=pos[i]; if(!a||!b) return;
+    const x1=cardR(a), y1=midY(a), x2=b.x, y2=midY(b), fluid=isFluidItem(it), bc=fluid?'#5aa9ff':'#2dd4bf';
+    const gx=x1+Math.min(GUT/2, Math.max(16,(x2-x1)/2));
+    s+=`<path d="M${x1},${y1} H${gx} V${y2} H${x2}" fill="none" stroke="${bc}" stroke-width="1.7" opacity=".7"${fluid?' stroke-dasharray="4 3"':''}/>`;
     s+=`<polygon points="${x2},${y2} ${x2-7},${y2-3.5} ${x2-7},${y2+3.5}" fill="${bc}"/>`;
-    s+=`<text x="${mx+3}" y="${(y1+y2)/2-2}" fill="#7e8b97" font-size="8">${it} ${rate} · ${(()=>{const c=carrierOf(it,rate),L=Math.ceil(rate/(fluid?600:1200));return (L>1?L+'× ':'')+c.mk;})()}</text>`; } }); });
-  // boxes
+    const L=Math.ceil(rate/(fluid?600:1200)), lab=bpFit(it,GUT+22,5)+' '+rate+(L>1?' ·'+L+'×':''), lw=lab.length*4.5;
+    let lx=gx, ly=Math.min(y1,y2)+Math.abs(y1-y2)/2-3, guard=0;
+    while(guard++<16 && placed.some(P=>Math.abs(P.x-lx)<(P.w+lw)/2 && Math.abs(P.y-ly)<11)) ly-=11;
+    placed.push({x:lx,y:ly,w:lw});
+    s+=`<text x="${lx}" y="${ly}" fill="#8694a2" font-size="8.5" text-anchor="middle">${bpEsc(lab)}</text>`; }); });
+  // cards
   banks.forEach((bk,i)=>{ const p=pos[i], done=!!state['bp:'+d.id+':'+i], hi=(i===hiIdx);
-    const col=BCOL[bk.b]||'#8b97a3', ab=ABBR[bk.b]||'?', side=bankSide(bk);
-    s+=`<g class="bpsect" data-works="${d.id}" data-i="${i}" style="cursor:pointer">`;
-    s+=`<rect x="${p.x}" y="${p.y}" width="${p.w}" height="${boxH}" rx="6" fill="${col}" opacity="${done?.5:.95}" stroke="${hi?'#fff':'#0a0d12'}" stroke-width="${hi?2.5:1}"><title>${bk.n}× ${bk.b} · ${bk.r} · ~${side}×${side} foundations</title></rect>`;
-    s+=`<text x="${p.x+9}" y="${p.y+17}" fill="#0a0d12" font-size="11.5" font-weight="700">§${i+1} · ${bk.r}${done?' ✓':''}</text>`;
-    s+=`<text x="${p.x+9}" y="${p.y+33}" fill="#0c1620" font-size="10.5" font-weight="700">${ab} ${bk.b} ×${(()=>{const nn=bankNowCount(d,bk);return bk.n>nn?nn+'→'+bk.n:bk.n;})()}</text>`;
-    s+=`<text x="${p.x+9}" y="${p.y+48}" fill="#10202a" font-size="9">area ~${side}×${side} · out ${bk.outRate}/min</text>`;
-    // external imports listed at the left edge of the box
+    const col=BCOL[bk.b]||'#8b97a3', ab=ABBR[bk.b]||'?', side=bankSide(bk), oc=carrierOf(bk.outItem,bk.outRate);
+    const cnt=(()=>{const nn=bankNowCount(d,bk);return bk.n>nn?nn+'→'+bk.n:bk.n;})();
+    // external imports, parked above the card (truncated to the card width, full list on hover)
     const ext=bk.inputs.filter(([it])=>idx[it]===undefined);
-    if(ext.length){ const ey=p.y-3; s+=`<text x="${p.x}" y="${ey}" fill="#6b7785" font-size="8">◀ ${ext.map(e=>e[0]).join(', ')}</text>`; }
+    if(ext.length){ const full='◀ '+ext.map(e=>e[0]).join(', ');
+      s+=`<text x="${p.x+2}" y="${p.y-6}" fill="#6f7c8a" font-size="8.5">${bpEsc(bpFit(full,CW-4,4.4))}<title>${bpEsc(full.slice(2))}</title></text>`; }
+    s+=`<g class="bpsect" data-works="${d.id}" data-i="${i}" style="cursor:pointer">`;
+    s+=`<rect x="${p.x}" y="${p.y}" width="${CW}" height="${CH}" rx="8" fill="${col}" opacity="${done?.5:.97}" stroke="${hi?'#fff':'rgba(0,0,0,.32)'}" stroke-width="${hi?2.5:1}"><title>${bpEsc(bk.r)} — ${bk.n}× ${bk.b} · ~${side}×${side} foundations · out ${bk.outRate}/min</title></rect>`;
+    s+=`<text x="${p.x+10}" y="${p.y+17}" fill="#0a0d12" font-size="10" font-weight="700">§${i+1} · ${ab} ×${cnt}${done?' ✓':''}</text>`;
+    s+=`<text x="${p.x+CW-9}" y="${p.y+17}" fill="rgba(10,13,18,.6)" font-size="9" text-anchor="end">~${side}×${side}</text>`;
+    s+=`<text x="${p.x+10}" y="${p.y+38}" fill="#0a0d12" font-size="12.5" font-weight="700">${bpEsc(bpFit(bk.r,CW-18,6.6))}</text>`;
+    s+=`<text x="${p.x+10}" y="${p.y+55}" fill="#11212c" font-size="9.5">▸ ${bk.outRate}/min · ${oc.mk} ${oc.carrier}</text>`;
     s+=`</g>`; });
-  // outputs → storage → out, for banks whose output leaves the district (final or cross-district)
+  // exports/finals → storage buffer column on the right
   const consumedElsewhere=it=>DISTRICTS.some(o=>o.id!==d.id&&o.t.some(tid=>T[tid]&&T[tid].in.some(z=>z[0]===it)));
   const FIN=new Set(['Smart Plating','Versatile Framework','Automated Wiring','Modular Engine','Adaptive Control Unit','Assembly Director System','Magnetic Field Generator','Thermal Propulsion Rocket','Nuclear Pasta','Biochemical Sculptor','AI Expansion Server','Ballistic Warp Drive']);
-  const outX=W-92;
-  banks.forEach((bk,i)=>{ const p=pos[i]; if(p.x+p.w<outX-10 && !(consumedElsewhere(bk.outItem)||FIN.has(bk.outItem))) return;
-    if(!(consumedElsewhere(bk.outItem)||FIN.has(bk.outItem))) return;
-    const y=p.y+boxH/2, oc=carrierOf(bk.outItem,bk.outRate), bc='#b692ff';
-    s+=`<path d="M${p.x+p.w},${y} H${outX-6}" fill="none" stroke="${bc}" stroke-width="1.6" opacity=".6"${oc.carrier==='pipe'?' stroke-dasharray="4 3"':''}/>`; });
-  // storage buffer column + elevator/out
-  s+=`<rect x="${outX}" y="${topPad-6}" width="34" height="${maxH+12}" rx="6" fill="#161b22" stroke="#3a4654"/>`;
-  s+=`<text x="${outX+17}" y="${topPad+ (maxH+12)/2}" fill="#9aa7b4" font-size="10" font-weight="700" text-anchor="middle" transform="rotate(90 ${outX+17} ${topPad+(maxH+12)/2})">🗄 STORAGE BUFFER</text>`;
-  s+=`<line x1="${outX+34}" y1="${topPad+ (maxH+12)/2}" x2="${W-8}" y2="${topPad+(maxH+12)/2}" stroke="#b692ff" stroke-width="2.5"/>`;
-  s+=`<polygon points="${W-8},${topPad+(maxH+12)/2} ${W-16},${topPad+(maxH+12)/2-4} ${W-16},${topPad+(maxH+12)/2+4}" fill="#b692ff"/>`;
-  s+=`<text x="${W-8}" y="${topPad+(maxH+12)/2-7}" fill="#c9b6ff" font-size="9" text-anchor="end">${d.id==='PA'?'▲ Elevator':'→ ★ / districts'}</text>`;
+  banks.forEach((bk,i)=>{ if(!(consumedElsewhere(bk.outItem)||FIN.has(bk.outItem))) return; const p=pos[i];
+    const y=midY(p), oc=carrierOf(bk.outItem,bk.outRate);
+    s+=`<path d="M${cardR(p)},${y} H${outX-6}" fill="none" stroke="#b692ff" stroke-width="1.6" opacity=".5"${oc.carrier==='pipe'?' stroke-dasharray="4 3"':''}/>`; });
+  s+=`<rect x="${outX}" y="${TOP-6}" width="34" height="${maxH+12}" rx="7" fill="#161b22" stroke="#3a4654"/>`;
+  s+=`<text x="${outX+17}" y="${outMid}" fill="#9aa7b4" font-size="10" font-weight="700" text-anchor="middle" transform="rotate(90 ${outX+17} ${outMid})">🗄 STORAGE BUFFER</text>`;
+  s+=`<line x1="${outX+34}" y1="${outMid}" x2="${W-10}" y2="${outMid}" stroke="#b692ff" stroke-width="2.5"/>`;
+  s+=`<polygon points="${W-10},${outMid} ${W-18},${outMid-4} ${W-18},${outMid+4}" fill="#b692ff"/>`;
+  s+=`<text x="${W-10}" y="${outMid-7}" fill="#c9b6ff" font-size="9.5" text-anchor="end">${d.id==='PA'?'▲ Elevator':'→ ★ / districts'}</text>`;
   return s+'</svg>';
 }
 /* EXACT FOUNDATION-GRID layout — each area drawn at its true footprint (1 cell =
@@ -1251,8 +1179,8 @@ function districtGridSvg(d, banks, hiIdx){
     s+=`<g class="bpsect" data-works="${d.id}" data-i="${i}" style="cursor:pointer">`;
     s+=`<rect x="${x}" y="${y}" width="${w}" height="${w}" rx="2" fill="${col}" opacity="${done?.5:.92}" stroke="${hi?'#fff':'#0a0d12'}" stroke-width="${hi?2.5:1}"><title>${bk.r}: ${bk.n}× ${bk.b} · ~${p.s}×${p.s} foundations</title></rect>`;
     s+=`<text x="${x+4}" y="${y+13}" fill="#0a0d12" font-size="10" font-weight="700">§${i+1}</text>`;
-    if(w>52){ s+=`<text x="${x+4}" y="${y+25}" fill="#0c1620" font-size="9" font-weight="700">${bk.r}</text>`;
-      s+=`<text x="${x+4}" y="${y+37}" fill="#10202a" font-size="8.5">${ab}×${(()=>{const nn=bankNowCount(d,bk);return bk.n>nn?nn+'→'+bk.n:bk.n;})()} · ${p.s}×${p.s}</text>`; }
+    if(w>52){ s+=`<text x="${x+4}" y="${y+25}" fill="#0c1620" font-size="9" font-weight="700">${bpEsc(bpFit(bk.r,w-8,5))}</text>`;
+      s+=`<text x="${x+4}" y="${y+37}" fill="#10202a" font-size="8.5">${bpEsc(bpFit(ab+'×'+(()=>{const nn=bankNowCount(d,bk);return bk.n>nn?nn+'→'+bk.n:bk.n;})()+' · '+p.s+'×'+p.s,w-8,4.6))}</text>`; }
     else { s+=`<text x="${x+4}" y="${y+24}" fill="#0c1620" font-size="8">${ab}×${(()=>{const nn=bankNowCount(d,bk);return bk.n>nn?nn+'→'+bk.n:bk.n;})()}</text>`; }
     s+=`</g>`; });
   return s+'</svg>';
@@ -1284,10 +1212,13 @@ function renderBpPicker(){
   tune.appendChild(note); c.appendChild(tune);
 }
 const BP_LEGEND='<span style="color:#2dd4bf">━ teal</span> = belt in / manifold · <span style="color:#5aa9ff">┅ blue</span> = pipe (fluid) · small squares = splitter/merger · coloured boxes = machines (hover for footprint) · <span style="color:#b692ff">━ purple</span> = output belt out.';
+const SYMBOL_LEGEND='<span style="color:#2dd4bf">━ belt</span> · <span style="color:#5aa9ff">┅ pipe (fluid)</span> · <span style="color:#ff9e3d">┄ 🚆 train</span> · <b>▫</b> splitter · <b>◇</b> merger · <b>🗄</b> storage buffer · <span style="color:#b692ff">━ output / finals</span>';
+function buildingLegendHTML(){ return '<b style="color:var(--txt)">Buildings:</b> '+Object.keys(ABBR).map(b=>`<span style="white-space:nowrap;margin-right:9px"><span style="display:inline-block;width:9px;height:9px;border-radius:2px;background:${BCOL[b]||'#8b97a3'};vertical-align:0;margin-right:3px"></span><b>${ABBR[b]}</b> = ${b}</span>`).join(''); }
+function placementLegendHTML(){ return `<div class="meta" style="background:#11161d;border:1px solid var(--line);border-radius:8px;padding:7px 11px;margin:6px 0;font-size:11.5px;line-height:1.8">🔑 <b style="color:var(--txt)">Key.</b> ${SYMBOL_LEGEND}<br>${buildingLegendHTML()}</div>`; }
 function renderBpStage(){
   const stage=document.getElementById('bpStage');
   if(bpMod==='ALL'){
-    let html=`<div class="meta" style="margin-bottom:6px"><b style="color:var(--txt);font-size:15px">All districts — every floor plan (the appendix)</b>. ${BP_LEGEND} Click any line to open that district.</div>`;
+    let html=`<div class="meta" style="margin-bottom:6px"><b style="color:var(--txt);font-size:15px">All districts — every floor plan (the appendix)</b>. Click any line to open that district.</div>`+placementLegendHTML();
     DISTRICTS.forEach(d=>{ const banks=districtBanks(d); const f=districtFootprint(banks);
       html+=`<div class="meta" style="margin:18px 0 4px"><b style="color:var(--txt);font-size:14px"><span class="chip p${d.phase}">P${d.phase}</span> ${d.id==='PA'?'★ ':''}${d.id} · ${d.name}</b> <span style="color:var(--muted)">— ${f.machines} machines · ~${f.side}×${f.side} pad · 📍 ${d.near}</span> <span class="u" onclick="gotoBlueprint('${d.id}')">open →</span></div>`+floorPlanSvg(d,banks,-1);
     });
@@ -1299,9 +1230,9 @@ function renderBpStage(){
   const banks=districtBanks(d), f=districtFootprint(banks);
   const sc=bpScale!==1?` · ×${bpScale}`:'';
   stage.style.overflowX='auto';
-  const focus=(bpHi>=0 && banks[bpHi]) ? `<div class="meta" style="margin:10px 0 4px"><b style="color:var(--orange);font-size:14px">🔍 §${bpHi+1} ${banks[bpHi].r} — belt web</b> (the conveyance between machines inside this area):</div>`+beltWebCaptionHTML(d,banks[bpHi])+focusBankSvg(d,banks[bpHi]) : '';
+  const focus=(bpHi>=0 && banks[bpHi]) ? `<div class="meta" style="margin:10px 0 4px"><b style="color:var(--orange);font-size:14px">🔍 §${bpHi+1} ${banks[bpHi].r} — exact placement</b> (every machine, splitter, merger, belt &amp; storage buffer for this area):</div>`+beltWebCaptionHTML(d,banks[bpHi])+focusBankSvg(d,banks[bpHi]) : '';
   const layoutSvg=(bpLayout==='grid'?districtGridSvg:districtFlowSvg)(d,banks,bpHi);
-  stage.innerHTML=`<div class="meta" style="margin-bottom:6px"><b style="color:var(--txt);font-size:15px">${d.id==='PA'?'★ ':''}${d.id} · ${d.name}${sc}</b> — 📍 ${d.near} · ${f.machines} machines · lay a flat <b>~${f.side}×${f.side}</b> platform (above ground, one level). <br>${BP_LEGEND} <b>Click any area block</b> to open its belt web below. Toggle <b>Flow</b> (connections) / <b>Grid</b> (exact footprints).</div>`+layoutSvg+focus;
+  stage.innerHTML=`<div class="meta" style="margin-bottom:6px"><b style="color:var(--txt);font-size:15px">${d.id==='PA'?'★ ':''}${d.id} · ${d.name}${sc}</b> — 📍 ${d.near} · ${f.machines} machines · lay a flat <b>~${f.side}×${f.side}</b> platform (above ground, one level).${d.role?`<br><span style="color:#9fb0c0">🧭 ${d.role}</span>`:''}<br><b>Click any area block</b> to open its <b>exact placement</b> (every machine, splitter, merger, belt &amp; buffer) below. Toggle <b>Flow</b> (connections) / <b>Grid</b> (exact footprints).</div>`+placementLegendHTML()+layoutSvg+focus;
   stage.querySelectorAll('.bpsect').forEach(g=>g.onclick=()=>{ bpHi=+g.dataset.i; renderBpStage(); renderBpSteps(); });
 }
 function bankStepHTML(d,banks,bk,i){
@@ -1349,34 +1280,57 @@ function focusBankSvg(d,bk){
   const t=T[bk.tid], np=bankBuiltPhase(d,bk), eff=bpMax?MAXFACTOR:1;
   const total=bk.n, now=Math.max(1,Math.min(total,bankCountAt(bk.tid,np)));
   const ins=(t.in&&t.in.length)?t.in:[['power only',0]];
+  const nIn=ins.length;
   const perLane=machinesPerLane(t), totalRows=Math.ceil(total/perLane);
-  const cols=Math.max(1,Math.min(perLane,8)), nowInRow=Math.max(1,Math.min(now,cols));
-  const col=BCOL[bk.b]||'#8b97a3', ab=ABBR[bk.b]||'?', nIn=ins.length;
-  const MW=58, MH=50, GX=26, PITCH=MW+GX, ML=205;
-  const inTop=46, inGap=17, mY=inTop+nIn*inGap+12, outY=mY+MH+38;
+  const cols=Math.max(1,Math.min(perLane,8));     // machines drawn per belt-row (the repeating unit)
+  const rowsDrawn=Math.min(totalRows,4);
+  const col=BCOL[bk.b]||'#8b97a3', ab=ABBR[bk.b]||'?';
+  const MW=54, MH=44, GX=24, PITCH=MW+GX, ML=210, BUF=56;
+  const inGap=15, headH=56, inBlock=nIn*inGap, rowPitch=inBlock+MH+46;
   const colX=c=>ML+c*PITCH, cx=c=>colX(c)+MW/2, xEnd=cx(cols-1);
-  const W=Math.max(660,ML+cols*PITCH+120), H=outY+52;
-  let s=`<svg viewBox="0 0 ${W} ${H}" style="width:100%;min-width:600px;height:auto;background:#0a0d12;border:1px solid var(--line);border-radius:8px;margin-bottom:8px">`;
-  for(let gx=0;gx<=W;gx+=28) s+=`<line x1="${gx}" y1="0" x2="${gx}" y2="${H}" stroke="#0f161d"/>`;
-  s+=`<text x="14" y="24" fill="#e6edf3" font-size="15" font-weight="700">${bk.r} — one manifold row</text>`;
-  s+=`<text x="${W-14}" y="24" fill="#9aa7b4" font-size="12" text-anchor="end">${cols} per belt · stack ×${totalRows} = ${total} total</text>`;
-  ins.forEach((inp,k)=>{ const ty=inTop+k*inGap, fluid=isFluidItem(inp[0]), bc=fluid?'#5aa9ff':'#2dd4bf';
-    const perRow=+(cols*inp[1]*eff).toFixed(0), mk=inp[1]?carrierOf(inp[0],perRow).mk:'';
-    s+=`<line x1="${ML-48}" y1="${ty}" x2="${xEnd}" y2="${ty}" stroke="${bc}" stroke-width="3"${fluid?' stroke-dasharray="5 3"':''}/>`;
-    s+=`<polygon points="${ML-48},${ty} ${ML-58},${ty-5} ${ML-58},${ty+5}" fill="${bc}"/>`;
-    s+=`<text x="${ML-62}" y="${ty+4}" fill="#cdd6df" font-size="11" text-anchor="end">${inp[0]}${inp[1]?' '+perRow+'/min · '+mk:''}</text>`;
-    for(let c=0;c<cols;c++){ const x=cx(c)+(k-(nIn-1)/2)*7; s+=`<line x1="${x}" y1="${ty}" x2="${x}" y2="${mY}" stroke="${bc}" stroke-width="1.5" opacity=".55"/>`; s+=`<rect x="${x-4}" y="${ty-4}" width="8" height="8" fill="#15202a" stroke="${bc}"><title>splitter</title></rect>`; } });
-  s+=`<text x="${ML}" y="${mY-7}" fill="#8fe6a8" font-size="11">build ${Math.min(now,cols)} now${totalRows>1?` · add ${totalRows-1} more identical row${totalRows-1>1?'s':''} below`:''}</text>`;
-  for(let c=0;c<cols;c++){ const x=colX(c), on=c<nowInRow;
-    if(on){ s+=`<rect x="${x}" y="${mY}" width="${MW}" height="${MH}" rx="5" fill="${col}"><title>${bk.b} · ${bk.r} — build now</title></rect>`;
-      s+=`<text x="${x+MW/2}" y="${mY+MH/2+5}" fill="#0a0d12" font-size="15" font-weight="700" text-anchor="middle">${ab}</text>`; }
-    else { s+=`<rect x="${x}" y="${mY}" width="${MW}" height="${MH}" rx="5" fill="none" stroke="${col}" stroke-width="1.8" stroke-dasharray="5 3" opacity=".6"><title>${bk.b} · ${bk.r} — fill the row as you grow</title></rect>`;
-      s+=`<text x="${x+MW/2}" y="${mY+MH/2+5}" fill="${col}" font-size="13" text-anchor="middle" opacity=".6">${ab}</text>`; } }
-  const oc=carrierOf(bk.outItem,bk.outRate), perRowOut=+(cols*t.out[1]*eff).toFixed(0), omk=carrierOf(bk.outItem,perRowOut).mk;
-  for(let c=0;c<cols;c++){ const x=cx(c); s+=`<line x1="${x}" y1="${mY+MH}" x2="${x}" y2="${outY}" stroke="#b692ff" stroke-width="1.5" opacity=".55"/>`; s+=`<rect x="${x-4}" y="${outY-4}" width="8" height="8" fill="#1a1426" stroke="#b692ff"><title>merger</title></rect>`; }
-  s+=`<line x1="${ML-48}" y1="${outY}" x2="${W-16}" y2="${outY}" stroke="#b692ff" stroke-width="3"${oc.carrier==='pipe'?' stroke-dasharray="5 3"':''}/>`;
-  s+=`<polygon points="${W-16},${outY} ${W-26},${outY-5} ${W-26},${outY+5}" fill="#b692ff"/>`;
-  s+=`<text x="${W-14}" y="${outY+18}" fill="#c9b6ff" font-size="11" text-anchor="end">${bk.outItem} ${perRowOut}/min per row · ${omk} → merge ${totalRows} rows → ${bk.outRate}/min total</text>`;
+  const gridRight=colX(cols-1)+MW, outBufX=gridRight+30;
+  const W=Math.max(680,outBufX+BUF+118), H=headH+rowsDrawn*rowPitch+18;
+  const rowTop=r=>headH+12+r*rowPitch, inY=(r,k)=>rowTop(r)+k*inGap, mY=r=>rowTop(r)+inBlock+8, oY=r=>mY(r)+MH+20;
+  const oc=carrierOf(bk.outItem,bk.outRate);
+  let s=`<svg viewBox="0 0 ${W} ${H}" style="width:100%;min-width:640px;height:auto;background:#0a0d12;border:1px solid var(--line);border-radius:8px;margin-bottom:8px">`;
+  for(let gx=0;gx<=W;gx+=24) s+=`<line x1="${gx}" y1="0" x2="${gx}" y2="${H}" stroke="#0f161d"/>`;
+  for(let gy=0;gy<=H;gy+=24) s+=`<line x1="0" y1="${gy}" x2="${W}" y2="${gy}" stroke="#0f161d"/>`;
+  s+=`<text x="14" y="22" fill="#e6edf3" font-size="14.5" font-weight="700">${bpEsc(bk.r)} — exact placement</text>`;
+  s+=`<text x="${W-14}" y="22" fill="#9aa7b4" font-size="11" text-anchor="end">${cols}/belt · ${totalRows} row${totalRows>1?'s':''} = ${total} total · ${now} now</text>`;
+  s+=`<text x="14" y="39" fill="#6b7785" font-size="9.5">▫ splitter · ◇ merger · 🗄 storage buffer · solid = build now (Phase ${np}), dashed = add as you scale${eff>1?'. Each machine @250%+Somersloop (×5)':''}.</text>`;
+  // OUTPUT storage buffer (right), spanning the rows, then out to the next stage / elevator
+  const obTop=mY(0)-8, obBot=oY(rowsDrawn-1)+8, obH=Math.max(26,obBot-obTop), oMidY=(obTop+obBot)/2;
+  s+=`<rect x="${outBufX}" y="${obTop}" width="${BUF}" height="${obH}" rx="6" fill="#181426" stroke="#7a6aa8"><title>storage buffer — ${bpEsc(bk.outItem)} out (${bk.outRate}/min)</title></rect>`;
+  s+=`<text x="${outBufX+BUF/2}" y="${oMidY}" fill="#c9b6ff" font-size="9" font-weight="700" text-anchor="middle" transform="rotate(90 ${outBufX+BUF/2} ${oMidY})">🗄 ${bpEsc(bpFit(bk.outItem,obH-14,5))}</text>`;
+  s+=`<line x1="${outBufX+BUF}" y1="${oMidY}" x2="${W-14}" y2="${oMidY}" stroke="#b692ff" stroke-width="2.6"${oc.carrier==='pipe'?' stroke-dasharray="5 3"':''}/>`;
+  s+=`<polygon points="${W-14},${oMidY} ${W-22},${oMidY-4} ${W-22},${oMidY+4}" fill="#b692ff"/>`;
+  s+=`<text x="${W-14}" y="${oMidY-6}" fill="#c9b6ff" font-size="9" text-anchor="end">${bk.outRate}/min · ${oc.mk}</text>`;
+  s+=`<text x="${W-14}" y="${oMidY+15}" fill="#7e8b97" font-size="8.5" text-anchor="end">→ ${d.id==='PA'?'▲ Elevator':'next stage / ★'}</text>`;
+  // INPUT storage buffers (top-left), one per material input
+  ins.map((inp,k)=>[inp,k]).filter(([inp])=>inp[1]>0).forEach(([inp],bi)=>{ const by=headH+6+bi*27, fluid=isFluidItem(inp[0]), bc=fluid?'#5aa9ff':'#2dd4bf';
+    s+=`<rect x="8" y="${by}" width="${BUF}" height="20" rx="4" fill="#0f1c24" stroke="${bc}"><title>${fluid?'fluid buffer / valve':'storage buffer'} — ${bpEsc(inp[0])} in (${bpEsc(srcLabel(inp[0],d.id))})</title></rect>`;
+    s+=`<text x="${8+BUF/2}" y="${by+13}" fill="#9fb6c4" font-size="8" text-anchor="middle">🗄 ${bpEsc(bpFit(inp[0],BUF-8,4.6))}</text>`; });
+  // per-row manifolds: input trunk(s) + splitters → machines → mergers + output trunk
+  for(let r=0;r<rowsDrawn;r++){ const baseIdx=r*cols, nowHere=Math.max(0,Math.min(cols,now-baseIdx));
+    ins.forEach((inp,k)=>{ const ty=inY(r,k), fluid=isFluidItem(inp[0]), bc=fluid?'#5aa9ff':'#2dd4bf', has=inp[1]>0;
+      if(has){ const perRow=+(cols*inp[1]*eff).toFixed(0), mk=carrierOf(inp[0],perRow).mk, lanes=Math.ceil(perRow/(fluid?600:1200));
+        s+=`<line x1="${ML-56}" y1="${ty}" x2="${xEnd}" y2="${ty}" stroke="${bc}" stroke-width="2.6"${fluid?' stroke-dasharray="5 3"':''}/>`;
+        s+=`<polygon points="${ML-56},${ty} ${ML-64},${ty-4} ${ML-64},${ty+4}" fill="${bc}"/>`;
+        s+=`<text x="${ML-68}" y="${ty+3}" fill="#cdd6df" font-size="9" text-anchor="end">${bpEsc(bpFit(inp[0]+' '+perRow+' '+mk+(lanes>1?' ×'+lanes:''),ML-74,4.6))}</text>`;
+        for(let c=0;c<cols;c++){ const x=cx(c)+(k-(nIn-1)/2)*6; s+=`<line x1="${x}" y1="${ty}" x2="${x}" y2="${mY(r)}" stroke="${bc}" stroke-width="1.3" opacity=".5"/>`; s+=`<rect x="${x-3.5}" y="${ty-3.5}" width="7" height="7" fill="#15202a" stroke="${bc}"><title>splitter</title></rect>`; }
+      } else s+=`<text x="${ML-68}" y="${ty+3}" fill="#6f7c8a" font-size="9" text-anchor="end">power only</text>`; });
+    for(let c=0;c<cols;c++){ const x=colX(c), on=c<nowHere, y=mY(r);
+      if(on){ s+=`<rect x="${x}" y="${y}" width="${MW}" height="${MH}" rx="5" fill="${col}"><title>${bk.b} · ${bk.r} — build now</title></rect>`;
+        s+=`<text x="${x+MW/2}" y="${y+MH/2+5}" fill="#0a0d12" font-size="13" font-weight="700" text-anchor="middle">${ab}</text>`; }
+      else { s+=`<rect x="${x}" y="${y}" width="${MW}" height="${MH}" rx="5" fill="none" stroke="${col}" stroke-width="1.5" stroke-dasharray="5 3" opacity=".55"><title>${bk.b} · ${bk.r} — add as you scale</title></rect>`;
+        s+=`<text x="${x+MW/2}" y="${y+MH/2+5}" fill="${col}" font-size="12" text-anchor="middle" opacity=".55">${ab}</text>`; } }
+    const oy=oY(r), perRowOut=+(cols*t.out[1]*eff).toFixed(0), omk=carrierOf(bk.outItem,perRowOut).mk, olanes=Math.ceil(perRowOut/(oc.carrier==='pipe'?600:1200));
+    for(let c=0;c<cols;c++){ const x=cx(c); s+=`<line x1="${x}" y1="${mY(r)+MH}" x2="${x}" y2="${oy}" stroke="#b692ff" stroke-width="1.3" opacity=".5"/>`; s+=`<rect x="${x-3.5}" y="${oy-3.5}" width="7" height="7" fill="#1a1426" stroke="#b692ff"><title>merger</title></rect>`; }
+    s+=`<line x1="${ML-56}" y1="${oy}" x2="${outBufX}" y2="${oy}" stroke="#b692ff" stroke-width="2.6"${oc.carrier==='pipe'?' stroke-dasharray="5 3"':''}/>`;
+    s+=`<polygon points="${outBufX},${oy} ${outBufX-8},${oy-4} ${outBufX-8},${oy+4}" fill="#b692ff"/>`;
+    s+=`<text x="${ML-56}" y="${oy-5}" fill="#9c8fc4" font-size="8.5">row ${r+1} out ${perRowOut}/min · ${omk}${olanes>1?' ×'+olanes:''}</text>`; }
+  const notes=[]; if(totalRows>rowsDrawn) notes.push('+ '+(totalRows-rowsDrawn)+' more identical row'+(totalRows-rowsDrawn>1?'s':'')+' for the full '+total); if(perLane>cols) notes.push(perLane+' machines fill one belt; '+cols+' drawn');
+  if(notes.length) s+=`<text x="${ML}" y="${H-6}" fill="#7e8b97" font-size="9">${bpEsc(notes.join(' · '))}.</text>`;
   return s+'</svg>';
 }
 function renderBpSteps(){
@@ -1422,11 +1376,56 @@ function renderBpSteps(){
   sp.querySelectorAll('.invrow[data-i]').forEach(row=>{ const it=row.querySelector('.it'); if(it) it.onclick=()=>{ bpHi=+row.dataset.i; renderBpStage(); renderBpSteps(); }; });
 }
 
-/* ============================ LIVE MAP node guide ============================ */
+/* ============================ BIG-PICTURE FLOW OVERVIEW ============================ */
+/* one-screen logical flow: raw inputs → the 7 districts → the 12 finals (★ PA) → ▲ elevator */
+function renderFlowOverview(){
+  const host=document.getElementById('flowOverview'); if(!host) return;
+  const dl=DISTRICTS.filter(d=>d.id!=='PA');
+  const dBoxH=54, dGap=12, startY=86, dx=180, dw=300;
+  const lastBot=startY+dl.length*(dBoxH+dGap)-dGap, busX=162;
+  const paX=566, paW=300, elX=936, elW=150, W=1104, H=lastBot+44, paH=lastBot-startY, midY=startY+paH/2;
+  let s=`<svg viewBox="0 0 ${W} ${H}" style="width:100%;min-width:880px;height:auto;background:#0a0d12;border:1px solid var(--line);border-radius:10px">`;
+  for(let gx=0;gx<=W;gx+=24) s+=`<line x1="${gx}" y1="0" x2="${gx}" y2="${H}" stroke="#0e151c"/>`;
+  s+=`<text x="84" y="32" fill="#9aa7b4" font-size="12" font-weight="700" text-anchor="middle">RAW INPUTS</text>`;
+  s+=`<text x="${dx+dw/2}" y="32" fill="#9aa7b4" font-size="12" font-weight="700" text-anchor="middle">PRODUCTION DISTRICTS</text>`;
+  s+=`<text x="${paX+paW/2}" y="32" fill="#ffce8a" font-size="12" font-weight="700" text-anchor="middle">★ PROJECT ASSEMBLY</text>`;
+  s+=`<text x="${elX+elW/2}" y="32" fill="#c9b6ff" font-size="12" font-weight="700" text-anchor="middle">▲ ELEVATOR</text>`;
+  // raw zone (grouped by transport)
+  let ry=startY+8; [['⛏ mined (belts)','Iron · Copper · Coal · Limestone · Caterium · Quartz'],['🛢 pumped (pipes)','Crude Oil · Water'],['🚆 railed in','Bauxite · Uranium · Nitrogen · SAM']].forEach(([h,items])=>{
+    s+=`<text x="8" y="${ry}" fill="#cdd6df" font-size="10" font-weight="700">${h}</text>`;
+    let line='',yy=ry+13; items.split(' · ').forEach(w=>{ if((line+' · '+w).length>20){ s+=`<text x="8" y="${yy}" fill="#8694a2" font-size="9">${bpEsc(line)}</text>`; line=w; yy+=12; } else line=line?line+' · '+w:w; });
+    if(line) s+=`<text x="8" y="${yy}" fill="#8694a2" font-size="9">${bpEsc(line)}</text>`; ry=yy+20; });
+  s+=`<line x1="${busX}" y1="${startY+10}" x2="${busX}" y2="${lastBot-10}" stroke="#3a4654" stroke-width="2"/>`;
+  // districts
+  dl.forEach((d,i)=>{ const y=startY+i*(dBoxH+dGap), my=y+dBoxH/2;
+    s+=`<line x1="${busX}" y1="${my}" x2="${dx}" y2="${my}" stroke="#2dd4bf" stroke-width="1.4" opacity=".5"/>`;
+    s+=`<polygon points="${dx},${my} ${dx-7},${my-3.5} ${dx-7},${my+3.5}" fill="#2dd4bf" opacity=".75"/>`;
+    s+=`<rect x="${dx}" y="${y}" width="${dw}" height="${dBoxH}" rx="8" fill="rgba(18,24,31,.92)" stroke="${d.col}" stroke-width="1.6"/>`;
+    s+=`<text x="${dx+12}" y="${y+20}" fill="${d.col}" font-size="12.5" font-weight="700">${d.id} · ${bpEsc(d.name)}</text>`;
+    const makes=d.t.map(tid=>T[tid]&&T[tid].out[0]).filter(Boolean);
+    s+=`<text x="${dx+12}" y="${y+38}" fill="#9aa7b4" font-size="9.5">${bpEsc(bpFit(makes.join(' · '),dw-26,4.6))}</text>`;
+    s+=`<text x="${dx+dw-10}" y="${y+20}" fill="#7e8b97" font-size="9" text-anchor="end">${/train/.test(d.near)?'🚆 ':'📍 '}P${d.phase}</text>`;
+    s+=`<line x1="${dx+dw}" y1="${my}" x2="${paX}" y2="${midY}" stroke="#b692ff" stroke-width="1" opacity=".26"/>`; });
+  s+=`<polygon points="${paX},${midY} ${paX-7},${midY-3.5} ${paX-7},${midY+3.5}" fill="#b692ff" opacity=".6"/>`;
+  // PA box with the 12 finals
+  s+=`<rect x="${paX}" y="${startY}" width="${paW}" height="${paH}" rx="10" fill="rgba(40,28,8,.5)" stroke="#ff9e3d" stroke-width="2"/>`;
+  s+=`<text x="${paX+12}" y="${startY+20}" fill="#ffce8a" font-size="12" font-weight="700">The 12 final parts → ★</text>`;
+  const finals=Object.keys(FINAL_RATES).sort((a,b)=>(FINAL_PHASE[a]||9)-(FINAL_PHASE[b]||9)||a.localeCompare(b));
+  finals.forEach((f,i)=>{ const yy=startY+40+i*((paH-50)/Math.max(1,finals.length-1)); s+=`<text x="${paX+14}" y="${yy}" fill="#e6edf3" font-size="10"><tspan fill="#ffce8a">P${FINAL_PHASE[f]||'?'}</tspan> · ${bpEsc(f)}</text>`; });
+  // PA → elevator
+  s+=`<line x1="${paX+paW}" y1="${midY}" x2="${elX}" y2="${midY}" stroke="#b692ff" stroke-width="2.6"/>`;
+  s+=`<polygon points="${elX},${midY} ${elX-9},${midY-5} ${elX-9},${midY+5}" fill="#b692ff"/>`;
+  // elevator with phase ladder
+  s+=`<rect x="${elX}" y="${startY}" width="${elW}" height="${paH}" rx="10" fill="#11161d" stroke="#7a6aa8" stroke-width="1.6"/>`;
+  s+=`<text x="${elX+elW/2}" y="${startY+22}" fill="#c9b6ff" font-size="12" font-weight="700" text-anchor="middle">▲ Space Elevator</text>`;
+  ['Phase 1','Phase 2','Phase 3','Phase 4','Phase 5 🚀'].forEach((p,i)=>{ s+=`<text x="${elX+elW/2}" y="${startY+50+i*((paH-60)/4)}" fill="#cdd6df" font-size="10.5" text-anchor="middle">${p}</text>`; });
+  s+=`<text x="${dx}" y="${H-9}" fill="#6b7785" font-size="9">Districts also feed each other (belts &amp; 🚆 trains) — see the 🗺️ Build Map for the exact cross-feeds &amp; spatial layout.</text>`;
+  host.innerHTML=s+'</svg>';
+}
 /* ============================ INIT ============================ */
 buildBuildMap();
 renderCards(); renderTemplates(); renderShopping(); renderInventory();
-renderBlueprints();
+renderBlueprints(); renderFlowOverview();
 </script>
 </body>
 </html>
