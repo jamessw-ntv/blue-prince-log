@@ -260,11 +260,29 @@
   .sp-foot a{color:var(--accent)}
   .loaderr{color:#ffb4b4;background:#2a1414;border:1px solid #532;padding:14px;border-radius:10px;margin:20px auto;max-width:var(--maxw)}
 
+  /* ===== cross-sport Next Up panel ===== */
+  .nx-section{margin-bottom:30px}
+  .nx-section>h3{font-size:13px;text-transform:uppercase;letter-spacing:.06em;color:var(--muted);margin:0 0 12px;font-weight:800}
+  .nx-list{display:flex;flex-direction:column;gap:8px}
+  .nx-row{display:flex;align-items:center;gap:12px;background:var(--panel);border:1px solid var(--line);border-radius:10px;padding:11px 14px}
+  .nx-row.mine{border-left:3px solid var(--yellow)}
+  .nx-ico{font-size:20px;flex-shrink:0;width:26px;text-align:center}
+  .nx-body{flex:1;min-width:0}
+  .nx-match{font-weight:700;font-size:14px;color:var(--text)}
+  .nx-sub{font-size:12px;color:var(--muted);margin-top:2px}
+  .nx-when{font-size:12px;font-weight:800;color:var(--accent);text-align:right;flex-shrink:0;white-space:nowrap}
+  .nx-comps{display:grid;grid-template-columns:repeat(auto-fit,minmax(290px,1fr));gap:16px}
+  .nx-comp{background:var(--panel2);border:1px solid var(--line);border-radius:var(--radius);padding:6px 14px 10px}
+  .nx-comp h4{margin:0;padding:10px 0;font-size:13px;color:var(--text);border-bottom:1px solid var(--line)}
+  .nx-comp .nx-row{background:none;border:0;border-bottom:1px solid var(--line);border-radius:0;padding:9px 0}
+  .nx-comp .nx-row:last-child{border-bottom:0}
+
   @media(max-width:560px){
     .fixt{grid-template-columns:48px 1fr;gap:8px}
     .fixt .ven{display:none}
     .hero-meta{gap:12px}
     .up-row{grid-template-columns:1fr;gap:8px}
+    .nx-when{font-size:11px}
   }
 </style>
 </head>
@@ -276,7 +294,8 @@
 
 <div class="sportbar">
   <div class="sp-wrap">
-    <button class="active" data-sport="wc">⚽ World Cup</button>
+    <button class="active" data-sport="next">⏭ Next Up</button>
+    <button data-sport="wc">⚽ World Cup</button>
     <button data-sport="afl">🏉 AFL</button>
     <button data-sport="nrl">🏈 NRL</button>
   </div>
@@ -284,8 +303,26 @@
 
 <div id="error"></div>
 
+<!-- ===================== NEXT UP PANEL ===================== -->
+<div class="sport-panel active" id="sp-next">
+  <header class="hero">
+    <div class="sp-wrap">
+      <div class="eyebrow">Across all your sports</div>
+      <h1>Next <span>Up</span></h1>
+      <div class="hero-meta">
+        <div>⚽ <b>Socceroos</b></div>
+        <div>🏉 <b>Carlton</b></div>
+        <div>🏈 <b>Storm</b></div>
+        <div>QLD · <b>Origin</b></div>
+      </div>
+    </div>
+  </header>
+  <main class="sp-main" id="nextUpBox"></main>
+  <footer class="sp-foot"><div class="sp-wrap">Fixtures verified 24 Jun 2026, all times AEST. World Cup knockout opponents firm up as the groups finish.</div></footer>
+</div><!-- /sp-next -->
+
 <!-- ===================== WORLD CUP PANEL ===================== -->
-<div class="sport-panel active" id="sp-wc">
+<div class="sport-panel" id="sp-wc">
   <header class="hero">
     <div class="sp-wrap">
       <div class="eyebrow">United States · Canada · Mexico</div>
@@ -685,6 +722,26 @@ function renderPath(elId, path){
   el.innerHTML = html;
 }
 
+/* ---------- cross-sport Next Up ---------- */
+function renderNextUp(nu){
+  const el=document.getElementById('nextUpBox');
+  if(!el||!nu) return;
+  const mine=(nu.mine||[]).map(m=>`<div class="nx-row mine">
+      <div class="nx-ico">${m[0]}</div>
+      <div class="nx-body"><div class="nx-match">${m[2]}</div><div class="nx-sub">${m[4]}</div></div>
+      <div class="nx-when">${m[3]}</div>
+    </div>`).join('');
+  const comps=Object.entries(nu.matches||{}).map(([comp,games])=>`<div class="nx-comp">
+      <h4>${comp}</h4>
+      ${games.map(g=>`<div class="nx-row">
+        <div class="nx-body"><div class="nx-match">${g[0]}</div><div class="nx-sub">${g[2]}</div></div>
+        <div class="nx-when">${g[1]}</div>
+      </div>`).join('')}
+    </div>`).join('');
+  el.innerHTML=`<div class="nx-section"><h3>Your teams · next up</h3><div class="nx-list">${mine}</div></div>
+    <div class="nx-section"><h3>Next 5 matches · by competition</h3><div class="nx-comps">${comps}</div></div>`;
+}
+
 /* ---------- sport switcher (static DOM, wire once) ---------- */
 document.querySelectorAll('.sportbar button').forEach(b=>{
   b.onclick=()=>{
@@ -712,6 +769,7 @@ document.querySelectorAll('nav.tabs button').forEach(b=>{
 (async function(){
   try{
     const [DATA] = await load();
+    renderNextUp(DATA.nextup);
     renderWC(DATA.wc);
     renderLadder(document.getElementById('aflLadder'), DATA.afl.ladder, "Carlton", ["P","W","L","D","PF","PA","%","Pts"]);
     renderLadder(document.getElementById('nrlLadder'), DATA.nrl.ladder, "Melbourne Storm", ["P","W","L","D","Diff","Pts"]);

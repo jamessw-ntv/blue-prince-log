@@ -4,6 +4,39 @@
     "updated": "2026-06-24",
     "note": "Static snapshot. World Cup results through 23 June (group A-C deciders on 24 June still pending); AFL through Round 15; NRL through Round 16; Origin series level 1-1, decider 8 July. AFL and NRL for/against and differential figures pending re-verification."
   },
+  "nextup": {
+    "mine": [
+      ["⚽","Socceroos","Paraguay v Australia","Fri 26 Jun · 12:00pm","Group D decider · Levi's Stadium, Santa Clara"],
+      ["🏉","Carlton","Carlton v West Coast","Sat 27 Jun · 1:15pm","AFL Round 16 · Marvel Stadium"],
+      ["🏈","Storm","Manly v Storm","Sat 27 Jun · 7:35pm","NRL Round 17 · 4 Pines Park (away)"],
+      ["🏉","Carlton","Richmond v Carlton","Sat 4 Jul","AFL Round 17 · MCG (away)"],
+      ["🏈","Storm","Storm v Warriors","Sat 5 Jul","NRL Round 18 · AAMI Park"],
+      ["🏈","Queensland","Origin III · QLD v NSW","Wed 8 Jul · 8:05pm","Series decider · Suncorp Stadium, Brisbane"]
+    ],
+    "matches": {
+      "⚽ World Cup": [
+        ["Switzerland v Canada","Thu 25 Jun · 5:00am","Group B · Vancouver"],
+        ["Bosnia & Herzegovina v Qatar","Thu 25 Jun · 5:00am","Group B · Seattle"],
+        ["Scotland v Brazil","Thu 25 Jun · 8:00am","Group C · Miami"],
+        ["Morocco v Haiti","Thu 25 Jun · 8:00am","Group C · Atlanta"],
+        ["Czechia v Mexico","Thu 25 Jun · 11:00am","Group A · Mexico City"]
+      ],
+      "🏉 AFL · Round 16": [
+        ["Brisbane Lions v Sydney Swans","Thu 25 Jun · 7:30pm","The Gabba"],
+        ["Hawthorn v GWS Giants","Fri 26 Jun · 7:40pm","MCG"],
+        ["Carlton v West Coast","Sat 27 Jun · 1:15pm","Marvel Stadium"],
+        ["Collingwood v Richmond","Sat 27 Jun · 4:15pm","MCG"],
+        ["Port Adelaide v Adelaide","Sat 27 Jun · 7:35pm","Adelaide Oval"]
+      ],
+      "🏈 NRL · Round 17": [
+        ["Eels v Rabbitohs","Thu 25 Jun · 7:50pm","CommBank Stadium"],
+        ["Titans v Bulldogs","Fri 26 Jun · 6:00pm","Cbus Super Stadium"],
+        ["Broncos v Roosters","Fri 26 Jun · 8:00pm","Suncorp Stadium"],
+        ["Dolphins v Warriors","Sat 27 Jun · 3:00pm","Suncorp Stadium"],
+        ["Cowboys v Panthers","Sat 27 Jun · 5:30pm","QCB Stadium, Townsville"]
+      ]
+    }
+  },
   "wc": {
     "groups": {
       "A": {"rows": [["Mexico",2,2,0,0,3,0,6],["Korea Republic",2,1,0,1,2,2,3],["South Africa",2,0,1,1,1,3,1],["Czechia",2,0,1,1,2,3,1]],
@@ -87,10 +120,12 @@
         ["B","Bosnia & Herzegovina","Qatar","5:00am Thu","3:00pm Wed ET","1.40","5.25","7.00"],
         ["C","Scotland","Brazil","8:00am Thu","6:00pm Wed ET","8.50","5.30","1.46"],
         ["C","Morocco","Haiti","8:00am Thu","6:00pm Wed ET","1.18","7.00","15.00"],
-        ["D","Türkiye","USA","10:00am Thu","8:00pm Wed ET","3.85","4.25","2.45"],
-        ["D","Paraguay","Australia","10:00am Thu","8:00pm Wed ET","3.06","2.30","4.26"],
         ["A","Czechia","Mexico","11:00am Thu","9:00pm Wed ET","3.70","3.90","1.91"],
         ["A","South Africa","Korea Republic","11:00am Thu","9:00pm Wed ET","5.90","3.90","1.61"]
+      ]],
+      ["Fri 26 Jun (AEST)", [
+        ["D","Türkiye","USA","12:00pm Fri","10:00pm Thu ET","3.85","4.25","2.45"],
+        ["D","Paraguay","Australia","12:00pm Fri","10:00pm Thu ET","3.06","2.30","4.26"]
       ]]
     ],
     "thirds": [
@@ -150,8 +185,8 @@
       ["Bye","-","","","Round 14 · bye"],
       ["GWS GIANTS","A","W","88–65","Round 15 · 20 Jun"],
       ["West Coast Eagles","H","","","Round 16 · Sat 27 Jun, 1:15pm AEST · Marvel"],
-      ["Sydney Swans","A","","","Round 17 · Sat 4 Jul, 7:35pm AEST · SCG"],
-      ["Collingwood","H","","","Round 18 · Sat 11 Jul, 7:35pm AEST · MCG"]
+      ["Richmond","A","","","Round 17 · Sat 4 Jul · MCG"],
+      ["Hawthorn","H","","","Round 18 · Sat 11 Jul, 7:35pm AEST · MCG"]
     ]
   },
   "nrl": {
@@ -235,7 +270,7 @@
           "games": [["def Bulldogs","R10","74–62","w"],["def Port Adelaide","R11","92–58","w"],["def Geelong","R12","88–84","w"],["def Essendon","R13","72–67","w"],["def GWS","R15","88–65","w"]]},
         {"marker": {"type": "wall", "text": "The wall: 11th to top 8 with 8 rounds left"}},
         {"stage": "Rounds 16–23 · Now", "title": "Climb into the top 8", "req": "Currently 11th on 24 points. The 8th-placed Bulldogs are on 32. Carlton must win most of their run home AND have results fall their way. Brutal but not dead.", "odds": 14, "status": "current",
-          "games": [["v West Coast","R16 · 27 Jun · Marvel","","tbd"],["v Sydney","R17 · 4 Jul · SCG","","tbd"],["v Collingwood","R18 · 11 Jul · MCG","","tbd"]],
+          "games": [["v West Coast","R16 · 27 Jun · Marvel","","tbd"],["v Richmond","R17 · 4 Jul · MCG","","tbd"],["v Hawthorn","R18 · 11 Jul · MCG","","tbd"]],
           "note": "Percentage also needs lifting: they must win big, not just win."},
         {"stage": "Finals · Week 1", "title": "Win an elimination final", "req": "Sneak in at 7th or 8th and you get a sudden-death final, probably away to a top-4 side.", "odds": 4, "status": "locked",
           "games": [["Elimination Final","Sep · vs top-4 side","","tbd"]]},
