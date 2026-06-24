@@ -77,13 +77,13 @@ back; merge outputs along the front.
 | **T-STATOR** | Stator cell | Assembler | Stator | 15 Steel Pipe + 40 Wire | 5 Stator | 2×3 / machine |
 | **T-MOTOR** | Motor cell | Assembler | Motor | 10 Rotor + 10 Stator | 5 Motor | 2×3 / machine |
 | **T-SMARTPLATE** | Smart Plating cell | Assembler | Smart Plating | 2 RIP + 2 Rotor | 2 Smart Plating | 2×3 / machine |
-| **T-VERSFRAME** | Versatile Framework cell | Assembler | Versatile Framework | 1 Modular Frame + 12 Steel Beam | 2 Versatile Framework | 2×3 / machine |
+| **T-VERSFRAME** | Versatile Framework cell | Assembler | Versatile Framework | 2.5 Modular Frame + 30 Steel Beam | 5 Versatile Framework | 2×3 / machine |
 | **T-AUTOWIRE** | Automated Wiring cell | Assembler | Automated Wiring | 2.5 Stator + 50 Cable | 2.5 Automated Wiring | 2×3 / machine |
 | **T-PLASTIC** | Plastic line | Refinery | Plastic | 30 Crude Oil | 20 Plastic (+10 Heavy Oil Residue) | 2×4 / refinery |
 | **T-RUBBER** | Rubber line | Refinery | Rubber | 30 Crude Oil | 20 Rubber (+20 Heavy Oil Residue) | 2×4 / refinery |
 | **T-CIRCUIT** | Circuit Board cell | Assembler | Circuit Board | 15 Copper Sheet + 30 Plastic | 7.5 Circuit Board | 2×3 / machine |
 | **T-COMPUTER** | Computer cell | Manufacturer | Computer | 10 Circuit Board + 20 Cable + 40 Plastic | 2.5 Computer | 3×4 / machine |
-| **T-HMFRAME** | Heavy Modular Frame cell | Manufacturer | Heavy Modular Frame | 10 Modular Frame + 20 Steel Pipe + 10 Encased Beam + 120 Screw | 2 Heavy Modular Frame | 3×4 / machine |
+| **T-HMFRAME** | Heavy Modular Frame cell | Manufacturer | Heavy Modular Frame | 10 Modular Frame + 40 Steel Pipe + 10 Encased Beam + 240 Screw | 2 Heavy Modular Frame | 3×4 / machine |
 
 ## Tier 6–9 templates (end-game)
 
@@ -97,8 +97,8 @@ each is a Manufacturer / Blender / Particle Accelerator / Quantum Encoder cell:*
 | **T-ALUMINGOT** | Aluminium ingot line | Refinery + Foundry/Blender | Alumina → Aluminum Scrap → Aluminum Ingot |
 | **T-ADS** | Assembly Director System cell | **Assembler** | ADS (2 ACU + 1 Supercomputer) |
 | **T-MFG** | Magnetic Field Generator cell | **Assembler** | MFG (5 Versatile Framework + 2 EM Control Rod) |
-| **T-TPR** | Thermal Propulsion Rocket cell | Manufacturer | TPR (5 Modular Engine + 2 Turbo Motor + 6 Cooling System + 2 **Fused Modular Frame**) |
-| **T-PASTA** | Nuclear Pasta cell | Particle Accelerator | Nuclear Pasta (200 Copper Powder + 1 Pressure Conversion Cube) |
+| **T-TPR** | Thermal Propulsion Rocket cell | Manufacturer | TPR (2.5 Modular Engine + 1 Turbo Motor + 3 Cooling System + 1 **Fused Modular Frame** → 1) |
+| **T-PASTA** | Nuclear Pasta cell | Particle Accelerator | Nuclear Pasta (100 Copper Powder + 0.5 Pressure Conversion Cube → 0.5) |
 | **T-SCULPTOR** | Biochemical Sculptor cell | **Blender** | Biochemical Sculptor (1 ADS + 80 Ficsite Trigon + 20 Water → 4) |
 | **T-AISERVER** | AI Expansion Server cell | **Quantum Encoder** | AI Expansion Server (MFG + Neural-Quantum Processor + Superposition Oscillator + EPM) |
 | **T-WARP** | Ballistic Warp Drive cell | **Quantum Encoder** | Ballistic Warp Drive (TPR + Singularity Cell + Superposition Oscillator + 40 Dark Matter Crystal) |
