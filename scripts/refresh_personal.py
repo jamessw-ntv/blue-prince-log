@@ -103,31 +103,35 @@ def refresh_weather(data):
     return f"weather ({w['now']['temp']}°, {desc})"
 
 
-# --- markets: CoinGecko (crypto) + Stooq (ASX) ------------------------------
-def _stooq_daily(sym):
-    """Latest close + day-on-day % from Stooq's date-ranged daily CSV (tiny payload)."""
-    end = datetime.date.today()
-    start = end - datetime.timedelta(days=16)
-    url = (
-        "https://stooq.com/q/d/l/?s=" + urllib.parse.quote(sym)
-        + "&d1=" + start.strftime("%Y%m%d")
-        + "&d2=" + end.strftime("%Y%m%d") + "&i=d"
-    )
-    body = _get(url)
-    closes = []
-    for ln in body.strip().splitlines()[1:]:  # skip header
-        parts = ln.split(",")
-        if len(parts) < 5:
-            continue
+# --- markets: CoinGecko (crypto) + Yahoo Finance (ASX) ----------------------
+# Stooq serves an HTML block page to datacenter IPs, so it's unusable from CI.
+# Yahoo's v8 chart endpoint is keyless and cloud-friendly; query1 with a query2
+# fallback. meta carries the live price and the prior session close.
+BROWSER_UA = "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124 Safari/537.36"
+
+
+def _yahoo_quote(sym):
+    """Latest price + day-on-day % from Yahoo's v8 chart endpoint."""
+    last_err = None
+    for host in ("query1", "query2"):
+        url = (f"https://{host}.finance.yahoo.com/v8/finance/chart/"
+               + urllib.parse.quote(sym) + "?range=5d&interval=1d")
         try:
-            closes.append(float(parts[4]))
-        except ValueError:
-            continue
-    if not closes:
-        raise ValueError(f"no closes for {sym}: {body[:80]!r}")
-    price = closes[-1]
-    pct = round((closes[-1] - closes[-2]) / closes[-2] * 100, 2) if len(closes) >= 2 else None
-    return round(price, 2), pct
+            j = get_json(url, {"User-Agent": BROWSER_UA})
+            res = (j.get("chart") or {}).get("result") or []
+            if not res:
+                raise ValueError(f"no result ({(j.get('chart') or {}).get('error')})")
+            meta = res[0].get("meta") or {}
+            price = meta.get("regularMarketPrice")
+            prev = meta.get("chartPreviousClose") or meta.get("previousClose")
+            if price is None:
+                raise ValueError("no regularMarketPrice in meta")
+            price = float(price)
+            pct = round((price - float(prev)) / float(prev) * 100, 2) if prev else None
+            return round(price, 2), pct
+        except Exception as e:  # noqa: BLE001 - try the next host before giving up
+            last_err = e
+    raise ValueError(f"yahoo failed for {sym}: {last_err}")
 
 
 def refresh_markets(data):
@@ -153,7 +157,7 @@ def refresh_markets(data):
     ok = 0
     for row in m.get("asx", []):
         try:
-            row["price"], row["pct"] = _stooq_daily(row["code"].lower() + ".au")
+            row["price"], row["pct"] = _yahoo_quote(row["code"] + ".AX")
             ok += 1
         except Exception as e:  # noqa: BLE001
             print(f"::warning::ASX {row['code']} failed, keeping last-good: {e}", file=sys.stderr)
@@ -315,7 +319,7 @@ def main():
         data["meta"]["fetched"] = now
         data["meta"]["updated"] = now[:10]
         data["meta"]["note"] = ("Live. weather Open-Meteo · crypto CoinGecko · "
-                                "ASX Stooq · dev GitHub · releases RSS.")
+                                "ASX Yahoo · dev GitHub · releases RSS.")
         DATA.write_text(json.dumps(data, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
 
     print(f"updated: {', '.join(results) or 'none'}")
