@@ -3,15 +3,15 @@
     "title": "Personal Dashboard",
     "place": "Ferntree Gully, VIC",
     "updated": "2026-06-24",
-    "fetched": "2026-06-24T14:45:45+00:00",
+    "fetched": "2026-06-24T17:10:08+00:00",
     "note": "Live. weather Open-Meteo · crypto CoinGecko · ASX Yahoo · dev GitHub · releases RSS."
   },
   "weather": {
     "place": "Ferntree Gully, VIC",
     "now": {
-      "temp": 8,
-      "icon": "🌤️",
-      "desc": "Mainly clear",
+      "temp": 7,
+      "icon": "☀️",
+      "desc": "Clear",
       "wind": 3
     },
     "days": [
@@ -21,7 +21,7 @@
         "max": 14,
         "icon": "☁️",
         "desc": "Overcast",
-        "rain": 6
+        "rain": 3
       },
       {
         "day": "Fri",
@@ -72,45 +72,45 @@
       {
         "code": "BTC",
         "name": "Bitcoin",
-        "price": 88635.0,
-        "pct": -1.69
+        "price": 86540.0,
+        "pct": -4.04
       },
       {
         "code": "ETH",
         "name": "Ethereum",
-        "price": 2389.53,
-        "pct": -0.32
+        "price": 2298.33,
+        "pct": -3.97
       }
     ]
   },
   "releases": [
     {
       "cat": "Film/TV",
-      "title": "Netflix’s ‘La Bola Negra’ Sets Four-Week Theatrical Run Before Streaming Debut",
+      "title": "‘Ladies of London’ Reboot on Pause at Bravo",
       "when": "24 Jun",
       "source": "Variety",
-      "url": "https://variety.com/2026/film/news/la-bola-negra-theatrical-release-netflix-debut-1236789202/"
+      "url": "https://variety.com/2026/tv/news/ladies-of-london-reboot-on-pause-bravo-1236789387/"
     },
     {
       "cat": "Film/TV",
-      "title": "Super-Producer Nile Rodgers Shares Wild Tales About Walking Out on Madonna, Meeting David Bowie, Advice From Frank Sinatra and More",
+      "title": "Ex-Disney CEO Bob Iger Stands by Jimmy Kimmel Suspension and Denies It Was Politically Motivated: His Charlie Kirk Comments Were in ‘Bad Taste’",
       "when": "24 Jun",
       "source": "Variety",
-      "url": "https://variety.com/2026/music/news/nile-rodgers-meeting-david-bowie-walking-out-on-madonna-1236787690/"
+      "url": "https://variety.com/2026/tv/news/bob-iger-defends-jimmy-kimmel-suspension-charlie-kirk-1236789473/"
     },
     {
       "cat": "Film/TV",
-      "title": "Cannes Lions: Top Marketing and Ad Execs on Boosting Brand Voice Through Entertainment, Connecting With Gen Z and More",
+      "title": "Why Listen to AI Michael Caine Narrate ‘The Odyssey’ When Versions With Ian McKellen, Claire Danes and More Exist?",
       "when": "24 Jun",
       "source": "Variety",
-      "url": "https://variety.com/2026/biz/news/cannes-lions-canva-day-one-marketing-advertising-executives-1236788668/"
+      "url": "https://variety.com/2026/film/news/the-odyssey-audiobooks-ai-michael-caine-ian-mckellen-1236788466/"
     },
     {
       "cat": "Film/TV",
-      "title": "‘Teenage Mutant Ninja Turtles’ Stage Show Sets Across 2027 North American Tour",
+      "title": "Sam Smith Announces New Album ‘Hazel Eyes,’ Releases ‘My Guy’ Single",
       "when": "24 Jun",
       "source": "Variety",
-      "url": "https://variety.com/2026/theater/news/teenage-mutant-ninja-turtles-stage-show-tour-1236788828/"
+      "url": "https://variety.com/2026/music/news/sam-smith-new-album-hazel-eyes-my-guy-single-1236789467/"
     },
     {
       "cat": "Trek/Wars",
