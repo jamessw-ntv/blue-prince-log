@@ -1,0 +1,201 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Personal Dashboard · jamessw</title>
+<link rel="stylesheet" href="../assets/hub.css" />
+<style>
+  .pd-head{max-width:var(--maxw);margin:0 auto;padding:26px 22px 6px}
+  .pd-head h1{margin:0 0 4px;font-size:26px;letter-spacing:.2px}
+  .pd-head .sub{color:var(--muted);font-size:13px;display:flex;align-items:center;gap:10px;flex-wrap:wrap}
+  .upd-stamp{color:var(--muted);font-size:11px}
+  .refresh-btn{background:none;border:1px solid var(--line);color:var(--muted);font-size:13px;cursor:pointer;
+    border-radius:8px;padding:4px 10px;line-height:1.4}
+  .refresh-btn:hover{color:var(--accent);border-color:var(--accent)}
+  .refresh-btn:disabled{opacity:.5;cursor:default}
+  .refresh-btn.spin{animation:spin .8s linear infinite;display:inline-block}
+  @keyframes spin{to{transform:rotate(360deg)}}
+
+  nav.tabs{position:sticky;top:0;z-index:50;background:var(--panel);border-bottom:1px solid var(--line);margin-top:14px}
+  nav.tabs .wrap2{max-width:var(--maxw);margin:0 auto;padding:0 22px;display:flex;gap:4px;overflow-x:auto}
+  nav.tabs button{background:none;border:none;color:var(--muted);padding:14px 16px;font-size:13px;font-weight:600;
+    cursor:pointer;letter-spacing:.03em;text-transform:uppercase;white-space:nowrap;border-bottom:3px solid transparent}
+  nav.tabs button:hover{color:var(--text)}
+  nav.tabs button.active{color:var(--accent);border-bottom-color:var(--accent)}
+
+  main{max-width:var(--maxw);margin:0 auto;padding:24px 22px 70px}
+  section{display:none} section.active{display:block;animation:fade .3s ease}
+  @keyframes fade{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
+
+  .card{background:var(--panel);border:1px solid var(--line);border-radius:var(--radius);padding:16px 18px;margin-bottom:14px}
+  .sample{font-size:11px;color:var(--yellow);border:1px solid var(--line);border-radius:6px;padding:2px 8px;display:inline-block;margin-bottom:14px}
+
+  .wx-now{display:flex;align-items:center;gap:16px}
+  .wx-now .t{font-size:42px;font-weight:800;font-variant-numeric:tabular-nums}
+  .wx-now .ico{font-size:40px}
+  .wx-now .meta{color:var(--muted);font-size:13px}
+  .wx-days{display:grid;grid-template-columns:repeat(auto-fit,minmax(120px,1fr));gap:12px;margin-top:14px}
+  .wx-day{background:var(--panel2);border:1px solid var(--line);border-radius:10px;padding:12px;text-align:center}
+  .wx-day .d{font-size:12px;color:var(--muted);text-transform:uppercase;letter-spacing:.05em}
+  .wx-day .ic{font-size:26px;margin:6px 0}
+  .wx-day .r{font-size:14px;font-weight:700;font-variant-numeric:tabular-nums}
+  .wx-day .r small{color:var(--muted);font-weight:400}
+  .wx-day .rain{font-size:11px;color:var(--accent)}
+
+  .row{display:flex;align-items:center;gap:12px;padding:10px 0;border-bottom:1px solid var(--line)}
+  .row:last-child{border-bottom:none}
+  .row .nm{flex:1;min-width:0}
+  .row .nm b{font-size:14px} .row .nm small{display:block;color:var(--muted);font-size:12px}
+  .row .px{font-variant-numeric:tabular-nums;font-weight:700;text-align:right}
+  .row .pct{font-variant-numeric:tabular-nums;font-weight:700;width:74px;text-align:right}
+  .up{color:var(--green)} .down{color:var(--red)} .flat{color:var(--muted)}
+  h3.grp{font-size:13px;text-transform:uppercase;letter-spacing:.06em;color:var(--muted);margin:0 0 4px}
+
+  .rel{display:flex;gap:12px;padding:11px 0;border-bottom:1px solid var(--line)}
+  .rel:last-child{border-bottom:none}
+  .rel .cat{font-size:11px;font-weight:700;color:var(--black);background:var(--accent);border-radius:6px;padding:2px 8px;height:fit-content;white-space:nowrap}
+  .rel .body{flex:1;min-width:0}
+  .rel .body a,.rel .body b{font-size:14px;color:var(--text);text-decoration:none}
+  .rel .body a:hover{color:var(--accent)}
+  .rel .body small{display:block;color:var(--muted);font-size:12px;margin-top:2px}
+
+  .loaderr{color:#ffb4b4;background:#2a1414;border:1px solid #532;padding:14px;border-radius:10px;margin:20px auto;max-width:var(--maxw)}
+</style>
+</head>
+<body>
+<div class="hubbar">
+  <a class="backlink" href="../">← Hub</a>
+  <span class="crumb"><b>Personal Dashboard</b></span>
+</div>
+
+<div class="pd-head">
+  <h1>Personal Dashboard</h1>
+  <div class="sub">
+    <span id="place">Ferntree Gully, VIC</span>
+    <span class="upd-stamp" id="updStamp"></span>
+    <button id="refreshBtn" class="refresh-btn" title="Reload the latest data">↻ Refresh</button>
+  </div>
+</div>
+
+<nav class="tabs">
+  <div class="wrap2">
+    <button class="active" data-t="briefing">Briefing</button>
+    <button data-t="markets">Markets</button>
+    <button data-t="releases">Releases</button>
+    <button data-t="dev">Dev</button>
+  </div>
+</nav>
+
+<div id="error"></div>
+
+<main>
+  <section id="briefing" class="active"><div id="wxBox"></div></section>
+  <section id="markets"><div id="mkBox"></div></section>
+  <section id="releases"><div id="relBox"></div></section>
+  <section id="dev"><div id="devBox"></div></section>
+</main>
+
+<script>
+const RAW = "https://raw.githubusercontent.com/jamessw-ntv/jamessw-ntv.github.io/main/personal/data.json";
+const esc = s => String(s==null?"":s).replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+const num = (v,d=2) => (v==null||isNaN(v)) ? "—" : Number(v).toLocaleString(undefined,{minimumFractionDigits:d,maximumFractionDigits:d});
+
+async function load(){
+  const bust = "?_=" + Date.now();
+  for(const url of [RAW + bust, "data.json" + bust]){
+    try{ const r = await fetch(url,{cache:"no-store"}); if(r.ok) return await r.json(); }catch(e){}
+  }
+  throw new Error("Could not load personal/data.json");
+}
+
+function pctCls(p){ return p==null ? "flat" : p>0 ? "up" : p<0 ? "down" : "flat"; }
+function pctStr(p){ return p==null ? "—" : (p>0?"+":"") + Number(p).toFixed(2) + "%"; }
+
+function sample(meta){ return (meta && meta.fetched) ? "" : `<div class="sample">Sample data · live feed wiring in progress</div>`; }
+
+function renderWeather(d){
+  const w = d.weather||{}; const n = w.now||{};
+  const days = (w.days||[]).map(x=>`<div class="wx-day">
+      <div class="d">${esc(x.day)}</div><div class="ic">${esc(x.icon||"")}</div>
+      <div class="r">${x.max==null?"—":Math.round(x.max)}°<small> / ${x.min==null?"—":Math.round(x.min)}°</small></div>
+      <div class="rain">${x.rain==null?"":esc(x.rain)+"% rain"}</div>
+    </div>`).join("");
+  document.getElementById("wxBox").innerHTML = sample(d.meta) + `<div class="card">
+      <div class="wx-now"><div class="ico">${esc(n.icon||"")}</div>
+        <div class="t">${n.temp==null?"—":Math.round(n.temp)}°</div>
+        <div class="meta"><b>${esc(n.desc||"")}</b><br>Wind ${n.wind==null?"—":esc(n.wind)} km/h · ${esc(w.place||"")}</div>
+      </div>
+      <div class="wx-days">${days}</div>
+    </div>`;
+}
+
+function mkRows(list){
+  return (list||[]).map(r=>`<div class="row">
+    <div class="nm"><b>${esc(r.code)}</b><small>${esc(r.name||"")}</small></div>
+    <div class="px">${r.price==null?"—":"$"+num(r.price, r.price>=1000?0:2)}</div>
+    <div class="pct ${pctCls(r.pct)}">${pctStr(r.pct)}</div>
+  </div>`).join("");
+}
+function renderMarkets(d){
+  const m = d.markets||{};
+  document.getElementById("mkBox").innerHTML = sample(d.meta)
+    + `<div class="card"><h3 class="grp">ASX</h3>${mkRows(m.asx)}</div>`
+    + `<div class="card"><h3 class="grp">Crypto (AUD)</h3>${mkRows(m.crypto)}</div>`;
+}
+
+function renderReleases(d){
+  const items = (d.releases||[]).map(r=>{
+    const title = r.url ? `<a href="${esc(r.url)}" target="_blank" rel="noopener">${esc(r.title)}</a>` : `<b>${esc(r.title)}</b>`;
+    return `<div class="rel"><span class="cat">${esc(r.cat)}</span><div class="body">${title}
+      <small>${[r.source,r.when].filter(Boolean).map(esc).join(" · ")}</small></div></div>`;
+  }).join("");
+  document.getElementById("relBox").innerHTML = sample(d.meta) + `<div class="card">${items||"Nothing yet."}</div>`;
+}
+
+function renderDev(d){
+  const items = (d.dev||[]).map(r=>`<div class="rel"><span class="cat">${esc(r.lang||"repo")}</span>
+    <div class="body"><a href="https://github.com/jamessw-ntv/${esc(r.repo)}" target="_blank" rel="noopener">${esc(r.repo)}</a>
+      <small>${[r.desc, r.commit, r.pushed].filter(Boolean).map(esc).join(" · ")}</small></div></div>`).join("");
+  document.getElementById("devBox").innerHTML = sample(d.meta) + `<div class="card">${items||"No repos."}</div>`;
+}
+
+function setStamp(meta){
+  const el = document.getElementById("updStamp");
+  if(!el || !meta) return;
+  if(meta.fetched){
+    const t = new Date(meta.fetched), mins = Math.max(0, Math.round((Date.now()-t.getTime())/60000));
+    el.textContent = mins<1 ? "updated just now" : mins<60 ? "updated "+mins+"m ago"
+      : mins<1440 ? "updated "+Math.round(mins/60)+"h ago" : "updated "+t.toISOString().slice(0,10);
+  } else { el.textContent = ""; }
+}
+
+async function refresh(){
+  const btn = document.getElementById("refreshBtn");
+  if(btn){ btn.disabled = true; btn.classList.add("spin"); }
+  try{
+    const d = await load();
+    if(d.meta && d.meta.place) document.getElementById("place").textContent = d.meta.place;
+    renderWeather(d); renderMarkets(d); renderReleases(d); renderDev(d);
+    setStamp(d.meta);
+    document.getElementById("error").innerHTML = "";
+  }catch(e){
+    document.getElementById("error").innerHTML = `<div class="loaderr">${esc((e&&e.message)||e)}</div>`;
+  }finally{
+    if(btn){ btn.disabled = false; btn.classList.remove("spin"); }
+  }
+}
+
+document.querySelectorAll("nav.tabs button").forEach(b=>{
+  b.onclick = ()=>{
+    document.querySelectorAll("nav.tabs button").forEach(x=>x.classList.remove("active"));
+    document.querySelectorAll("main section").forEach(x=>x.classList.remove("active"));
+    b.classList.add("active");
+    document.getElementById(b.dataset.t).classList.add("active");
+  };
+});
+document.getElementById("refreshBtn").addEventListener("click", refresh);
+refresh();
+</script>
+</body>
+</html>

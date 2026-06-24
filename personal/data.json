@@ -1,0 +1,39 @@
+{
+  "meta": {
+    "title": "Personal Dashboard",
+    "place": "Ferntree Gully, VIC",
+    "updated": "",
+    "fetched": "",
+    "note": "Sample data. Live feeds (weather, markets, releases, dev) are wired into the hourly refresh; values fill in on the first successful fetch."
+  },
+  "weather": {
+    "place": "Ferntree Gully, VIC",
+    "now": { "temp": 12, "icon": "☁️", "desc": "Partly cloudy", "wind": 14 },
+    "days": [
+      { "day": "Today", "min": 7, "max": 14, "icon": "🌦️", "desc": "Showers", "rain": 60 },
+      { "day": "Wed", "min": 6, "max": 13, "icon": "☁️", "desc": "Cloudy", "rain": 30 },
+      { "day": "Thu", "min": 5, "max": 15, "icon": "☀️", "desc": "Sunny", "rain": 10 }
+    ]
+  },
+  "markets": {
+    "asx": [
+      { "code": "XJO", "name": "ASX 200", "price": null, "pct": null },
+      { "code": "CBA", "name": "Commonwealth Bank", "price": null, "pct": null },
+      { "code": "BHP", "name": "BHP Group", "price": null, "pct": null },
+      { "code": "CSL", "name": "CSL", "price": null, "pct": null },
+      { "code": "WES", "name": "Wesfarmers", "price": null, "pct": null }
+    ],
+    "crypto": [
+      { "code": "BTC", "name": "Bitcoin", "price": null, "pct": null },
+      { "code": "ETH", "name": "Ethereum", "price": null, "pct": null }
+    ]
+  },
+  "releases": [
+    { "cat": "Trek/Wars", "title": "Sample: a new Star Trek comic", "when": "", "source": "feed", "url": "" },
+    { "cat": "Games", "title": "Sample: Satisfactory patch notes", "when": "", "source": "Steam", "url": "" },
+    { "cat": "Film/TV", "title": "Sample: a notable new streaming release", "when": "", "source": "feed", "url": "" }
+  ],
+  "dev": [
+    { "repo": "jamessw-ntv.github.io", "desc": "Personal projects hub", "pushed": "", "lang": "HTML", "commit": "" }
+  ]
+}
