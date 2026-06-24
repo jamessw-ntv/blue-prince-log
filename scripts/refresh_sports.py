@@ -10,6 +10,7 @@ Runs in GitHub Actions (open internet), NOT in the dev sandbox. Design rules:
 Add a source by writing a refresh_<x>(data) -> str function and listing it in SOURCES.
 """
 import json
+import os
 import sys
 import urllib.request
 import datetime
@@ -92,7 +93,8 @@ def nrl_name(s):
 
 
 def refresh_nrl(data):
-    url = f"https://www.thesportsdb.com/api/v1/json/123/lookuptable.php?l=4416&s={YEAR}"
+    key = os.environ["THESPORTSDB_KEY"]  # gated in SOURCES, so always present here
+    url = f"https://www.thesportsdb.com/api/v1/json/{key}/lookuptable.php?l=4416&s={YEAR}"
     tbl = get_json(url).get("table") or []
     if not (16 <= len(tbl) <= 17):
         raise ValueError(f"NRL table looked wrong ({len(tbl)} rows, expected 16-17)")
@@ -121,10 +123,13 @@ def refresh_nrl(data):
 # Register sources here. World Cup stays manual for now (bespoke group/bracket schema).
 SOURCES = [
     ("afl", refresh_afl),
-    # ("nrl", refresh_nrl),  # disabled: TheSportsDB free tier returns non-JSON for NRL 2026.
-    #   refresh_nrl works against the documented schema (dry-run verified); re-enable once a
-    #   confirmed source is wired (a working endpoint, or an API key stored as a repo secret).
 ]
+# NRL needs a keyed source: keyless endpoints are blocked from CI (TheSportsDB's free key
+# returns non-JSON, and datacenter IPs are blocked by Stooq/Yahoo/NRL.com). refresh_nrl is
+# dry-run verified against the v1 schema; it auto-enables once a premium TheSportsDB key is
+# present as the THESPORTSDB_KEY repo secret. No key -> NRL stays the manual snapshot.
+if os.environ.get("THESPORTSDB_KEY"):
+    SOURCES.append(("nrl", refresh_nrl))
 
 
 def _canon(d):
