@@ -24,7 +24,11 @@ jobs:
           python-version: "3.12"
 
       - name: Fetch latest data
-        run: python scripts/refresh_sports.py
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          python scripts/refresh_sports.py   || echo "::warning::sports refresh exited non-zero"
+          python scripts/refresh_personal.py || echo "::warning::personal refresh exited non-zero"
 
       - name: Commit if changed
         run: |

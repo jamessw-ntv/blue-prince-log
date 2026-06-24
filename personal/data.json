@@ -17,7 +17,6 @@
   },
   "markets": {
     "asx": [
-      { "code": "XJO", "name": "ASX 200", "price": null, "pct": null },
       { "code": "CBA", "name": "Commonwealth Bank", "price": null, "pct": null },
       { "code": "BHP", "name": "BHP Group", "price": null, "pct": null },
       { "code": "CSL", "name": "CSL", "price": null, "pct": null },
