@@ -24,7 +24,11 @@ UA = "jamessw-ntv-dashboard/1.0 (+https://github.com/jamessw-ntv/jamessw-ntv.git
 def get_json(url):
     req = urllib.request.Request(url, headers={"User-Agent": UA, "Accept": "application/json"})
     with urllib.request.urlopen(req, timeout=30) as r:
-        return json.load(r)
+        body = r.read().decode("utf-8", "replace")
+    try:
+        return json.loads(body)
+    except json.JSONDecodeError as e:
+        raise ValueError(f"non-JSON ({len(body)}b) from {url}: {body[:120]!r}") from e
 
 
 # --- AFL via Squiggle (https://api.squiggle.com.au) -------------------------
@@ -88,7 +92,7 @@ def nrl_name(s):
 
 
 def refresh_nrl(data):
-    url = f"https://www.thesportsdb.com/api/v1/json/3/lookuptable.php?l=4416&s={YEAR}"
+    url = f"https://www.thesportsdb.com/api/v1/json/123/lookuptable.php?l=4416&s={YEAR}"
     tbl = get_json(url).get("table") or []
     if not (16 <= len(tbl) <= 17):
         raise ValueError(f"NRL table looked wrong ({len(tbl)} rows, expected 16-17)")
