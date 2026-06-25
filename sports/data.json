@@ -1,9 +1,9 @@
 {
   "meta": {
     "title": "Multi-Sport Dashboard",
-    "updated": "2026-06-24",
+    "updated": "2026-06-25",
     "note": "Static snapshot. World Cup results through 23 June (group A-C deciders on 24 June still pending); AFL through Round 15; NRL through Round 16; Origin series level 1-1, decider 8 July. AFL and NRL for/against and differential figures pending re-verification.",
-    "fetched": "2026-06-24T04:18:28+00:00"
+    "fetched": "2026-06-25T14:44:35+00:00"
   },
   "nextup": {
     "mine": [
@@ -2447,13 +2447,13 @@
       [
         2,
         "Sydney Swans",
-        14,
+        15,
         12,
-        2,
+        3,
         0,
-        1578,
-        1098,
-        143.7,
+        1661,
+        1224,
+        135.7,
         48
       ],
       [
@@ -2494,6 +2494,18 @@
       ],
       [
         6,
+        "Brisbane Lions",
+        15,
+        9,
+        6,
+        0,
+        1551,
+        1397,
+        111.0,
+        36
+      ],
+      [
+        7,
         "Melbourne",
         15,
         9,
@@ -2505,7 +2517,7 @@
         36
       ],
       [
-        7,
+        8,
         "Western Bulldogs",
         15,
         9,
@@ -2515,18 +2527,6 @@
         1369,
         92.8,
         36
-      ],
-      [
-        8,
-        "Brisbane Lions",
-        14,
-        8,
-        6,
-        0,
-        1425,
-        1314,
-        108.4,
-        32
       ],
       [
         9,
