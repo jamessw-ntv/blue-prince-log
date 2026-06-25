@@ -3,13 +3,13 @@
     "title": "Personal Dashboard",
     "place": "Ferntree Gully, VIC",
     "updated": "2026-06-25",
-    "fetched": "2026-06-25T17:19:14+00:00",
+    "fetched": "2026-06-25T20:11:16+00:00",
     "note": "Live. weather Open-Meteo · crypto CoinGecko · ASX Yahoo · dev GitHub · releases RSS."
   },
   "weather": {
     "place": "Ferntree Gully, VIC",
     "now": {
-      "temp": 7,
+      "temp": 8,
       "icon": "☁️",
       "desc": "Overcast",
       "wind": 4
@@ -72,45 +72,52 @@
       {
         "code": "BTC",
         "name": "Bitcoin",
-        "price": 85911.0,
-        "pct": -0.57
+        "price": 86157.0,
+        "pct": -1.97
       },
       {
         "code": "ETH",
         "name": "Ethereum",
-        "price": 2269.05,
-        "pct": -1.04
+        "price": 2265.73,
+        "pct": -2.73
       }
     ]
   },
   "releases": [
     {
       "cat": "Film/TV",
-      "title": "Sean Hannity Gives Health Update to Explain ‘Puffy Face and Raspy Voice’ After Viewers Express Concern",
+      "title": "Adam McKay Reveals Axed ‘Talladega Nights 2’ Plot and Says Will Ferrell Split ‘Is a Shame’: ‘I’m Open to the Idea’ of Working Together Again After 2019 Breakup",
       "when": "25 Jun",
       "source": "Variety",
-      "url": "https://variety.com/2026/tv/news/sean-hannity-puffy-face-health-update-1236790635/"
+      "url": "https://variety.com/2026/film/news/adam-mckay-talladega-nights-2-will-ferrell-split-1236790329/"
     },
     {
       "cat": "Film/TV",
-      "title": "‘Common Side Effects’ Team Unveils Stunning First Footage from Second Season",
+      "title": "NBC News’ Chief Digital Officer Chris Berend to Exit",
       "when": "25 Jun",
       "source": "Variety",
-      "url": "https://variety.com/2026/tv/global/common-side-effects-season-2-stunning-first-footage-annecy-1236790625/"
+      "url": "https://variety.com/2026/tv/news/nbc-news-chris-berend-digtal-exit-1236790824/"
     },
     {
       "cat": "Film/TV",
-      "title": "‘The Paper’ Sets Season 2 Guest Stars Including Jon Lovitz and Andy Richter (EXCLUSIVE)",
+      "title": "HorrorHound Launches Genre Streaming Service; Festival Hit ‘The Babysitter Murders: Timing’s Off’ Among First Titles (EXCLUSIVE)",
       "when": "25 Jun",
       "source": "Variety",
-      "url": "https://variety.com/2026/tv/news/the-paper-season-2-guest-stars-1236789791/"
+      "url": "https://variety.com/2026/film/news/horrorhound-tv-streaming-service-launch-babysitter-murders-1236790557/"
+    },
+    {
+      "cat": "Trek/Wars",
+      "title": "‘The Phantom Menace’ VFX Producer Jeff Olson Dies at 77",
+      "when": "25 Jun",
+      "source": "SW News Net",
+      "url": "https://www.starwarsnewsnet.com/2026/06/the-phantom-menace-vfx-producer-jeff-olson-dies-at-77.html"
     },
     {
       "cat": "Film/TV",
-      "title": "After ‘Super Mario Galaxy’ Cameo, Fox McCloud’s Big Year Continues With ‘Star Fox’ Remake on Switch 2",
+      "title": "‘Aquamarine’ TV Series From ‘Bold Type’ Creator Gets Disney Pilot Order, Emma Roberts to Guest Star",
       "when": "25 Jun",
       "source": "Variety",
-      "url": "https://variety.com/2026/gaming/news/star-fox-remake-fox-mccloud-super-mario-galaxy-movie-1236789959/"
+      "url": "https://variety.com/2026/tv/news/aquamarine-tv-series-disney-pilot-order-emma-roberts-1236790760/"
     },
     {
       "cat": "Trek/Wars",
@@ -125,13 +132,6 @@
       "when": "25 Jun",
       "source": "SW News Net",
       "url": "https://www.starwarsnewsnet.com/2026/06/star-wars-starfighter-teaser-shown-at-cineeurope-along-with-infinity-vision-screen-details.html"
-    },
-    {
-      "cat": "Trek/Wars",
-      "title": "‘Star Wars Galaxies’ Retrospective Documentary Reveals How Adding Playable Jedi Doomed the Game",
-      "when": "25 Jun",
-      "source": "SW News Net",
-      "url": "https://www.starwarsnewsnet.com/2026/06/star-wars-galaxies-retrospective-documentary-reveals-how-adding-playable-jedi-doomed-the-game.html"
     },
     {
       "cat": "Games",
