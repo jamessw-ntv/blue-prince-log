@@ -3,16 +3,16 @@
     "title": "Personal Dashboard",
     "place": "Ferntree Gully, VIC",
     "updated": "2026-06-25",
-    "fetched": "2026-06-25T08:27:25+00:00",
+    "fetched": "2026-06-25T11:44:45+00:00",
     "note": "Live. weather Open-Meteo · crypto CoinGecko · ASX Yahoo · dev GitHub · releases RSS."
   },
   "weather": {
     "place": "Ferntree Gully, VIC",
     "now": {
-      "temp": 10,
+      "temp": 7,
       "icon": "☀️",
       "desc": "Clear",
-      "wind": 8
+      "wind": 4
     },
     "days": [
       {
@@ -21,7 +21,7 @@
         "max": 14,
         "icon": "🌦️",
         "desc": "Drizzle",
-        "rain": 4
+        "rain": 6
       },
       {
         "day": "Fri",
@@ -72,45 +72,45 @@
       {
         "code": "BTC",
         "name": "Bitcoin",
-        "price": 89260.0,
-        "pct": -1.68
+        "price": 88882.0,
+        "pct": -2.14
       },
       {
         "code": "ETH",
         "name": "Ethereum",
-        "price": 2388.45,
-        "pct": -1.25
+        "price": 2365.87,
+        "pct": -2.1
       }
     ]
   },
   "releases": [
     {
       "cat": "Film/TV",
-      "title": "Mubi to Publish Lost ‘Faust’ Bible on Centenary of F.W. Murnau’s Silent Cinema Classic (EXCLUSIVE)",
+      "title": "Daniele Luchetti Sets New Film ‘Your Little Matter,’ Starring Tecla Insolia as an Orphan Looking for Her Birth Mother (EXCLUSIVE)",
       "when": "25 Jun",
       "source": "Variety",
-      "url": "https://variety.com/2026/film/global/mubi-publish-lost-faust-bible-silent-cinema-classic-1236789812/"
+      "url": "https://variety.com/2026/film/global/daniele-luchetti-new-film-your-little-matter-tecla-insolia-1236790197/"
     },
     {
       "cat": "Film/TV",
-      "title": "ACM Honors Event Sets Kacey Musgraves, Ella Langley, Leslie Fram and Other Country Heavyweights for Special Awards",
+      "title": "Genndy Tartakovsky Sets ‘Conan the Barbarian’ Series with Cartoon Network Studios and Prime Video",
       "when": "25 Jun",
       "source": "Variety",
-      "url": "https://variety.com/2026/music/news/acm-honors-kacey-musgraves-ella-langley-leslie-fram-1236790083/"
+      "url": "https://variety.com/2026/streaming/global/tartakovsky-conan-cartoon-network-studios-prime-video-1236790207/"
     },
     {
       "cat": "Film/TV",
-      "title": "’Baahubali’ Animated Feature Director, Producer on Taking Indian Cinema Global and Bringing Indian Audiences to Animation",
+      "title": "Ajay Devgn Sets Action Comeback With ‘Chauhaan,’ From Jio Studios and Colour Yellow",
       "when": "25 Jun",
       "source": "Variety",
-      "url": "https://variety.com/2026/film/global/annecy-baahubali-ishan-shukla-shobu-yarlagadda-1236790105/"
+      "url": "https://variety.com/2026/film/news/ajay-devgn-chauhaan-jio-studios-colour-yellow-1236790225/"
     },
     {
       "cat": "Film/TV",
-      "title": "Power, Discrimination, Difference, Motherhood and Rural Diaspora Brought Into Focus at Women in Animation from Spain",
+      "title": "Tubi to Provide Creatorverse Lineup to Amazon’s Fire TV (EXCLUSIVE)",
       "when": "25 Jun",
       "source": "Variety",
-      "url": "https://variety.com/2026/film/global/lucija-stojevic-susana-casares-romina-marti-otoole-1236790080/"
+      "url": "https://variety.com/2026/biz/news/tubi-creatorverse-lineup-amazon-fire-tv-exclusive-1236789738/"
     },
     {
       "cat": "Games",
@@ -173,7 +173,7 @@
     {
       "repo": "jamessw-ntv.github.io",
       "desc": "",
-      "pushed": "4h ago",
+      "pushed": "3h ago",
       "lang": "HTML",
       "commit": ""
     }
