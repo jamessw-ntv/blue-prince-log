@@ -1173,7 +1173,7 @@ function districtFlowSvg(d, banks, hiIdx){
   const {st,idx}=bankStage(banks); const maxStage=Math.max(0,...st);
   const cols=[]; for(let c=0;c<=maxStage;c++) cols[c]=[]; banks.forEach((b,i)=>cols[st[i]].push(i));
   // one clean card per area; uniform width so text never overflows; columns = processing stages
-  const CW=190, CH=64, GUT=62, COLW=CW+GUT, VGAP=30, TOP=106, LEFT=24, RIGHT=150;
+  const CW=190, CH=64, GUT=82, COLW=CW+GUT, VGAP=34, TOP=106, LEFT=24, RIGHT=150;
   const maxH=Math.max(CH,...cols.map(c=>c.length*(CH+VGAP)-VGAP));
   const W=LEFT+(maxStage+1)*COLW+RIGHT, H=TOP+maxH+38;
   const pos={};
@@ -1192,20 +1192,31 @@ function districtFlowSvg(d, banks, hiIdx){
   s+=`<text x="14" y="24" fill="#e6edf3" font-size="15" font-weight="700">${d.id==='PA'?'★ ':''}${d.id} · ${bpEsc(d.name)} — placement &amp; conveyors</text>`;
   s+=`<text x="14" y="42" fill="#9aa7b4" font-size="10.5">Each card = one production area. Click a card for its machine-level placement · tap the ◯ (top-left) to mark it built — a running status of what you've placed.</text>`;
   s+=`<text x="14" y="58" fill="#6b7785" font-size="9.5">◀ above a card = parts/raw imported in · finals &amp; cross-district exports run right → 🗄 storage buffer → ${d.id==='PA'?'▲ Space Elevator':'consumer districts / ★'}</text>`;
-  // intra-district conveyors (drawn under cards); labels parked in the gutter and de-collided vertically
+  // intra-district conveyors — one belt "bus" per source area that FANS OUT to the areas it feeds.
+  // Each edge is labelled by ITEM (at the source) and RATE (just before the target); multiple feeds into one
+  // card land on staggered points so the crossovers read clearly instead of stacking on top of each other.
   const placed=[];
-  banks.forEach((bk,i)=>{ bk.inputs.forEach(([it,rate])=>{ if(idx[it]===undefined) return; const a=pos[idx[it]], b=pos[i]; if(!a||!b) return;
-    const x1=cardR(a), y1=midY(a), x2=b.x, y2=midY(b), fluid=isFluidItem(it), bc=fluid?'#5aa9ff':'#2dd4bf';
-    const gx=x1+Math.min(GUT/2, Math.max(16,(x2-x1)/2));
-    s+=`<path d="M${x1},${y1} H${gx} V${y2} H${x2}" fill="none" stroke="${bc}" stroke-width="1.7" opacity=".7"${fluid?' stroke-dasharray="4 3"':''}/>`;
-    s+=`<polygon points="${x2},${y2} ${x2-7},${y2-3.5} ${x2-7},${y2+3.5}" fill="${bc}"/>`;
-    // compact gutter label — just the rate (+ lane count); full "item rate mk" lives in the hover title, so it never overruns a card
-    const L=Math.ceil(rate/(fluid?600:1200)), lab=Math.round(rate)+(L>1?' ×'+L:''), lw=lab.length*4.7;
-    let lx=gx, ly=Math.min(y1,y2)+Math.abs(y1-y2)/2-2, guard=0;
-    while(guard++<18 && placed.some(P=>Math.abs(P.x-lx)<(P.w+lw)/2+2 && Math.abs(P.y-ly)<11)) ly-=11;
-    placed.push({x:lx,y:ly,w:lw});
-    s+=`<rect x="${(lx-lw/2-2).toFixed(1)}" y="${ly-9}" width="${(lw+4).toFixed(1)}" height="11" rx="2" fill="#0a0d12" opacity=".72"/>`;
-    s+=`<text x="${lx}" y="${ly}" fill="#9aa9b6" font-size="8.5" text-anchor="middle"><title>${bpEsc(it+' '+Math.round(rate)+'/min · '+carrierOf(it,rate).mk+(L>1?' ('+L+' lanes)':''))}</title>${bpEsc(lab)}</text>`; }); });
+  const placeLbl=(lx,ly,lw)=>{ let g=0; while(g++<24 && placed.some(P=>Math.abs(P.x-lx)<(P.w+lw)/2+2 && Math.abs(P.y-ly)<11)) ly-=11; placed.push({x:lx,y:ly,w:lw}); return ly; };
+  const tIn={}; banks.forEach((bk,i)=>{ tIn[i]=bk.inputs.filter(([it])=>idx[it]!==undefined&&idx[it]!==i).map(([it,rate])=>({src:idx[it],item:it,rate})); });
+  const arrivalY=(tgt,src)=>{ const list=tIn[tgt]||[], n=list.length, k=Math.max(0,list.findIndex(e=>e.src===src)), step=Math.min(13,(CH-14)/Math.max(1,n)); return midY(pos[tgt])-(n-1)*step/2+k*step; };
+  const fanout={}; banks.forEach((bk,i)=>bk.inputs.forEach(([it,rate])=>{ const src=idx[it]; if(src===undefined||src===i) return; (fanout[src]=fanout[src]||[]).push({tgt:i,item:it,rate}); }));
+  const srcByCol={}; Object.keys(fanout).forEach(si=>{ const ci=st[+si]; (srcByCol[ci]=srcByCol[ci]||[]).push(+si); });
+  const laneX={}; Object.keys(srcByCol).forEach(ci=>{ const gl=LEFT+(+ci)*COLW+CW, list=srcByCol[ci].sort((a,b)=>pos[a].y-pos[b].y), n=list.length;
+    list.forEach((si,k)=>{ laneX[si]= gl + 16 + (n>1? k*Math.min(20,(GUT-30)/(n-1)) : (GUT-30)/2); }); });
+  Object.keys(fanout).forEach(siK=>{ const si=+siK, sp=pos[si]; if(!sp) return; const item=banks[si].outItem, fluid=isFluidItem(item), bc=fluid?'#5aa9ff':'#2dd4bf';
+    const x1=cardR(sp), y1=midY(sp), lx=+laneX[si].toFixed(1), edges=fanout[si], bys=edges.map(e=>arrivalY(e.tgt,si)), yTop=Math.min(y1,...bys), yBot=Math.max(y1,...bys);
+    s+=`<path d="M${x1},${y1} H${lx}" fill="none" stroke="${bc}" stroke-width="1.8" opacity=".75"${fluid?' stroke-dasharray="4 3"':''}/>`;
+    if(yBot-yTop>1){ s+=`<line x1="${lx}" y1="${yTop}" x2="${lx}" y2="${yBot}" stroke="${bc}" stroke-width="1.8" opacity=".7"/>`;
+      s+=`<circle cx="${lx}" cy="${y1}" r="2.4" fill="${bc}"/>`; }   // tap-off dot where the bus leaves the source
+    edges.forEach(e=>{ const tp=pos[e.tgt]; if(!tp) return; const ty=arrivalY(e.tgt,si);
+      s+=`<path d="M${lx},${ty} H${tp.x}" fill="none" stroke="${bc}" stroke-width="1.6" opacity=".7"${fluid?' stroke-dasharray="4 3"':''}/>`;
+      s+=`<polygon points="${tp.x},${ty} ${tp.x-7},${ty-3.5} ${tp.x-7},${ty+3.5}" fill="${bc}"/>`;
+      const L=Math.ceil(e.rate/(fluid?600:1200)), rl=Math.round(e.rate)+(L>1?' ×'+L:''), rw=rl.length*4.6+6, rx=+(tp.x-12-rw/2).toFixed(1), ry=placeLbl(rx,ty-4,rw);
+      s+=`<rect x="${(rx-rw/2).toFixed(1)}" y="${ry-9}" width="${rw.toFixed(1)}" height="11" rx="2" fill="#0a0d12" opacity=".78"/>`;
+      s+=`<text x="${rx}" y="${ry}" fill="#9aa9b6" font-size="8.5" text-anchor="middle"><title>${bpEsc(item)} ${Math.round(e.rate)}/min → §${e.tgt+1} ${bpEsc(banks[e.tgt].r)}</title>${bpEsc(rl)}</text>`; });
+    const inm=bpFit(item,GUT+24,5), iw=inm.length*5+8, ix=+(x1+9+iw/2).toFixed(1), iy=placeLbl(ix,y1-4,iw);
+    s+=`<rect x="${(ix-iw/2).toFixed(1)}" y="${iy-9}" width="${iw.toFixed(1)}" height="11" rx="2" fill="#0a0d12" opacity=".85" stroke="${bc}" stroke-opacity=".45"/>`;
+    s+=`<text x="${ix}" y="${iy}" fill="${bc}" font-size="8.5" text-anchor="middle"><title>${bpEsc(item)} — ${Math.round(banks[si].outRate)}/min total, feeds ${edges.length} area${edges.length>1?'s':''}</title>${bpEsc(inm)}</text>`; });
   // cards
   banks.forEach((bk,i)=>{ const p=pos[i], done=!!state['bp:'+d.id+':'+i], hi=(i===hiIdx);
     const col=BCOL[bk.b]||'#8b97a3', ab=ABBR[bk.b]||'?', side=bankSide(bk), oc=carrierOf(bk.outItem,bk.outRate);
