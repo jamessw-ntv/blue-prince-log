@@ -3,7 +3,7 @@
     "title": "Personal Dashboard",
     "place": "Ferntree Gully, VIC",
     "updated": "2026-06-26",
-    "fetched": "2026-06-26T00:16:39+00:00",
+    "fetched": "2026-06-26T01:59:38+00:00",
     "note": "Live. weather Open-Meteo · crypto CoinGecko · ASX Yahoo · dev GitHub · releases RSS."
   },
   "weather": {
@@ -18,7 +18,7 @@
       {
         "day": "Today",
         "min": 6,
-        "max": 13,
+        "max": 12,
         "icon": "☁️",
         "desc": "Overcast",
         "rain": 0
@@ -34,10 +34,10 @@
       {
         "day": "Sun",
         "min": 3,
-        "max": 16,
+        "max": 15,
         "icon": "☁️",
         "desc": "Overcast",
-        "rain": 5
+        "rain": 2
       }
     ]
   },
@@ -72,45 +72,45 @@
       {
         "code": "BTC",
         "name": "Bitcoin",
-        "price": 86645.0,
-        "pct": -1.99
+        "price": 86095.0,
+        "pct": -2.38
       },
       {
         "code": "ETH",
         "name": "Ethereum",
-        "price": 2273.26,
-        "pct": -3.32
+        "price": 2260.63,
+        "pct": -3.69
       }
     ]
   },
   "releases": [
     {
       "cat": "Film/TV",
+      "title": "James Bond Candidate Louis Partridge Says He Never Pictured Himself as 007 But Says It’s ‘Wonderful’ to Be In Contention",
+      "when": "26 Jun",
+      "source": "Variety",
+      "url": "https://variety.com/2026/film/news/louis-partridge-james-bond-candidate-amazon-007-1236790993/"
+    },
+    {
+      "cat": "Film/TV",
+      "title": "‘Love Island USA’ Star Alannah Keyser Fired From Season 8, Second Contestant Booted for Using N-Word",
+      "when": "26 Jun",
+      "source": "Variety",
+      "url": "https://variety.com/2026/tv/news/love-island-usa-casa-amor-alannah-keyser-n-word-1236787570/"
+    },
+    {
+      "cat": "Film/TV",
+      "title": "Ann Blyth, Who Played Joan Crawford’s Daughter in ‘Mildred Pierce,’ Dies at 98",
+      "when": "26 Jun",
+      "source": "Variety",
+      "url": "https://variety.com/2026/film/news/ann-blyth-dead-mildred-pierce-1236790987/"
+    },
+    {
+      "cat": "Film/TV",
       "title": "Teletubbies Dance for LGBTQ+ Rights at Canva Beach Pride Party at Cannes Lions",
       "when": "25 Jun",
       "source": "Variety",
       "url": "https://variety.com/2026/global/news/teletubbies-lgbtq-canva-pride-party-cannes-lions-1236790960/"
-    },
-    {
-      "cat": "Film/TV",
-      "title": "‘Avatar: The Last Airbender’ Bosses on Cutting Sandbending, ‘The Drill’ Episode and Other Season 2 Changes: ‘There’s Only So Much We Can Fit’",
-      "when": "25 Jun",
-      "source": "Variety",
-      "url": "https://variety.com/2026/tv/news/avatar-last-airbender-season-2-cut-sandbending-netflix-1236789768/"
-    },
-    {
-      "cat": "Film/TV",
-      "title": "Phoebe Bridgers Goes Renaissance Faire Role-Playing in the Video for ‘Lost Boys,’ Her First Solo Single in Four Years",
-      "when": "25 Jun",
-      "source": "Variety",
-      "url": "https://variety.com/2026/music/news/phoebe-bridgers-lost-boys-single-video-renaissance-faire-1236790949/"
-    },
-    {
-      "cat": "Film/TV",
-      "title": "From ‘Toy Story 5’ Finds to Back-to-School Gear, These Are the Best Amazon Prime Deals for Kids and Babies",
-      "when": "25 Jun",
-      "source": "Variety",
-      "url": "https://variety.com/2026/shopping/news/best-prime-day-baby-deals-1235399147/"
     },
     {
       "cat": "Trek/Wars",
@@ -173,7 +173,7 @@
     {
       "repo": "jamessw-ntv.github.io",
       "desc": "",
-      "pushed": "1h ago",
+      "pushed": "0m ago",
       "lang": "HTML",
       "commit": ""
     }
