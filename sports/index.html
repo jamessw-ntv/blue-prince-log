@@ -724,7 +724,7 @@ function renderNextUp(nu){
 }
 
 /* ---------- sport switcher (static DOM, wire once) ---------- */
-document.querySelectorAll('.sportbar button').forEach(b=>{
+document.querySelectorAll('.sportbar button[data-sport]').forEach(b=>{
   b.onclick=()=>{
     document.querySelectorAll('.sportbar button').forEach(x=>x.classList.remove('active'));
     document.querySelectorAll('.sport-panel').forEach(x=>x.classList.remove('active'));
