@@ -3,16 +3,16 @@
     "title": "Personal Dashboard",
     "place": "Ferntree Gully, VIC",
     "updated": "2026-06-26",
-    "fetched": "2026-06-26T02:02:44+00:00",
+    "fetched": "2026-06-26T05:14:30+00:00",
     "note": "Live. weather Open-Meteo · crypto CoinGecko · ASX Yahoo · dev GitHub · releases RSS."
   },
   "weather": {
     "place": "Ferntree Gully, VIC",
     "now": {
-      "temp": 10,
-      "icon": "☁️",
-      "desc": "Overcast",
-      "wind": 2
+      "temp": 12,
+      "icon": "🌤️",
+      "desc": "Mainly clear",
+      "wind": 4
     },
     "days": [
       {
@@ -37,7 +37,7 @@
         "max": 15,
         "icon": "☁️",
         "desc": "Overcast",
-        "rain": 2
+        "rain": 1
       }
     ]
   },
@@ -72,45 +72,45 @@
       {
         "code": "BTC",
         "name": "Bitcoin",
-        "price": 86113.0,
-        "pct": -2.47
+        "price": 86874.0,
+        "pct": -2.54
       },
       {
         "code": "ETH",
         "name": "Ethereum",
-        "price": 2260.91,
-        "pct": -3.7
+        "price": 2248.4,
+        "pct": -5.48
       }
     ]
   },
   "releases": [
     {
       "cat": "Film/TV",
-      "title": "James Bond Candidate Louis Partridge Says He Never Pictured Himself as 007 But Says It’s ‘Wonderful’ to Be In Contention",
+      "title": "‘The Bear’ Ends: Where Does Carmy Go and What Happens to the Restaurant?",
       "when": "26 Jun",
       "source": "Variety",
-      "url": "https://variety.com/2026/film/news/louis-partridge-james-bond-candidate-amazon-007-1236790993/"
+      "url": "https://variety.com/2026/tv/news/the-bear-ending-explained-1236791040/"
     },
     {
       "cat": "Film/TV",
-      "title": "‘Love Island USA’ Star Alannah Keyser Fired From Season 8, Second Contestant Booted for Using N-Word",
+      "title": "DGA Ratifies Four-Year Deal Meant to Protect Members’ Jobs Amid Historic Downturn",
       "when": "26 Jun",
       "source": "Variety",
-      "url": "https://variety.com/2026/tv/news/love-island-usa-casa-amor-alannah-keyser-n-word-1236787570/"
+      "url": "https://variety.com/2026/film/news/dga-ratify-contract-four-year-1236789691/"
     },
     {
       "cat": "Film/TV",
-      "title": "Ann Blyth, Who Played Joan Crawford’s Daughter in ‘Mildred Pierce,’ Dies at 98",
+      "title": "Crunchyroll Acquires ‘Kagurabachi’ Anime Series for April 2027 Release; Katsuyuki Konishi Joins Cast as Togo Shiba (EXCLUSIVE)",
       "when": "26 Jun",
       "source": "Variety",
-      "url": "https://variety.com/2026/film/news/ann-blyth-dead-mildred-pierce-1236790987/"
+      "url": "https://variety.com/2026/tv/news/kagurabachi-anime-crunchyroll-release-date-katsuyuki-konishi-1236790836/"
     },
     {
       "cat": "Film/TV",
-      "title": "Teletubbies Dance for LGBTQ+ Rights at Canva Beach Pride Party at Cannes Lions",
-      "when": "25 Jun",
+      "title": "‘Mārama’ Director Details His ‘Rebellious’ Māori Ancestors, Whose Dancing and Tattoos Protested Colonization and Inspired His Revenge Tale",
+      "when": "26 Jun",
       "source": "Variety",
-      "url": "https://variety.com/2026/global/news/teletubbies-lgbtq-canva-pride-party-cannes-lions-1236790960/"
+      "url": "https://variety.com/2026/film/news/marama-horror-movie-ancestors-dancing-tattoos-1236788165/"
     },
     {
       "cat": "Trek/Wars",
@@ -173,7 +173,7 @@
     {
       "repo": "jamessw-ntv.github.io",
       "desc": "",
-      "pushed": "3m ago",
+      "pushed": "1h ago",
       "lang": "HTML",
       "commit": ""
     }
