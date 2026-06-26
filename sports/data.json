@@ -1,8 +1,8 @@
 {
   "meta": {
     "title": "Multi-Sport Dashboard",
-    "updated": "2026-06-25",
-    "note": "Static snapshot. World Cup results through 23 June (group A-C deciders on 24 June still pending); AFL through Round 15; NRL through Round 16; Origin series level 1-1, decider 8 July. AFL and NRL for/against and differential figures pending re-verification.",
+    "updated": "2026-06-26",
+    "note": "Static snapshot. World Cup results through 24 June (Groups A, B and C complete; remaining groups decide 25 to 27 June); AFL through Round 15; NRL through Round 16; Origin series level 1-1, decider 8 July. AFL and NRL for/against and differential figures pending re-verification.",
     "fetched": "2026-06-25T14:44:35+00:00"
   },
   "nextup": {
@@ -140,42 +140,42 @@
         "rows": [
           [
             "Mexico",
-            2,
-            2,
-            0,
-            0,
+            3,
             3,
             0,
-            6
-          ],
-          [
-            "Korea Republic",
-            2,
-            1,
             0,
-            1,
-            2,
-            2,
-            3
+            6,
+            0,
+            9
           ],
           [
             "South Africa",
-            2,
-            0,
-            1,
-            1,
-            1,
             3,
-            1
+            1,
+            1,
+            1,
+            2,
+            3,
+            4
+          ],
+          [
+            "Korea Republic",
+            3,
+            1,
+            0,
+            2,
+            2,
+            3,
+            3
           ],
           [
             "Czechia",
-            2,
+            3,
             0,
             1,
-            1,
             2,
-            3,
+            2,
+            6,
             1
           ]
         ],
@@ -203,55 +203,55 @@
           [
             "Czechia",
             "Mexico",
-            ""
+            "0–3"
           ],
           [
             "South Africa",
             "Korea Republic",
-            ""
+            "1–0"
           ]
         ]
       },
       "B": {
         "rows": [
           [
-            "Canada",
+            "Switzerland",
+            3,
             2,
-            1,
             1,
             0,
             7,
-            1,
-            4
+            3,
+            7
           ],
           [
-            "Switzerland",
-            2,
+            "Canada",
+            3,
             1,
             1,
-            0,
-            5,
-            2,
+            1,
+            8,
+            3,
             4
           ],
           [
             "Bosnia & Herzegovina",
-            2,
-            0,
+            3,
             1,
             1,
-            2,
+            1,
             5,
-            1
+            6,
+            4
           ],
           [
             "Qatar",
-            2,
+            3,
             0,
             1,
-            1,
-            1,
-            7,
+            2,
+            2,
+            10,
             1
           ]
         ],
@@ -279,55 +279,55 @@
           [
             "Switzerland",
             "Canada",
-            ""
+            "2–1"
           ],
           [
             "Bosnia & Herzegovina",
             "Qatar",
-            ""
+            "3–1"
           ]
         ]
       },
       "C": {
         "rows": [
           [
-            "Morocco",
+            "Brazil",
+            3,
             2,
-            1,
             1,
             0,
-            2,
+            7,
             1,
-            4
+            7
           ],
           [
-            "Brazil",
+            "Morocco",
+            3,
             2,
             1,
-            1,
             0,
-            4,
-            1,
-            4
+            6,
+            3,
+            7
           ],
           [
             "Scotland",
-            2,
+            3,
             1,
             0,
+            2,
             1,
-            1,
-            1,
+            4,
             3
           ],
           [
             "Haiti",
+            3,
+            0,
+            0,
+            3,
             2,
-            0,
-            0,
-            2,
-            0,
-            4,
+            8,
             0
           ]
         ],
@@ -355,12 +355,12 @@
           [
             "Scotland",
             "Brazil",
-            ""
+            "0–3"
           ],
           [
             "Morocco",
             "Haiti",
-            ""
+            "4–2"
           ]
         ]
       },
@@ -899,6 +899,16 @@
       "K": {
         "rows": [
           [
+            "Colombia",
+            2,
+            2,
+            0,
+            0,
+            4,
+            1,
+            6
+          ],
+          [
             "Portugal",
             2,
             1,
@@ -909,23 +919,13 @@
             4
           ],
           [
-            "Colombia",
-            1,
-            1,
-            0,
-            0,
-            3,
-            1,
-            3
-          ],
-          [
             "Congo DR",
-            1,
+            2,
             0,
             1,
-            0,
             1,
             1,
+            2,
             1
           ],
           [
@@ -958,7 +958,7 @@
           [
             "Colombia",
             "Congo DR",
-            ""
+            "1–0"
           ],
           [
             "Colombia",
@@ -1059,7 +1059,15 @@
       "Haiti": "e",
       "Türkiye": "e",
       "Tunisia": "e",
-      "Jordan": "e"
+      "Jordan": "e",
+      "South Africa": "q",
+      "Switzerland": "q",
+      "Canada": "q",
+      "Brazil": "q",
+      "Morocco": "q",
+      "Colombia": "q",
+      "Czechia": "e",
+      "Qatar": "e"
     },
     "schedule": [
       [
@@ -1410,7 +1418,7 @@
           [
             "K",
             "Colombia v Congo DR",
-            "",
+            "1–0",
             "Guadalajara"
           ]
         ]
@@ -1421,37 +1429,37 @@
           [
             "C",
             "Scotland v Brazil",
-            "",
+            "0–3",
             "Miami"
           ],
           [
             "C",
             "Morocco v Haiti",
-            "",
+            "4–2",
             "Atlanta"
           ],
           [
             "B",
             "Switzerland v Canada",
-            "",
+            "2–1",
             "Vancouver"
           ],
           [
             "B",
             "Bosnia & Herzegovina v Qatar",
-            "",
+            "3–1",
             "Seattle"
           ],
           [
             "A",
             "Czechia v Mexico",
-            "",
+            "0–3",
             "Mexico City"
           ],
           [
             "A",
             "South Africa v Korea Republic",
-            "",
+            "1–0",
             "Monterrey"
           ]
         ]
@@ -2139,31 +2147,31 @@
     ],
     "thirds": [
       [
-        "Czechia",
+        "Korea Republic",
         "A",
-        2,
-        1,
+        3,
+        3,
         -1,
         2,
-        false
+        true
       ],
       [
         "Bosnia & Herzegovina",
         "B",
-        2,
-        1,
-        -3,
-        2,
-        false
+        3,
+        4,
+        -1,
+        5,
+        true
       ],
       [
         "Scotland",
         "C",
-        2,
         3,
-        0,
+        3,
+        -3,
         1,
-        false
+        true
       ],
       [
         "Paraguay",
@@ -2231,9 +2239,9 @@
       [
         "Congo DR",
         "K",
+        2,
         1,
-        1,
-        0,
+        -1,
         1,
         false
       ],
