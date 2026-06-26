@@ -3,22 +3,22 @@
     "title": "Personal Dashboard",
     "place": "Ferntree Gully, VIC",
     "updated": "2026-06-26",
-    "fetched": "2026-06-26T05:14:30+00:00",
+    "fetched": "2026-06-26T09:40:12+00:00",
     "note": "Live. weather Open-Meteo · crypto CoinGecko · ASX Yahoo · dev GitHub · releases RSS."
   },
   "weather": {
     "place": "Ferntree Gully, VIC",
     "now": {
-      "temp": 12,
-      "icon": "🌤️",
-      "desc": "Mainly clear",
-      "wind": 4
+      "temp": 8,
+      "icon": "⛅",
+      "desc": "Partly cloudy",
+      "wind": 8
     },
     "days": [
       {
         "day": "Today",
         "min": 6,
-        "max": 12,
+        "max": 13,
         "icon": "☁️",
         "desc": "Overcast",
         "rain": 0
@@ -26,7 +26,7 @@
       {
         "day": "Sat",
         "min": 5,
-        "max": 12,
+        "max": 11,
         "icon": "☁️",
         "desc": "Overcast",
         "rain": 0
@@ -34,7 +34,7 @@
       {
         "day": "Sun",
         "min": 3,
-        "max": 15,
+        "max": 16,
         "icon": "☁️",
         "desc": "Overcast",
         "rain": 1
@@ -72,45 +72,45 @@
       {
         "code": "BTC",
         "name": "Bitcoin",
-        "price": 86874.0,
-        "pct": -2.54
+        "price": 86930.0,
+        "pct": -2.69
       },
       {
         "code": "ETH",
         "name": "Ethereum",
-        "price": 2248.4,
-        "pct": -5.48
+        "price": 2262.96,
+        "pct": -5.15
       }
     ]
   },
   "releases": [
     {
       "cat": "Film/TV",
-      "title": "‘The Bear’ Ends: Where Does Carmy Go and What Happens to the Restaurant?",
+      "title": "Disney Spotlights ‘Hexed’ at Annecy, Announces New Short ‘Lilo & Scratch’ – Still Starring Stitch",
       "when": "26 Jun",
       "source": "Variety",
-      "url": "https://variety.com/2026/tv/news/the-bear-ending-explained-1236791040/"
+      "url": "https://variety.com/2026/artisans/global/disney-hexed-new-short-lilo-and-scratch-stitch-annecy-1236791091/"
     },
     {
       "cat": "Film/TV",
-      "title": "DGA Ratifies Four-Year Deal Meant to Protect Members’ Jobs Amid Historic Downturn",
+      "title": "Alexis Alexiou Completes Third Feature ‘Sea of Glass,’ Unveils First Look and Trailer (EXCLUSIVE)",
       "when": "26 Jun",
       "source": "Variety",
-      "url": "https://variety.com/2026/film/news/dga-ratify-contract-four-year-1236789691/"
+      "url": "https://variety.com/2026/film/global/alexis-alexiou-completes-third-feature-sea-of-glass-1236791079/"
     },
     {
       "cat": "Film/TV",
-      "title": "Crunchyroll Acquires ‘Kagurabachi’ Anime Series for April 2027 Release; Katsuyuki Konishi Joins Cast as Togo Shiba (EXCLUSIVE)",
+      "title": "‘Bouchra’ Review: Animated Memoir Explores Diasporic Queer Identity and the Fraught Bonds Between Mothers and Daughters",
       "when": "26 Jun",
       "source": "Variety",
-      "url": "https://variety.com/2026/tv/news/kagurabachi-anime-crunchyroll-release-date-katsuyuki-konishi-1236790836/"
+      "url": "https://variety.com/2026/film/reviews/bouchra-review-1236537832/"
     },
     {
       "cat": "Film/TV",
-      "title": "‘Mārama’ Director Details His ‘Rebellious’ Māori Ancestors, Whose Dancing and Tattoos Protested Colonization and Inspired His Revenge Tale",
+      "title": "S.S. Rajamouli Says ‘Varanasi’ Imax Action Done, Interconnecting Scenes Remain and ‘Baahubali’ Belongs in Animation (EXCLUSIVE)",
       "when": "26 Jun",
       "source": "Variety",
-      "url": "https://variety.com/2026/film/news/marama-horror-movie-ancestors-dancing-tattoos-1236788165/"
+      "url": "https://variety.com/2026/film/global/s-s-rajamouli-varanasi-imax-baahubali-in-animation-annecy-1236791051/"
     },
     {
       "cat": "Trek/Wars",
@@ -173,7 +173,7 @@
     {
       "repo": "jamessw-ntv.github.io",
       "desc": "",
-      "pushed": "1h ago",
+      "pushed": "4h ago",
       "lang": "HTML",
       "commit": ""
     }
