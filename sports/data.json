@@ -3,7 +3,7 @@
     "title": "Multi-Sport Dashboard",
     "updated": "2026-06-26",
     "note": "Static snapshot. World Cup results through 24 June (Groups A, B and C complete; remaining groups decide 25 to 27 June); AFL through Round 15; NRL through Round 16; Origin series level 1-1, decider 8 July. AFL and NRL for/against and differential figures pending re-verification.",
-    "fetched": "2026-06-25T14:44:35+00:00"
+    "fetched": "2026-06-26T15:27:30+00:00"
   },
   "nextup": {
     "mine": [
@@ -2467,14 +2467,14 @@
       [
         3,
         "Hawthorn",
-        14,
-        9,
+        15,
+        10,
         4,
         1,
-        1361,
-        1199,
-        113.5,
-        38
+        1457,
+        1281,
+        113.7,
+        42
       ],
       [
         4,
@@ -2587,13 +2587,13 @@
       [
         13,
         "GWS GIANTS",
-        14,
+        15,
         6,
-        8,
+        9,
         0,
-        1280,
-        1276,
-        100.3,
+        1362,
+        1372,
+        99.3,
         24
       ],
       [

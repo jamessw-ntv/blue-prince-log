@@ -3,13 +3,13 @@
     "title": "Personal Dashboard",
     "place": "Ferntree Gully, VIC",
     "updated": "2026-06-26",
-    "fetched": "2026-06-26T12:16:57+00:00",
+    "fetched": "2026-06-26T15:27:57+00:00",
     "note": "Live. weather Open-Meteo · crypto CoinGecko · ASX Yahoo · dev GitHub · releases RSS."
   },
   "weather": {
     "place": "Ferntree Gully, VIC",
     "now": {
-      "temp": 6,
+      "temp": 5,
       "icon": "☁️",
       "desc": "Overcast",
       "wind": 5
@@ -17,15 +17,7 @@
     "days": [
       {
         "day": "Today",
-        "min": 6,
-        "max": 13,
-        "icon": "☁️",
-        "desc": "Overcast",
-        "rain": 0
-      },
-      {
-        "day": "Sat",
-        "min": 5,
+        "min": 4,
         "max": 11,
         "icon": "☁️",
         "desc": "Overcast",
@@ -37,7 +29,15 @@
         "max": 16,
         "icon": "☁️",
         "desc": "Overcast",
-        "rain": 4
+        "rain": 0
+      },
+      {
+        "day": "Mon",
+        "min": 7,
+        "max": 14,
+        "icon": "🌦️",
+        "desc": "Drizzle",
+        "rain": 58
       }
     ]
   },
@@ -72,45 +72,45 @@
       {
         "code": "BTC",
         "name": "Bitcoin",
-        "price": 86034.0,
-        "pct": -2.96
+        "price": 87167.0,
+        "pct": 1.89
       },
       {
         "code": "ETH",
         "name": "Ethereum",
-        "price": 2236.41,
-        "pct": -5.35
+        "price": 2288.86,
+        "pct": 1.53
       }
     ]
   },
   "releases": [
     {
       "cat": "Film/TV",
-      "title": "Pixar Makes a Splash With New Short ‘Loving Dory’ Featuring Nemo and Dory, Teases ‘Gatto’",
+      "title": "Box Office: ‘Supergirl’ Takes Off With $7.8 Million in Previews",
       "when": "26 Jun",
       "source": "Variety",
-      "url": "https://variety.com/2026/artisans/global/pixar-short-nemo-dory-gatto-annecy-1236791146/"
+      "url": "https://variety.com/2026/film/box-office/box-office-supergirl-previews-1236790790/"
     },
     {
       "cat": "Film/TV",
-      "title": "Adult Swim Announces Cartoon Network Docuseries, Plus Two Anthology Anniversary Specials From ‘Robot Chicken’ (EXCLUSIVE)",
+      "title": "Huh Yunjin From Le Sserafim on Her Crazy Pre-Debut Story, Almost Quitting K-Pop and Collabing With Katseye",
       "when": "26 Jun",
       "source": "Variety",
-      "url": "https://variety.com/2026/tv/global/adult-swim-cartoon-network-docuseries-robot-chicken-annecy-1236791198/"
+      "url": "https://variety.com/2026/music/news/yunjin-le-sserafim-pre-debut-story-k-pop-and-katseye-1236788732/"
     },
     {
       "cat": "Film/TV",
-      "title": "Feel-Good Comedy ‘Agnes & Amir’ Picked Up by Beta Cinema Ahead of Munich Film Festival Premiere (EXCLUSIVE)",
+      "title": "‘Ratatouille’ Sequel Shot Down by Director Brad Bird Despite Pixar Interest; He Said to the Studio: ‘We Told That Story’",
       "when": "26 Jun",
       "source": "Variety",
-      "url": "https://variety.com/2026/film/global/agnes-and-amir-beta-cinema-munich-film-festival-1236791160/"
+      "url": "https://variety.com/2026/film/news/ratatouille-sequel-rejected-brad-bird-pixar-1236791232/"
     },
     {
       "cat": "Film/TV",
-      "title": "Australian TV Host Karl Stefanovic Speaks Out After Exit From Nine Entertainment Over Tommy Robinson Podcast: ‘I’m Free, Truly Independent’",
+      "title": "‘Strictly Business’ at Cannes Lions: Deloitte, AWS and Sony Pictures Entertainment Execs on Getting Your ‘Hands Dirty’ With New Tech Like AI: ‘Start Tackling Hard Problems’",
       "when": "26 Jun",
       "source": "Variety",
-      "url": "https://variety.com/2026/tv/news/karl-stefanovic-speaks-out-nine-exit-tommy-robinson-1236791149/"
+      "url": "https://variety.com/2026/biz/news/strictly-business-deloitte-aws-sony-ai-cannes-lions-1236791056/"
     },
     {
       "cat": "Trek/Wars",
@@ -173,7 +173,7 @@
     {
       "repo": "jamessw-ntv.github.io",
       "desc": "",
-      "pushed": "2h ago",
+      "pushed": "3h ago",
       "lang": "HTML",
       "commit": ""
     }
