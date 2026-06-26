@@ -3,7 +3,7 @@
     "title": "Personal Dashboard",
     "place": "Ferntree Gully, VIC",
     "updated": "2026-06-26",
-    "fetched": "2026-06-26T15:27:57+00:00",
+    "fetched": "2026-06-26T17:56:39+00:00",
     "note": "Live. weather Open-Meteo · crypto CoinGecko · ASX Yahoo · dev GitHub · releases RSS."
   },
   "weather": {
@@ -12,7 +12,7 @@
       "temp": 5,
       "icon": "☁️",
       "desc": "Overcast",
-      "wind": 5
+      "wind": 4
     },
     "days": [
       {
@@ -72,45 +72,45 @@
       {
         "code": "BTC",
         "name": "Bitcoin",
-        "price": 87167.0,
-        "pct": 1.89
+        "price": 86869.0,
+        "pct": 0.95
       },
       {
         "code": "ETH",
         "name": "Ethereum",
-        "price": 2288.86,
-        "pct": 1.53
+        "price": 2290.12,
+        "pct": 0.84
       }
     ]
   },
   "releases": [
     {
       "cat": "Film/TV",
-      "title": "Box Office: ‘Supergirl’ Takes Off With $7.8 Million in Previews",
+      "title": "‘It’s Hard to Be Universally Beloved’: Milly Alcock Goes Deep on Her ‘Supergirl’ Journey, From Auditioning to Tuning Out Toxic Fans",
       "when": "26 Jun",
       "source": "Variety",
-      "url": "https://variety.com/2026/film/box-office/box-office-supergirl-previews-1236790790/"
+      "url": "https://variety.com/2026/film/features/milly-alcock-supergirl-journey-audition-sexist-backlash-1236788628/"
     },
     {
       "cat": "Film/TV",
-      "title": "Huh Yunjin From Le Sserafim on Her Crazy Pre-Debut Story, Almost Quitting K-Pop and Collabing With Katseye",
+      "title": "Mexican Animator Luis de la Rosa Dies in Train Accident While Attending Annecy Animation Festival",
       "when": "26 Jun",
       "source": "Variety",
-      "url": "https://variety.com/2026/music/news/yunjin-le-sserafim-pre-debut-story-k-pop-and-katseye-1236788732/"
+      "url": "https://variety.com/2026/film/global/mexican-animator-luis-de-la-rosa-dead-annecy-train-accident-1236791407/"
     },
     {
       "cat": "Film/TV",
-      "title": "‘Ratatouille’ Sequel Shot Down by Director Brad Bird Despite Pixar Interest; He Said to the Studio: ‘We Told That Story’",
+      "title": "PlayStation’s ‘Destiny 2,’ ‘Marathon’ Developer Undergoes More Layoffs (Gaming News Roundup)",
       "when": "26 Jun",
       "source": "Variety",
-      "url": "https://variety.com/2026/film/news/ratatouille-sequel-rejected-brad-bird-pixar-1236791232/"
+      "url": "https://variety.com/2026/gaming/news/gaming-news-roundup-week-of-june-22-1236788371/"
     },
     {
       "cat": "Film/TV",
-      "title": "‘Strictly Business’ at Cannes Lions: Deloitte, AWS and Sony Pictures Entertainment Execs on Getting Your ‘Hands Dirty’ With New Tech Like AI: ‘Start Tackling Hard Problems’",
+      "title": "‘Lee Cronin’s The Mummy’ Sets HBO Max Release Date",
       "when": "26 Jun",
       "source": "Variety",
-      "url": "https://variety.com/2026/biz/news/strictly-business-deloitte-aws-sony-ai-cannes-lions-1236791056/"
+      "url": "https://variety.com/2026/film/news/lee-cronin-the-mummy-hbo-max-release-date-streaming-1236757287/"
     },
     {
       "cat": "Trek/Wars",
@@ -173,7 +173,7 @@
     {
       "repo": "jamessw-ntv.github.io",
       "desc": "",
-      "pushed": "3h ago",
+      "pushed": "2h ago",
       "lang": "HTML",
       "commit": ""
     }
