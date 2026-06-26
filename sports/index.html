@@ -704,23 +704,49 @@ function renderPath(elId, path){
 }
 
 /* ---------- cross-sport Next Up ---------- */
+/* The nextup lists are hand-maintained, so parse each "when" label and drop
+   anything before today. A match earlier today is kept (might not have started);
+   an unparseable label is kept too, so we never hide a real fixture on a miss. */
+const NX_MONTHS={jan:0,feb:1,mar:2,apr:3,may:4,jun:5,jul:6,aug:7,sep:8,oct:9,nov:10,dec:11};
+function nxWhenToDate(s, now){
+  const m = String(s||"").match(/(\d{1,2})\s+([A-Za-z]{3})/);
+  if(!m) return null;
+  const mon = NX_MONTHS[m[2].toLowerCase()];
+  if(mon==null) return null;
+  const ref = new Date(now), DAY=86400000;
+  let d = new Date(ref.getFullYear(), mon, parseInt(m[1],10));
+  if((ref - d) > 200*DAY) d = new Date(ref.getFullYear()+1, mon, parseInt(m[1],10));   // Dec→Jan rollover
+  else if((d - ref) > 300*DAY) d = new Date(ref.getFullYear()-1, mon, parseInt(m[1],10));
+  return d;
+}
+function nxUpcoming(s, now){
+  const d = nxWhenToDate(s, now);
+  if(!d) return true;                       // keep unparseable rather than hide real data
+  const r = new Date(now);
+  return d.getTime() >= new Date(r.getFullYear(), r.getMonth(), r.getDate()).getTime();
+}
 function renderNextUp(nu){
   const el=document.getElementById('nextUpBox');
   if(!el||!nu) return;
-  const mine=(nu.mine||[]).map(m=>`<div class="nx-row mine">
+  const now=Date.now();
+  const mineRows=(nu.mine||[]).filter(m=>nxUpcoming(m[3], now));
+  const mine=mineRows.map(m=>`<div class="nx-row mine">
       <div class="nx-ico">${m[0]}</div>
       <div class="nx-body"><div class="nx-match">${m[2]}</div><div class="nx-sub">${m[4]}</div></div>
       <div class="nx-when">${m[3]}</div>
-    </div>`).join('');
-  const comps=Object.entries(nu.matches||{}).map(([comp,games])=>`<div class="nx-comp">
+    </div>`).join('') || `<div class="nx-row"><div class="nx-body"><div class="nx-sub">Nothing upcoming listed for your teams.</div></div></div>`;
+  const comps=Object.entries(nu.matches||{})
+    .map(([comp,games])=>[comp,(games||[]).filter(g=>nxUpcoming(g[1], now))])
+    .filter(([,games])=>games.length)
+    .map(([comp,games])=>`<div class="nx-comp">
       <h4>${comp}</h4>
       ${games.map(g=>`<div class="nx-row">
         <div class="nx-body"><div class="nx-match">${g[0]}</div><div class="nx-sub">${g[2]}</div></div>
         <div class="nx-when">${g[1]}</div>
       </div>`).join('')}
-    </div>`).join('');
+    </div>`).join('') || `<div class="nx-comp"><div class="nx-row"><div class="nx-body"><div class="nx-sub">No upcoming matches listed.</div></div></div></div>`;
   el.innerHTML=`<div class="nx-section"><h3>Your teams · next up</h3><div class="nx-list">${mine}</div></div>
-    <div class="nx-section"><h3>Next 5 matches · by competition</h3><div class="nx-comps">${comps}</div></div>`;
+    <div class="nx-section"><h3>Upcoming · by competition</h3><div class="nx-comps">${comps}</div></div>`;
 }
 
 /* ---------- sport switcher (static DOM, wire once) ---------- */
