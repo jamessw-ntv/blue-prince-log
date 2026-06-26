@@ -3,16 +3,16 @@
     "title": "Personal Dashboard",
     "place": "Ferntree Gully, VIC",
     "updated": "2026-06-26",
-    "fetched": "2026-06-26T09:40:12+00:00",
+    "fetched": "2026-06-26T12:16:57+00:00",
     "note": "Live. weather Open-Meteo · crypto CoinGecko · ASX Yahoo · dev GitHub · releases RSS."
   },
   "weather": {
     "place": "Ferntree Gully, VIC",
     "now": {
-      "temp": 8,
-      "icon": "⛅",
-      "desc": "Partly cloudy",
-      "wind": 8
+      "temp": 6,
+      "icon": "☁️",
+      "desc": "Overcast",
+      "wind": 5
     },
     "days": [
       {
@@ -37,7 +37,7 @@
         "max": 16,
         "icon": "☁️",
         "desc": "Overcast",
-        "rain": 1
+        "rain": 4
       }
     ]
   },
@@ -72,45 +72,45 @@
       {
         "code": "BTC",
         "name": "Bitcoin",
-        "price": 86930.0,
-        "pct": -2.69
+        "price": 86034.0,
+        "pct": -2.96
       },
       {
         "code": "ETH",
         "name": "Ethereum",
-        "price": 2262.96,
-        "pct": -5.15
+        "price": 2236.41,
+        "pct": -5.35
       }
     ]
   },
   "releases": [
     {
       "cat": "Film/TV",
-      "title": "Disney Spotlights ‘Hexed’ at Annecy, Announces New Short ‘Lilo & Scratch’ – Still Starring Stitch",
+      "title": "Pixar Makes a Splash With New Short ‘Loving Dory’ Featuring Nemo and Dory, Teases ‘Gatto’",
       "when": "26 Jun",
       "source": "Variety",
-      "url": "https://variety.com/2026/artisans/global/disney-hexed-new-short-lilo-and-scratch-stitch-annecy-1236791091/"
+      "url": "https://variety.com/2026/artisans/global/pixar-short-nemo-dory-gatto-annecy-1236791146/"
     },
     {
       "cat": "Film/TV",
-      "title": "Alexis Alexiou Completes Third Feature ‘Sea of Glass,’ Unveils First Look and Trailer (EXCLUSIVE)",
+      "title": "Adult Swim Announces Cartoon Network Docuseries, Plus Two Anthology Anniversary Specials From ‘Robot Chicken’ (EXCLUSIVE)",
       "when": "26 Jun",
       "source": "Variety",
-      "url": "https://variety.com/2026/film/global/alexis-alexiou-completes-third-feature-sea-of-glass-1236791079/"
+      "url": "https://variety.com/2026/tv/global/adult-swim-cartoon-network-docuseries-robot-chicken-annecy-1236791198/"
     },
     {
       "cat": "Film/TV",
-      "title": "‘Bouchra’ Review: Animated Memoir Explores Diasporic Queer Identity and the Fraught Bonds Between Mothers and Daughters",
+      "title": "Feel-Good Comedy ‘Agnes & Amir’ Picked Up by Beta Cinema Ahead of Munich Film Festival Premiere (EXCLUSIVE)",
       "when": "26 Jun",
       "source": "Variety",
-      "url": "https://variety.com/2026/film/reviews/bouchra-review-1236537832/"
+      "url": "https://variety.com/2026/film/global/agnes-and-amir-beta-cinema-munich-film-festival-1236791160/"
     },
     {
       "cat": "Film/TV",
-      "title": "S.S. Rajamouli Says ‘Varanasi’ Imax Action Done, Interconnecting Scenes Remain and ‘Baahubali’ Belongs in Animation (EXCLUSIVE)",
+      "title": "Australian TV Host Karl Stefanovic Speaks Out After Exit From Nine Entertainment Over Tommy Robinson Podcast: ‘I’m Free, Truly Independent’",
       "when": "26 Jun",
       "source": "Variety",
-      "url": "https://variety.com/2026/film/global/s-s-rajamouli-varanasi-imax-baahubali-in-animation-annecy-1236791051/"
+      "url": "https://variety.com/2026/tv/news/karl-stefanovic-speaks-out-nine-exit-tommy-robinson-1236791149/"
     },
     {
       "cat": "Trek/Wars",
@@ -173,7 +173,7 @@
     {
       "repo": "jamessw-ntv.github.io",
       "desc": "",
-      "pushed": "4h ago",
+      "pushed": "2h ago",
       "lang": "HTML",
       "commit": ""
     }
