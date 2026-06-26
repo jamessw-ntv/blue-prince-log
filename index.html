@@ -11,20 +11,15 @@
   .hero h1{margin:0 0 6px;font-size:30px;letter-spacing:.2px}
   .hero p{margin:0;color:var(--muted);font-size:15px;max-width:60ch}
 
-  /* ---- reorderable blocks ---- */
-  .blocks{max-width:var(--maxw);margin:18px auto 0;padding:0 22px;display:flex;flex-direction:column;gap:18px}
-  .block{background:transparent;border-radius:var(--radius);transition:opacity .15s}
-  .block.dragging{opacity:.6}
-  .block-head{display:flex;align-items:center;gap:10px;margin:0 2px 10px}
-  .block-head h2{margin:0;font-size:13px;text-transform:uppercase;letter-spacing:.6px;color:var(--muted);font-weight:700}
-  .block-head .grow{flex:1}
-  .block-head .block-meta{color:var(--muted);font-size:12px}
-  .block-head .open-link{color:var(--accent);font-size:12px;text-decoration:none}
-  .block-head .open-link:hover{text-decoration:underline}
-  .drag-handle{touch-action:none;cursor:grab;color:var(--muted);font-size:16px;line-height:1;
-    user-select:none;padding:2px 4px;border-radius:6px}
-  .drag-handle:hover{color:var(--text);background:var(--panel2)}
-  .block.dragging .drag-handle{cursor:grabbing}
+  .section-label{max-width:var(--maxw);margin:26px auto 0;padding:0 22px;
+    color:var(--muted);font-size:12px;text-transform:uppercase;letter-spacing:.6px}
+
+  /* ---- locked briefing + markets feed ---- */
+  .feed{max-width:var(--maxw);margin:18px auto 0;padding:0 22px;display:flex;flex-direction:column;gap:18px}
+  .feed .panel-head{display:flex;align-items:baseline;gap:10px;margin:0 2px 10px}
+  .feed .panel-head h2{margin:0;font-size:13px;text-transform:uppercase;letter-spacing:.6px;color:var(--muted);font-weight:700}
+  .feed .panel-head .grow{flex:1}
+  .feed .panel-head .block-meta{color:var(--muted);font-size:12px}
 
   /* ---- briefing (weather) ---- */
   .wx{background:var(--panel);border:1px solid var(--line);border-radius:var(--radius);
@@ -53,45 +48,39 @@
   .up{color:var(--green)} .down{color:var(--red)} .flat{color:var(--muted)}
   .blk-empty{color:var(--muted);font-size:13px;background:var(--panel);border:1px solid var(--line);
     border-radius:var(--radius);padding:14px 16px}
+
+  /* ---- reorderable project cards ---- */
+  #grid .card{position:relative}
+  .card-grip{position:absolute;top:10px;right:10px;cursor:grab;color:var(--muted);font-size:15px;
+    line-height:1;padding:3px 5px;border-radius:6px;touch-action:none;user-select:none;opacity:.5;
+    transition:opacity .15s,color .15s,background .15s}
+  .card-grip:hover{opacity:1;color:var(--text);background:var(--panel2)}
+  .card.dragging{opacity:.55;cursor:grabbing;outline:1px dashed var(--accent);outline-offset:-1px}
+  .card.dragging .card-grip{cursor:grabbing}
 </style>
 </head>
 <body>
 <div class="hero">
   <h1>James&nbsp;— projects</h1>
   <p>A little hub for the things I'm building: logs, trackers, timelines and other
-     experiments. Drag the ⠿ handles to reorder the blocks; your layout is remembered.</p>
+     experiments. Today's briefing sits up top; drag a card's ⠿ handle to reorder
+     your projects, and the order is remembered.</p>
 </div>
 
-<div class="blocks" id="blocks">
-  <section class="block" data-block="briefing">
-    <div class="block-head">
-      <span class="drag-handle" title="Drag to reorder">⠿</span>
-      <h2>Briefing</h2>
-      <span class="grow"></span>
-      <span class="block-meta" id="wxMeta"></span>
-      <a class="open-link" href="personal/">Open dashboard →</a>
-    </div>
-    <div class="block-body" id="wxBox"></div>
+<div class="feed">
+  <section>
+    <div class="panel-head"><h2>Briefing</h2><span class="grow"></span><span class="block-meta" id="wxMeta"></span></div>
+    <div id="wxBox"></div>
   </section>
+  <section>
+    <div class="panel-head"><h2>Markets</h2><span class="grow"></span><span class="block-meta" id="mkMeta"></span></div>
+    <div id="mkBox"></div>
+  </section>
+</div>
 
-  <section class="block" data-block="markets">
-    <div class="block-head">
-      <span class="drag-handle" title="Drag to reorder">⠿</span>
-      <h2>Markets</h2>
-      <span class="grow"></span>
-      <span class="block-meta" id="mkMeta"></span>
-      <a class="open-link" href="personal/">Open dashboard →</a>
-    </div>
-    <div class="block-body" id="mkBox"></div>
-  </section>
-
-  <section class="block" data-block="projects">
-    <div class="block-head">
-      <span class="drag-handle" title="Drag to reorder">⠿</span>
-      <h2>Projects</h2>
-    </div>
-    <div class="block-body"><div class="grid" id="grid"></div></div>
-  </section>
+<div class="section-label">Projects</div>
+<div class="wrap" style="padding-top:14px">
+  <div class="grid" id="grid"></div>
 </div>
 
 <footer class="site" id="footer"></footer>
@@ -102,8 +91,6 @@
    repo is renamed to jamessw-ntv.github.io. status: "active" | "wip" | "planned".
    Leave href "" for planned projects that don't have a page yet. */
 const PROJECTS = [
-  { ico:"📊", title:"Personal Dashboard", href:"personal/",
-    status:"active", desc:"Your morning briefing in one place: Ferntree Gully weather plus a live look at crypto and the ASX. Auto-refreshes hourly." },
   { ico:"🏛️", title:"Blue Prince — Room & Item Log", href:"blue-prince/",
     status:"active", desc:"Spoiler-free notepad of rooms, items, codes and puzzles, logged from my own play." },
   { ico:"🎲", title:"AI Dungeon Master", href:"campaign/",
@@ -122,17 +109,20 @@ const num = (v,d=2) => (v==null||isNaN(v)) ? "—" : Number(v).toLocaleString(un
 
 function card(p){
   const live = p.href && p.status!=="planned";
+  const grip = `<span class="card-grip" title="Drag to reorder">⠿</span>`;
   const tag = `<div class="badges"><span class="status ${esc(p.status)}">${esc(STATUS[p.status]||p.status)}</span></div>`;
-  const inner = `<div class="ico">${esc(p.ico||"📦")}</div><h3>${esc(p.title)}</h3><p>${esc(p.desc||"")}</p>${tag}`;
+  const inner = `${grip}<div class="ico">${esc(p.ico||"📦")}</div><h3>${esc(p.title)}</h3><p>${esc(p.desc||"")}</p>${tag}`;
+  const key = esc(p.href || p.title);
   return live
-    ? `<a class="card" href="${esc(p.href)}">${inner}</a>`
-    : `<div class="card disabled">${inner}</div>`;
+    ? `<a class="card" href="${esc(p.href)}" data-key="${key}" draggable="false">${inner}</a>`
+    : `<div class="card disabled" data-key="${key}">${inner}</div>`;
 }
-document.getElementById("grid").innerHTML = PROJECTS.map(card).join("");
+const grid = document.getElementById("grid");
+grid.innerHTML = PROJECTS.map(card).join("");
 document.getElementById("footer").innerHTML =
   `Built and maintained with Claude · <a href="docs/PORTING.md">how projects get added</a>`;
 
-/* ---------- live briefing + markets (from the personal dashboard feed) -------- */
+/* ---------- live briefing + markets (from the personal data feed) ------------- */
 const RAW = "https://raw.githubusercontent.com/jamessw-ntv/jamessw-ntv.github.io/main/personal/data.json";
 async function loadFeed(){
   const bust = "?_=" + Date.now();
@@ -149,7 +139,6 @@ function stampAge(meta){
   return mins<1 ? "updated just now" : mins<60 ? "updated "+mins+"m ago"
     : mins<1440 ? "updated "+Math.round(mins/60)+"h ago" : "updated "+t.toISOString().slice(0,10);
 }
-
 function renderBriefing(d){
   const box = document.getElementById("wxBox");
   const w = (d && d.weather) || {}; const n = w.now || {};
@@ -178,7 +167,6 @@ function renderMarkets(d){
   box.innerHTML = rows.length ? `<div class="mk">${rows.map(tick).join("")}</div>`
     : `<div class="blk-empty">Live market data isn't available right now.</div>`;
 }
-
 (async function(){
   const d = await loadFeed();
   renderBriefing(d); renderMarkets(d);
@@ -187,37 +175,42 @@ function renderMarkets(d){
   document.getElementById("mkMeta").textContent = age;
 })();
 
-/* ---------- drag-to-reorder blocks (pointer-based: mouse + touch) ------------- */
-const ORDER_KEY = "hubBlockOrder.v1";
-const blocksEl = document.getElementById("blocks");
-function saveOrder(){
-  const ids = [...blocksEl.querySelectorAll(".block")].map(el=>el.dataset.block);
-  try{ localStorage.setItem(ORDER_KEY, JSON.stringify(ids)); }catch(e){}
+/* ---------- drag-to-reorder project cards (pointer-based: mouse + touch) ------- */
+const CARD_KEY = "hubCardOrder.v1";
+function saveCardOrder(){
+  const keys = [...grid.querySelectorAll(".card")].map(c=>c.dataset.key);
+  try{ localStorage.setItem(CARD_KEY, JSON.stringify(keys)); }catch(e){}
 }
-function applySavedOrder(){
-  let saved; try{ saved = JSON.parse(localStorage.getItem(ORDER_KEY)||"null"); }catch(e){ saved=null; }
+function applyCardOrder(){
+  let saved; try{ saved = JSON.parse(localStorage.getItem(CARD_KEY)||"null"); }catch(e){ saved=null; }
   if(!Array.isArray(saved)) return;
-  saved.forEach(id=>{ const el = blocksEl.querySelector(`.block[data-block="${id}"]`); if(el) blocksEl.appendChild(el); });
+  saved.forEach(k=>{ const el = grid.querySelector(`.card[data-key="${CSS.escape(k)}"]`); if(el) grid.appendChild(el); });
 }
-applySavedOrder();
+applyCardOrder();
 
-blocksEl.querySelectorAll(".drag-handle").forEach(h=>{
-  h.addEventListener("pointerdown", e=>{
-    e.preventDefault();
-    const dragEl = h.closest(".block");
-    dragEl.classList.add("dragging");
-    try{ h.setPointerCapture(e.pointerId); }catch(_){}
+function insertTarget(x,y){
+  let best=null, bestD=Infinity;
+  for(const el of grid.querySelectorAll(".card:not(.dragging)")){
+    const r=el.getBoundingClientRect(), cx=r.left+r.width/2, cy=r.top+r.height/2;
+    const d=Math.hypot(x-cx,y-cy);
+    if(d<bestD){ bestD=d; const after=(y>cy+6)||(Math.abs(y-cy)<=r.height/2 && x>cx); best={el,after}; }
+  }
+  return best;
+}
+grid.querySelectorAll(".card-grip").forEach(g=>{
+  g.addEventListener("click", e=>{ e.preventDefault(); e.stopPropagation(); });
+  g.addEventListener("pointerdown", e=>{
+    e.preventDefault(); e.stopPropagation();
+    const card = g.closest(".card"); card.classList.add("dragging");
+    try{ g.setPointerCapture(e.pointerId); }catch(_){}
     const move = ev=>{
-      const others = [...blocksEl.querySelectorAll(".block:not(.dragging)")];
-      const before = others.find(b=>{ const r=b.getBoundingClientRect(); return ev.clientY < r.top + r.height/2; });
-      if(before) blocksEl.insertBefore(dragEl, before);
-      else blocksEl.appendChild(dragEl);
+      const t = insertTarget(ev.clientX, ev.clientY);
+      if(t && t.el){ grid.insertBefore(card, t.after ? t.el.nextSibling : t.el); }
     };
     const up = ()=>{
       window.removeEventListener("pointermove", move);
       window.removeEventListener("pointerup", up);
-      dragEl.classList.remove("dragging");
-      saveOrder();
+      card.classList.remove("dragging"); saveCardOrder();
     };
     window.addEventListener("pointermove", move);
     window.addEventListener("pointerup", up);
