@@ -1193,30 +1193,47 @@ function districtFlowSvg(d, banks, hiIdx){
   s+=`<text x="14" y="42" fill="#9aa7b4" font-size="10.5">Each card = one production area. Click a card for its machine-level placement · tap the ◯ (top-left) to mark it built — a running status of what you've placed.</text>`;
   s+=`<text x="14" y="58" fill="#6b7785" font-size="9.5">◀ above a card = parts/raw imported in · finals &amp; cross-district exports run right → 🗄 storage buffer → ${d.id==='PA'?'▲ Space Elevator':'consumer districts / ★'}</text>`;
   // intra-district conveyors — one belt "bus" per source area that FANS OUT to the areas it feeds.
-  // Each edge is labelled by ITEM (at the source) and RATE (just before the target); multiple feeds into one
-  // card land on staggered points so the crossovers read clearly instead of stacking on top of each other.
+  // Each edge is labelled by ITEM (at the source) and RATE (just before the target). The long mid-run of
+  // every belt passes UNDER the cards (drawn on top), so the only place lines can visibly stack is the
+  // gutters between columns — so each edge gets its own horizontal CHANNEL height, de-conflicted against
+  // every other run (and the source trunks) it shares an x-span with: cross-overs read as separate belts.
   const placed=[];
   const placeLbl=(lx,ly,lw)=>{ let g=0; while(g++<24 && placed.some(P=>Math.abs(P.x-lx)<(P.w+lw)/2+2 && Math.abs(P.y-ly)<11)) ly-=11; placed.push({x:lx,y:ly,w:lw}); return ly; };
   const tIn={}; banks.forEach((bk,i)=>{ tIn[i]=bk.inputs.filter(([it])=>idx[it]!==undefined&&idx[it]!==i).map(([it,rate])=>({src:idx[it],item:it,rate})); });
-  const arrivalY=(tgt,src)=>{ const list=tIn[tgt]||[], n=list.length, k=Math.max(0,list.findIndex(e=>e.src===src)), step=Math.min(13,(CH-14)/Math.max(1,n)); return midY(pos[tgt])-(n-1)*step/2+k*step; };
+  const arrivalY=(tgt,src)=>{ const list=tIn[tgt]||[], n=list.length, k=Math.max(0,list.findIndex(e=>e.src===src)), step=Math.min(15,(CH-12)/Math.max(1,n)); return midY(pos[tgt])-(n-1)*step/2+k*step; };
   const fanout={}; banks.forEach((bk,i)=>bk.inputs.forEach(([it,rate])=>{ const src=idx[it]; if(src===undefined||src===i) return; (fanout[src]=fanout[src]||[]).push({tgt:i,item:it,rate}); }));
   const srcByCol={}; Object.keys(fanout).forEach(si=>{ const ci=st[+si]; (srcByCol[ci]=srcByCol[ci]||[]).push(+si); });
   const laneX={}; Object.keys(srcByCol).forEach(ci=>{ const gl=LEFT+(+ci)*COLW+CW, list=srcByCol[ci].sort((a,b)=>pos[a].y-pos[b].y), n=list.length;
     list.forEach((si,k)=>{ laneX[si]= gl + 16 + (n>1? k*Math.min(20,(GUT-30)/(n-1)) : (GUT-30)/2); }); });
+  // flatten to edges, then assign each a clash-free channel height before drawing
+  const APP=14;                                       // straight approach into the target port
+  const edgeList=[];
+  Object.keys(fanout).forEach(siK=>{ const si=+siK, sp=pos[si]; if(!sp) return;
+    fanout[si].forEach(e=>{ const tp=pos[e.tgt]; if(!tp) return;
+      edgeList.push({si,ti:e.tgt,rate:e.rate,xS:+laneX[si].toFixed(1),xE:tp.x,prefY:arrivalY(e.tgt,si)}); }); });
+  // obstacles to dodge: every source trunk runs cardR→lane at the source's mid-height
+  const obst=[]; Object.keys(fanout).forEach(siK=>{ const si=+siK, sp=pos[si]; if(sp) obst.push({x0:cardR(sp),x1:+laneX[si].toFixed(1),y:midY(sp)}); });
+  const SEP=10, hit=(x0,x1,y)=>obst.some(o=>Math.min(x1,o.x1)-Math.max(x0,o.x0)>4 && Math.abs(o.y-y)<SEP);
+  edgeList.sort((a,b)=>(a.xE-a.xS)-(b.xE-b.xS));      // short runs keep their natural height; long ones weave around them
+  edgeList.forEach(e=>{ const x0=Math.min(e.xS,e.xE-APP), x1=Math.max(e.xS,e.xE-APP); let y=e.prefY,t=0;
+    while(hit(x0,x1,y)&&t<40){ t++; const m=Math.ceil(t/2)*SEP; y=e.prefY+(t%2?-m:m); }
+    e.chY=+y.toFixed(1); obst.push({x0,x1,y:e.chY}); });
   Object.keys(fanout).forEach(siK=>{ const si=+siK, sp=pos[si]; if(!sp) return; const item=banks[si].outItem, fluid=isFluidItem(item), bc=fluid?'#5aa9ff':'#2dd4bf';
-    const x1=cardR(sp), y1=midY(sp), lx=+laneX[si].toFixed(1), edges=fanout[si], bys=edges.map(e=>arrivalY(e.tgt,si)), yTop=Math.min(y1,...bys), yBot=Math.max(y1,...bys);
+    const x1=cardR(sp), y1=midY(sp), lx=+laneX[si].toFixed(1), myEdges=edgeList.filter(e=>e.si===si);
+    const chYs=myEdges.map(e=>e.chY), yTop=Math.min(y1,...chYs), yBot=Math.max(y1,...chYs);
     s+=`<path d="M${x1},${y1} H${lx}" fill="none" stroke="${bc}" stroke-width="1.8" opacity=".75"${fluid?' stroke-dasharray="4 3"':''}/>`;
     if(yBot-yTop>1){ s+=`<line x1="${lx}" y1="${yTop}" x2="${lx}" y2="${yBot}" stroke="${bc}" stroke-width="1.8" opacity=".7"/>`;
       s+=`<circle cx="${lx}" cy="${y1}" r="2.4" fill="${bc}"/>`; }   // tap-off dot where the bus leaves the source
-    edges.forEach(e=>{ const tp=pos[e.tgt]; if(!tp) return; const ty=arrivalY(e.tgt,si);
-      s+=`<path d="M${lx},${ty} H${tp.x}" fill="none" stroke="${bc}" stroke-width="1.6" opacity=".7"${fluid?' stroke-dasharray="4 3"':''}/>`;
+    myEdges.forEach(e=>{ const tp=pos[e.ti]; if(!tp) return; const ty=e.prefY, chY=e.chY, dropX=+(tp.x-APP).toFixed(1);
+      // ride the channel, then a short drop onto the target's own arrival height, then straight into the port
+      s+=`<path d="M${lx},${chY} H${dropX}${Math.abs(chY-ty)>0.5?' V'+ty:''} H${tp.x}" fill="none" stroke="${bc}" stroke-width="1.6" opacity=".7"${fluid?' stroke-dasharray="4 3"':''}/>`;
       s+=`<polygon points="${tp.x},${ty} ${tp.x-7},${ty-3.5} ${tp.x-7},${ty+3.5}" fill="${bc}"/>`;
       const L=Math.ceil(e.rate/(fluid?600:1200)), rl=Math.round(e.rate)+(L>1?' ×'+L:''), rw=rl.length*4.6+6, rx=+(tp.x-12-rw/2).toFixed(1), ry=placeLbl(rx,ty-4,rw);
       s+=`<rect x="${(rx-rw/2).toFixed(1)}" y="${ry-9}" width="${rw.toFixed(1)}" height="11" rx="2" fill="#0a0d12" opacity=".78"/>`;
-      s+=`<text x="${rx}" y="${ry}" fill="#9aa9b6" font-size="8.5" text-anchor="middle"><title>${bpEsc(item)} ${Math.round(e.rate)}/min → §${e.tgt+1} ${bpEsc(banks[e.tgt].r)}</title>${bpEsc(rl)}</text>`; });
+      s+=`<text x="${rx}" y="${ry}" fill="#9aa9b6" font-size="8.5" text-anchor="middle"><title>${bpEsc(item)} ${Math.round(e.rate)}/min → §${e.ti+1} ${bpEsc(banks[e.ti].r)}</title>${bpEsc(rl)}</text>`; });
     const inm=bpFit(item,GUT+24,5), iw=inm.length*5+8, ix=+(x1+9+iw/2).toFixed(1), iy=placeLbl(ix,y1-4,iw);
     s+=`<rect x="${(ix-iw/2).toFixed(1)}" y="${iy-9}" width="${iw.toFixed(1)}" height="11" rx="2" fill="#0a0d12" opacity=".85" stroke="${bc}" stroke-opacity=".45"/>`;
-    s+=`<text x="${ix}" y="${iy}" fill="${bc}" font-size="8.5" text-anchor="middle"><title>${bpEsc(item)} — ${Math.round(banks[si].outRate)}/min total, feeds ${edges.length} area${edges.length>1?'s':''}</title>${bpEsc(inm)}</text>`; });
+    s+=`<text x="${ix}" y="${iy}" fill="${bc}" font-size="8.5" text-anchor="middle"><title>${bpEsc(item)} — ${Math.round(banks[si].outRate)}/min total, feeds ${myEdges.length} area${myEdges.length>1?'s':''}</title>${bpEsc(inm)}</text>`; });
   // cards
   banks.forEach((bk,i)=>{ const p=pos[i], done=!!state['bp:'+d.id+':'+i], hi=(i===hiIdx);
     const col=BCOL[bk.b]||'#8b97a3', ab=ABBR[bk.b]||'?', side=bankSide(bk), oc=carrierOf(bk.outItem,bk.outRate);
