@@ -41,7 +41,6 @@ hard-code colours or redefine `:root`.** Every page also starts with the standar
 | Project | Lives at | Status | What it is |
 |---|---|---|---|
 | 🏛️ **Blue Prince — Room & Item Log** | [`/blue-prince/`](./blue-prince/) | active | Spoiler-free notepad of rooms, items, codes and puzzles |
-| 🎲 **AI Dungeon Master** | [`/campaign/`](./campaign/) | wip | Live second-screen dashboard for a chat-run D&D / LitRPG game |
 | 🏆 **Multi-Sport Dashboard** | [`/sports/`](./sports/) | active | World Cup 2026 + AFL + NRL at a glance |
 | 🖖 **Trek & Wars — Comics + Books Timeline** | [`/trek-wars/`](./trek-wars/) | active | Publication timeline of Trek & Wars comics and novels |
 
@@ -62,23 +61,6 @@ of the hub's data-driven pattern.
 - **Docs:** [`README.md`](./blue-prince/README.md) (schema) ·
   [`CLAUDE.md`](./blue-prince/CLAUDE.md) (spoiler-free logging rules) ·
   [`LOGGING.md`](./blue-prince/LOGGING.md) (how to log from a normal chat).
-
-### 🎲 AI Dungeon Master
-A **live "second screen"** for a chat-run, single-player D&D / LitRPG campaign:
-party HP / abilities / items, an ASCII dungeon map, quests and a System log, all
-auto-refreshing from `campaign/state.json` that the AI Game Master overwrites each
-turn. Three rule systems (Rules-Light, Authentic 5e, LitRPG), AI companions, and
-saves kept in Notion.
-- **How it works:** `campaign/index.html` polls `campaign/state.json` every few
-  seconds and repaints; the GM commits a new `state.json` per turn.
-- **Status:** the design is complete and the dashboard works, but it has **not been
-  playtested or balanced** yet.
-- **Docs:** [`AI-DUNGEON-MASTER.md`](./campaign/AI-DUNGEON-MASTER.md) (the complete
-  self-contained bootstrap + rules) ·
-  [`GM-INSTRUCTIONS.md`](./campaign/GM-INSTRUCTIONS.md) ·
-  [`PROJECT-HANDOFF.md`](./campaign/PROJECT-HANDOFF.md) ·
-  [`LEARNINGS.md`](./campaign/LEARNINGS.md) ·
-  [`SELF-IMPROVEMENT.md`](./campaign/SELF-IMPROVEMENT.md).
 
 ### 🏆 Multi-Sport Dashboard
 One glanceable view of three competitions at once: **FIFA World Cup 2026**
@@ -114,7 +96,6 @@ docs/
   PORTING.md      how to bring a project in from another chat (one paste)
   MIGRATION.md    one-time setup/rename runbook (now complete)
 blue-prince/      Blue Prince log        (own README + CLAUDE.md + LOGGING.md)
-campaign/         AI Dungeon Master       (own AI-DUNGEON-MASTER.md + others)
 sports/           Multi-Sport Dashboard   (own CLAUDE.md)
 trek-wars/        Trek & Wars timeline    (own CLAUDE.md)
 CLAUDE.md         hub-wide instructions for the maintaining chat
