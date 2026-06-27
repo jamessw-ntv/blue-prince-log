@@ -3,7 +3,7 @@
     "title": "Multi-Sport Dashboard",
     "updated": "2026-06-27",
     "note": "Static snapshot. World Cup results through 24 June (Groups A, B and C complete; remaining groups decide 25 to 27 June); AFL through Round 15; NRL through Round 16; Origin series level 1-1, decider 8 July. AFL and NRL for/against and differential figures pending re-verification.",
-    "fetched": "2026-06-27T07:22:00+00:00"
+    "fetched": "2026-06-27T10:15:39+00:00"
   },
   "nextup": {
     "mine": [
@@ -2538,6 +2538,18 @@
       ],
       [
         9,
+        "Collingwood",
+        15,
+        7,
+        7,
+        1,
+        1253,
+        1201,
+        104.3,
+        30
+      ],
+      [
+        10,
         "Gold Coast SUNS",
         14,
         7,
@@ -2549,7 +2561,7 @@
         28
       ],
       [
-        10,
+        11,
         "Carlton",
         15,
         7,
@@ -2561,7 +2573,7 @@
         28
       ],
       [
-        11,
+        12,
         "North Melbourne",
         14,
         7,
@@ -2571,18 +2583,6 @@
         1339,
         90.7,
         28
-      ],
-      [
-        12,
-        "Collingwood",
-        14,
-        6,
-        7,
-        1,
-        1147,
-        1129,
-        101.6,
-        26
       ],
       [
         13,
@@ -2635,13 +2635,13 @@
       [
         17,
         "Richmond",
-        14,
+        15,
         2,
-        12,
+        13,
         0,
-        915,
-        1492,
-        61.3,
+        987,
+        1598,
+        61.8,
         8
       ],
       [
@@ -2659,7 +2659,7 @@
     ],
     "focus": {
       "team": "Carlton",
-      "pos": 10,
+      "pos": 11,
       "record": "7–8",
       "pct": 95.6,
       "pts": 28,
