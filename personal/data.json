@@ -3,7 +3,7 @@
     "title": "Personal Dashboard",
     "place": "Ferntree Gully, VIC",
     "updated": "2026-06-27",
-    "fetched": "2026-06-27T14:47:48+00:00",
+    "fetched": "2026-06-27T16:11:34+00:00",
     "note": "Live. weather Open-Meteo · crypto CoinGecko · ASX Yahoo · dev GitHub · releases RSS."
   },
   "weather": {
@@ -12,7 +12,7 @@
       "temp": 5,
       "icon": "☁️",
       "desc": "Overcast",
-      "wind": 4
+      "wind": 2
     },
     "days": [
       {
@@ -72,18 +72,25 @@
       {
         "code": "BTC",
         "name": "Bitcoin",
-        "price": 87823.0,
-        "pct": 1.59
+        "price": 88040.0,
+        "pct": 1.13
       },
       {
         "code": "ETH",
         "name": "Ethereum",
-        "price": 2310.08,
-        "pct": 2.03
+        "price": 2323.54,
+        "pct": 1.65
       }
     ]
   },
   "releases": [
+    {
+      "cat": "Film/TV",
+      "title": "Box Office: ‘Supergirl’ Flies to $18 Million on Opening Day",
+      "when": "27 Jun",
+      "source": "Variety",
+      "url": "https://variety.com/2026/film/box-office/box-office-supergirl-milly-alcock-toy-story-5-1236789996/"
+    },
     {
       "cat": "Film/TV",
       "title": "K. Bhagyaraj, Prolific Tamil Cinema Writer-Director-Actor, Dies at 73",
@@ -104,13 +111,6 @@
       "when": "27 Jun",
       "source": "Variety",
       "url": "https://variety.com/2026/film/global/pinocchio-unstrung-rhys-frake-waterfield-poohniverse-1236791307/"
-    },
-    {
-      "cat": "Film/TV",
-      "title": "Warner Bros. Animation Sneak Peeks ‘Get Jiro,’ Teases Gerry Anderson’s ‘Hit Squad,’ Announces ‘Dark Shadows’ Animated Series at Annecy Adult Animation Showcase",
-      "when": "27 Jun",
-      "source": "Variety",
-      "url": "https://variety.com/2026/tv/global/batman-joker-adult-animation-warner-bros-animation-annecy-1236790867/"
     },
     {
       "cat": "Trek/Wars",
@@ -173,7 +173,7 @@
     {
       "repo": "jamessw-ntv.github.io",
       "desc": "",
-      "pushed": "2h ago",
+      "pushed": "1h ago",
       "lang": "HTML",
       "commit": ""
     }
