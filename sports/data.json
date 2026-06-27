@@ -3,7 +3,7 @@
     "title": "Multi-Sport Dashboard",
     "updated": "2026-06-27",
     "note": "Static snapshot. World Cup results through 24 June (Groups A, B and C complete; remaining groups decide 25 to 27 June); AFL through Round 15; NRL through Round 16; Origin series level 1-1, decider 8 July. AFL and NRL for/against and differential figures pending re-verification.",
-    "fetched": "2026-06-27T10:15:39+00:00"
+    "fetched": "2026-06-27T14:47:20+00:00"
   },
   "nextup": {
     "mine": [
@@ -2490,18 +2490,6 @@
       ],
       [
         5,
-        "Adelaide Crows",
-        14,
-        9,
-        5,
-        0,
-        1257,
-        1110,
-        113.2,
-        36
-      ],
-      [
-        6,
         "Brisbane Lions",
         15,
         9,
@@ -2510,6 +2498,18 @@
         1551,
         1397,
         111.0,
+        36
+      ],
+      [
+        6,
+        "Adelaide Crows",
+        15,
+        9,
+        6,
+        0,
+        1328,
+        1207,
+        110.0,
         36
       ],
       [
@@ -2611,14 +2611,14 @@
       [
         15,
         "Port Adelaide",
-        14,
-        4,
+        15,
+        5,
         10,
         0,
-        1124,
-        1140,
-        98.6,
-        16
+        1221,
+        1211,
+        100.8,
+        20
       ],
       [
         16,
