@@ -2,42 +2,42 @@
   "meta": {
     "title": "Personal Dashboard",
     "place": "Ferntree Gully, VIC",
-    "updated": "2026-06-26",
-    "fetched": "2026-06-26T23:14:43+00:00",
+    "updated": "2026-06-27",
+    "fetched": "2026-06-27T04:01:36+00:00",
     "note": "Live. weather Open-Meteo · crypto CoinGecko · ASX Yahoo · dev GitHub · releases RSS."
   },
   "weather": {
     "place": "Ferntree Gully, VIC",
     "now": {
-      "temp": 5,
-      "icon": "☁️",
-      "desc": "Overcast",
-      "wind": 2
+      "temp": 12,
+      "icon": "☀️",
+      "desc": "Clear",
+      "wind": 4
     },
     "days": [
       {
         "day": "Today",
         "min": 4,
-        "max": 11,
+        "max": 12,
         "icon": "☁️",
         "desc": "Overcast",
         "rain": 0
       },
       {
         "day": "Sun",
-        "min": 4,
-        "max": 15,
+        "min": 3,
+        "max": 16,
         "icon": "☁️",
         "desc": "Overcast",
         "rain": 0
       },
       {
         "day": "Mon",
-        "min": 7,
+        "min": 8,
         "max": 14,
         "icon": "🌦️",
         "desc": "Drizzle",
-        "rain": 73
+        "rain": 67
       }
     ]
   },
@@ -72,45 +72,45 @@
       {
         "code": "BTC",
         "name": "Bitcoin",
-        "price": 86986.0,
-        "pct": 0.45
+        "price": 87335.0,
+        "pct": 0.65
       },
       {
         "code": "ETH",
         "name": "Ethereum",
-        "price": 2285.36,
-        "pct": 0.6
+        "price": 2289.14,
+        "pct": 1.65
       }
     ]
   },
   "releases": [
     {
       "cat": "Film/TV",
-      "title": "‘The Bear’ Stars Jeremy Allen White and Ayo Edebiri Break Down Carmy’s ‘Ego Death’ and Passing the Torch to Sydney: ‘It’s a Heartbreaking Moment’",
-      "when": "26 Jun",
+      "title": "Bill Maher Gets Played by JD Vance on ‘Real Time,’ Admits He May Vote Republican in 2028",
+      "when": "27 Jun",
       "source": "Variety",
-      "url": "https://variety.com/2026/tv/news/the-bear-jeremy-allen-white-ayo-edebiri-carmy-sydney-1236789524/"
+      "url": "https://variety.com/2026/tv/news/bill-maher-played-by-jd-vance-real-time-hbo-may-vote-republican-2028-1236795870/"
     },
     {
       "cat": "Film/TV",
-      "title": "‘Dutton Ranch’ Episode 8: While Two Sons Betray Their Families and Two Others Have a Shotgun Standoff, Carter Keeps Falling Off Horses and Puking",
-      "when": "26 Jun",
+      "title": "‘Life, Larry’ Director Jeff Schaffer on Obama’s Notes and Why Larry David Will Never Retire: ‘He’s Like a Prostitute Who Has Sex When He’s Not Working’",
+      "when": "27 Jun",
       "source": "Variety",
-      "url": "https://variety.com/2026/tv/recaps/dutton-ranch-episode-8-recap-joaquin-calls-dad-1236791281/"
+      "url": "https://variety.com/2026/tv/news/larry-david-new-show-jeff-schaffer-obamas-notes-curb-1236790792/"
     },
     {
       "cat": "Film/TV",
-      "title": "Pablo Larraín’s Upcoming Netflix Feature ‘Once’ Gathers Top Cast and Crew (EXCLUSIVE)",
-      "when": "26 Jun",
+      "title": "Last Call: Beats Headphones Are 57% Off for Prime Day — Their Lowest Price Ever",
+      "when": "27 Jun",
       "source": "Variety",
-      "url": "https://variety.com/2026/film/global/pablo-larrain-netflix-once-cast-and-crew-1236794441/"
+      "url": "https://variety.com/shop/beats-headphones-deals-1235148439/"
     },
     {
       "cat": "Film/TV",
-      "title": "Appeals Court Upholds Harvey Weinstein’s L.A. Rape Conviction But Orders New Sentence",
+      "title": "Luca Guadagnino Says He Can’t Discuss Amazon Dropping ‘Artificial’ Because ‘We Are Right in the Middle of This Situation,’ But AI Is ‘Changing the Identity of the World’",
       "when": "26 Jun",
       "source": "Variety",
-      "url": "https://variety.com/2026/film/news/harvey-weinstein-rape-appeal-ruling-1236793229/"
+      "url": "https://variety.com/2026/film/news/luca-guadagnino-ai-amazon-artificial-1236795673/"
     },
     {
       "cat": "Trek/Wars",
@@ -173,7 +173,7 @@
     {
       "repo": "jamessw-ntv.github.io",
       "desc": "",
-      "pushed": "1h ago",
+      "pushed": "3h ago",
       "lang": "HTML",
       "commit": ""
     }
