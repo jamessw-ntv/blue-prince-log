@@ -3,7 +3,7 @@
     "title": "Personal Dashboard",
     "place": "Ferntree Gully, VIC",
     "updated": "2026-06-27",
-    "fetched": "2026-06-27T20:13:49+00:00",
+    "fetched": "2026-06-27T22:08:59+00:00",
     "note": "Live. weather Open-Meteo · crypto CoinGecko · ASX Yahoo · dev GitHub · releases RSS."
   },
   "weather": {
@@ -12,7 +12,7 @@
       "temp": 3,
       "icon": "☁️",
       "desc": "Overcast",
-      "wind": 5
+      "wind": 6
     },
     "days": [
       {
@@ -72,45 +72,45 @@
       {
         "code": "BTC",
         "name": "Bitcoin",
-        "price": 87287.0,
-        "pct": 0.95
+        "price": 87062.0,
+        "pct": 0.44
       },
       {
         "code": "ETH",
         "name": "Ethereum",
-        "price": 2290.41,
-        "pct": 0.39
+        "price": 2281.16,
+        "pct": 0.18
       }
     ]
   },
   "releases": [
     {
       "cat": "Film/TV",
-      "title": "Annecy Winners: ’The Violinist’ Takes Top Prize, ’Iron Boy’ Sweeps Three Awards and Don Hertzfeldt Scores Best Short",
+      "title": "Elon Musk Posts Armie Hammer’s Controversial Comeback Film ‘Citizen Vigilante’ on X",
       "when": "27 Jun",
       "source": "Variety",
-      "url": "https://variety.com/2026/film/global/annecy-top-winners-the-violinist-iron-boy-don-hertzfeldt-1236796087/"
+      "url": "https://variety.com/2026/film/news/elon-musk-posts-armie-hammer-citizen-vigilante-1236796152/"
     },
     {
       "cat": "Film/TV",
-      "title": "Vanilla Ice’s Freedom 250 Concert in D.C. Canceled Due to ‘Inclement Weather’ That Doesn’t Materialize",
+      "title": "Here’s How to Watch Xander Zayas vs. Jaron Ennis Boxing Pay-Per-View Live Online",
       "when": "27 Jun",
       "source": "Variety",
-      "url": "https://variety.com/2026/music/news/vanilla-ice-freedom-250-concert-canceled-weather-1236796016/"
+      "url": "https://variety.com/2026/shopping/news/how-to-watch-xander-zayas-vs-jaron-ennis-boxing-ppv-live-online-1236789133/"
     },
     {
       "cat": "Film/TV",
-      "title": "‘House of Criticism’ Review: A Pensive and Touching Portrait of Married Art Critics Jerry Saltz and Roberta Smith (It Is Only, at Moments, a True-Life Christopher Guest Movie)",
+      "title": "Cannes Lions: The Pitches, Panels, Parties and Prognostication That Resonated Most During a Scorching Week on the Croisette",
       "when": "27 Jun",
       "source": "Variety",
-      "url": "https://variety.com/2026/film/reviews/house-of-criticism-review-jerry-saltz-roberta-smith-1236795884/"
+      "url": "https://variety.com/2026/biz/news/cannes-lions-takeaways-creators-ai-teletubbies-1236796008/"
     },
     {
       "cat": "Film/TV",
-      "title": "Jessica Alba and Danny Ramirez Celebrate the World Cup in L.A. and More Celeb Red Carpet Photos: June 2026",
+      "title": "Annecy Colombian Short ‘Once in a Body’: Fiction Rooted in Real Experiences",
       "when": "27 Jun",
       "source": "Variety",
-      "url": "https://variety.com/gallery/celebrity-pics-red-carpet-photos-june-2026/"
+      "url": "https://variety.com/2026/film/global/annecy-colombian-once-in-a-body-fiction-rooted-in-reality-1236795875/"
     },
     {
       "cat": "Trek/Wars",
@@ -173,7 +173,7 @@
     {
       "repo": "jamessw-ntv.github.io",
       "desc": "",
-      "pushed": "2h ago",
+      "pushed": "1h ago",
       "lang": "HTML",
       "commit": ""
     }
