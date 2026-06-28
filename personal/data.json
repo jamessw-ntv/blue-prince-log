@@ -3,15 +3,15 @@
     "title": "Personal Dashboard",
     "place": "Ferntree Gully, VIC",
     "updated": "2026-06-28",
-    "fetched": "2026-06-28T15:22:28+00:00",
+    "fetched": "2026-06-28T17:20:31+00:00",
     "note": "Live. weather Open-Meteo · crypto CoinGecko · ASX Yahoo · dev GitHub · releases RSS."
   },
   "weather": {
     "place": "Ferntree Gully, VIC",
     "now": {
       "temp": 7,
-      "icon": "🌤️",
-      "desc": "Mainly clear",
+      "icon": "☁️",
+      "desc": "Overcast",
       "wind": 8
     },
     "days": [
@@ -72,45 +72,45 @@
       {
         "code": "BTC",
         "name": "Bitcoin",
-        "price": 86971.0,
-        "pct": -1.12
+        "price": 86361.0,
+        "pct": -1.58
       },
       {
         "code": "ETH",
         "name": "Ethereum",
-        "price": 2291.19,
-        "pct": -1.22
+        "price": 2274.47,
+        "pct": -1.6
       }
     ]
   },
   "releases": [
     {
       "cat": "Film/TV",
-      "title": "Prime Video Reveals Young Stars of German-Language Original Series ‘Superior,’ Set in the World of Luxury Hotels (EXCLUSIVE)",
+      "title": "Gracie Abrams Says ‘I Get It’ When People Call Her a Nepo Baby Online: ‘I Think About the Privilege There’",
       "when": "28 Jun",
       "source": "Variety",
-      "url": "https://variety.com/2026/tv/global/prime-video-german-original-series-superior-set-1236795928/"
+      "url": "https://variety.com/2026/music/news/gracie-abrams-get-it-nepo-baby-online-privilege-1236797833/"
     },
     {
       "cat": "Film/TV",
-      "title": "Jolin Tsai and Chang Chen-yue Lead the Pack at Golden Melody Awards",
+      "title": "Box Office: ‘Supergirl’ Sputters Overseas With $30 Million, ‘Jackass: Best and Last’ Limps to $1.9 Million Internationally",
       "when": "28 Jun",
       "source": "Variety",
-      "url": "https://variety.com/2026/music/news/jolin-tsai-chang-chen-yue-golden-melody-awards-2026-1236796254/"
+      "url": "https://variety.com/2026/film/box-office/box-office-supergirl-jackass-5-misfire-overseas-1236797821/"
     },
     {
       "cat": "Film/TV",
-      "title": "‘Every Year After’ Renewed for Season 2 at Amazon; Will Focus on Charlie’s Story From ‘One Golden Summer’ Sequel Book",
-      "when": "27 Jun",
+      "title": "‘Memorizu’ Review: A Tender, Artful Japanese Reflection on the Media That Keep Us Together",
+      "when": "28 Jun",
       "source": "Variety",
-      "url": "https://variety.com/2026/tv/news/every-year-after-season-2-renewed-charlie-1236796154/"
+      "url": "https://variety.com/2026/film/reviews/memorizu-review-1236786424/"
     },
     {
       "cat": "Film/TV",
-      "title": "Elon Musk Posts Armie Hammer’s Controversial Comeback Film ‘Citizen Vigilante’ on X",
-      "when": "27 Jun",
+      "title": "Oscar Contenders From First Half of 2026: ‘The Invite,’ ‘Project Hail Mary,’ Taylor Swift and Yes, Even ‘Michael’",
+      "when": "28 Jun",
       "source": "Variety",
-      "url": "https://variety.com/2026/film/news/elon-musk-posts-armie-hammer-citizen-vigilante-1236796152/"
+      "url": "https://variety.com/lists/the-invite-michael-taylor-swift-oscars-contenders/"
     },
     {
       "cat": "Trek/Wars",
