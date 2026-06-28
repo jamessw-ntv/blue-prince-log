@@ -3,16 +3,16 @@
     "title": "Personal Dashboard",
     "place": "Ferntree Gully, VIC",
     "updated": "2026-06-28",
-    "fetched": "2026-06-28T21:10:22+00:00",
+    "fetched": "2026-06-28T23:11:56+00:00",
     "note": "Live. weather Open-Meteo · crypto CoinGecko · ASX Yahoo · dev GitHub · releases RSS."
   },
   "weather": {
     "place": "Ferntree Gully, VIC",
     "now": {
-      "temp": 9,
+      "temp": 11,
       "icon": "⛅",
       "desc": "Partly cloudy",
-      "wind": 13
+      "wind": 16
     },
     "days": [
       {
@@ -72,38 +72,52 @@
       {
         "code": "BTC",
         "name": "Bitcoin",
-        "price": 86502.0,
-        "pct": -1.02
+        "price": 85865.0,
+        "pct": -1.41
       },
       {
         "code": "ETH",
         "name": "Ethereum",
-        "price": 2278.22,
-        "pct": -0.64
+        "price": 2262.75,
+        "pct": -0.89
       }
     ]
   },
   "releases": [
     {
       "cat": "Film/TV",
+      "title": "James Norton to Play Hamlet in London West End Production Directed by Thomas Ostermeier",
+      "when": "28 Jun",
+      "source": "Variety",
+      "url": "https://variety.com/2026/theater/news/james-norton-hamlet-west-end-thomas-ostermeier-1236795920/"
+    },
+    {
+      "cat": "Trek/Wars",
+      "title": "This Week, In a Galaxy Far, Far Away: Amy Adams Hyping ‘Starfighter’, ‘Eclipse’ Troubles, and More",
+      "when": "28 Jun",
+      "source": "SW News Net",
+      "url": "https://www.starwarsnewsnet.com/2026/06/this-week-in-a-galaxy-far-far-away-amy-adams-hyping-starfighter-eclipse-troubles-and-more.html"
+    },
+    {
+      "cat": "Film/TV",
+      "title": "Stephen Poliakoff to Return to Major TV Drama With Epic Historic Political Thriller ‘The Order’ (EXCLUSIVE)",
+      "when": "28 Jun",
+      "source": "Variety",
+      "url": "https://variety.com/2026/tv/global/stephen-poliakoff-return-tv-drama-the-order-malta-1236791318/"
+    },
+    {
+      "cat": "Film/TV",
+      "title": "U.K. Ratings Body Used AI for First Time to Classify HBO Max’s Entire Library",
+      "when": "28 Jun",
+      "source": "Variety",
+      "url": "https://variety.com/2026/tv/global/uk-ratings-body-used-ai-for-first-time-classify-hbo-max-1236797997/"
+    },
+    {
+      "cat": "Film/TV",
       "title": "‘The Death of Robin Hood’ Artisans Break Down Hugh Jackman’s Brutal Transformation",
       "when": "28 Jun",
       "source": "Variety",
       "url": "https://variety.com/2026/artisans/news/the-death-of-robin-hood-hugh-jackman-transformation-1236791235/"
-    },
-    {
-      "cat": "Film/TV",
-      "title": "Oscar Predictions 2027: Tom Cruise, Julianne Moore and Proof the Movies Are Back",
-      "when": "28 Jun",
-      "source": "Variety",
-      "url": "https://variety.com/lists/2027-oscars-predictions/"
-    },
-    {
-      "cat": "Film/TV",
-      "title": "Sam Worthington on ‘I Will Find You,’ Being the Show’s ‘Damsel in Distress’ and Pushing Back on a David and Rachel ‘Telenovela’ Romance",
-      "when": "28 Jun",
-      "source": "Variety",
-      "url": "https://variety.com/2026/tv/columns/sam-worthington-i-will-find-you-david-rachel-romance-netflix-1236797898/"
     },
     {
       "cat": "Trek/Wars",
@@ -113,25 +127,11 @@
       "url": "https://www.starwarsnewsnet.com/2026/06/amy-adams-claims-star-wars-starfighter-role-is-small-yet-important.html"
     },
     {
-      "cat": "Film/TV",
-      "title": "Palm Springs International Shortfest Unveils 2026 Winners — Film News in Brief",
-      "when": "28 Jun",
-      "source": "Variety",
-      "url": "https://variety.com/2026/film/news/film-news-in-brief-june-22-2026-1236787254/"
-    },
-    {
       "cat": "Trek/Wars",
       "title": "New Galaxy’s Edge Update to Bring Floating Droid Vendors Inspired By ‘The Mandalorian and Grogu’",
       "when": "28 Jun",
       "source": "SW News Net",
       "url": "https://www.starwarsnewsnet.com/2026/06/new-galaxys-edge-update-to-bring-floating-droid-vendors-inspired-by-the-mandalorian-and-grogu.html"
-    },
-    {
-      "cat": "Trek/Wars",
-      "title": "‘The Phantom Menace’ VFX Producer Jeff Olson Dies at 77",
-      "when": "25 Jun",
-      "source": "SW News Net",
-      "url": "https://www.starwarsnewsnet.com/2026/06/the-phantom-menace-vfx-producer-jeff-olson-dies-at-77.html"
     },
     {
       "cat": "Games",
@@ -173,7 +173,7 @@
     {
       "repo": "jamessw-ntv.github.io",
       "desc": "",
-      "pushed": "1h ago",
+      "pushed": "2h ago",
       "lang": "HTML",
       "commit": ""
     }
