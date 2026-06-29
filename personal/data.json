@@ -3,7 +3,7 @@
     "title": "Personal Dashboard",
     "place": "Ferntree Gully, VIC",
     "updated": "2026-06-29",
-    "fetched": "2026-06-29T14:12:02+00:00",
+    "fetched": "2026-06-29T17:44:22+00:00",
     "note": "Live. weather Open-Meteo · crypto CoinGecko · ASX Yahoo · dev GitHub · releases RSS."
   },
   "weather": {
@@ -12,7 +12,7 @@
       "temp": 12,
       "icon": "🌦️",
       "desc": "Drizzle",
-      "wind": 16
+      "wind": 19
     },
     "days": [
       {
@@ -72,45 +72,45 @@
       {
         "code": "BTC",
         "name": "Bitcoin",
-        "price": 85933.0,
-        "pct": -1.37
+        "price": 87797.0,
+        "pct": 1.83
       },
       {
         "code": "ETH",
         "name": "Ethereum",
-        "price": 2270.53,
-        "pct": -0.89
+        "price": 2358.85,
+        "pct": 3.81
       }
     ]
   },
   "releases": [
     {
       "cat": "Film/TV",
-      "title": "‘S.W.A.T’ Spinoff ‘Exiles’ Lands at Starz, Sets September Release Date",
+      "title": "European Heatwave Fires Up the Box Office as Audiences Seek Indoor Activities, Air Conditioning",
       "when": "29 Jun",
       "source": "Variety",
-      "url": "https://variety.com/2026/tv/news/s-w-a-t-spinoff-exiles-starz-september-release-date-1236798385/"
+      "url": "https://variety.com/2026/film/global/european-heatwave-cinema-air-conditioning-1236798309/"
     },
     {
       "cat": "Film/TV",
-      "title": "Clockenflap’s Justin Sweeting and Woozi Studio’s Mia Min Yen on Asia’s Live Music Boom at Golden Melody Festival: ‘No Longer Is a Fan Just Buying a Ticket, But Investing in a Memory’",
+      "title": "Academy Taps ‘Memento’ Producer Jennifer Todd for Governors Awards, Succeeding Jennifer Fox",
       "when": "29 Jun",
       "source": "Variety",
-      "url": "https://variety.com/2026/music/news/asia-live-music-boom-sweeting-yen-golden-melody-festival-1236798362/"
+      "url": "https://variety.com/2026/film/awards/jennifer-todd-governors-awards-2026-producer-1236798597/"
     },
     {
       "cat": "Film/TV",
-      "title": "Comcast Bosses Say NBCU-Cable Separation ‘Absolutely Not’ Designed to Pursue M&A Deals; ‘We’ve Now Simply Changed Our Mind’ That the Businesses Are Better Together",
+      "title": "Bruce Springsteen Goes to PBS for Half-Hour Conversation With ‘NewsHour’ Co-Anchor Geoff Bennett",
       "when": "29 Jun",
       "source": "Variety",
-      "url": "https://variety.com/2026/tv/news/comcast-ceos-nbcu-cable-split-absolutely-not-not-merger-acqusition-1236798330/"
+      "url": "https://variety.com/2026/tv/news/bruce-springsteen-pbs-newshour-interview-geoff-bennett-1236798456/"
     },
     {
       "cat": "Film/TV",
-      "title": "Director Nader Saivar on Working With Jafar Panahi on Karlovy Vary-Bound ‘Hijamat’ and Situation in Iran Where ‘There Is a Sort of Aversion Towards Religion Among the Young Generation’",
+      "title": "Danielle Brooks Launches ‘The InnerMission’ Podcast (EXCLUSIVE)",
       "when": "29 Jun",
       "source": "Variety",
-      "url": "https://variety.com/2026/film/festivals/nader-saivar-jafar-panahi-karlovy-vary-hijamat-iran-1236798129/"
+      "url": "https://variety.com/2026/digital/news/danielle-brooks-the-innermission-video-podcast-1236798531/"
     },
     {
       "cat": "Trek/Wars",
@@ -173,7 +173,7 @@
     {
       "repo": "jamessw-ntv.github.io",
       "desc": "",
-      "pushed": "4h ago",
+      "pushed": "3h ago",
       "lang": "HTML",
       "commit": ""
     }
