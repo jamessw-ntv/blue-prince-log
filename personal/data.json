@@ -2,33 +2,33 @@
   "meta": {
     "title": "Personal Dashboard",
     "place": "Ferntree Gully, VIC",
-    "updated": "2026-06-28",
-    "fetched": "2026-06-28T23:11:56+00:00",
+    "updated": "2026-06-29",
+    "fetched": "2026-06-29T04:43:31+00:00",
     "note": "Live. weather Open-Meteo · crypto CoinGecko · ASX Yahoo · dev GitHub · releases RSS."
   },
   "weather": {
     "place": "Ferntree Gully, VIC",
     "now": {
-      "temp": 11,
-      "icon": "⛅",
-      "desc": "Partly cloudy",
-      "wind": 16
+      "temp": 15,
+      "icon": "☁️",
+      "desc": "Overcast",
+      "wind": 19
     },
     "days": [
       {
         "day": "Today",
         "min": 7,
-        "max": 14,
+        "max": 15,
         "icon": "🌦️",
         "desc": "Drizzle",
         "rain": 54
       },
       {
         "day": "Tue",
-        "min": 11,
+        "min": 10,
         "max": 13,
-        "icon": "🌦️",
-        "desc": "Showers",
+        "icon": "🌧️",
+        "desc": "Rain",
         "rain": 100
       },
       {
@@ -72,24 +72,45 @@
       {
         "code": "BTC",
         "name": "Bitcoin",
-        "price": 85865.0,
-        "pct": -1.41
+        "price": 86627.0,
+        "pct": -0.59
       },
       {
         "code": "ETH",
         "name": "Ethereum",
-        "price": 2262.75,
-        "pct": -0.89
+        "price": 2284.42,
+        "pct": 0.12
       }
     ]
   },
   "releases": [
     {
       "cat": "Film/TV",
-      "title": "James Norton to Play Hamlet in London West End Production Directed by Thomas Ostermeier",
-      "when": "28 Jun",
+      "title": "Variety Wins 16 Southern California Journalism Awards",
+      "when": "29 Jun",
       "source": "Variety",
-      "url": "https://variety.com/2026/theater/news/james-norton-hamlet-west-end-thomas-ostermeier-1236795920/"
+      "url": "https://variety.com/2026/film/news/variety-16-southern-california-journalism-awards-1236798043/"
+    },
+    {
+      "cat": "Film/TV",
+      "title": "John Oliver Reveals ‘Days of Our Lives’ Guest-Star Role: ‘Clearly a Huge Honor’",
+      "when": "29 Jun",
+      "source": "Variety",
+      "url": "https://variety.com/2026/tv/news/john-oliver-reveal-days-of-our-lives-soap-opera-guest-appearances-1236798077/"
+    },
+    {
+      "cat": "Film/TV",
+      "title": "John Oliver to Guest Star on ‘General Hospital’",
+      "when": "29 Jun",
+      "source": "Variety",
+      "url": "https://variety.com/2026/tv/news/john-oliver-general-hospital-guest-star-1236794160/"
+    },
+    {
+      "cat": "Film/TV",
+      "title": "John Oliver Exposes Trump and Fox News’ Jesse Watters Over Reflecting Pool Conspiracies",
+      "when": "29 Jun",
+      "source": "Variety",
+      "url": "https://variety.com/2026/tv/news/john-oliver-exposes-trump-fox-news-jesse-watters-reflecting-pool-conspiracies-1236798056/"
     },
     {
       "cat": "Trek/Wars",
@@ -97,27 +118,6 @@
       "when": "28 Jun",
       "source": "SW News Net",
       "url": "https://www.starwarsnewsnet.com/2026/06/this-week-in-a-galaxy-far-far-away-amy-adams-hyping-starfighter-eclipse-troubles-and-more.html"
-    },
-    {
-      "cat": "Film/TV",
-      "title": "Stephen Poliakoff to Return to Major TV Drama With Epic Historic Political Thriller ‘The Order’ (EXCLUSIVE)",
-      "when": "28 Jun",
-      "source": "Variety",
-      "url": "https://variety.com/2026/tv/global/stephen-poliakoff-return-tv-drama-the-order-malta-1236791318/"
-    },
-    {
-      "cat": "Film/TV",
-      "title": "U.K. Ratings Body Used AI for First Time to Classify HBO Max’s Entire Library",
-      "when": "28 Jun",
-      "source": "Variety",
-      "url": "https://variety.com/2026/tv/global/uk-ratings-body-used-ai-for-first-time-classify-hbo-max-1236797997/"
-    },
-    {
-      "cat": "Film/TV",
-      "title": "‘The Death of Robin Hood’ Artisans Break Down Hugh Jackman’s Brutal Transformation",
-      "when": "28 Jun",
-      "source": "Variety",
-      "url": "https://variety.com/2026/artisans/news/the-death-of-robin-hood-hugh-jackman-transformation-1236791235/"
     },
     {
       "cat": "Trek/Wars",
@@ -173,7 +173,7 @@
     {
       "repo": "jamessw-ntv.github.io",
       "desc": "",
-      "pushed": "2h ago",
+      "pushed": "5h ago",
       "lang": "HTML",
       "commit": ""
     }
