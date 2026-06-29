@@ -3,28 +3,20 @@
     "title": "Personal Dashboard",
     "place": "Ferntree Gully, VIC",
     "updated": "2026-06-29",
-    "fetched": "2026-06-29T09:54:11+00:00",
+    "fetched": "2026-06-29T14:12:02+00:00",
     "note": "Live. weather Open-Meteo · crypto CoinGecko · ASX Yahoo · dev GitHub · releases RSS."
   },
   "weather": {
     "place": "Ferntree Gully, VIC",
     "now": {
-      "temp": 13,
-      "icon": "☁️",
-      "desc": "Overcast",
-      "wind": 18
+      "temp": 12,
+      "icon": "🌦️",
+      "desc": "Drizzle",
+      "wind": 16
     },
     "days": [
       {
         "day": "Today",
-        "min": 7,
-        "max": 15,
-        "icon": "☁️",
-        "desc": "Overcast",
-        "rain": 60
-      },
-      {
-        "day": "Tue",
         "min": 11,
         "max": 13,
         "icon": "🌦️",
@@ -36,8 +28,16 @@
         "min": 10,
         "max": 14,
         "icon": "🌦️",
+        "desc": "Drizzle",
+        "rain": 96
+      },
+      {
+        "day": "Thu",
+        "min": 9,
+        "max": 12,
+        "icon": "🌦️",
         "desc": "Showers",
-        "rain": 88
+        "rain": 89
       }
     ]
   },
@@ -72,45 +72,45 @@
       {
         "code": "BTC",
         "name": "Bitcoin",
-        "price": 86816.0,
-        "pct": -0.57
+        "price": 85933.0,
+        "pct": -1.37
       },
       {
         "code": "ETH",
         "name": "Ethereum",
-        "price": 2279.75,
-        "pct": -0.33
+        "price": 2270.53,
+        "pct": -0.89
       }
     ]
   },
   "releases": [
     {
       "cat": "Film/TV",
-      "title": "BBC Comes to Jesus: Broadcaster Sets ‘Landmark’ Historical Docuseries on Christ",
+      "title": "‘S.W.A.T’ Spinoff ‘Exiles’ Lands at Starz, Sets September Release Date",
       "when": "29 Jun",
       "source": "Variety",
-      "url": "https://variety.com/2026/tv/global/bbc-jesus-christ-docuseries-1236798173/"
+      "url": "https://variety.com/2026/tv/news/s-w-a-t-spinoff-exiles-starz-september-release-date-1236798385/"
     },
     {
       "cat": "Film/TV",
-      "title": "Newly Restored ‘Deadly Sweet’ by Italian Softcore Erotic Movies Director Tinto Brass Set to Pre-Open Venice Film Festival",
+      "title": "Clockenflap’s Justin Sweeting and Woozi Studio’s Mia Min Yen on Asia’s Live Music Boom at Golden Melody Festival: ‘No Longer Is a Fan Just Buying a Ticket, But Investing in a Memory’",
       "when": "29 Jun",
       "source": "Variety",
-      "url": "https://variety.com/2026/film/festivals/restored-deadly-sweet-erotic-tinto-brass-venice-festival-1236798160/"
+      "url": "https://variety.com/2026/music/news/asia-live-music-boom-sweeting-yen-golden-melody-festival-1236798362/"
     },
     {
       "cat": "Film/TV",
-      "title": "‘Spirited Away’ Stage Production Sets World Tour, Including London Return – Global Bulletin",
+      "title": "Comcast Bosses Say NBCU-Cable Separation ‘Absolutely Not’ Designed to Pursue M&A Deals; ‘We’ve Now Simply Changed Our Mind’ That the Businesses Are Better Together",
       "when": "29 Jun",
       "source": "Variety",
-      "url": "https://variety.com/2026/theater/news/spirited-away-stage-world-tour-1236798164/"
+      "url": "https://variety.com/2026/tv/news/comcast-ceos-nbcu-cable-split-absolutely-not-not-merger-acqusition-1236798330/"
     },
     {
       "cat": "Film/TV",
-      "title": "Christopher Eccleston, Mel Giedroyc, Steve Pemberton Among New Stars Added to ‘White Rabbit Red Rabbit’ London West End Run",
+      "title": "Director Nader Saivar on Working With Jafar Panahi on Karlovy Vary-Bound ‘Hijamat’ and Situation in Iran Where ‘There Is a Sort of Aversion Towards Religion Among the Young Generation’",
       "when": "29 Jun",
       "source": "Variety",
-      "url": "https://variety.com/2026/theater/news/christopher-eccleston-mel-giedroyc-white-rabbit-red-rabbit-1236791393/"
+      "url": "https://variety.com/2026/film/festivals/nader-saivar-jafar-panahi-karlovy-vary-hijamat-iran-1236798129/"
     },
     {
       "cat": "Trek/Wars",
@@ -173,7 +173,7 @@
     {
       "repo": "jamessw-ntv.github.io",
       "desc": "",
-      "pushed": "5h ago",
+      "pushed": "4h ago",
       "lang": "HTML",
       "commit": ""
     }
