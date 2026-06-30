@@ -3,22 +3,22 @@
     "title": "Personal Dashboard",
     "place": "Ferntree Gully, VIC",
     "updated": "2026-06-30",
-    "fetched": "2026-06-30T00:12:29+00:00",
+    "fetched": "2026-06-30T05:10:48+00:00",
     "note": "Live. weather Open-Meteo · crypto CoinGecko · ASX Yahoo · dev GitHub · releases RSS."
   },
   "weather": {
     "place": "Ferntree Gully, VIC",
     "now": {
-      "temp": 12,
+      "temp": 13,
       "icon": "🌦️",
-      "desc": "Showers",
-      "wind": 22
+      "desc": "Drizzle",
+      "wind": 19
     },
     "days": [
       {
         "day": "Today",
         "min": 11,
-        "max": 13,
+        "max": 14,
         "icon": "🌦️",
         "desc": "Showers",
         "rain": 100
@@ -28,16 +28,16 @@
         "min": 10,
         "max": 14,
         "icon": "🌦️",
-        "desc": "Drizzle",
-        "rain": 100
+        "desc": "Showers",
+        "rain": 94
       },
       {
         "day": "Thu",
-        "min": 9,
+        "min": 8,
         "max": 11,
         "icon": "🌦️",
         "desc": "Drizzle",
-        "rain": 96
+        "rain": 98
       }
     ]
   },
@@ -72,18 +72,32 @@
       {
         "code": "BTC",
         "name": "Bitcoin",
-        "price": 87425.0,
-        "pct": 1.22
+        "price": 86399.0,
+        "pct": 0.08
       },
       {
         "code": "ETH",
         "name": "Ethereum",
-        "price": 2340.38,
-        "pct": 2.85
+        "price": 2310.01,
+        "pct": 1.74
       }
     ]
   },
   "releases": [
+    {
+      "cat": "Film/TV",
+      "title": "Sony Music Indonesia, Sun Eater Group Launch Joint-Venture Label Lunar",
+      "when": "30 Jun",
+      "source": "Variety",
+      "url": "https://variety.com/2026/music/news/sony-music-indonesia-sun-eater-label-lunar-1236798149/"
+    },
+    {
+      "cat": "Film/TV",
+      "title": "Ranbir Kapoor and Yash’s ‘Ramayana’ Tops IMDb’s Most Anticipated Indian Movies List for Second Half of 2026 (EXCLUSIVE)",
+      "when": "30 Jun",
+      "source": "Variety",
+      "url": "https://variety.com/2026/film/news/ranbir-kapoor-yash-ramayana-imdb-most-anticipated-indian-movies-2026-1236798177/"
+    },
     {
       "cat": "Film/TV",
       "title": "Two Members of New Order Step Away From Touring ‘Due to Personal Health Reasons’",
@@ -99,25 +113,11 @@
       "url": "https://variety.com/feature/whats-on-disney-plus-new-shows-movies-1203517920/"
     },
     {
-      "cat": "Film/TV",
-      "title": "LISTEN: Box Office: ‘Supergirl’ Stumbles, ‘Toy Story 5’ Flexes and ‘Michael’ Hits a Milestone; Why Comcast is Splitting NBCUniversal and Sky From Cable",
-      "when": "29 Jun",
-      "source": "Variety",
-      "url": "https://variety.com/2026/film/news/box-office-supergirl-toy-story-5-comcast-nbcuniversal-sky-1236798801/"
-    },
-    {
       "cat": "Trek/Wars",
       "title": "‘Star Wars Eclipse’ Developer Quantic Dream Faces Strikes Over Proposed Layoffs",
       "when": "29 Jun",
       "source": "SW News Net",
       "url": "https://www.starwarsnewsnet.com/2026/06/star-wars-eclipse-developer-quantic-dream-faces-strikes-over-proposed-layoffs.html"
-    },
-    {
-      "cat": "Film/TV",
-      "title": "Director Carl Rinsch Sentenced to 30 Months in Netflix Fraud Case After Keanu Reeves and Attorneys Cite Mental Health Struggles",
-      "when": "29 Jun",
-      "source": "Variety",
-      "url": "https://variety.com/2026/film/news/carl-rinsch-sentence-30-months-keanu-reeves-netflix-1236798838/"
     },
     {
       "cat": "Trek/Wars",
@@ -173,7 +173,7 @@
     {
       "repo": "jamessw-ntv.github.io",
       "desc": "",
-      "pushed": "1h ago",
+      "pushed": "4h ago",
       "lang": "HTML",
       "commit": ""
     }
