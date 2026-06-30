@@ -3,16 +3,16 @@
     "title": "Personal Dashboard",
     "place": "Ferntree Gully, VIC",
     "updated": "2026-06-30",
-    "fetched": "2026-06-30T15:36:07+00:00",
+    "fetched": "2026-06-30T18:03:51+00:00",
     "note": "Live. weather Open-Meteo · crypto CoinGecko · ASX Yahoo · dev GitHub · releases RSS."
   },
   "weather": {
     "place": "Ferntree Gully, VIC",
     "now": {
       "temp": 10,
-      "icon": "⛅",
-      "desc": "Partly cloudy",
-      "wind": 13
+      "icon": "☁️",
+      "desc": "Overcast",
+      "wind": 14
     },
     "days": [
       {
@@ -72,45 +72,45 @@
       {
         "code": "BTC",
         "name": "Bitcoin",
-        "price": 84348.0,
-        "pct": -2.85
+        "price": 84344.0,
+        "pct": -3.68
       },
       {
         "code": "ETH",
         "name": "Ethereum",
-        "price": 2261.19,
-        "pct": -1.42
+        "price": 2268.52,
+        "pct": -3.79
       }
     ]
   },
   "releases": [
     {
       "cat": "Film/TV",
-      "title": "Does California Attorney General Want to Force Paramount to Sell Off CNN? Rob Bonta Claims ‘I Have No Idea’ Where That Speculation ‘Comes From’",
+      "title": "Mark Harmon Returning as Gibbs in ‘NCIS: Origins’ Season 3 Story Arc",
       "when": "30 Jun",
       "source": "Variety",
-      "url": "https://variety.com/2026/tv/news/california-attorney-general-force-paramount-sell-cnn-rob-bonta-1236799191/"
+      "url": "https://variety.com/2026/tv/news/mark-harmon-gibbs-return-ncis-origins-season-3-1236799407/"
     },
     {
       "cat": "Film/TV",
-      "title": "‘Reacher’ Spinoff ‘Neagley’ Sets Amazon Release Date, Drops First-Look Images",
+      "title": "‘Last Kids on Earth’ TV Series Gets Disney Pilot Order",
       "when": "30 Jun",
       "source": "Variety",
-      "url": "https://variety.com/2026/tv/news/reacher-spinoff-neagley-release-date-amazon-1236799254/"
+      "url": "https://variety.com/2026/tv/news/last-kids-on-earth-tv-show-disney-pilot-order-1236799413/"
     },
     {
       "cat": "Film/TV",
-      "title": "Spymob Returns: How the Pop-Rock Group Went From Backing Pharrell Williams’ N.E.R.D. to Reuniting 20 Years After Their Debut",
+      "title": "Inside Netflix’s ‘Unhinged’ Horror Game, Made in Secret Collaboration With David Fincher and ‘Weapons’ Director Zach Cregger",
       "when": "30 Jun",
       "source": "Variety",
-      "url": "https://variety.com/2026/music/news/spymob-reunites-pharrell-williams-nerd-another-night-1236798833/"
+      "url": "https://variety.com/2026/gaming/news/unhinged-netflix-video-game-ending-fincher-zach-cregger-1236799166/"
     },
     {
       "cat": "Film/TV",
-      "title": "Care Bears, Beloved Children’s Property, Acquired by Authentic Brands Group (EXCLUSIVE)",
+      "title": "The Best Movies of 2026 (So Far)",
       "when": "30 Jun",
       "source": "Variety",
-      "url": "https://variety.com/2026/biz/news/care-bears-sold-authentic-brands-group-1236799111/"
+      "url": "https://variety.com/lists/best-movies-of-2026-so-far/"
     },
     {
       "cat": "Trek/Wars",
@@ -173,7 +173,7 @@
     {
       "repo": "jamessw-ntv.github.io",
       "desc": "",
-      "pushed": "3h ago",
+      "pushed": "2h ago",
       "lang": "HTML",
       "commit": ""
     }
