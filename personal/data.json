@@ -3,33 +3,25 @@
     "title": "Personal Dashboard",
     "place": "Ferntree Gully, VIC",
     "updated": "2026-06-30",
-    "fetched": "2026-06-30T12:16:04+00:00",
+    "fetched": "2026-06-30T15:36:07+00:00",
     "note": "Live. weather Open-Meteo · crypto CoinGecko · ASX Yahoo · dev GitHub · releases RSS."
   },
   "weather": {
     "place": "Ferntree Gully, VIC",
     "now": {
-      "temp": 11,
+      "temp": 10,
       "icon": "⛅",
       "desc": "Partly cloudy",
-      "wind": 11
+      "wind": 13
     },
     "days": [
       {
         "day": "Today",
         "min": 10,
-        "max": 13,
+        "max": 14,
         "icon": "🌦️",
         "desc": "Showers",
-        "rain": 100
-      },
-      {
-        "day": "Wed",
-        "min": 10,
-        "max": 15,
-        "icon": "🌦️",
-        "desc": "Showers",
-        "rain": 100
+        "rain": 88
       },
       {
         "day": "Thu",
@@ -37,7 +29,15 @@
         "max": 11,
         "icon": "🌦️",
         "desc": "Drizzle",
-        "rain": 100
+        "rain": 94
+      },
+      {
+        "day": "Fri",
+        "min": 6,
+        "max": 12,
+        "icon": "🌦️",
+        "desc": "Drizzle",
+        "rain": 88
       }
     ]
   },
@@ -72,45 +72,52 @@
       {
         "code": "BTC",
         "name": "Bitcoin",
-        "price": 85589.0,
-        "pct": -2.59
+        "price": 84348.0,
+        "pct": -2.85
       },
       {
         "code": "ETH",
         "name": "Ethereum",
-        "price": 2281.29,
-        "pct": -1.13
+        "price": 2261.19,
+        "pct": -1.42
       }
     ]
   },
   "releases": [
     {
       "cat": "Film/TV",
-      "title": "Immersive ‘Peaky Blinders’ Underworld Experience Coming to London This Summer",
+      "title": "Does California Attorney General Want to Force Paramount to Sell Off CNN? Rob Bonta Claims ‘I Have No Idea’ Where That Speculation ‘Comes From’",
       "when": "30 Jun",
       "source": "Variety",
-      "url": "https://variety.com/2026/tv/global/peaky-blinders-underworld-live-experience-london-1236787324/"
+      "url": "https://variety.com/2026/tv/news/california-attorney-general-force-paramount-sell-cnn-rob-bonta-1236799191/"
     },
     {
       "cat": "Film/TV",
-      "title": "‘Trainspotting’ Marks 30th Anniversary at Edinburgh Film Festival With Cast Reunion – Global Bulletin",
+      "title": "‘Reacher’ Spinoff ‘Neagley’ Sets Amazon Release Date, Drops First-Look Images",
       "when": "30 Jun",
       "source": "Variety",
-      "url": "https://variety.com/2026/film/news/trainspotting-30th-anniversary-edinburgh-film-festival-1236799103/"
+      "url": "https://variety.com/2026/tv/news/reacher-spinoff-neagley-release-date-amazon-1236799254/"
     },
     {
       "cat": "Film/TV",
-      "title": "Romantic Dramedy Series ‘La Vida Barcelona,’ Directed by Katina Medina Mora, Boarded by Beta Film (EXCLUSIVE)",
+      "title": "Spymob Returns: How the Pop-Rock Group Went From Backing Pharrell Williams’ N.E.R.D. to Reuniting 20 Years After Their Debut",
       "when": "30 Jun",
       "source": "Variety",
-      "url": "https://variety.com/2026/tv/global/beta-film-la-vida-barcelona-1236799089/"
+      "url": "https://variety.com/2026/music/news/spymob-reunites-pharrell-williams-nerd-another-night-1236798833/"
     },
     {
       "cat": "Film/TV",
-      "title": "Josh O’Connor-Led Revival of ‘Golden Boy’ at London’s Almeida Theatre Rounds Out Cast, Unveils Trailer (EXCLUSIVE)",
+      "title": "Care Bears, Beloved Children’s Property, Acquired by Authentic Brands Group (EXCLUSIVE)",
       "when": "30 Jun",
       "source": "Variety",
-      "url": "https://variety.com/2026/theater/global/josh-o-connor-golden-boy-almeida-theatre-cast-trailer-1236798840/"
+      "url": "https://variety.com/2026/biz/news/care-bears-sold-authentic-brands-group-1236799111/"
+    },
+    {
+      "cat": "Trek/Wars",
+      "title": "‘Star Wars: Star Pilots’ Book Preview Showcases the Memoirs of Wedge Antilles",
+      "when": "30 Jun",
+      "source": "SW News Net",
+      "url": "https://www.starwarsnewsnet.com/2026/06/star-wars-star-pilots-book-preview-showcases-the-memoirs-of-wedge-antilles.html"
     },
     {
       "cat": "Trek/Wars",
@@ -125,13 +132,6 @@
       "when": "29 Jun",
       "source": "SW News Net",
       "url": "https://www.starwarsnewsnet.com/2026/06/galaxys-edge-echoes-of-the-empire-3-review-darth-vaders-rampage-powers-the-series-best-issue-yet.html"
-    },
-    {
-      "cat": "Trek/Wars",
-      "title": "This Week, In a Galaxy Far, Far Away: Amy Adams Hyping ‘Starfighter’, ‘Eclipse’ Troubles, and More",
-      "when": "28 Jun",
-      "source": "SW News Net",
-      "url": "https://www.starwarsnewsnet.com/2026/06/this-week-in-a-galaxy-far-far-away-amy-adams-hyping-starfighter-eclipse-troubles-and-more.html"
     },
     {
       "cat": "Games",
@@ -173,7 +173,7 @@
     {
       "repo": "jamessw-ntv.github.io",
       "desc": "",
-      "pushed": "2h ago",
+      "pushed": "3h ago",
       "lang": "HTML",
       "commit": ""
     }
