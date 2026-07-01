@@ -3,7 +3,7 @@
     "title": "Personal Dashboard",
     "place": "Ferntree Gully, VIC",
     "updated": "2026-07-01",
-    "fetched": "2026-07-01T10:01:50+00:00",
+    "fetched": "2026-07-01T12:38:59+00:00",
     "note": "Live. weather Open-Meteo · crypto CoinGecko · ASX Yahoo · dev GitHub · releases RSS."
   },
   "weather": {
@@ -12,7 +12,7 @@
       "temp": 11,
       "icon": "🌦️",
       "desc": "Drizzle",
-      "wind": 22
+      "wind": 25
     },
     "days": [
       {
@@ -21,7 +21,7 @@
         "max": 15,
         "icon": "🌦️",
         "desc": "Showers",
-        "rain": 100
+        "rain": 97
       },
       {
         "day": "Thu",
@@ -29,7 +29,7 @@
         "max": 11,
         "icon": "🌦️",
         "desc": "Showers",
-        "rain": 99
+        "rain": 100
       },
       {
         "day": "Fri",
@@ -37,7 +37,7 @@
         "max": 13,
         "icon": "🌦️",
         "desc": "Showers",
-        "rain": 98
+        "rain": 100
       }
     ]
   },
@@ -72,45 +72,45 @@
       {
         "code": "BTC",
         "name": "Bitcoin",
-        "price": 85418.0,
-        "pct": -0.8
+        "price": 84661.0,
+        "pct": -0.74
       },
       {
         "code": "ETH",
         "name": "Ethereum",
-        "price": 2291.09,
-        "pct": -0.37
+        "price": 2270.99,
+        "pct": 0.18
       }
     ]
   },
   "releases": [
     {
       "cat": "Film/TV",
+      "title": "Canada Officially Joins Eurovision Song Contest",
+      "when": "1 Jul",
+      "source": "Variety",
+      "url": "https://variety.com/2026/tv/global/canada-joins-eurovision-song-contest-1236791260/"
+    },
+    {
+      "cat": "Film/TV",
+      "title": "Paramount Set to Exit Universal Joint Venture as Condition for EU Approval of Mega-Merger With Warner Bros. Discovery",
+      "when": "1 Jul",
+      "source": "Variety",
+      "url": "https://variety.com/2026/biz/global/paramount-exit-universal-uip-venture-eu-approval-merger-1236799919/"
+    },
+    {
+      "cat": "Film/TV",
+      "title": "John Malone, Sony CEO Hiroki Totoki, Take-Two’s Strauss Zelnick Among Speakers Set for Paley Center for Media’s International Council Summit",
+      "when": "1 Jul",
+      "source": "Variety",
+      "url": "https://variety.com/2026/biz/news/john-malone-totoki-strauss-zelnick-paley-international-1236799770/"
+    },
+    {
+      "cat": "Film/TV",
       "title": "Victor Willis, Village People Founding Lead Singer and ‘YMCA’ Co-Writer, Dies at 74",
       "when": "1 Jul",
       "source": "Variety",
       "url": "https://variety.com/2026/music/news/victor-willis-dead-village-people-lead-singer-ymca-cowriter-1236799865/"
-    },
-    {
-      "cat": "Film/TV",
-      "title": "Malaysian Sci-Fi Feature ‘Mimpi Kita: Castle in the Air’ Charts Audience-Driven Distribution Plan Ahead of Bucheon Market Debut (EXCLUSIVE)",
-      "when": "1 Jul",
-      "source": "Variety",
-      "url": "https://variety.com/2026/film/markets-festivals/mimpi-kita-naff-bucheon-distribution-1236799460/"
-    },
-    {
-      "cat": "Film/TV",
-      "title": "‘Othello’ Reimagined as a Black Lesbian in Royal Shakespeare Company’s New Production",
-      "when": "1 Jul",
-      "source": "Variety",
-      "url": "https://variety.com/2026/theater/news/othello-reimagined-black-lesbian-royal-shakespeare-company-1236799854/"
-    },
-    {
-      "cat": "Film/TV",
-      "title": "Vietnamese Films Capture 70% of Local Box Office as Galaxy Studio Chief Urges Global Co-Productions at Danang Industry Days",
-      "when": "1 Jul",
-      "source": "Variety",
-      "url": "https://variety.com/2026/film/news/vietnamese-films-70-percent-market-share-galaxy-studio-danaff-1236799841/"
     },
     {
       "cat": "Trek/Wars",
@@ -173,7 +173,7 @@
     {
       "repo": "jamessw-ntv.github.io",
       "desc": "",
-      "pushed": "4h ago",
+      "pushed": "2h ago",
       "lang": "HTML",
       "commit": ""
     }
