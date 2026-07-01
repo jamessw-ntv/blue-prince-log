@@ -3,16 +3,16 @@
     "title": "Personal Dashboard",
     "place": "Ferntree Gully, VIC",
     "updated": "2026-07-01",
-    "fetched": "2026-07-01T15:47:40+00:00",
+    "fetched": "2026-07-01T18:04:16+00:00",
     "note": "Live. weather Open-Meteo · crypto CoinGecko · ASX Yahoo · dev GitHub · releases RSS."
   },
   "weather": {
     "place": "Ferntree Gully, VIC",
     "now": {
       "temp": 10,
-      "icon": "⛅",
-      "desc": "Partly cloudy",
-      "wind": 20
+      "icon": "☁️",
+      "desc": "Overcast",
+      "wind": 21
     },
     "days": [
       {
@@ -72,45 +72,52 @@
       {
         "code": "BTC",
         "name": "Bitcoin",
-        "price": 87155.0,
-        "pct": 2.99
+        "price": 87120.0,
+        "pct": 3.34
       },
       {
         "code": "ETH",
         "name": "Ethereum",
-        "price": 2348.66,
-        "pct": 3.42
+        "price": 2349.93,
+        "pct": 3.63
       }
     ]
   },
   "releases": [
     {
       "cat": "Film/TV",
-      "title": "‘Project Hail Mary’ Sets Prime Video Streaming Date",
+      "title": "‘Baywatch’ Fox Reboot Unveils First Footage in New Teaser",
       "when": "1 Jul",
       "source": "Variety",
-      "url": "https://variety.com/2026/film/news/project-hail-mary-streaming-release-date-1236710500/"
+      "url": "https://variety.com/2026/tv/news/baywatch-fox-reboot-new-teaser-1236800181/"
     },
     {
       "cat": "Film/TV",
-      "title": "Paula Reid Expected to Move to MS NOW After Leaving CNN (EXCLUSIVE)",
+      "title": "Ubisoft Hires Former Amazon Games Chief Christoph Hartmann as Head of New Division, Including Oversight of Acquired ‘March of Giants’ Game",
       "when": "1 Jul",
       "source": "Variety",
-      "url": "https://variety.com/2026/tv/news/paula-reid-ms-now-jump-leaving-cnn-1236800059/"
+      "url": "https://variety.com/2026/gaming/news/ubisoft-hires-amazon-games-chief-christoph-hartmann-1236800187/"
     },
     {
       "cat": "Film/TV",
-      "title": "‘Got Milk?’ Docuseries, Looking at Impact of Iconic Marketing Campaign, Acquired by Documentary+ (EXCLUSIVE)",
+      "title": "‘Murder of JonBenét Ramsey’ Limited Series Moves to Netflix From Paramount+",
       "when": "1 Jul",
       "source": "Variety",
-      "url": "https://variety.com/2026/film/news/got-milk-docuseries-acquired-by-documentary-plus-1236800047/"
+      "url": "https://variety.com/2026/tv/news/murder-of-jonbenet-ramsey-limited-series-netflix-paramount-1236800192/"
     },
     {
       "cat": "Film/TV",
-      "title": "‘The Sopranos’ Creator, Former James Bond Casting Director, and Producers of ‘Nomadland’ and ‘Hurt Locker’ Headline Karlovy Vary Industry Discussions",
+      "title": "Empire State Building Climbers Revealed: Couple From Netflix’s ‘Skywalkers’ Doc Appear to Get Engaged Atop Skyscraper",
       "when": "1 Jul",
       "source": "Variety",
-      "url": "https://variety.com/2026/film/global/sopranos-creator-james-bond-casting-director-karlovy-vary-1236800012/"
+      "url": "https://variety.com/2026/tv/news/who-climbed-empire-state-building-1236800178/"
+    },
+    {
+      "cat": "Trek/Wars",
+      "title": "‘The Ninth Jedi’ Spin-Off Animated Series to Debut First Trailer Tomorrow",
+      "when": "1 Jul",
+      "source": "SW News Net",
+      "url": "https://www.starwarsnewsnet.com/2026/07/the-ninth-jedi-spin-off-animated-series-to-debut-first-trailer-tomorrow.html"
     },
     {
       "cat": "Trek/Wars",
@@ -125,13 +132,6 @@
       "when": "30 Jun",
       "source": "SW News Net",
       "url": "https://www.starwarsnewsnet.com/2026/07/star-wars-celebration-los-angeles-2027-adds-ashley-eckstein-matt-lanter-james-arnold-taylor-and-more-as-guests.html"
-    },
-    {
-      "cat": "Trek/Wars",
-      "title": "‘Star Wars: Star Pilots’ Book Preview Showcases the Memoirs of Wedge Antilles",
-      "when": "30 Jun",
-      "source": "SW News Net",
-      "url": "https://www.starwarsnewsnet.com/2026/06/star-wars-star-pilots-book-preview-showcases-the-memoirs-of-wedge-antilles.html"
     },
     {
       "cat": "Games",
@@ -173,7 +173,7 @@
     {
       "repo": "jamessw-ntv.github.io",
       "desc": "",
-      "pushed": "3h ago",
+      "pushed": "2h ago",
       "lang": "HTML",
       "commit": ""
     }
