@@ -3,15 +3,15 @@
     "title": "Personal Dashboard",
     "place": "Ferntree Gully, VIC",
     "updated": "2026-07-01",
-    "fetched": "2026-07-01T21:44:26+00:00",
+    "fetched": "2026-07-01T23:21:21+00:00",
     "note": "Live. weather Open-Meteo · crypto CoinGecko · ASX Yahoo · dev GitHub · releases RSS."
   },
   "weather": {
     "place": "Ferntree Gully, VIC",
     "now": {
       "temp": 10,
-      "icon": "🌦️",
-      "desc": "Drizzle",
+      "icon": "☁️",
+      "desc": "Overcast",
       "wind": 24
     },
     "days": [
@@ -29,7 +29,7 @@
         "max": 12,
         "icon": "🌦️",
         "desc": "Showers",
-        "rain": 98
+        "rain": 100
       },
       {
         "day": "Sat",
@@ -37,7 +37,7 @@
         "max": 10,
         "icon": "🌦️",
         "desc": "Drizzle",
-        "rain": 84
+        "rain": 87
       }
     ]
   },
@@ -72,18 +72,25 @@
       {
         "code": "BTC",
         "name": "Bitcoin",
-        "price": 88139.0,
-        "pct": 4.16
+        "price": 87424.0,
+        "pct": 3.36
       },
       {
         "code": "ETH",
         "name": "Ethereum",
-        "price": 2358.58,
-        "pct": 3.99
+        "price": 2344.44,
+        "pct": 3.49
       }
     ]
   },
   "releases": [
+    {
+      "cat": "Film/TV",
+      "title": "Watch ‘Minions & Monsters’ Stars Jesse Eisenberg, Jeff Bridges and Zoey Deutch Speak Minionese",
+      "when": "1 Jul",
+      "source": "Variety",
+      "url": "https://variety.com/2026/film/columns/minions-monsters-jesse-eisenberg-jeff-bridges-zoey-deutch-speak-minionese-1236800207/"
+    },
     {
       "cat": "Trek/Wars",
       "title": "‘The Art of Star Wars: Andor’ Uncovers New Secrets Behind the Acclaimed Series",
@@ -111,13 +118,6 @@
       "when": "1 Jul",
       "source": "Variety",
       "url": "https://variety.com/2026/tv/news/lebron-james-lakers-bronny-nba-daily-variety-podcast-1236800328/"
-    },
-    {
-      "cat": "Film/TV",
-      "title": "‘Fjord’ Qualifies for Oscars’ International Feature Category After Questions Over Amount of English Dialogue (EXCLUSIVE)",
-      "when": "1 Jul",
-      "source": "Variety",
-      "url": "https://variety.com/2026/film/awards/fjord-oscars-international-feature-english-qualifies-1236800216/"
     },
     {
       "cat": "Trek/Wars",
