@@ -3,7 +3,7 @@
     "title": "Personal Dashboard",
     "place": "Ferntree Gully, VIC",
     "updated": "2026-07-01",
-    "fetched": "2026-07-01T18:04:16+00:00",
+    "fetched": "2026-07-01T20:06:39+00:00",
     "note": "Live. weather Open-Meteo · crypto CoinGecko · ASX Yahoo · dev GitHub · releases RSS."
   },
   "weather": {
@@ -12,7 +12,7 @@
       "temp": 10,
       "icon": "☁️",
       "desc": "Overcast",
-      "wind": 21
+      "wind": 22
     },
     "days": [
       {
@@ -72,45 +72,45 @@
       {
         "code": "BTC",
         "name": "Bitcoin",
-        "price": 87120.0,
-        "pct": 3.34
+        "price": 86848.0,
+        "pct": 2.4
       },
       {
         "code": "ETH",
         "name": "Ethereum",
-        "price": 2349.93,
-        "pct": 3.63
+        "price": 2338.65,
+        "pct": 2.56
       }
     ]
   },
   "releases": [
     {
       "cat": "Film/TV",
-      "title": "‘Baywatch’ Fox Reboot Unveils First Footage in New Teaser",
+      "title": "‘NCIS’ Brings Back Michael Weatherly as Tony DiNozzo for Season 24",
       "when": "1 Jul",
       "source": "Variety",
-      "url": "https://variety.com/2026/tv/news/baywatch-fox-reboot-new-teaser-1236800181/"
+      "url": "https://variety.com/2026/tv/news/ncis-michael-weatherly-return-tony-dinozzo-season-24-1236800272/"
     },
     {
       "cat": "Film/TV",
-      "title": "Ubisoft Hires Former Amazon Games Chief Christoph Hartmann as Head of New Division, Including Oversight of Acquired ‘March of Giants’ Game",
+      "title": "LISTEN: So Long LeBron! What the Lakers Shakeup Means for the NBA and for L.A.’s Sports Star Power",
       "when": "1 Jul",
       "source": "Variety",
-      "url": "https://variety.com/2026/gaming/news/ubisoft-hires-amazon-games-chief-christoph-hartmann-1236800187/"
+      "url": "https://variety.com/2026/tv/news/lebron-james-lakers-bronny-nba-daily-variety-podcast-1236800328/"
     },
     {
       "cat": "Film/TV",
-      "title": "‘Murder of JonBenét Ramsey’ Limited Series Moves to Netflix From Paramount+",
+      "title": "‘Fjord’ Qualifies for Oscars’ International Feature Category After Questions Over Amount of English Dialogue (EXCLUSIVE)",
       "when": "1 Jul",
       "source": "Variety",
-      "url": "https://variety.com/2026/tv/news/murder-of-jonbenet-ramsey-limited-series-netflix-paramount-1236800192/"
+      "url": "https://variety.com/2026/film/awards/fjord-oscars-international-feature-english-qualifies-1236800216/"
     },
     {
       "cat": "Film/TV",
-      "title": "Empire State Building Climbers Revealed: Couple From Netflix’s ‘Skywalkers’ Doc Appear to Get Engaged Atop Skyscraper",
+      "title": "Fox Promotes Tubi PR Executive Seana Sullivan to Corporate Communications",
       "when": "1 Jul",
       "source": "Variety",
-      "url": "https://variety.com/2026/tv/news/who-climbed-empire-state-building-1236800178/"
+      "url": "https://variety.com/2026/tv/news/seana-sullivan-tubi-fox-promote-corporate-communications-1236800291/"
     },
     {
       "cat": "Trek/Wars",
